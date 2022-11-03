@@ -1,0 +1,6 @@
+#!/bin/execlineb -P
+if { arbor.utils.sed configure "s/.*is not supported by kmod.*/true/g" }
+if { chmod +x configure }
+export ARBOR_MK_CONFIGURE_ARGS "--with-xz;--with-zlib"
+if { arbor.mk.gnuconfigure install }
+arbor.utils.install -l bin kmod lsmod rmmod insmod modinfo modprobe depmod

@@ -1,0 +1,9 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i CC CC
+	importas -i CFLAGS CFLAGS
+	importas -i LDFLAGS LDFLAGS
+}
+export ARBOR_MK_GMAKE_FLAGS "CC=${CC};CFLAGS=${CFLAGS};LDFLAGS=${LDFLAGS}"
+if { arbor.mk.gmake }
+arbor.utils.install bin vi

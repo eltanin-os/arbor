@@ -1,0 +1,5 @@
+#!/bin/execlineb -P
+importas -i CC CC
+export ARBOR_MK_GMAKE_FLAGS "CC=$CC"
+export PKG_CONFIG "false"
+arbor.mk.gmake install

@@ -1,0 +1,14 @@
+name:redo
+version:20221030194921
+license:unlicense
+description:A recursive, general-purpose build system.
+cksum:9f04f5551e4924019a0ee6668109dd184b71c119723c9dade5283a1bec56da7869e2750614dfa41706ebb1dbbfd84ce9418e7f0438820c187e7461c68fb183c4
+urls{
+http://downloads.eltaninos.org/sources/redo/redo-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+tertium
+}

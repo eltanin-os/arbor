@@ -1,0 +1,24 @@
+name:s6-linux-init
+version:1.0.8.0
+license:isc
+description:Set of tools to create and run an s6-based init system.
+cksum:05750e0ac7b1903901d9fedc196bf9c6427a0475bc141b50f3d4fe244dfc14ca6cac40f916a65c5315c026a1eb891ec9931eb8192770a54e5d620776b56e7b14
+platforms{
+linux
+}
+urls{
+https://skarnet.org/software/s6-linux-init/s6-linux-init-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+execline
+libc
+s6
+skalibs
+}
+rundeps{
+execline
+s6
+}

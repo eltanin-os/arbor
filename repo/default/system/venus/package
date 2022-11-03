@@ -1,0 +1,14 @@
+name:venus
+version:20221030200612
+license:unlicense
+description:A simple package manager.
+cksum:bc15e9ed6425995754be583453c10fb2441e8ebae2d58c6854750e54bcf12bec9427056a795cad56f0cc882dc66eed5832f42e628b030f49c1e4111a6ba2f443
+urls{
+http://downloads.eltaninos.org/sources/venus/venus-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+tertium
+}

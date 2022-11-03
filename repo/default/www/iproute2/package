@@ -1,0 +1,17 @@
+name:iproute2
+version:6.0.0
+license:gpl-2
+description:A set of utilities for Linux networking.
+cksum:cebdf52c03e052a5a3431f08d010ac9d473606363330d29b9391322394d30ede28710ce3c5627c4ac5f19870d3ddd7ea1182602cb26ce29ffc95b558be17ba8f
+platforms{
+linux
+}
+urls{
+http://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

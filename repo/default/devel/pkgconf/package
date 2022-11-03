@@ -1,0 +1,14 @@
+name:pkgconf
+version:1.8.0
+license:modified-bsd
+description:A package compiler and linker metadata toolkit.
+cksum:8d761163751b617670bf9529c0bc7988603c77be34f54a6cd2e12df04e554aa4777119595a516f8aa5f26a7e82c0753762f3cf5b625e2b01705ff019e896a921
+urls{
+http://distfiles.dereferenced.org/pkgconf/pkgconf-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

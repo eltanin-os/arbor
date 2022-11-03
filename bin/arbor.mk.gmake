@@ -1,0 +1,10 @@
+#!/bin/execlineb -s0
+multisubstitute {
+	importas -D "" LIBTOOL LIBTOOL
+	importas -sud ";" ARBOR_MK_GMAKE_FLAGS ARBOR_MK_GMAKE_FLAGS
+	importas -uD "2" nprocs nprocs
+}
+export MAKE "arbor.mk.gmake"
+ifelse { test -n "${LIBTOOL}" }
+{ gmake -j $nprocs LIBTOOL=$LIBTOOL $ARBOR_MK_GMAKE_FLAGS $@ }
+gmake -j $nprocs $ARBOR_MK_GMAKE_FLAGS $@

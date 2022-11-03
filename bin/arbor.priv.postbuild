@@ -1,0 +1,49 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i BINDIR BINDIR
+	importas -i LIBDIR LIBDIR
+	importas -i DRTDIR DRTDIR
+	importas -i MANDIR MANDIR
+	importas -is DDEFLATE DDEFLATE
+	importas -is STRIP STRIP
+}
+# BLACKLIST
+foreground { find . -type f -name "*.la" -exec rm -f "{}" + }
+foreground { rm -Rf .${DRTDIR}/info }
+# CONTENT
+foreground {
+	if { test -d ".${BINDIR}" }
+	find .${BINDIR} -type f -exec $STRIP "{}" +
+}
+foreground {
+	if { test -d ".${LIBDIR}" }
+	find .${LIBDIR} -type f -name "*.so" -exec $STRIP "{}" +
+}
+foreground {
+	if { test -d ".${LIBDIR}/pkgconfig" }
+	foreground { mkdir -p .${DRTDIR} }
+	mv .${LIBDIR}/pkgconfig .${DRTDIR}
+}
+foreground {
+	# compress manpages
+	if { test -d ".${MANDIR}" }
+	cd .${MANDIR}
+	foreground { find . -type f -name "*.[1-8]" -exec $DDEFLATE "{}" + }
+	# fix symbolic links
+	backtick -D "" symlinks { find . -type l }
+	importas -isu symlinks symlinks
+	forx -Ep symlink { $symlinks }
+	backtick -Ex linkpath { readlink $symlink }
+	backtick dir { dirname $symlink }
+	backtick file { basename $symlink }
+	backtick linkname { basename $linkpath }
+	multisubstitute {
+		importas -iu dir dir
+		importas -iu file file
+		importas -iu linkname linkname
+	}
+	cd $dir
+	ifelse { test -f ${linkname}.gz }
+	{ ln -sf ${linkname}.gz $file }
+	ln -sf $linkname $file
+}

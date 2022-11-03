@@ -1,0 +1,14 @@
+name:byacc
+version:20220128
+license:public-domain
+description:The Berkeley Yacc general-purpose parser generator.
+cksum:6687d42cda2fbce4841e1d537cce13a2d160c225ac535cee0da35912ab9738829b512ff8cfd842277fb42b36895853071b2061d04af7db4eb8f54005806eabfd
+urls{
+https://invisible-mirror.net/archives/byacc/byacc-$version.tgz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

@@ -1,0 +1,6 @@
+#!/bin/execlineb -P
+if { arbor.mk.gmake }
+if { arbor.utils.install bin build/brssl }
+if { arbor.utils.install -m 0644 lib build/libbearssl.a }
+elglob HDR "inc/*"
+arbor.utils.install -m 0644 inc $HDR

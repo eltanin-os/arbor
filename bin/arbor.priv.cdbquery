@@ -1,0 +1,2 @@
+#!/bin/execlineb -S2
+cdb -q $1 $2

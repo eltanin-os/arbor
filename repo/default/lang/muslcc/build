@@ -1,0 +1,6 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	elglob files "./*"
+}
+cp -R $files $DESTDIR

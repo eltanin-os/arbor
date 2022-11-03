@@ -1,0 +1,23 @@
+#!/bin/execlineb
+elgetopt "b"
+backtick HOSTARCH { uname -m }
+backtick HOSTOS { pipeline { uname -s } awk "{print tolower($0)}" }
+multisubstitute {
+	importas -i ARBOR ARBOR
+	importas -iu HOSTARCH HOSTARCH
+	importas -iu HOSTOS HOSTOS
+	importas -i PATH PATH
+	importas -uD "0" ELGETOPT_b ELGETOPT_b
+}
+elgetpositionals
+emptyenv -Po
+export ARBOR_BOOTSTRAPMODE "${ELGETOPT_b}"
+export ARBOR_HOSTARCH "${HOSTARCH}"
+export ARBOR_HOSTOS "${HOSTOS}"
+export PATH "${ARBOR}/bin:${PATH}"
+cd $ARBOR
+envfile "config/defaults"
+forx -Eo 0 package { $@ }
+backtick path { arbor.priv.printpkgdep $package }
+importas -iu path path
+redo $path

@@ -1,0 +1,2 @@
+#!/bin/execlineb -S1
+cdb -c $1

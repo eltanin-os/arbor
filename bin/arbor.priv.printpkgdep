@@ -1,0 +1,6 @@
+#!/bin/execlineb -S1
+importas -i ARBOR ARBOR
+cd $ARBOR
+backtick -Ex path { arbor.priv.leafpath $1 }
+backtick -Ex name { arbor.priv.dbread name ${path}/package }
+echo ${path}/${name}.pkg

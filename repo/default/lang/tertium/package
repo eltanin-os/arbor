@@ -1,0 +1,17 @@
+name:tertium
+version:20221030194430
+license:unlicense
+description:Eltanin system programming library.
+cksum:eba16cac550f6463f0170bb0372b048a449b9545f2dd6838748d923720df9851915c7bed6ac9d8549ed103cf197b5f0876a37a0560af0b403f4d795a37e301da
+arch{
+x86_64
+}
+platforms{
+linux
+}
+urls{
+http://downloads.eltaninos.org/sources/tertium/tertium-$version.tar.lz
+}
+hostdeps{
+stdenv
+}

@@ -1,0 +1,2 @@
+#!/bin/execlineb -S1
+pipeline { venus-cksum -w $1 } venus-conf $1

@@ -1,0 +1,19 @@
+name:limine-bin
+version:4.20221017.0
+license:bsd-2
+description:x86/x86_64 BIOS/UEFI Bootloader.
+cksum:2d1f87c5fde9dfc2be0ddd6682b4b81174af2c9ee1a04d3227f484c7b236bd6f5762b585bce32b4c34fca7760b04d4c88367fceb78cee3a6eff1b310d2bb381c
+arch{
+aarch64
+i386
+x86_64
+}
+urls{
+https://downloads.eltaninos.org/mirrors/limine-bin-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

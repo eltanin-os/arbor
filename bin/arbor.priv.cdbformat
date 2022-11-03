@@ -1,0 +1,10 @@
+#!/bin/awk -f
+{
+	sub(/\/[a-z]*$/,"",$1);
+	path=$1; sub(/.*\//,"",$1);
+	print "+"length($1)","length(path)":"$1"->"path
+}
+
+END {
+	printf "\n"
+}

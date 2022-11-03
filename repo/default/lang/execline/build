@@ -1,0 +1,12 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i ARBOR_ROOTDIR ARBOR_ROOTDIR
+	importas -i LIBDIR LIBDIR
+	elglob man1 "mdoc/man1/*.1"
+	elglob man7 "mdoc/man7/*.7"
+}
+export ARBOR_MK_CONFIGURE_ARGS "--with-sysdeps=${ARBOR_ROOTDIR}/${LIBDIR}/skalibs/sysdeps"
+# not gnuconfigure but compatible
+if { arbor.mk.gnuconfigure install }
+if { arbor.utils.install man1 $man1 }
+arbor.utils.install man7 $man7

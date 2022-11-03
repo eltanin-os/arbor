@@ -1,0 +1,32 @@
+#!/bin/execlineb -S1
+# $1: build file
+multisubstitute {
+	importas -i ARBOR_TMPSYSTEMDIR ARBOR_TMPSYSTEMDIR
+	importas -i ARBOR_PACKAGESRC ARBOR_PACKAGESRC
+}
+if {
+	redirfd -x 1 $1
+	heredoc 0
+"#!/bin/execlineb -P
+envfile \"${ARBOR_TMPSYSTEMDIR}/etc/arbor/config\"
+multisubstitute {
+	importas -i DRTDIR DRTDIR
+	importas -i INCDIR INCDIR
+	importas -i LIBDIR LIBDIR
+	importas -iu CPPFLAGS CPPFLAGS
+	importas -iu LDFLAGS LDFLAGS
+}
+export DESTDIR \"${ARBOR_TMPSYSTEMDIR}/tmp/output\"
+export ACLOCAL \"aclocal -I${ARBOR_TMPSYSTEMDIR}/${DRTDIR}/aclocal\"
+export PKG_CONFIG_PATH \"${ARBOR_TMPSYSTEMDIR}/${DRTDIR}/pkgconfig\"
+export PKG_CONFIG_SYSROOT_DIR \"${ARBOR_TMPSYSTEMDIR}\"
+export LD_LIBRARY_PATH \"${ARBOR_TMPSYSTEMDIR}/${LIBDIR}\"
+export CPPFLAGS \"-I${ARBOR_TMPSYSTEMDIR}/${INCDIR} ${CPPFLAGS}\"
+export LDFLAGS \"-L${ARBOR_TMPSYSTEMDIR}/${LIBDIR} ${LDFLAGS}\"
+cd ${ARBOR_TMPSYSTEMDIR}/tmp/${ARBOR_PACKAGESRC}
+fdmove -c 1 2
+../build.arbor
+"
+	cat
+}
+chmod +x $1

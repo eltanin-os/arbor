@@ -1,0 +1,15 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i AR AR
+	importas -i CC CC
+	importas -i CFLAGS CFLAGS
+	importas -i CPPFLAGS CPPFLAGS
+	importas -i DESTDIR DESTDIR
+	importas -i LDFLAGS LDFLAGS
+	importas -i INCDIR INCDIR
+	importas -i PREFIX PREFIX
+	importas -i RANLIB RANLIB
+}
+export ARBOR_MK_GMAKE_FLAGS "AR=${AR};CC=${CC};CFLAGS=${CFLAGS};RANLIB=${RANLIB};LDFLAGS=${LDFLAGS};PREFIX=${PREFIX}"
+if { mkdir -p ${DESTDIR}${INCDIR} }
+arbor.mk.gmake install

@@ -1,0 +1,39 @@
+#!/bin/execlineb -P
+importas -D "" LDFLAGS LDFLAGS
+backtick static {
+	pipeline { echo $LDFLAGS }
+	awk "{print match($0,/-static/) ? \"-static\" : \"\"}"
+}
+multisubstitute {
+	importas -i AR AR
+	importas -i CC CC
+	importas -i CFLAGS CFLAGS
+	importas -i LDFLAGS LDFLAGS
+	importas -i PREFIX PREFIX
+	importas -i BINDIR BINDIR
+	importas -i INCDIR INCDIR
+	importas -i LIBDIR LIBDIR
+	importas -i MANDIR MANDIR
+	importas -iu static static
+}
+if {
+	redirfd -w 1 configure.local
+	heredoc -d 0
+"AR=\"${AR}\"
+CC=\"${CC}\"
+CFLAGS=\"${CFLAGS}\"
+LDFLAGS=\"${LDFLAGS}\"
+PREFIX=\"${PREFIX}\"
+BINDIR=\"${BINDIR}\"
+SBINDIR=\"${BINDIR}\"
+INCLUDEDIR=\"${INCDIR}\"
+LIBDIR=\"${LIBDIR}\"
+MANDIR=\"${MANDIR}\"
+STATIC=\"${static}\"
+LN=\"ln -sf\"
+"
+	cat
+}
+if { arbor.utils.sed Makefile "s/\(\t\)ar/\1$(AR)/g" }
+if { ./configure }
+arbor.mk.gmake install

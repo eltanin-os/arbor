@@ -1,0 +1,14 @@
+# TAG: BINARY PACKAGE
+name:muslcc
+version:20211123
+description:Static cross- and native- musl-based toolchain.
+cksum:bfc20f075b0757c8d8730ce1dbed40f3873f38f6a60d78c05571ad49ac2ac304f5dd68719b368cda8d5066f8c7d89f1d2741a59c0fe1239def3f990935436143
+arch{
+x86_64
+}
+platforms{
+linux
+}
+urls{
+http://downloads.eltaninos.org/repo/binaries/$HOSTARCH-muslcc-$version.tar.lz
+}

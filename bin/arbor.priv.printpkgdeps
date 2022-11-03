@@ -1,0 +1,36 @@
+#!/bin/execlineb
+elgetopt "R"
+multisubstitute {
+	importas -i ARBOR ARBOR
+	importas -D "0" ARBOR_BOOTSTRAPMODE ARBOR_BOOTSTRAPMODE
+	importas -uD "0" ELGETOPT_R ELGETOPT_R
+}
+elgetpositionals -P1
+emptyenv -o
+cd $ARBOR
+backtick deps {
+	backtick -Ex path { arbor.priv.leafpath $1 }
+	foreground {
+		if -X { test "${ARBOR_BOOTSTRAPMODE}" -eq "0" }
+		arbor.priv.dbread -t hostdeps ${path}/package
+	}
+	foreground { arbor.priv.dbread -t rundeps ${path}/package }
+	foreground { arbor.priv.dbread -t makedeps ${path}/package }
+}
+importas -i curdeps deps
+importas -isu deps deps
+ifelse -X { test "${ELGETOPT_R}" -eq "0" } {
+	forx -Epo 0 dep { $deps } arbor.priv.printpkgdep $dep
+}
+# XXX: could(?) use "redo" db
+importas -uD "" ARBOR_DEPSLIST ARBOR_DEPSLIST
+pipeline {
+	export ARBOR_DEPSLIST "${curdeps}\n${ARBOR_DEPSLIST}"
+	forx -Epo 0 dep { $deps }
+	case -- "\n${ARBOR_DEPSLIST}\n" {
+	".*\n${dep}\n.*" { exit 0 }
+	}
+	foreground { arbor.priv.printpkgdep $dep }
+	export ARBOR_BOOTSTRAPMODE "1"
+	arbor.priv.printpkgdeps -R $dep
+} sort -u

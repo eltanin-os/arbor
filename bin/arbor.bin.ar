@@ -1,0 +1,94 @@
+#!/bin/execlineb
+elgetopt "DNOPSTUVabcdfilmopqrstuvx"
+multisubstitute {
+	importas -uD "0" ELGETOPT_D ELGETOPT_D
+	importas -uD "0" ELGETOPT_N ELGETOPT_N
+	importas -uD "0" ELGETOPT_O ELGETOPT_O
+	importas -uD "0" ELGETOPT_P ELGETOPT_P
+	importas -uD "0" ELGETOPT_S ELGETOPT_S
+	importas -uD "0" ELGETOPT_T ELGETOPT_T
+	importas -uD "0" ELGETOPT_U ELGETOPT_U
+	importas -uD "0" ELGETOPT_V ELGETOPT_V
+	importas -uD "0" ELGETOPT_a ELGETOPT_a
+	importas -uD "0" ELGETOPT_b ELGETOPT_b
+	importas -uD "0" ELGETOPT_c ELGETOPT_c
+	importas -uD "0" ELGETOPT_d ELGETOPT_d
+	importas -uD "0" ELGETOPT_f ELGETOPT_f
+	importas -uD "0" ELGETOPT_i ELGETOPT_i
+	importas -uD "0" ELGETOPT_l ELGETOPT_l
+	importas -uD "0" ELGETOPT_m ELGETOPT_m
+	importas -uD "0" ELGETOPT_o ELGETOPT_o
+	importas -uD "0" ELGETOPT_p ELGETOPT_p
+	importas -uD "0" ELGETOPT_q ELGETOPT_q
+	importas -uD "0" ELGETOPT_r ELGETOPT_r
+	importas -uD "0" ELGETOPT_s ELGETOPT_s
+	importas -uD "0" ELGETOPT_t ELGETOPT_t
+	importas -uD "0" ELGETOPT_u ELGETOPT_u
+	importas -uD "0" ELGETOPT_v ELGETOPT_v
+	importas -uD "0" ELGETOPT_x ELGETOPT_x
+}
+backtick -D "" Dflag { if -Xn { test "${ELGETOPT_D}" -eq "0" } echo D }
+backtick -D "" Nflag { if -Xn { test "${ELGETOPT_N}" -eq "0" } echo N }
+backtick -D "" Oflag { if -Xn { test "${ELGETOPT_O}" -eq "0" } echo O }
+backtick -D "" Pflag { if -Xn { test "${ELGETOPT_P}" -eq "0" } echo P }
+backtick -D "" Sflag { if -Xn { test "${ELGETOPT_S}" -eq "0" } echo S }
+backtick -D "" Tflag { if -Xn { test "${ELGETOPT_T}" -eq "0" } echo T }
+backtick -D "" Uflag { if -Xn { test "${ELGETOPT_U}" -eq "0" } echo U }
+backtick -D "" Vflag { if -Xn { test "${ELGETOPT_V}" -eq "0" } echo V }
+backtick -D "" aflag { if -Xn { test "${ELGETOPT_a}" -eq "0" } echo a }
+backtick -D "" bflag { if -Xn { test "${ELGETOPT_b}" -eq "0" } echo b }
+backtick -D "" cflag { if -Xn { test "${ELGETOPT_c}" -eq "0" } echo c }
+backtick -D "" dflag { if -Xn { test "${ELGETOPT_d}" -eq "0" } echo d }
+backtick -D "" fflag { if -Xn { test "${ELGETOPT_f}" -eq "0" } echo f }
+backtick -D "" iflag { if -Xn { test "${ELGETOPT_i}" -eq "0" } echo i }
+backtick -D "" lflag { if -Xn { test "${ELGETOPT_l}" -eq "0" } echo l }
+backtick -D "" mflag { if -Xn { test "${ELGETOPT_m}" -eq "0" } echo m }
+backtick -D "" oflag { if -Xn { test "${ELGETOPT_o}" -eq "0" } echo o }
+backtick -D "" pflag { if -Xn { test "${ELGETOPT_p}" -eq "0" } echo p }
+backtick -D "" qflag { if -Xn { test "${ELGETOPT_q}" -eq "0" } echo q }
+backtick -D "" rflag { if -Xn { test "${ELGETOPT_r}" -eq "0" } echo r }
+backtick -D "" sflag { if -Xn { test "${ELGETOPT_s}" -eq "0" } echo s }
+backtick -D "" tflag { if -Xn { test "${ELGETOPT_t}" -eq "0" } echo t }
+backtick -D "" uflag { if -Xn { test "${ELGETOPT_u}" -eq "0" } echo u }
+backtick -D "" vflag { if -Xn { test "${ELGETOPT_v}" -eq "0" } echo v }
+backtick -D "" xflag { if -Xn { test "${ELGETOPT_x}" -eq "0" } echo x }
+multisubstitute {
+	importas -iu Dflag Dflag
+	importas -iu Nflag Nflag
+	importas -iu Oflag Oflag
+	importas -iu Pflag Pflag
+	importas -iu Sflag Sflag
+	importas -iu Tflag Tflag
+	importas -iu Uflag Uflag
+	importas -iu Vflag Vflag
+	importas -iu aflag aflag
+	importas -iu bflag bflag
+	importas -iu cflag cflag
+	importas -iu dflag dflag
+	importas -iu fflag fflag
+	importas -iu iflag iflag
+	importas -iu lflag lflag
+	importas -iu mflag mflag
+	importas -iu oflag oflag
+	importas -iu pflag pflag
+	importas -iu qflag qflag
+	importas -iu rflag rflag
+	importas -iu sflag sflag
+	importas -iu tflag tflag
+	importas -iu uflag uflag
+	importas -iu vflag vflag
+	importas -iu xflag xflag
+}
+importas -uD "" 1 1
+shift
+elgetpositionals
+backtick args { pipeline { printf "%s\\n" $@ } sort }
+backtick flags { echo "${dflag}${mflag}${pflag}${qflag}${rflag}${sflag}${tflag}${xflag}${aflag}${bflag}${cflag}${Dflag}${fflag}${iflag}${lflag}${Nflag}${oflag}${Oflag}${Pflag}${sflag}${Sflag}${Tflag}${uflag}${Uflag}${vflag}${Vflag}" }
+multisubstitute {
+	importas -iu ARBOR_AR ARBOR_AR
+	importas -isu args args
+	importas -iu flags flags
+}
+ifelse { test -z "${flags}" }
+{ exec $ARBOR_AR $1 $args }
+exec $ARBOR_AR -$flags $1 $args

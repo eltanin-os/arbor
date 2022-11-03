@@ -1,0 +1,55 @@
+diff --git a/libutil/tty.c b/libutil/tty.c
+index bceb01e..8a2cd73 100644
+--- a/libutil/tty.c
++++ b/libutil/tty.c
+@@ -1,6 +1,7 @@
+ /* See LICENSE file for copyright and license details. */
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h>
+ 
+ #include <fcntl.h>
+ #include <dirent.h>
+diff --git a/mknod.c b/mknod.c
+index 8de35c7..27f91e0 100644
+--- a/mknod.c
++++ b/mknod.c
+@@ -1,6 +1,7 @@
+ /* See LICENSE file for copyright and license details. */
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ 
+ #include <fcntl.h>
+ #include <stdio.h>
+diff --git a/mountpoint.c b/mountpoint.c
+index 8f205a2..fd3a133 100644
+--- a/mountpoint.c
++++ b/mountpoint.c
+@@ -1,6 +1,7 @@
+ /* See LICENSE file for copyright and license details. */
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ 
+ #include <mntent.h>
+ #include <stdio.h>
+diff --git a/stat.c b/stat.c
+index 220a659..3f91566 100644
+--- a/stat.c
++++ b/stat.c
+@@ -1,6 +1,7 @@
+ /* See LICENSE file for copyright and license details. */
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ 
+ #include <inttypes.h>
+ #include <stdio.h>
+@@ -86,4 +87,4 @@ main(int argc, char *argv[])
+ 	}
+ 
+ 	return ret;
+-}
+\ No newline at end of file
++}

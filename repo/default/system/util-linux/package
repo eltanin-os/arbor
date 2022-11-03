@@ -1,0 +1,19 @@
+name:util-linux
+version:2.38.1
+license:gpl-3+,gpl-2+,gpl-2
+description:Miscellaneous linux utilities.
+cksum:49cff6b6dd9ff1f04d04c1061ada88d55844f7fe8d99f69b7bc0bf9b114497112b239601871e9453420c3fdb02955e112a9db5869302aeb91f37c4506816ef62
+platforms{
+linux
+}
+urls{
+https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.38/util-linux-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+ncurses
+libc
+zlib
+}

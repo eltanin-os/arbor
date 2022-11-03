@@ -1,0 +1,14 @@
+name:bearssl
+version:0.6
+license:mit
+description:The BearSSL implementation of the SSL/TLS protocol.
+cksum:4d9cc05419d22726e1a1d13586c9a4291e495f845988e91706ebc6292ebc1673f9c9cccef9a8461e36b3abadb8adbb7212d2bd0bfd8c6fb9203db1cdc6d9024c
+urls{
+https://bearssl.org/bearssl-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

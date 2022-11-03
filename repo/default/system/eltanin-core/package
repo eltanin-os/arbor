@@ -1,0 +1,22 @@
+name:eltanin-core
+version:meta
+description:A minimum enviroment.
+rundeps{
+bzip2
+ccore
+ecore
+execline
+gmake
+lex
+lzip
+m4
+pigz
+pkgconf
+redo
+stdcc
+sh
+slibtool
+venus
+yacc
+xz
+}

@@ -1,0 +1,14 @@
+name:neatvi
+version:10
+license:isc
+description:vi/ex editor with small footprint.
+cksum:93c794f9e284bbaec3496c0b745323c0fed51ef9f4dd626eb38a6747e0a1dcf6c2b423db53254e0a2fd5da4c8cf5e4b0cce53806e35b74aab68bfb9ef2779152
+urls{
+https://downloads.eltaninos.org/mirrors/neatvi-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

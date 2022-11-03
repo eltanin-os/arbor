@@ -1,0 +1,14 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i CPPFLAGS CPPFLAGS
+	importas -i MANDIR MANDIR
+}
+if {
+	redirfd -w 1 config.mk
+	heredoc -d 0
+"MANPREFIX = ${MANDIR}
+LDLIBS= -lcrypt"
+	cat
+}
+export CPPFLAGS "-D_GNU_SOURCE ${CPPFLAGS}"
+arbor.mk.gmake ubase-box-install

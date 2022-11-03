@@ -1,0 +1,44 @@
+# PATH
+PREFIX=/
+BINDIR=/bin
+SBINDIR=/bin
+LIBDIR=/lib
+ETCDIR=/etc
+DFLDIR=/etc/default
+DRTDIR=/share
+MANDIR=/share/man
+INCDIR=/include
+# ARBOR SYSTEM
+ARBOR_SANDBOX=pseudosandbox
+# ARBOR TOOLS
+ARCHIVE=venus-ar -c
+DDEFLATE=pigz -9n
+DEFLATE=lzip -9
+INFLATE=lzip -dc
+UNARCHIVE=venus-ar -x
+# C LANG
+CC=cc
+CFLAGS=-Os
+CPPFLAGS=
+LDFLAGS=
+# COMPILER TOOLS
+ARBOR_AR=ar
+AR=arbor.wrap.ar
+AS=as
+LD=ld
+LIBTOOL=slibtool-static
+PKG_CONFIG=pkgconf
+RANLIB=ranlib
+STRIP=strip -s
+YACC=yacc
+# SYSTEM TOOLS
+DOAS=sudo -E
+FETCH=curl -Lo
+TAR=tar -c
+UNBZ2=bzcat
+UNGZ=pigz -dc
+UNLZ=lzip -dc
+UNTAR=tar -xf -
+UNXZ=xzcat
+# SYSTEM
+nprocs=2

@@ -1,0 +1,17 @@
+name:ubase
+version:20190312
+license:mit
+description:A collection of unportable tools.
+cksum:f2eace45833fd923e05e0ceea697418bf2cb37c806eeedad5d85089d4c72e75d3ce1b6fceb4910397a1f8d1451fb85d42488ecd8229157d09b78d3e31262ad19
+platforms{
+linux
+}
+urls{
+https://downloads.eltaninos.org/mirrors/ubase-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

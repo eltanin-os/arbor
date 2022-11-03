@@ -1,0 +1,14 @@
+name:ecore
+version:20221030194823
+license:unlicense
+description:Eltanin core utilities.
+cksum:3cb7f17821f592b3dfcf048ab7523ff25430d6d25d6347bafe415417a348d5584773e58ce8b116b3f48d95d4e5495d0fd6382f2287f86b32e010585df38c3b3c
+urls{
+http://downloads.eltaninos.org/sources/ecore/ecore-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+tertium
+}

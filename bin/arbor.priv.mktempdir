@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+importas -i ARBOR ARBOR
+exec mktemp -p ${ARBOR}/tmp -d

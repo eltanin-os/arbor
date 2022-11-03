@@ -1,0 +1,18 @@
+name:e2fsprogs
+version:1.46.5
+license:gpl-2,lgpl-2,bsd,mit
+description:Standard Ext2/3/4 filesystem utilities.
+cksum:1eff60f362d3e98b7e5a76d7ed917238e4ca6bf45b05fdc1d9cdb578776c7c2614cd3949977c18c917d18e1bd2ff26c1beab2446f55e5f11474e42c6f9dbd213
+platforms{
+linux
+}
+urls{
+https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v$version/e2fsprogs-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+util-linux
+}

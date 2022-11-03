@@ -1,0 +1,15 @@
+name:mandoc
+version:1.14.6
+license:isc
+description:A suite of tools compiling mdoc from the OpenBSD project.
+cksum:230abb973e9701a00c7221aef1912f340a9be31ce36e7113f566432a1c4c27114e7d558964867648e4db55b6c444afbe6b8b87a84a24469c5115832525d2fd03
+urls{
+http://mdocml.bsd.lv/snapshots/mandoc-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+zlib
+}

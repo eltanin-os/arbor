@@ -1,0 +1,15 @@
+name:slibtool
+version:0.5.34
+license:mit
+description:Surrogate libtool implementation written in C.
+cksum:dd2ba1ca3a991975dab406a2209a2542422ec38a4eb462a7287c1da47d6391a7d0df309584ba6d7bd464811b2a6f9caf1157acf5f5b9ef3cbcbd1bd0787e4351
+urls{
+https://midipix.org/dl/slibtool/slibtool-$version.tar.xz
+}
+hostdeps{
+m4
+stdenv
+}
+makedeps{
+libc
+}

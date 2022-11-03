@@ -1,0 +1,14 @@
+name:lex
+version:2.15
+license:bsd-2,lgpl-2
+description:A tool for generating text-scanning programs.
+cksum:603954c9f852faf9724db85fbf7ab49b00ad22ff574bb408629f6a2e33a7c8c22f0fbd5b5cac3882b1c49199312093f9ebb1625009ade655831da95cfb7fad50
+urls{
+http://ftp.barfooze.de/pub/sabotage/tarballs/lex-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

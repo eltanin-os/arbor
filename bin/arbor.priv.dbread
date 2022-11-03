@@ -1,0 +1,20 @@
+#!/bin/execlineb
+elgetopt "t"
+importas -uD "0" ELGETOPT_t ELGETOPT_t
+elgetpositionals
+multisubstitute {
+	importas -i ARBOR_HOSTARCH ARBOR_HOSTARCH
+	importas -i ARBOR_HOSTOS ARBOR_HOSTOS
+	importas -iu 1 1
+	importas -iu 2 2
+}
+emptyenv -Po
+pipeline {
+	heredoc 0
+"HOSTARCH:${ARBOR_HOSTARCH}
+HOSTOS:${ARBOR_HOSTOS}
+"
+	cat - $2
+}
+ifelse { test $ELGETOPT_t -eq "0" } { venus-conf $1 }
+venus-conf -t $1

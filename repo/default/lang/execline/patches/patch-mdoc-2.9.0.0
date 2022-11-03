@@ -1,0 +1,7473 @@
+# from flexibeast
+diff -Naur a/mdoc/man1/background.1 b/mdoc/man1/background.1
+--- a/mdoc/man1/background.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/background.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,75 @@
++.Dd February 14, 2021
++.Dt BACKGROUND 1
++.Os
++.Sh NAME
++.Nm background
++.Nd launch a command in the background, then go on with the execution flow
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl d
++{
++.Ar prog1...
++}
++.Ar prog2...
++.Sh DESCRIPTION
++.Nm
++reads a
++.Ar prog1...
++command in an
++.Xr execline-block 7
++and unquotes it.
++.Pp
++It spawns a child executing
++.Ar prog1... .
++.Pp
++It sets the
++.Ev \&!
++environment variable to the pid of the
++.Ar prog1...
++process.
++.Pp
++It then
++.Xr exec 3 Ns
++s into
++.Ar prog2... .
++.Pp
++The command:
++.Bd -literal -offset indent
++background prog1... \(dq\(dq prog2...
++.Ed
++.Pp
++is equivalent to:
++.Bd -literal -offset indent
++sh -c 'prog1... & ; exec prog2...'
++.Ed
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl d
++Doublefork.
++If the
++.Fl d
++option is set,
++.Ar prog1...
++will run as a grandchild of
++.Nm .
++.El
++.Sh SEE ALSO
++.Xr backtick 1 ,
++.Xr foreground 1 ,
++.Xr if 1 ,
++.Xr ifelse 1 ,
++.Xr ifte 1 ,
++.Xr ifthenelse 1 ,
++.Xr pipeline 1 ,
++.Xr runblock 1 ,
++.Xr execline-block 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/background.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/backtick.1 b/mdoc/man1/backtick.1
+--- a/mdoc/man1/backtick.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/backtick.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,128 @@
++.Dd February 16, 2021
++.Dt BACKTICK 1
++.Os
++.Sh NAME
++.Nm backtick
++.Nd run a program and stores its output in an environment variable, then execute another program
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Nm
++.Op Fl i | Fl I | Fl x | Fl D Ar default
++.Op Fl N | Fl n
++.Op [ -E | -e
++.Ar variable
++{
++.Ar prog1...
++}
++.Ar prog2...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar prog1...
++in an
++.Xr execline-block 7
++and unquotes it.
++.Pp
++It runs
++.Ar prog1...
++as a child process and saves its output in memory.
++This output must not contain a null character.
++.Pp
++.Nm
++.Xr exec 3 Ns
++s into
++.Ar prog2... ,
++with
++.Ar variable
++added to the environment with
++.Ar prog1... Ap
++s output as a value.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl N
++Store
++.Ar prog1... Ap
++s output as is, including the last newline, if any.
++.It Fl n
++Chomp an ending newline off
++.Ar prog1... Ap
++s output.
++This is the default.
++.It Fl e
++No autoimport.
++This is the default.
++.It Fl E
++Autoimport.
++Instead of
++.Xr exec 3 Ns
++ing into
++.Ar prog2... ,
++.Xr exec 3
++into
++.Ql importas -ui Ar variable Ar variable Ar prog2... .
++This substitutes
++.Ar variable
++into the command line instead of putting it into the environment.
++.El
++.Pp
++The other options tell
++.Nm
++what to do if
++.Ar prog1... Ap
++s output is not suitable as the contents of an environment variable
++(i.e. it contains a null character) or if
++.Ar prog1...
++crashes or exits nonzero:
++.Bl -tag -width x
++.It Fl i
++.Nm
++exits with an approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc
++of
++.Ar prog1 Ap
++s exit code, or 124 if
++.Ar prog1
++wrote a null character.
++This is the default.
++.It Fl I
++The value of
++.Ar variable
++is set to whatever the start of
++.Ar prog1... Ap
++s output is, up to the first null character, or to whatever
++.Ar prog1...
++wrote before crashing; chomping is applied if required; then execution
++proceeds.
++.It Fl x
++.Ar variable
++is
++.Sy removed
++from the environment, and execution proceeds.
++.It Fl D Ar default
++The value of
++.Ar variable
++is set to
++.Ar default ,
++and execution proceeds.
++.El
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr foreground 1 ,
++.Xr if 1 ,
++.Xr ifelse 1 ,
++.Xr ifte 1 ,
++.Xr ifthenelse 1 ,
++.Xr pipeline 1 ,
++.Xr runblock 1 ,
++.Xr execline-block 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/backtick.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/case.1 b/mdoc/man1/case.1
+--- a/mdoc/man1/case.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/case.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,302 @@
++.Dd March 13, 2022
++.Dt CASE 1
++.Os
++.Sh NAME
++.Nm case
++.Nd compare a value against a series of regular expressions, and execute into a program depending on the first expression the value
++matches
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl S | s
++.Op Fl E | e
++.Op Fl i
++.Op Fl n | N
++.Ar value
++{
++.Bd -ragged -compact
++.Oo
++.Ar regex
++{
++.Ar prog...
++}
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++.Ar regex
++{
++.Ar prog...
++}
++.Oc
++.Ed
++.Ar ...
++.Bd -ragged -compact
++}
++.Ed
++.Bd -ragged -compact
++.Ar progdefault...
++.Ed
++.Sh DESCRIPTION
++.Nm
++reads an argument
++.Ar value
++and a sequence of directives in an
++.Xr execline-block 7 .
++.Pp
++Each directive is a regular expression followed by a block.
++.Pp
++.Nm
++matches
++.Ar value
++against the regular expressions in the order they are given.
++.Pp
++As soon as
++.Ar value
++matches a
++.Ar regex ,
++.Nm case
++executes into the
++.Ar prog...
++command line that immediately follows the matched regex.
++.Pp
++If
++.Ar value
++matches no
++.Ar regex ,
++.Nm
++eventually execs into
++.Ar progdefault... ,
++or exits 0 if
++.Ar progdefault...
++is empty.
++.Pp
++.Ar value
++must match
++.Ar regex
++as a full word.
++If only a substring of
++.Ar value
++matches
++.Ar regex ,
++it is not considered a match.
++.Pp
++If
++.Ar value
++matches no
++.Ar regex ,
++.Ar progdefault...
++is always executed with an unmodified environment, whether
++subexpression matching has been requested or not.
++.Sh OPTIONS
++.Bl -tag -width e
++.It Fl s
++Shell matching.
++The
++.Ar regex
++words will not be interpreted as regular expressions, but as shell
++expressions to be interpreted via
++.Xr fnmatch 3 .
++The other options also change meanings, see the
++.Sx Shell matching
++section below.
++.It Fl S
++Regular expression matching.
++This is the default.
++This section, and all of the sections below except the
++.Sx Shell matching
++one, assumes that it is the case.
++.It Fl e
++Interpret the
++.Ar regex
++words as basic regular expressions[1].
++.It Fl E
++Interpret the
++.Ar regex
++words as extended regular expressions[2].
++This is the default.
++.It Fl i
++Perform case-insensitive matches.
++.It Fl N
++Make the matching expression and subexpressions available to
++.Ar prog Ap s
++environment.
++See the
++.Sx Subexpression matching
++section below.
++.It Fl n
++Do not transmit the matching expression and
++subexpressions to
++.Ar prog...
++via the environment.
++This is the default.
++.El
++.Ss Subexpression matching
++If the
++.Fl N
++option has been given, and
++.Ar value
++matches a
++.Ar regex ,
++then
++.Nm
++will run
++.Ar prog
++with a modified environment:
++.Bl -bullet -width x
++.It
++The
++.Ev 0
++variable will contain the
++.Ar regex
++that
++.Ar value
++matched.
++.It
++The
++.Ev #
++variable will contain the number of subexpressions in
++.Ar regex .
++.It
++For every integer
++.Va i
++between 1 and the number of subexpressions (included), the variable
++.Va i
++contains the part of
++.Ar value
++that matched the
++.Va i Ns th
++in
++.Ar regex .
++.El
++.Pp
++To retrieve that information into your command line in an execline
++script, you can use the
++.Xr elgetpositionals 1
++program.
++.Ss Shell matching
++If the
++.Fl s
++option has been given to
++.Nm ,
++then the
++.Ar regex
++words are not interpreted as regular expressions, but as shell
++patterns, as is performed by the shell's case conditional
++construct[3].
++This has the following consequences:
++.Bl -bullet -width x
++.It
++Subexpression matching is always disabled.
++.It
++.Ar prog...
++is always executed with an unmodified environment.
++.It
++The options to the
++.Nm
++command change meanings: instead of controlling how the
++.Ar regex
++regular expressions are interpreted by the
++.Xr regcomp 3
+++primitive, they now control how
++.Ar value
++is matched against the
++.Ar regex
++patterns (which are not regular expressions!) via the
++.Xr fnmatch 3
+++primitive.
++Namely:
++.Bl -tag -width x
++.It Fl e
++Treat a backslash as an ordinary character; do not allow character
++escaping in patterns.
++.Po
++This sets the
++.Dv FNM_NOESCAPE
++flag.
++.Pc
++.It Fl E
++Allow backslash escaping in patterns.
++This is the default.
++.Po
++This clears the
++.Dv FNM_NOESCAPE
++flag.
++.Pc
++.It Fl i
++Treat a period
++.Po
++.Ql .
++.Pc
++as a special character for matching
++.Po
++set
++.Dv FNM_PERIOD
++.Pc .
++By default, the period is not a special character
++.Po
++.Dv FNM_PERIOD
++is cleared
++.Pc .
++.It Fl N
++Treat patterns as pathnames: make slashes character special.
++.Po
++This sets the
++.Dv FNM_PATHNAME
++flag.
++.Pc
++.It Fl n
++Do not treat patterns as pathnames
++.Po
++clear the
++.Dv FNM_PATHNAME
++flag
++.Pc .
++This is the default.
++.El
++.El
++.Sh EXAMPLES
++Consider the following script; say it's named
++.Ql match .
++.Bd -literal -offset indent
++#!/bin/execlineb -S1
++emptyenv
++case -N -- $1
++{
++  "([fo]+)bar(baz)" { /usr/bin/env }
++}
++.Ed
++.Pp
++Running
++.Ql match foooobarbaz
++will print the following lines, corresponding to the output of the
++.Pa /usr/bin/env
++command:
++.Bd -literal -offset indent
++#=2
++0=([fo]+)bar(baz)
++1=foooo
++2=baz
++.Ed
++.Sh SEE ALSO
++.Xr elgetpositionals 1 ,
++.Xr execlineb 1 ,
++.Xr execline-block 7
++.Pp
++[1]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html#tag_09_03
++.Pp
++[2]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html#tag_09_04
++.Pp
++[3]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_09_04_05
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/case.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/define.1 b/mdoc/man1/define.1
+--- a/mdoc/man1/define.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/define.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,51 @@
++.Dd February 14, 2021
++.Dt DEFINE 1
++.Os
++.Sh NAME
++.Nm define
++.Nd replace a literal with a value, then execute another program
++.Sh SYNOPSIS
++.Nm
++.Op Fl s
++.Op Fl C | Fl c
++.Op Fl N | Fl n
++.Op Fl d Ar delim
++.Ar variable
++.Ar value
++.Ar prog..
++.Sh DESCRIPTION
++.Nm
++performs substitution
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc
++on
++.Ar prog... ,
++using
++.Ar variable
++as key and
++.Ar value
++as value.
++.Pp
++.Nm Ap
++s options are used to control the substitution mechanism; refer to
++.Xr execline-transform 7 .
++.Pp
++.Nm
++then execs into the modified
++.Ar prog... .
++.Sh SEE ALSO
++.Xr elgetpositionals 1 ,
++.Xr elglob 1 ,
++.Xr importas 1 ,
++.Xr multidefine 1 ,
++.Xr multisubstitute 1 ,
++.Xr execline-substitute 7 ,
++.Xr execline-transform 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/define.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/dollarat.1 b/mdoc/man1/dollarat.1
+--- a/mdoc/man1/dollarat.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/dollarat.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,116 @@
++.Dd February 14, 2021
++.Dt DOLLARAT 1
++.Os
++.Sh NAME
++.Nm dollarat
++.Nd print the positional parameters of an execline script
++.Sh SYNOPSIS
++.Nm
++.Op Fl n
++.Op Fl 0 | Fl d Ar delimchar
++.Sh DESCRIPTION
++.Nm
++reads the number
++.Ar n
++of
++.Dq positional parameters
++in the
++.Ev \&#
++environment variable.
++If that variable is not set or does not contain a valid
++.Ar n ,
++.Nm dollarat
++exits 100.
++.Pp
++.Nm
++prints the value of the
++.Ev 1
++environment variable, then
++.Ar delimchar ,
++then the value of the
++.Ev 2
++environment variable... and so on until
++.Ar n .
++If one of these variables is not set,
++.Nm
++exits 100.
++.Pp
++If everything runs OK,
++.Nm
++exits 0.
++This makes it one of the rare
++.Dq exiting
++execline commands.
++.Pp
++You can use
++.Ql dollarat -d \(dq\(dq
++along with the
++.Xr forbacktickx 1
++command to reliably loop over the positional parameters:
++.Bd -literal -offset indent
++#!/command/execlineb
++forbacktickx -d "" ARG { dollarat -d "" }
++dosomething $ARG
++.Ed
++.Pp
++will call
++.Ql dosomething
++in turn on each argument to the script.
++That will work even if those arguments contain spaces, newlines, or
++other fancy characters.
++.Pp
++Alternatively, instead of encoding data into a netstring, you can use
++a null-separated list, which will work the same way:
++.Bd -literal -offset indent
++#!/command/execlineb
++forbacktickx -0 ARG { dollarat -0 }
++dosomething $ARG
++.Ed
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl n
++.Em chomp .
++Do not print the last
++.Ar delimchar .
++.It Fl d Ar delimchar
++Use the character
++.Ar delimchar
++as separator between the arguments.
++Default:
++.Ql \en .
++If
++.Ar delimchar
++has more than one character, only the first one is used.
++If
++.Ar delimchar
++is the empty string, then
++.Nm
++will output the positional parameters as a sequence of netstrings
++.Po
++cf.
++.Xr execline-transform 7
++.Pc
++and the
++.Fl n
++option will be ignored.
++.It Fl 0
++Use the null character as separator.
++If this option and the
++.Fl d
++option are given concurrently, the rightmost one wins.
++Warning:
++.Fl 0
++should only be used to feed data to programs that know how to handle
++null-separated lists.
++.El
++.Sh SEE ALSO
++.Xr elgetopt 1 ,
++.Xr forbacktickx 1 ,
++.Xr shift 1 ,
++.Xr execline-transform 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/dollarat.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/elgetopt.1 b/mdoc/man1/elgetopt.1
+--- a/mdoc/man1/elgetopt.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/elgetopt.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,85 @@
++.Dd February 14, 2021
++.Dt ELGETOPT 1
++.Os
++.Sh NAME
++.Nm elgetopt
++.Nd perform
++.Xr getopt 1 Ns
++-style parsing on the arguments to an execline script
++.Sh SYNOPSIS
++.Nm
++.Ar optstring
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++expects to find a valid number
++.Ar n
++of arguments in the
++.Ev \&#
++environment variable, and
++.Ar n Ns
+++1 environment variables
++.Ev 0 ,
++.Ev 1 ,
++\&...,
++.Ar n .
++It exits 100 if it is not the case.
++.Pp
++.Nm
++pushes environment variables
++.Po
++cf.
++.Xr execline-pushenv 7
++.Pc
++starting with
++.Ev ELGETOPT_ .
++To get the previous values back, use
++.Ql emptyenv -o .
++.Pp
++.Nm
++looks into
++.Ev 1 ,
++.Ev 2 ,
++\&... for options, as specified by
++.Ar optstring ,
++which is a standard
++.Xr getopt 1
++string.
++.Pp
++If the
++.Fl c
++switch is recognized,
++.Nm
++sets the
++.Ev ELGETOPT_ Ns Ar c
++environment variable.
++The value of that variable is the argument to the
++.Fl c
++switch if it has one, and 1 otherwise.
++.Pp
++After setting all recognized options,
++.Nm
++makes new
++.Ev \&# ,
++.Ev 1 ,
++.Ev 2 ,
++\&...
++.Dq positional parameters
++with what remains.
++.Pp
++.Nm
++then execs into
++.Ar prog... .
++.Pp
++GNU-style options are not supported.
++.Sh SEE ALSO
++.Xr dollarat 1 ,
++.Xr getopt 1 ,
++.Xr shift 1 ,
++.Xr execline-pushenv 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/elgetopt.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/elgetpositionals.1 b/mdoc/man1/elgetpositionals.1
+--- a/mdoc/man1/elgetpositionals.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/elgetpositionals.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,162 @@
++.Dd February 14, 2021
++.Dt ELGETPOSITIONALS 1
++.Os
++.Sh NAME
++.Nm elgetpositionals
++.Nd substitute the positional parameters of an execline script
++.Sh SYNOPSIS
++.Nm
++.Op Fl P Ar sharp
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++reads the number
++.Ar n
++of
++.Dq positional parameters
++in the
++.Ev \&#
++environment variable.
++If that variable is not set or does not contain a valid
++.Ar n ,
++.Nm
++exits 100.
++.Pp
++.Nm
++performs some substitutions
++.Po
++cf.
++.Xr execline-substitute 7
++.Pc
++in parallel on
++.Ar prog... :
++.Bl -bullet -width x
++.It
++key:
++.Ql # ,
++value:
++.Ar n
++.It
++key:
++.Ql 0 ,
++value: the value of the
++.Ev 0
++environment variable
++.It
++key:
++.Ql 1 ,
++value: the value of the
++.Ev 1
++environment variable
++.It
++\&... and so on until
++.Ar n
++.Po
++or
++.Ar sharp
++if it is greater than
++.Ar n
++.Pc .
++Those values are never transformed.
++.It
++key:
++.Ql @ ,
++value: all values of the variables from
++.Ql 1
++to
++.Ar n .
++This value is split
++.Po
++cf.
++.Xr execline-transform 7
++.Pc
++into
++.Ar n
++words.
++.El
++.Pp
++If a variable between
++.Ql 0
++and
++.Ar n
++does not exist,
++.Nm
++exits 100.
++.Pp
++A typical argument-taking execline script will often begin this way:
++.Bd -literal -offset indent
++#!/command/execlineb
++elgetopt optstring
++elgetpositionals
++prog...
++.Ed
++.Pp
++If you are performing other substitutions that do not depend on the
++positional parameters, think about replacing the
++.Nm
++call with a
++.Xr multisubstitute 1
++call containing the
++.Ql elgetpositionals
++directive.
++.Pp
++If you are going to use the
++.Xr shift 1
++command, it is best to use
++.Xr importas 1
++to substitute the first positional parameters, then use
++.Xr shift 1 ,
++then
++.Nm .
++That way,
++.Ql $@
++will correctly be replaced by the remaining arguments.
++More generally, you should try to use
++.Nm
++as late as possible.
++.Pp
++Use
++.Xr execlineb 1 Ap
++s
++.Fl S
++switch instead of
++.Nm
++whenever you can.
++It is more efficient.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl P Ar sharp
++Substitute at least
++.Ar sharp Ns
+++1 positional parameters, from 0 to
++.Fn max n sharp .
++If
++.Ar n
++<
++.Ar sharp ,
++positional parameters between
++.Ar n Ns
+++1 and
++.Ar sharp
++are replaced with the empty string.
++Not having the
++.Fl P
++switch is equivalent to having
++.Ql -P 0 .
++.El
++.Sh SEE ALSO
++.Xr define 1 ,
++.Xr elglob 1 ,
++.Xr execlineb 1 ,
++.Xr importas 1 ,
++.Xr multidefine 1 ,
++.Xr multisubstitute 1 ,
++.Xr shift 1 ,
++.Xr execline-substitute 7 ,
++.Xr execline-transform 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/elgetpositionals.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/elglob.1 b/mdoc/man1/elglob.1
+--- a/mdoc/man1/elglob.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/elglob.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,100 @@
++.Dd February 14, 2021
++.Dt ELGLOB 1
++.Os
++.Sh NAME
++.Nm elglob
++.Nd perform globbing on a pattern, then execute another program
++.Sh SYNOPSIS
++.Nm
++.Op Fl v
++.Op Fl w
++.Op Fl s
++.Op Fl m
++.Op Fl e
++.Op Fl 0
++.Ar variable
++.Ar pattern
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++performs globbing[1] on
++.Ar pattern .
++.Pp
++It then performs
++variable substitution
++.Po
++cf.
++.Xr execline-substitute 7
++.Pc
++on
++.Ar prog... ,
++using
++.Ar variable
++as key and the result of the globbing as value.
++The value is always split: it contains as many words as they are
++matches for the globbing pattern.
++.Pp
++.Nm
++then
++.Xr exec 3 Ns
++s into the modified
++.Ar prog... .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl v
++Verbose.
++If there is a problem while globbing, print a warning message on
++stderr.
++.It Fl w
++Strict.
++If there is a problem while globbing, die immediately.
++This is harsh - you probably don't need that option.
++.It Fl s
++Sort the matches.
++By default, the results are left unsorted.
++.It Fl m
++Mark.
++Append a slash to each word that corresponds to a directory.
++.It Fl e
++No escape.
++Treat backslashes in
++.Ar pattern
++literally; do not allow quoting of metacharacters in
++.Ar pattern
++via backslashes.
++.Sy Warning :
++the
++.Xr execlineb 1
++launcher uses the backslash as their own escape character - if you
++want a backslash to be passed to
++.Nm ,
++do not forget to
++.Em double
++it.
++.It Fl 0
++Null globbing.
++By default, if
++.Ar pattern
++matches nothing, it will be substituted as is (verbatim in one
++word).
++With this option, if
++.Ar pattern
++matches nothing, it will be properly substituted as zero word.
++.El
++.Sh SEE ALSO
++.Xr define 1 ,
++.Xr elgetpositionals 1 ,
++.Xr execlineb 1 ,
++.Xr importas 1 ,
++.Xr multidefine 1 ,
++.Xr multisubstitute 1 ,
++.Xr execline-substitute 7
++.Pp
++[1]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/functions/glob.html
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/elglob.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/emptyenv.1 b/mdoc/man1/emptyenv.1
+--- a/mdoc/man1/emptyenv.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/emptyenv.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,99 @@
++.Dd February 14, 2021
++.Dt EMPTYENV 1
++.Os
++.Sh NAME
++.Nm emptyenv
++.Nd empty the current environment, or clean it up; then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl p
++.Ar prog...
++.Nm
++.Fl c
++.Ar prog...
++.Nm
++.Op Fl o
++.Op Fl P
++.Ar prog...
++.Sh DESCRIPTION
++By default,
++.Nm
++unsets all environment variables, then
++.Xr exec 3 Ns
++s into
++.Ar prog
++with its arguments.
++Options control which environment variables are unset.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl p
++Keep the
++.Ev PATH
++environment variable.
++.It Fl c
++Clean up.
++Do not empty the environment.
++Instead, remove every variable used internally by the execline
++programs, to avoid any interference with or information leakage to
++external programs.
++.It Fl o
++Pop
++.Po
++cf.\&
++.Xr execline-pushenv 7
++.Pc
++environment variables starting with
++.Ql ELGETOPT_ .
++You might want to do this before executing a final program from a
++script that uses
++.Xr elgetopt 1 .
++.It Fl P
++Pop
++.Po
++cf.\&
++.Xr execline-pushenv 7
++.Pc
++environment variables starting with
++.Ql # ,
++.Ql 0
++to
++.Ql 9 ,
++and
++.Ql EXECLINE_ .
++You might want to do this before executing a final program from a
++script launched by
++.Xr execlineb 1 .
++.El
++.Sh SEE ALSO
++.Xr elgetopt 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr execlineb 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr execline-pushenv 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/emptyenv.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/envfile.1 b/mdoc/man1/envfile.1
+--- a/mdoc/man1/envfile.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/envfile.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,178 @@
++.Dd September 29, 2021
++.Dt ENVFILE 1
++.Os
++.Sh NAME
++.Nm envfile
++.Nd read a file containing variable assignments, add the variables to the environment, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl i | Fl I
++.Ar file
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar file
++and adds the key-value pairs defined in
++.Ar file
++to the environment.
++Then it execs into
++.Ar prog... ,
++i.e. the rest of its command line, with the modified environment.
++.Ss File syntax
++.Ar file
++is a text file containing lines of the form
++.Ql key = value .
++Whitespace is permitted before and after
++.Ar key ,
++and before or after
++.Ar value .
++.Pp
++Empty lines, or lines containing only whitespace, are ignored.
++Lines beginning with
++.Ql #
++(possibly after some whitespace) are ignored (and typically used for
++comments).
++Leading and trailing whitespace is stripped from values; but a value
++can be double-quoted, which allows for inclusion of leading and
++trailing whitespace.
++.Pp
++A non-commented line that ends with a backslash
++.Po
++.Dq \e
++.Pc
++is concatenated with the following one, and the newline character is
++ignored.
++If a backslashed newline happens before the start of a value, then the
++whitespace at the beginning of the new line will be part of the value
++(i.e. leading whitespace on a new line is not stripped).
++.Pp
++C escapes, including hexadecimal and octal sequences, are supported in
++quoted values.
++Unicode codepoint sequences are not supported.
++It is possible to include a newline in a quoted value by using
++.Ql \en ;
++but including newlines in environment variables is not recommended.
++.Pp
++If
++.Ar value
++is empty,
++.Ar key
++is
++.Sy still
++added to the environment, with an empty value.
++If you do not want
++.Ar key
++to be added to the environment at all, comment out the line.
++.Nm
++does not offer a way to
++.Em remove
++variables from the environment.
++.Pp
++The
++.Nm
++format is largely compatible with systemd's EnvironmentFile[1] format,
++which allows for the reuse of such files outside of systemd.
++.Pp
++If
++.Ar file
++is
++.Ql -
++then
++.Nm
++reads and parses its standard input instead.
++To read a file literally named
++.Ql - ,
++you can use
++.Ql ./-
++for instance.
++.Pp
++The variables that can be defined with
++.Nm
++are purposefully restricted.
++If you need more expressive power for your variable names, or for your
++values, you should use an envdir instead: see
++.Xr s6-envdir 8 .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl i
++Strict.
++If
++.Ar file
++does not exist, exit 111 with an error message.
++This is the default.
++.It Fl I
++Loose.
++If
++.Ar file
++does not exist,
++.Xr exec 3
++into
++.Ar prog
++without modifying the environment.
++.El
++.Sh EXIT STATUS
++.Bl -tag -width x
++.It 1
++Syntax error in
++.Ar file .
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.It 126
++.Xr execve 2
++on
++.Ar prog
++failed (unknown reason).
++.It 127
++.Xr execve 2
++on
++.Ar prog
++failed
++.Po
++.Ar prog
++could not be found.
++.Pc
++.El
++.Pp
++0 is not listed because on success,
++.Nm
++does not exit: it execs into
++.Ar prog .
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr execve 2 ,
++.Xr exec 3 ,
++.Xr s6-envdir 8
++.Pp
++[1]
++.Lk https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/envfile.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/exec.1 b/mdoc/man1/exec.1
+--- a/mdoc/man1/exec.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/exec.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,87 @@
++.Dd February 14, 2021
++.Dt EXEC 1
++.Os
++.Sh NAME
++.Nm exec
++.Nd execute the command line it is given
++.Sh SYNOPSIS
++.Nm
++.Op Fl c
++.Op Fl l
++.Op Fl a Ar argv0
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++.Xr exec 3 Ns
++s into
++.Ar prog... .
++It does nothing else.
++.Pp
++Without options,
++.Nm
++can be seen as the execline NOP.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl c
++Empty the environment.
++.Ar prog
++is executed with no environment variables.
++.Sy Warning :
++.Ar prog
++will run with an empty
++.Ev PATH ,
++so make sure it does not rely on it.
++.It Fl l
++Login.
++Prepends
++.Ar prog Ap Ns
++s argv[0] with a dash.
++.It Fl a Ar argv0
++argv0.
++Replace
++.Ar prog Ap Ns
++s argv[0] with
++.Ar argv0 .
++This is done
++.Em before
++adding a dash, if the
++.Fl l
++option is also present.
++.El
++.Pp
++The
++.Nm exec
++command, along with its options, is designed to emulate the standard
++.Ql exec
++shell builtin, which replaces the shell with the command it is given.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/exec.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/execline-cd.1 b/mdoc/man1/execline-cd.1
+--- a/mdoc/man1/execline-cd.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/execline-cd.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,77 @@
++.Dd February 14, 2021
++.Dt EXECLINE-CD 1
++.Os
++.Sh NAME
++.Nm execline-cd
++.Nd change the current working directory to a given directory, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar dir
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++performs a
++.Xr chdir 2
++system call on
++.Ar dir ,
++then
++.Xr exec 3 Ns
++s into
++.Ar prog... .
++.Pp
++By default,
++.Nm
++can also be invoked as
++.Ql cd :
++there is a
++.Pa cd
++program which is a symbolic link to
++.Nm .
++When execline has been configured with the
++.Ql --enable-pedantic-posix
++option, the
++.Pa cd
++binary is a symbolic link to the
++.Xr posix-cd 1
++binary instead, so a
++.Ql cd
++command in an execline script will invoke
++.Xr posix-cd 1
++instead of
++.Nm
++.Pp
++Existing scripts that call
++.Ql cd
++will keep working no matter the chosen configuration.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr chdir 2 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/execline-cd.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/execline-shell.1 b/mdoc/man1/execline-shell.1
+--- a/mdoc/man1/execline-shell.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/execline-shell.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,52 @@
++.Dd February 16, 2021
++.Dt EXECLINE-SHELL 1
++.Os
++.Sh NAME
++.Nm execline-shell
++.Nd execute
++.Pa $HOME/.execline-shell
++if available (or
++.Pa /bin/sh
++otherwise) with the arguments given
++.Sh SYNOPSIS
++.Pa /etc/execline-shell
++.Sh DESCRIPTION
++.Nm
++transforms itself into
++.Ql ${HOME}/.execline-shell $@ .
++.Pp
++.Pa ${HOME}/.execline-shell
++must be readable and executable by the user.
++It must
++.Xr exec 3
++into an interactive shell with
++.Ql $@
++as its argument.
++.Pp
++.Nm
++is meant to be used as the
++.Ev SHELL
++environment variable value.
++It allows one to specify their favourite shell and shell configuration
++in any language, since the
++.Pa ${HOME}/.execline-shell
++file can be any executable program.
++.Pa ${HOME}/.execline-shell
++can be seen as a portable
++.Ql . Ns Ar whatever Ns rc
++file.
++.Pp
++As an administrator-modifiable configuration file,
++.Pa execline-shell
++is provided in execline's
++.Pa examples/etc/
++subdirectory, and should be copied by the administrator to
++.Pa /etc .
++.Sh SEE ALSO
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/execline-shell.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/execline-startup.1 b/mdoc/man1/execline-startup.1
+--- a/mdoc/man1/execline-startup.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/execline-startup.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,67 @@
++.Dd February 14, 2021
++.Dt EXECLINE-STARTUP 1
++.Os
++.Sh NAME
++.Nm execline-startup
++.Nd perform some system-specific login initialization, then execute
++.Pa ${HOME}/.execline-loginshell
++.Sh SYNOPSIS
++.Pa /etc/execline-startup
++.Sh DESCRIPTION
++.Nm
++sets the
++.Ev SHELL
++environment variable to
++.Pa /etc/execline-shell .
++It then performs some system-specific initialization, and
++transforms itself into
++.Ql ${HOME}/.execline-loginshell $@
++if available (and
++.Ql /etc/execline-shell
++otherwise).
++.Pp
++.Pa ${HOME}/.execline-loginshell
++must be readable and executable by the user.
++It must
++.Xr exec 3
++into
++.Ql $SHELL $@ .
++.Pp
++.Nm
++is an
++.Xr execlineb 1
++script; hence, it is readable and modifiable.
++It is meant to be modified by the system administrator to perform
++system-specific login-time initialization.
++.Pp
++As a modifiable configuration file, execline-startup is provided in
++execline's
++.Pa examples/etc/
++subdirectory, and should be copied by the administrator to
++.Pa /etc .
++.Pp
++.Nm
++is meant to be used as a login shell.
++System administrators should manually add
++.Ql /etc/execline-startup
++to the
++.Pa /etc/shells
++file.
++The
++.Pa /etc/execline-startup
++file itself plays the role of the
++.Pa /etc/profile
++file, and
++.Pa ${HOME}/.execline-loginshell
++plays the role of the
++.Pa ${HOME}/.profile
++file.
++.Sh SEE ALSO
++.Xr execlineb 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/execline-startup.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/execline-umask.1 b/mdoc/man1/execline-umask.1
+--- a/mdoc/man1/execline-umask.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/execline-umask.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,65 @@
++.Dd February 14, 2021
++.Dt EXECLINE-UMASK 1
++.Os
++.Sh NAME
++.Nm execline-umask
++.Nd set the umask (file creation mask), then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar mask
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++sets the current umask to
++.Ar mask ,
++then
++.Xr exec 3 Ns
++s into
++.Ar prog... .
++By default, at execline installation time, a
++.Pa umask
++symbolic link is created, pointing to
++.Pa execline-umask .
++.Pp
++When execline has been configured with the
++.Ql --enable-pedantic-posix
++option, the
++.Pa umask
++symbolic link points to the
++.Xr posix-umask 1
++binary instead.
++.Pp
++Existing execline scripts calling
++.Ql umask
++will keep working no matter the chosen configuration.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/execline-umask.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/execlineb.1 b/mdoc/man1/execlineb.1
+--- a/mdoc/man1/execlineb.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/execlineb.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,446 @@
++.Dd May 31, 2022
++.Dt EXECLINEB 1
++.Os
++.Sh NAME
++.Nm execlineb
++.Nd read and execute a script
++.Sh SYNOPSIS
++.Nm
++.Op Fl q | Fl w | Fl W
++.Op Fl p | Fl P | Fl S Ar nmin | Fl s Ar nmin
++.Fl c Ar script
++.Op Ar args...
++.Pp
++or
++.Pp
++.Nm
++.Op Fl q | Fl w | Fl W
++.Op Fl p | Fl P | Fl S Ar nmin | Fl s Ar nmin
++.Ar scriptfile
++.Op Ar args...
++.Pp
++or in an executable file:
++.\" Horrible kludge to get appropriate alignment.
++.Ss \&
++#!/command/execlineb
++.Op Fl qwWpPS Ns Ar nmin
++.Bd -ragged -compact
++.Ar script
++.Ed
++.\" End kludge.
++.Sh DESCRIPTION
++.Nm
++is a command launcher: it reads a file, turns that file into a command line,
++then executes into that command line.
++.Ss Parsing phase
++.Nm
++reads and parses the script it is given.
++It exits 100 on a syntax error and 111 on a temporary error.
++It makes an
++.Em argv ,
++i.e. a system command line, with the parsed script.
++If the
++.Ar argv
++is empty,
++.Nm
++exits 0.
++.Ss Environment management phase
++.Bl -tag -width x
++.It Pushing the current stack frame
++If none of the
++.Fl p ,
++.Fl P ,
++.Fl S
++or
++.Fl s
++options are set:
++.Nm
++pushes
++.Po
++cf.\&
++.Xr execline-pushenv 7
++.Pc
++the current positional parameters, i.e. environment variables that
++start with
++.Ql # ,
++.Ql 0 ,
++.Ql 1 ,
++\&...
++.Ql 9 .
++To get the previous values back, use
++.Ql emptyenv -P .
++.It Setting the new stack frame
++If none of the
++.Fl P ,
++.Fl S
++or
++.Fl s
++options are set:
++.Bl -bullet -width x
++.It
++.Nm execlineb
++sets the
++.Ev \&#
++environment variable to the number
++.Ar n
++of
++.Ar args
++it is given.
++.It
++It sets the
++.Ev 0
++environment variable to the name of the script - or to the
++.Nm
++invocation name if the
++.Fl c
++option is used.
++.It
++It sets the
++.Ev 1 ,
++.Ev 2 ,
++\&...
++.Ar n
++environment variables to the different
++.Ar args .
++.El
++.El
++.Ss Execution phase
++.Nm
++executes into the
++.Ar argv
++it has built from the script.
++There is only one command line for the whole script: the
++.Nm
++binary is a
++.Em launcher ,
++whose sole purpose is to execute into that command line.
++It does not stay in memory like a traditional
++.Em interpreter
++would.
++.Ss Syntax of scripts
++An
++.Nm
++script is a string that must not contain the null character.
++.Nm
++parses it and divides it into
++.Em words .
++.Pp
++The parser recognizes the following components:
++.Bl -bullet -width x
++.It
++.Em whitespace
++is defined as spaces, tabs, newlines and carriage returns.
++Words are always separated by whitespace.
++.It
++A
++.Em quoted string
++begins with a doublequote
++.Po
++.Ql \(dq
++.Pc
++and ends with another doublequote.
++Quoted doublequotes must be prefixed by a backslash
++.Po
++.Ql \e
++.Pc .
++Quoted strings always evaluate to exactly one word.
++For instance,
++.Ql \(dq\(dq
++evaluates to the empty word.
++.It
++The
++.Ql \ea ,
++.Ql \eb ,
++.Ql \et ,
++.Ql \en ,
++.Ql \ev ,
++.Ql \ef ,
++and
++.Ql \er
++sequences are recognized in quoted strings, and are converted to the
++ASCII numbers 7, 8, 9, 10, 11, 12 and 13 respectively.
++.It
++Inside a quoted string, backslashed newlines disappear completely.
++.It
++.Ql \e0x Ns Ar ab
++sequences are recognized in quoted strings and evaluate to ASCII
++hexadecimal number
++.Ar ab .
++.It
++.Ql \e0 Ns Ar abc
++sequences are recognized in quoted strings and evaluate to ASCII octal
++number
++.Ar abc .
++.Ar abc
++must not be greater than 377, or evaluate to 0.
++.It
++.Ql \e Ns Ar abc
++sequences are recognized in quoted strings and evaluate to ASCII
++decimal number
++.Ar abc .
++.Ar a
++must not be zero.
++.Ar abc
++must not be greater than 255, or evaluate to 0.
++.It
++A comment starts with a
++.Ql #
++and ends with the line.
++Comments
++are not recognized inside quoted strings.
++.It
++Anything else is an unquoted string, that can evaluate to zero or more
++words.
++.It
++Any character can be escaped in unquoted strings by prepending it with
++a backslash.
++It works the same way in quoted strings, except for the special
++sequences described above.
++.It
++As a special case, an unquoted backslash at the end of a line, or at
++the end of the input, is ignored.
++This is to make it easier to copy execline fragments from a shell
++script.
++.El
++.Pp
++You can see an example of distinct
++.Nm
++components in
++.Xr execline-components 7 .
++.Pp
++In addition to that simple lexing,
++.Nm
++performs the following higher-level parsing:
++.Bl -bullet -width x
++.It
++A word consisting of a single
++.Em opening brace
++.Po
++.Ql {
++.Pc
++increments an internal level counter,
++.Ar blevel ,
++and disappears from the
++.Ar argv .
++Quoted open braces do not have that behaviour.
++.It
++A word consisting of a single
++.Em closing brace
++.Po
++.Ql }
++.Pc
++decrements
++.Ar blevel ,
++and is replaced with the empty word.
++Quoted closing braces do not have that behaviour.
++.It
++If
++.Nm
++finds that braces are unmatched (i.e.\&
++.Ar blevel
++goes below 0 during the parsing, or is not 0 at the end of the
++script), it exits 100 with an error message.
++.It
++.Nm
++automatically quotes blocks
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++Which means that every time it finds a word, it prepends it with
++.Ar blevel
++spaces.
++.El
++.Pp
++For proper execution, the sequence of words must follow
++.Xr execline-grammar 7 .
++.Ss Current limitations
++.Nm
++builds and executes a unique
++.Ar argv
++with the script: hence scripts are subject to OS-dependent limitations
++such as the kernel buffer size for
++.Ar argv
++and
++.Ar envp
++- at least 64 kB on most systems.
++This means that
++.Nm
++cannot execute arbitrarily large scripts.
++Be careful with deeply nested scripts too: without the
++.Fl p
++/
++.Fl P
++/
++.Fl S
++/
++.Fl s
++option, each
++.Nm
++invocation uses up some space in the environment.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl c Ar script
++Execute
++.Ar script ,
++do not look for a file.
++.El
++.Pp
++See below for the other options.
++.Ss Options for block syntax checking
++External execline commands that read blocks, like
++.Xr foreground 1 ,
++use the
++.Ev EXECLINE_STRICT
++environment variable: if it is set to 1, they will print a warning
++message on stderr if they find their blocks not to be properly quoted.
++If it is set to 2, they will also die.
++If it is set to 0, or unset, they won't complain at all.
++.Pp
++Normally the
++.Ev EXECLINE_STRICT
++environment variable is inherited from the caller.
++You can force it unset, set to 1, or set to 2 by giving respectively
++the
++.Fl q ,
++.Fl w
++or
++.Fl W
++option to
++.Nm .
++.Pp
++The
++.Ev EXECLINE_STRICT
++variable (as well as the
++.Fl q ,
++.Fl w
++and
++.Fl W
++options to
++.Nm Ns
++) will also modify the behaviour of the
++.Fl S Ar nmin
++and
++.Fl s Ar nmin
++options when
++.Nm
++is called with less than
++.Ar nmin
++positional parameters:
++.Bl -bullet -width x
++.It
++If
++.Ev EXECLINE_STRICT
++is 0: the script will run silently, and missing positional parameters,
++up to
++.Ar nmin ,
++will be substituted with the empty word.
++.It
++If
++.Ev EXECLINE_STRICT
++is 1 or unset: same, but the script will print a warning message
++rather than run silently.
++.It
++If
++.Ev EXECLINE_STRICT
++is 2: the script will exit with an error message.
++.El
++.Ss Options for environment management
++Normally, execline scripts are
++.Em reentrant :
++environment variables potentially overwritten by
++.Nm ,
++such as
++.Ev \&#
++or
++.Ev 0 ,
++are pushed
++.Po
++cf.\&
++.Xr execline-pushenv 7
++.Pc .
++This is the standard, safe behaviour.
++Nevertheless, it is rather costly, and may be unneeded for small
++scripts: for those cases, execline comes with two options that bypass
++the environment management.
++Be warned that the purpose of these options is
++.Sy optimization ,
++and you should not use them if you're not familiar with the way
++.Nm
++uses the environment to store positional parameters.
++Alternatively, there's also an integrated substitution mechanism that
++doesn't make use of the environment at all.
++.Bl -bullet -width x
++.It
++The
++.Fl p
++option will bypass the push
++.Po
++cf.\&
++.Xr execline-pushenv 7
++.Pc
++phase: the current frame of positional parameters will be
++.Em overwritten .
++The script will
++.Em not
++be reentrant.
++.It
++The
++.Fl P
++option will bypass positional parameter handling
++.Em completely :
++the environment will not be pushed, and positional parameters will be
++ignored.
++.Ql execlineb -P -c \(dq Ns Ar script Ns \(dq
++is equivalent to, but more efficient than,
++.Ql execlineb -c \(dqemptyenv -P Ar script Ns \(dq
++.Pp
++You should use the
++.Fl P
++option only in standalone scripts that take no arguments, such as
++s6's[1] or runit's[2]
++.Em run scripts .
++.It
++The
++.Fl S Ar nmin
++option
++.Em will
++substitute the positional parameters - up to at least
++.Ar nmin
++- but
++.Em will not
++push nor set environment variables.
++.Ql  execlineb -S3 -c \(dq Ns Ar script Ns \(dq
++is equivalent to, but more efficient than,
++.Ql execlineb -c \(dqelgetpositionals -P3 emptyenv -P Ar script Ns \(dq
++.Pp
++See
++.Xr execline-pushenv 7
++for details.
++.It
++The
++.Fl s Ar nmin
++option behaves just like the
++.Fl S
++option, except that it defines
++.Ql $@
++as the rest of the command line
++.Sy after
++.Ar nmin
++arguments have been removed.
++.El
++.Sh SEE ALSO
++.Xr foreground 1 ,
++.Xr execline-pushenv 7
++.Pp
++[1]
++.Lk https://skarnet.org/software/s6/
++.Pp
++[2]
++.Lk http://smarden.org/runit/
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/execlineb.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/exit.1 b/mdoc/man1/exit.1
+--- a/mdoc/man1/exit.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/exit.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,56 @@
++.Dd February 14, 2021
++.Dt EXIT 1
++.Os
++.Sh NAME
++.Nm exit
++.Nd exit with a given exit code
++.Sh SYNOPSIS
++.Nm
++.Op Ar n
++.Sh DESCRIPTION
++.Nm
++exits with the exit code
++.Ar n ,
++or 0 if
++.Ar n
++is not given (in which case it's the same as
++.Ql true
++).
++If
++.Ar n
++is not a number,
++.Nm
++exits 100.
++.Pp
++.Ql exit
++is a standard shell builtin, with the same function.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/exit.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/export.1 b/mdoc/man1/export.1
+--- a/mdoc/man1/export.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/export.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,57 @@
++.Dd February 14, 2021
++.Dt EXPORT 1
++.Os
++.Sh NAME
++.Nm export
++.Nd set an environment variable to a given value, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar var
++.Ar value
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++sets the
++.Ar var
++environment variable to the string
++.Ar value ,
++then execs into
++.Ar prog
++with its arguments.
++.Pp
++.Ar var
++must be given without a dollar!
++.Pp
++.Ar var
++must not contain the character
++.Ql = .
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/export.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/fdblock.1 b/mdoc/man1/fdblock.1
+--- a/mdoc/man1/fdblock.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/fdblock.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,67 @@
++.Dd February 14, 2021
++.Dt FDBLOCK 1
++.Os
++.Sh NAME
++.Nm fdblock
++.Nd set or unset the
++.Dv O_NONBLOCK
++flag on a given file descriptor (which makes reading or writing
++non-blocking or blocking), then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl n
++.Ar fd
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++makes the file descriptor number
++.Ar fd
++blocking, no matter what its previous state was.
++It then execs into
++.Ar prog
++with its arguments.
++.Pp
++.Nm
++has no portable shell equivalent.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl n
++Non-blocking.
++Sets
++.Ar fd
++to non-blocking mode instead of blocking mode.
++If used on stdin (0) or stdout (1), this option will make a lot of
++command-line programs behave improperly, because most simple
++command-line programs only support blocking stdin and stdout.
++Make sure you know what you are doing.
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/fdblock.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/fdclose.1 b/mdoc/man1/fdclose.1
+--- a/mdoc/man1/fdclose.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/fdclose.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,55 @@
++.Dd February 14, 2021
++.Dt FDCLOSE 1
++.Os
++.Sh NAME
++.Nm fdclose
++.Nd
++close a given file descriptor, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar fd
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++closes the file descriptor number
++.Ar fd ,
++then
++.Xr exec 3 Ns
++s into
++.Ar prog
++with its arguments.
++.Pp
++.Ql fdclose Ar n Ar prog...
++is roughly equivalent to
++.Ql sh -c 'exec Ar prog... Ar n Ns <&-'
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/fdclose.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/fdmove.1 b/mdoc/man1/fdmove.1
+--- a/mdoc/man1/fdmove.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/fdmove.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,95 @@
++.Dd February 16, 2021
++.Dt FDMOVE 1
++.Os
++.Sh NAME
++.Nm fdmove
++.Nd move or copy a given file descriptor, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl c
++.Ar fdto
++.Ar fdfrom
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++moves the file descriptor number
++.Ar fdfrom ,
++to number
++.Ar fdto ,
++then
++.Xr exec 3 Ns s
++into
++.Ar prog
++with its arguments.
++If
++.Ar fdto
++is open,
++.Nm
++closes it before moving
++.Ar fdfrom
++to it.
++.Pp
++.Ql fdmove Ar a Ar b Ar prog...
++is roughly equivalent to
++.Ql sh -c 'exec Ar prog... Ar a Ns >& Ns Ar b Ar b Ns <&-' .
++It means: if you write to fd
++.Ar a
++now, it will have the same effect as writing to fd
++.Ar b
++beforehand, and you cannot write to fd
++.Ar b
++anymore.
++.Pp
++.Ql fdmove -c Ar a Ar b Ar prog...
++is roughly equivalent to
++.Ql sh -c 'exec Ar prog... Ar a Ns >& Ns Ar b Ns ' .
++It means: you can now write to fd
++.Ar a ,
++and also still write to fd
++.Ar b ,
++and both will have the same effect as writing to fd
++.Ar b
++beforehand.
++.Pp
++It also works with file descriptors that are open for reading!
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl c
++Duplicate
++.Ar fdfrom
++to
++.Ar fdto
++instead of moving it; do not close
++.Ar fdfrom .
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/fdmove.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/fdreserve.1 b/mdoc/man1/fdreserve.1
+--- a/mdoc/man1/fdreserve.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/fdreserve.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,117 @@
++.Dd February 14, 2021
++.Dt FDRESERVE 1
++.Os
++.Sh NAME
++.Nm fdreserve
++.Nd update the environment with file descriptors that are guaranteed safe to use, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar n
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++tries to reserve
++.Ar n
++file descriptors.
++.Pp
++.Nm
++sets the
++.Ev FD0 ,
++.Ev FD1 ,
++\&...,
++.Ev FD Ns Ar n-1
++environment variables: each FD
++.Ar i
++contains a valid file descriptor, that can be safely opened.
++.Pp
++.Nm
++then
++.Xr exec 3 Ns
++s into
++.Ar prog
++with its arguments.
++.Ss Common use
++.Nm
++can be used when you do not want to hardcode file descriptors in your
++scripts.
++For instance, to create a pipe, you could use:
++.Bd -literal -offset indent
++#!/command/execlineb
++fdreserve 2
++multisubstitute
++{
++  importas fdr FD0
++  importas fdw FD1
++}
++piperw $fdr $fdw
++prog...
++.Ed
++.Pp
++Warning:
++.Nm
++does not allocate descriptors, it merely returns descriptors that are
++free at the time it is run.
++A program like
++.Bd -literal -offset indent
++#!/command/execlineb
++fdreserve 3
++multisubstitute
++{
++  importas fdr FD0
++  importas fdw FD1
++}
++piperw $fdr $fdw
++fdreserve 1
++multisubstitute
++{
++  importas oldfd FD2
++  importas newfd FD0
++}
++prog...
++.Ed
++.Pp
++may fail, because
++.Ar oldfd
++and
++.Ar newfd
++may be the same.
++To avoid that, you should make sure that all descriptors returned by
++.Nm
++are actually allocated before calling
++.Nm
++again.
++(Thanks to Paul Jarc[1] for having spotted that case.)
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++[1]
++.Lk https://code.dogmap.org/
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/fdreserve.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/fdswap.1 b/mdoc/man1/fdswap.1
+--- a/mdoc/man1/fdswap.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/fdswap.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,55 @@
++.Dd February 14, 2021
++.Dt FDSWAP 1
++.Os
++.Sh NAME
++.Nm fdswap
++.Nd swap two file descriptors, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar fd1
++.Ar fd2
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++swaps file descriptors numbered
++.Ar fd1
++and
++.Ar fd2 , then
++.Xr exec 3 Ns
++s into
++.Ar prog
++with its arguments.
++.Pp
++.Nm
++has no portable shell equivalent.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/fdswap.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/forbacktickx.1 b/mdoc/man1/forbacktickx.1
+--- a/mdoc/man1/forbacktickx.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/forbacktickx.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,195 @@
++.Dd February 14, 2021
++.Dt FORBACKTICKX 1
++.Os
++.Sh NAME
++.Nm forbacktickx
++.Nd run a program and use its output as loop elements to run another program
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl E | Fl e
++.Op Fl p | Fl o Ar okcodes | Fl x Ar breakcodes
++.Op Fl N | Fl n
++.Op Fl C | Fl c
++.Op Fl 0 | Fl d Ar delim
++.Ar variable
++{
++.Ar gen...
++}
++.Ar loop...
++.Sh DESCRIPTION
++.Nm
++reads a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc ,
++.Ar gen... ,
++and unquotes it.
++.Pp
++It runs
++.Ar gen...
++as a child process.
++.Ar gen Ap
++s output must not contain a null character.
++.Pp
++It reads
++.Ar gen Ap
++s output as it needs, splitting
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc
++it automatically.
++.Pp
++For every argument
++.Ar x
++in the split output,
++.Nm
++runs
++.Ar loop...
++as a child process, with
++.Sm off
++.Ar variable
++=
++.Ar x
++.Sm on
++added to its environment.
++.Pp
++.Nm
++then exits 0.
++.Pp
++You can start
++.Ar loop...
++with
++.Ql importas -u Ar variable Ar variable
++to perform variable substitution.
++.Nm
++is now implemented as a wrapper around the
++.Xr pipeline 1
++and
++.Xr forstdin 1
++commands, with calls to
++.Xr fdmove 1
++to ensure that
++.Ar loop...
++is called with the proper standard input.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl p
++Parallel mode.
++Do not wait for a
++.Ar loop...
++instance to finish before spawning the next one.
++.Nm
++will still wait for all instances of
++.Ar loop
++to terminate before exiting, though.
++.It Fl o Ar okcodes
++.Ar okcodes
++must be a comma-separated list of exit codes.
++If the
++.Fl p
++flag hasn't been given and
++.Ar loop
++exits with one of the codes in
++.Ar okcodes ,
++.Nm
++will run the following instances of the loop, but if the exit code is
++not listed in
++.Ar okcodes ,
++.Nm
++will exit immediately with an approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc
++of the same exit code.
++.It Fl x Ar breakcodes
++Like the previous option, but with inverted meaning - the listed exit
++codes are codes that will make
++.Nm
++break the loop and exit, and the unlisted exit codes will make it keep
++looping.
++.It Fl e
++No autoimport.
++This is the default.
++.It Fl E
++Autoimport.
++Instead of spawning
++.Ar loop... ,
++spawn
++.Ql importas -ui Ar variable Ar variable Ar loop... .
++This substitutes
++.Ar variable
++into the command line instead of putting it into the environment.
++.El
++.Pp
++Other options are similar (in name and functionality) to the switches
++passed to control a substitution mechanism[1]
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc ,
++on purpose; however,
++.Nm
++does not call the substitution mechanism and has its own semantics for
++those options.
++.Bl -tag -width x
++.It Fl N
++Store the whole line in
++.Ar variable ,
++including the terminating newline (or other delimiter).
++.It Fl n
++Chomp a terminating delimiter from the line from stdin before storing
++it into
++.Ar variable .
++This is the default.
++.It Fl C
++Crunch.
++If there is an empty line (i.e. that only contains a delimiter), do
++not call
++.Ar loop .
++If this option is given,
++.Em and
++chomping is active,
++.Em and
++the last line of stdin is not terminated by a delimiter, then this
++last line will not be processed.
++.It Fl c
++Do not crunch, call
++.Ar loop
++even if the line is empty.
++This is the default.
++.It Fl 0
++Accept null characters on its stdin, using them as delimiters.
++If this option and a
++.Fl d
++option are used simultaneously, the rightmost one wins.
++.It Fl d Ar delim
++Use the characters in string
++.Ar delim
++as delimiters for a line.
++Default is
++.Ql \en ,
++meaning the input is only split on newlines.
++.El
++.Sh SEE ALSO
++.Xr execlineb 1 ,
++.Xr fdmove 1 ,
++.Xr forstdin 1 ,
++.Xr forx 1 ,
++.Xr loopwhilex 1 ,
++.Xr pipeline 1 ,
++.Xr execline-block 7 ,
++.Xr execline-exitcodes 7 ,
++.Xr execline-transform 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/forbacktickx.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/foreground.1 b/mdoc/man1/foreground.1
+--- a/mdoc/man1/foreground.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/foreground.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,88 @@
++.Dd February 14, 2021
++.Dt FOREGROUND 1
++.Os
++.Sh NAME
++.Nm foreground
++.Nd execute a sequence of commands
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++{
++.Ar prog1...
++}
++.Ar prog2...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar prog1
++in a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++It forks and executes it, then waits for it to complete.
++.Pp
++.Nm
++sets the
++.Ev \&?
++environment variable to the exit code of
++.Ar prog1 .
++If
++.Ar prog1...
++was killed by a signal, the
++.Ev \&?
++value is 256 plus the signal number.
++.Pp
++.Nm
++then
++.Xr exec 3 Ns
++s into
++.Ar prog2... .
++.Pp
++.Nm
++is the basic sequence operator: it takes two commands and executes
++them one by one.
++execline scripts require it to wrap external commands that exit
++instead of natively supporting the
++.Dq perform some action, then execute some other program
++model.
++.Pp
++.Ql foreground Ar prog1... \(dq\(dq Ar prog2...
++is equivalent to
++.Ql sh -c 'Ar prog1... ; exec Ar prog2...' .
++.Pp
++256 and above are not valid exit codes for commands, so when the
++.Ev \&?
++environment variable contains 256 or more, it means that the previous
++command was killed by a signal.
++There is no ambiguity here, and
++.Ev \&?
++reports exactly what happened to the previous command;
++.Nm
++does not exit, so there is no need for exit code approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc .
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr backtick 1 ,
++.Xr execlineb 1 ,
++.Xr if 1 ,
++.Xr ifelse 1 ,
++.Xr ifte 1 ,
++.Xr ifthenelse 1 ,
++.Xr pipeline 1 ,
++.Xr runblock 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7 ,
++.Xr execline-exitcodes 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/foreground.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/forstdin.1 b/mdoc/man1/forstdin.1
+--- a/mdoc/man1/forstdin.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/forstdin.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,159 @@
++.Dd September 28, 2021
++.Dt FORSTDIN 1
++.Os
++.Sh NAME
++.Nm forstdin
++.Nd use input as loop elements to run another program
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl E | Fl e
++.Op Fl p | Fl o Ar okcodes | Fl x Ar breakcodes
++.Op Fl N | Fl n
++.Op Fl C | Fl c
++.Op Fl 0 | Fl d Ar delim
++.Ar variable
++.Ar loop...
++.Sh DESCRIPTION
++.Nm
++reads its standard input as it becomes available, splitting
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc
++it on every line automatically.
++.Pp
++For every argument
++.Ar x
++in the split output,
++.Nm
++runs
++.Ar loop...
++as a child process, with
++.Sm off
++.Ar variable
++=
++.Ar x
++.Sm on
++added to its environment.
++.Nm
++then exits 0 if it has read something on stdin, and 1 if it hasn't
++read anything.
++.Pp
++You can start
++.Ar loop...
++with
++.Ql importas -u Ar variable Ar variable
++to perform variable substitution.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl p
++Parallel mode.
++Do not wait for a
++.Ar loop...
++instance to finish before spawning the next one.
++.Nm
++will still wait for all instances of
++.Ar loop
++to terminate before exiting, though.
++.It Fl o Ar okcodes
++.Ar okcodes
++must be a comma-separated list of exit codes.
++If the
++.Fl p
++flag hasn't been given and
++.Ar loop
++exits with one of the codes in
++.Ar okcodes ,
++.Nm
++will run the following instances of the loop, but if the exit code is
++not listed in
++.Ar okcodes ,
++.Nm
++will exit immediately with an approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc
++of the same exit code.
++.It Fl x Ar breakcodes
++Like the previous option, but with inverted meaning - the listed exit
++codes are codes that will make
++.Nm
++break the loop and exit, and the unlisted exit codes will make it keep
++looping.
++.It Fl e
++No autoimport.
++This is the default.
++.It Fl E
++Autoimport.
++Instead of spawning
++.Ar loop... ,
++spawn
++.Ql importas -ui Ar variable Ar variable Ar loop... .
++This substitutes
++.Ar variable
++into the command line instead of putting it into the environment.
++.El
++.Pp
++Other options are similar (in name and functionality) to the switches
++passed to control a substitution mechanism
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc ,
++on purpose; however,
++.Nm
++does not call the substitution mechanism and has its own semantics for
++those options.
++.Bl -tag -width x
++.It Fl N
++Store the whole line in
++.Ar variable ,
++including the terminating newline (or other delimiter).
++.It Fl n
++Chomp a terminating delimiter from the line from stdin before storing
++it into
++.Ar variable .
++This is the default.
++Note that if chomping is active, and the last line of stdin is not
++terminated by a delimiter, then this last line will not be processed.
++.It Fl C
++Crunch.
++If there is an empty line (i.e. that only contains a delimiter), do
++not call
++.Ar loop .
++.It Fl c
++Do not crunch, call
++.Ar loop
++even if the line is empty.
++This is the default.
++.It Fl 0
++Accept null characters on its stdin, using them as delimiters.
++If this option and a
++.Fl d
++option are used simultaneously, the rightmost one wins.
++.It Fl d Ar delim
++Use the characters in string
++.Ar delim
++as delimiters for a line.
++Default is
++.Ql \en ,
++meaning the input is only split on newlines.
++.El
++.Sh SEE ALSO
++.Xr execlineb 1 ,
++.Xr forbacktickx 1 ,
++.Xr forx 1 ,
++.Xr loopwhilex 1 ,
++.Xr execline-exitcodes 7 ,
++.Xr execline-transform 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/forstdin.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/forx.1 b/mdoc/man1/forx.1
+--- a/mdoc/man1/forx.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/forx.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,129 @@
++.Dd February 14, 2021
++.Dt FORX 1
++.Os
++.Sh NAME
++.Nm forx
++.Nd run a loop
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl E | Fl e
++.Op Fl p
++.Op Fl o Ar okcodes | Fl x Ar breakcodes
++.Ar variable
++{
++.Ar args...
++}
++.Ar loop...
++.Sh DESCRIPTION
++.Nm
++reads a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc
++and unquotes it.
++That block contains a list of
++.Ar args .
++.Pp
++For each argument
++.Ar x
++in
++.Ar args... ,
++.Nm
++runs
++.Ar loop
++as a child process, with
++.Sm off
++.Ar variable
++=
++.Ar x
++.Sm on
++added to its environment.
++.Pp
++.Nm
++then exits 0.
++.Pp
++You can start
++.Ar loop
++with
++.Ql importas -u Ar variable Ar variable
++if you want variable substitution.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl o Ar okcodes
++.Ar okcodes
++must be a comma-separated list of exit codes.
++If
++.Ar loop
++exits with one of the codes in
++.Ar okcodes ,
++.Nm
++will run the following instances of the loop, but if the exit code is
++not listed in
++.Ar okcodes ,
++.Nm
++will exit immediately with an approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc
++of the same exit code.
++.It Fl x Ar breakcodes
++Like the previous option, but with inverted meaning - the listed exit
++codes are codes that will make
++.Nm
++break the loop and exit, and the unlisted exit codes will make it keep
++looping.
++.It Fl p
++Run in parallel.
++Do not wait for an instance of
++.Ar loop...
++to exit before spawning the next one.
++.Nm
++will still wait for all instances of
++.Ar loop
++to terminate before exiting 0.
++If the
++.Fl o
++option has been given,
++.Nm
++will exit 0 if all of the exit codes are in the values listed in the
++.Ar okcodes
++list, else it will exit 1.
++If the
++.Fl x
++option has been given,
++.Nm
++will exit 0 if none of the exit codes are in the values listed in the
++.Ar breakcodes
++list, else it will exit 1.
++.It Fl e
++No autoimport.
++This is the default.
++.It Fl E
++Autoimport.
++Instead of spawning
++.Ar loop... ,
++spawn
++.Ql importas -ui Ar variable Ar variable Ar loop... .
++This substitutes
++.Ar variable
++into the command line instead of putting it into the environment.
++.El
++.Sh SEE ALSO
++.Xr execlineb 1 ,
++.Xr forbacktickx 1 ,
++.Xr forstdin 1 ,
++.Xr loopwhilex 1 ,
++.Xr execline-block 7 ,
++.Xr execline-exitcodes 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/forx.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/getcwd.1 b/mdoc/man1/getcwd.1
+--- a/mdoc/man1/getcwd.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/getcwd.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,88 @@
++.Dd February 14, 2021
++.Dt GETCWD 1
++.Os
++.Sh NAME
++.Nm getcwd
++.Nd store current working directory into a given environment variable, then executes a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl E | Fl e
++.Ar var
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++stores a fully resolved absolute path (i.e. without any
++.Pa ..
++or symbolic link components) to its current working directory into the
++.Ar var
++variable, then
++.Xr exec 3 Ns
++s into
++.Ar prog
++with its arguments.
++.Pp
++.Ar var
++must be given without a dollar!
++.Pp
++.Ar var
++must not contain
++.Ql = .
++.Pp
++Unlike the
++.Xr pwd 1
++POSIX command,
++.Nm
++does not depend on the
++.Ev PWD
++environment variable and will exhibit a consistent behaviour no matter
++the environment.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl e
++No autoimport.
++This is the default.
++.It Fl E
++Autoimport.
++Instead of
++.Xr exec 3 Ns
++ing into
++.Ar prog... ,
++.Xr exec 3
++into
++.Ql importas -ui Ar var Ar var Ar prog... .
++This substitutes
++.Ar var
++into the command line instead of putting it into the environment.
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr pwd 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/getcwd.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/getpid.1 b/mdoc/man1/getpid.1
+--- a/mdoc/man1/getpid.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/getpid.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,85 @@
++.Dd March 13, 2022
++.Dt GETPID 1
++.Os
++.Sh NAME
++.Nm getpid
++.Nd store getpid's process ID in a given environment variable, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl E | Fl e
++.Op Fl P | Fl p
++.Ar var
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++stores its PID in the
++.Ar var
++variable, then
++.Xr exec 3 Ns
++s into
++.Ar prog
++with its arguments.
++.Pp
++.Ar var
++must be given without a dollar!
++.Pp
++.Ar var
++must not contain
++.Ql = .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl e
++No autoimport.
++This is the default.
++.It Fl E
++Autoimport.
++Instead of
++.Xr exec 3 Ns
++ing into
++Ar prog... ,
++.Xr exec 3
++into
++.Ql importas -ui Ar var Ar var Ar prog... .
++This substitutes
++.Ar var
++into the command line instead of putting it into the environment.
++.It Fl p
++Get the pid of the current process.
++This is the default.
++.It Fl P
++Use
++.Nm Ap s
++.Em parent
++pid instead.
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/getpid.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/heredoc.1 b/mdoc/man1/heredoc.1
+--- a/mdoc/man1/heredoc.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/heredoc.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,78 @@
++.Dd February 14, 2011
++.Dt HEREDOC 1
++.Os
++.Sh NAME
++.Nm heredoc
++.Nd run a command with a certain string fed to a file descriptor
++.Sh SYNOPSIS
++.Nm
++.Op Fl d
++.Ar fd
++.Ar string
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++.Xr exec 3 Ns
++s into
++.Ar prog...
++with
++.Ar string
++available on the
++.Ar fd
++file descriptor.
++.Pp
++.Ar string
++must not contain a null character.
++.Pp
++.Nm
++is meant to be used in place of the shell
++.Ql <<
++construct, which includes
++.Em here-documents
++into scripts.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl d
++Run the process feeding
++.Ar string
++to
++.Ar fd
++as a grandchild of
++.Nm .
++This is meant to prevent a zombie from hanging around if
++.Ar prog...
++has read
++.Ar string
++and fails to wait for its children.
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/heredoc.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/homeof.1 b/mdoc/man1/homeof.1
+--- a/mdoc/man1/homeof.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/homeof.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,22 @@
++.Dd February 11, 2021
++.Dt HOMEOF 1
++.Os
++.Sh NAME
++.Nm homeof
++.Nd print the home directory of a user
++.Sh SYNOPSIS
++.Nm
++.Ar user
++.Sh DESCRIPTION
++.Nm
++finds the name of
++.Ar user Ap
++s home directory, writes it on stdout, then exits 0.
++If an error occurs, it prints nothing on stdout but exits 111 with an
++explanatory message on stderr.
++.Sh SEE ALSO
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/homeof.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/if.1 b/mdoc/man1/if.1
+--- a/mdoc/man1/if.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/if.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,127 @@
++.Dd February 16, 2021
++.Dt IF 1
++.Os
++.Sh NAME
++.Nm if
++.Nd perform conditional execution
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl X
++.Op Fl n
++.Op Fl t | Fl x Ar exitcode
++{
++.Ar prog1...
++}
++.Ar prog2...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar prog1...
++in a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++It forks and executes it, then waits for it to complete.
++.Pp
++If
++.Ar prog1
++crashes,
++.Nm
++prints an error message then exits 128 plus the number of the signal that killed
++.Ar prog1 .
++.Pp
++If
++.Ar prog1
++exits with a non-zero code,
++.Nm
++exits with an approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc
++of that code.
++.Pp
++Else
++.Nm
++.Xr exec 3 Ns
++s into
++.Ar prog2 .
++.Pp
++.Nm
++will exit if
++.Ar prog1...
++exits false.
++To use it in an execline script that must run
++.Ar prog3...
++no matter the result of the test, use a
++.Xr foreground 1
++wrapper:
++.Bd -literal -offset indent
++foreground { if { prog1... } prog2... } prog3...
++.Ed
++.Pp
++(in
++.Xr execlineb 1
++syntax).
++.Pp
++.Ql if Ar prog1... No \(dq\(dq Ar prog2...
++is equivalent to
++.Ql sh -c ' Ns Ar prog1... No && exec Ar prog2...' .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl X
++Treat a crash of
++.Ar prog1
++as a non-zero
++.Po
++.Dq false
++.Pc
++exit.
++This is mostly useful in combination with
++.Fl n .
++.It Fl n
++Negate the test.
++If
++.Ar prog1
++exits true, then
++.Nm
++will exit 1; else it will
++.Xr exec 3
++into
++.Ar prog2 .
++.It Fl x Ar exitcode
++If
++.Nm
++needs to exit, it will exit
++.Ar exitcode
++instead of whatever else it would have exited.
++.It Fl t
++If
++.Nm if
++needs to exit, it will exit 0.
++This is equivalent to
++.Ql -x 0 .
++.El
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr backtick 1 ,
++.Xr execlineb 1 ,
++.Xr foreground 1 ,
++.Xr ifelse 1 ,
++.Xr ifte 1 ,
++.Xr ifthenelse 1 ,
++.Xr pipeline 1 ,
++.Xr runblock 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/if.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/ifelse.1 b/mdoc/man1/ifelse.1
+--- a/mdoc/man1/ifelse.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/ifelse.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,88 @@
++.Dd February 14, 2021
++.Dt IFELSE 1
++.Os
++.Sh NAME
++.Nm ifelse
++.Nd perform conditional execution, with two branches
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl X
++.Op Fl n
++{
++.Ar prog1...
++} {
++.Ar prog2...
++}
++.Ar prog3...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar prog1...
++in a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++It forks and executes it, then waits for it to complete.
++.Pp
++If
++.Ar prog1
++crashes,
++.Nm
++prints an error message and exits 128 plus the number of the signal
++that killed
++.Ar prog1 .
++.Pp
++If
++.Ar prog1
++exits with a return code equal to 0,
++.Nm
++.Xr exec 3 Ns
++s into
++.Ar prog2 .
++.Pp
++Else
++.Nm
++.Xr exec 3 Ns
++s into
++.Ar prog3 .
++.Pp
++.Ql ifelse Ar prog1... No \(dq\(dq Ar prog2... No \(dq\(dq Ar prog3...
++is
++roughly equivalent to
++.Ql sh -c ' Ns Ar prog1... No && exec Ar prog2... No || exec Ar prog3...' .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl n
++Negate the test.
++.It Fl X
++Do not die if
++.Ar prog1
++crashes; treat a crash as a non-zero
++.Po
++.Dq false
++.Pc
++exit.
++.El
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr backtick 1 ,
++.Xr execlineb 1 ,
++.Xr foreground 1 ,
++.Xr if 1 ,
++.Xr ifte 1 ,
++.Xr ifthenelse 1 ,
++.Xr pipeline 1 ,
++.Xr runblock 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/ifelse.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/ifte.1 b/mdoc/man1/ifte.1
+--- a/mdoc/man1/ifte.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/ifte.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,98 @@
++.Dd February 14, 2021
++.Dt IFTE 1
++.Os
++.Sh NAME
++.Nm ifte
++.Nd perform a conditional alternative
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl X
++.Op Fl n
++{
++.Ar progthen...
++} {
++.Ar progelse...
++}
++.Ar progif...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar progthen...
++and
++.Ar progelse...
++in two consecutive blocks
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++.Pp
++.Nm
++runs
++.Ar progif...
++as a child process and waits for it to complete.
++.Pp
++If
++.Ar progif...
++crashes (i.e. is killed by a signal),
++.Nm
++prints an error message, then exits 128 plus the number of the signal
++that killed
++.Ar progif .
++.Pp
++If
++.Ar progif...
++exits zero,
++.Nm
++.Xr exec 3 Ns
++s into
++.Ar progthen... ,
++else it
++.Xr exec 3 Ns
++s into
++.Ar progelse... .
++.Pp
++.Nm
++is a simpler version of
++.Xr ifthenelse 1 .
++It performs
++.Em only
++conditional execution, not instruction sequence.
++.Pp
++.Ql ifthenelse { Ar progif No } { Ar progthen No } { Ar progelse No } remainder
++is the equivalent of
++.Ql foreground { ifte { Ar progthen No } { Ar progelse No } Ar progif No } remainder .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl X
++Do not exit if
++.Ar progif
++crashes; instead, proceed as if the test had returned false.
++.It Fl n
++Negate the test.
++.Ar progthen...
++will be run iff
++.Ar progif...
++exits nonzero.
++.El
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr backtick 1 ,
++.Xr execlineb 1 ,
++.Xr foreground 1 ,
++.Xr if 1 ,
++.Xr ifelse 1 ,
++.Xr ifthenelse 1 ,
++.Xr pipeline 1 ,
++.Xr runblock 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/ifte.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/ifthenelse.1 b/mdoc/man1/ifthenelse.1
+--- a/mdoc/man1/ifthenelse.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/ifthenelse.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,91 @@
++.Dd February 14, 2021
++.Dt IFTHENELSE 1
++.Os
++.Sh NAME
++.Nm ifthenelse
++.Nd perform a conditional alternative
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl X
++.Op Fl s
++{
++.Ar progif...
++} {
++.Ar progthen...
++} {
++.Ar progelse...
++}
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar progif... ,
++.Ar progthen...
++and
++.Ar progelse...
++in 3 consecutive blocks
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++.Pp
++.Nm
++runs
++.Ar progif...
++as a child process and waits for it to complete.
++.Pp
++If
++.Ar progif...
++crashes (i.e. is killed by a signal),
++.Nm
++prints an error message, then exits 128 plus the number of the signal
++that killed
++.Ar progif .
++.Pp
++If
++.Ar progif...
++exits zero,
++.Nm
++runs
++.Ar progthen...
++as a child process, else it runs
++.Ar progelse... .
++.Pp
++.Nm
++waits for its child to complete and puts the exit status in the
++.Ev \&?
++environment variable.
++It then
++.Xr exec 3 Ns
++s into
++.Ar prog... .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl X
++If
++.Ar progif
++crashes, do not exit; proceed as if it had returned false.
++.It Fl s
++Magic scoping hack.
++This option does powerful but ugly things, and is left undocumented on
++purpose.
++.El
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr backtick 1 ,
++.Xr foreground 1 ,
++.Xr if 1 ,
++.Xr ifelse 1 ,
++.Xr ifte 1 ,
++.Xr pipeline 1 ,
++.Xr runblock 1
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/ifthenelse.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/importas.1 b/mdoc/man1/importas.1
+--- a/mdoc/man1/importas.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/importas.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,120 @@
++.Dd February 14, 2021
++.Dt IMPORTAS 1
++.Os
++.Sh NAME
++.Nm importas
++.Nd replace a literal with the value of an environment variable, then execute another program
++.Sh SYNOPSIS
++.Nm
++.Op Fl i | Fl D Ar default
++.Op Fl u
++.Op Fl s
++.Op Fl C | Fl c
++.Op Fl N | Fl n
++.Op Fl d Ar delim
++.Ar variable
++.Ar envvar
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++fetches the value of
++.Ar envvar
++in the environment.
++If neither the
++.Fl D
++nor the
++.Fl i
++option is given, and
++.Ar envvar
++is undefined,
++.Sy no word
++is returned (that is different from the empty word).
++.Pp
++.Nm
++then performs variable substitution
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc
++on
++.Ar prog... ,
++with
++.Ar variable
++as key and that string as value.
++.Pp
++.Nm
++then
++.Xr exec 3 Ns
++s into the modified
++.Ar prog... .
++.Pp
++When
++.Ar envvar
++is undefined, and the
++.Fl D
++option is not given, any variable substitution
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc
++with
++.Ar variable
++as the key will return no word; that is true even when the
++.Ql ${ Ns Ar variable Ns }
++form to be substituted happens in the middle of a word (with a prefix
++and/or a postfix), which means the whole word will be deleted.
++If this is not the behaviour you want, use the
++.Fl D
++option.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl D Ar default
++If this option is given and
++.Ar envvar
++is undefined, substitute
++.Ar default
++for the value of
++.Ar variable
++instead of no word.
++For instance, to substitute the empty word, use
++.Ql -D \(dq\(dq .
++.It Fl i
++Insist.
++If
++.Ar envvar
++is undefined,
++.Nm
++will not do anything; instead, it will exit 100 with an error message.
++This has precedence over any
++.Fl D
++option.
++.It Fl u
++Unexport.
++.Ar envvar
++will be removed from the environment after the substitution.
++.Ql importas -u Ar variable Ar envvar
++is equivalent to
++.Ql importas Ar variable Ar envvar No unexport Ar envvar .
++.El
++.Pp
++Other options are used to control
++the substitution mechanism
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc .
++.Sh SEE ALSO
++.Xr define 1 ,
++.Xr elgetpositionals 1 ,
++.Xr elglob 1 ,
++.Xr multidefine 1 ,
++.Xr multisubstitute 1 ,
++.Xr exec 3 ,
++.Xr execline-substitute 7 ,
++.Xr execline-transform 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/importas.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/loopwhilex.1 b/mdoc/man1/loopwhilex.1
+--- a/mdoc/man1/loopwhilex.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/loopwhilex.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,78 @@
++.Dd February 14, 2021
++.Dt LOOPWHILEX 1
++.Os
++.Sh NAME
++.Nm loopwhilex
++.Nd perform a conditional loop
++.Sh SYNOPSIS
++.Nm
++.Op Fl n
++.Op Fl o Ar okcodes | Fl x Ar breakcodes
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++runs
++.Ar prog...
++as a child process and waits for it to complete.
++.Pp
++As long as
++.Ar prog
++exits zero,
++.Nm
++runs it again.
++.Pp
++.Nm
++then exits with an approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc
++of the last
++.Ar prog
++invocation's exit code.
++.Pp
++.Ql loopwhilex Ar prog...
++is equivalent to
++.Ql loopwhilex Fl n Fl x No 0 Ar prog...
++and
++.Ql loopwhilex Fl o No 0 Ar prog...
++.Pp
++Be careful: execline
++.Sy maintains no state ,
++in particular it uses
++.Sy no real variables ,
++and environment will be of no use here since every instance of
++.Ar prog...
++runs as a separate child process.
++To avoid being stuck in an infinite loop,
++.Ar prog...
++should modify some external state - for instance, the filesystem.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl o Ar okcodes
++.Ar okcodes
++must be a comma-separated list of exit codes.
++.Nm
++will keep looping as long as
++.Ar prog
++exits with one of the codes in
++.Ar okcodes .
++.It Fl x Ar breakcodes
++Like the previous option, but with inverted meaning - the listed exit
++codes are codes that will break the loop and exit, and the unlisted
++exit codes will keep the loop running.
++.It Fl n
++Negate the test.
++This option is now redundant, and may disappear soon.
++.El
++.Sh SEE ALSO
++.Xr forbacktickx 1 ,
++.Xr forstdin 1 ,
++.Xr forx 1 ,
++.Xr execline-exitcodes 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/loopwhilex.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/multidefine.1 b/mdoc/man1/multidefine.1
+--- a/mdoc/man1/multidefine.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/multidefine.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,124 @@
++.Dd February 14, 2021
++.Dt MULTIDEFINE 1
++.Os
++.Sh NAME
++.Nm multidefine
++.Nd split a value and defines several variables at once, then execute another program
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl 0
++.Op Fl r
++.Op Fl C | Fl c
++.Op Fl N | Fl n
++.Op Fl d Ar delim
++.Ar value
++{
++.Ar variables...
++}
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++reads a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc
++containing a list of variables.
++That block must not be empty.
++.Pp
++.Nm
++splits
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc
++.Ar value ,
++and performs other operations depending on the given options.
++.Pp
++.Nm
++performs parallel substitution
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc
++on
++.Ar prog... ,
++using all of the
++.Ar variables
++in the block as keys.
++The first word in the split
++.Ar value
++is assigned to the first
++.Ar variable ,
++the second word is assigned to the second
++.Ar variable ,
++and so on.
++Every
++.Ar variable
++is substituted with exactly one word.
++.Pp
++If a
++.Ar variable
++is the empty word, then the word in the split
++.Ar value
++corresponding to its position is not substituted.
++So you can use empty words to pad the list of variables and only
++perform substition on the relevant fields.
++.Pp
++.Nm
++then
++.Xr exec 3 Ns
++s into the modified
++.Ar prog... .
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl 0
++If there are more
++.Ar variables
++in the block than there are words in the split
++.Ar value ,
++the excess variables will be replaced with zero word.
++Without this option, the excess variables are replaced with the empty
++word.
++.It Fl r
++Behave similarly to the
++.Dq read
++shell command.
++If there are more words in the split
++.Ar value
++than there are
++.Ar variables
++in the block, the last variable will be replaced with all the
++remaining words (and will be split).
++Without this option, the last variable is replaced with a single word,
++and the excess words are lost.
++.El
++.Pp
++Other options are used to control
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc
++the substitution mechanism.
++Note that the value is always split.
++.Sh SEE ALSO
++.Xr define 1 ,
++.Xr elgetpositionals 1 ,
++.Xr elglob 1 ,
++.Xr execlineb 1 ,
++.Xr importas 1 ,
++.Xr multisubstitute 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7 ,
++.Xr execline-substitute 7 ,
++.Xr execline-transform 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/multidefine.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/multisubstitute.1 b/mdoc/man1/multisubstitute.1
+--- a/mdoc/man1/multisubstitute.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/multisubstitute.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,180 @@
++.Dd February 14, 2021
++.Dt MULTISUBSTITUTE 1
++.Os
++.Sh NAME
++.Nm multisubstitute
++.Nd perform several substitutions at once in its
++.Ar argv ,
++then execute another program
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++{
++.Bd -ragged -compact
++.Oo
++define
++.Op Fl N | Fl n
++.Op Fl s
++.Op Fl C | Fl c
++.Op Fl d Ar delim
++.Ar variable
++.Ar value
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++importas
++.Op Fl i | Fl D Ar default
++.Op Fl N | Fl n
++.Op Fl s
++.Op Fl C | Fl c
++.Op Fl d Ar delim
++.Ar variable
++.Ar envvar
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++elglob
++.Op Fl v
++.Op Fl w
++.Op Fl s
++.Op Fl m
++.Op Fl e
++.Op Fl 0
++.Ar variable
++.Ar pattern
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++elgetpositionals
++.Op Fl P Ar sharp
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++multidefine
++.Ar value
++{
++.Ar variable...
++}
++.Oc
++.Ed
++.Ar ...
++.Bd -ragged -compact
++}
++.Ed
++.Bd -ragged -compact
++.Ar prog...
++.Ed
++.Sh DESCRIPTION
++.Nm
++reads a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc
++containing a series of substitution commands.
++It performs all those substitutions
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc
++on
++.Ar prog...
++in parallel.
++Check the relevant documentation page to learn about the syntax of
++each substitution command.
++.Pp
++.Nm
++then
++.Xr exec 3 Ns
++s into the modified
++.Ar prog... .
++.Sh OPTIONS
++If an
++.Ql importas
++directive was given with the
++.Fl i
++option, and the looked up variable is undefined,
++.Nm
++will exit 100.
++.Ss Rationale
++.Sy Security
++.Pp
++.Nm
++can be used to avoid unwanted
++.Em serial substitutions .
++Consider the following script:
++.Bd -literal -offset indent
++#!/command/execlineb
++export A wrong
++define B ${A}
++importas A A
++echo ${B}
++.Ed
++.Pp
++Running it will print
++.Ql wrong ,
++because
++.Ql A
++is substituted
++.Em after
++B.
++On the contrary, the following script:
++.Bd -literal -offset indent
++#!/command/execlineb
++export A wrong
++multisubstitute
++{
++  define B ${A}
++  importas A A
++}
++echo ${B}
++.Ed
++.Pp
++will print
++.Ql ${A} ,
++because A and B are substituted at the same time.
++Serial substitution may be what you want - but when in doubt, always
++perform parallel substitution.
++.Pp
++.Sy Efficiency
++.Pp
++Substitution
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc
++is a costly mechanism: the whole
++.Ar argv
++is read three times and rewritten twice.
++Serial substitution multiplies the cost by the number of
++substitutions, whereas parallel substitution pays the price only once.
++.Ss Credits
++Paul Jarc[1] first originated the idea of the
++.Nm
++command and a possible syntax.
++.Sh SEE ALSO
++.Xr define 1 ,
++.Xr elgetpositionals 1 ,
++.Xr elglob 1 ,
++.Xr execlineb 1 ,
++.Xr importas 1 ,
++.Xr multidefine 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7 ,
++.Xr execline-substitute 7
++.Pp
++[1]
++.Lk https://code.dogmap.org/
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/multisubstitute.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/pipeline.1 b/mdoc/man1/pipeline.1
+--- a/mdoc/man1/pipeline.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/pipeline.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,103 @@
++.Dd February 14, 2021
++.Dt PIPELINE 1
++.Os
++.Sh NAME
++.Nm pipeline
++.Nd run two commands with a pipe between them
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl d
++.Op Fl r | Fl w
++{
++.Ar prog1...
++}
++.Ar prog2...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar prog1...
++in a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc
++and unquotes it.
++.Pp
++It runs
++.Ar prog1...
++as a child process and
++.Xr exec 3 Ns
++s into
++.Ar prog2... ,
++with a pipe between
++.Ar prog1 Ap
++s stdout and
++.Ar prog2 Ap
++s stdin.
++.Pp
++.Ar prog1 Ap
++s pid is available in
++.Ar prog2
++as the
++.Ev \&!
++environment variable.
++.Pp
++You can easily create a chain of pipes:
++.Ql execlineb -Pc 'pipeline { a } pipeline { b } c'
++is roughly equivalent to
++.Ql sh -c 'exec a | b | c' ,
++except that shells usually run
++.Ql c
++as a child process like
++.Ql a
++and
++.Ql b ,
++and
++.Ql exec
++has no effect.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl d
++Run
++.Ar prog1...
++as a grandchild of
++.Nm .
++This is meant to prevent a zombie from hanging around if
++.Ar prog2...
++fails to wait for its children.
++.It Fl r
++Make
++.Ar prog1...
++the writer and
++.Ar prog2...
++the reader.
++This is the default.
++.It Fl w
++Make
++.Ar prog1...
++the reader and
++.Ar prog2...
++the writer.
++.El
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr backtick 1 ,
++.Xr execlineb 1 ,
++.Xr foreground 1 ,
++.Xr if 1 ,
++.Xr ifelse 1 ,
++.Xr ifte 1 ,
++.Xr ifthenelse 1 ,
++.Xr runblock 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/pipeline.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/piperw.1 b/mdoc/man1/piperw.1
+--- a/mdoc/man1/piperw.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/piperw.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,51 @@
++.Dd February 14, 2021
++.Dt PIPERW 1
++.Os
++.Sh NAME
++.Nm piperw
++.Nd create a pipe (an anonymous one), then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar fdr
++.Ar fdw
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++creates a pipe with descriptor
++.Ar fdw
++as the writing end and descriptor
++.Ar fdr
++as the reading end.
++It then execs into
++.Ar prog
++with its arguments.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/piperw.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/posix-cd.1 b/mdoc/man1/posix-cd.1
+--- a/mdoc/man1/posix-cd.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/posix-cd.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,100 @@
++.Dd February 14, 2021
++.Dt POSIX-CD 1
++.Os
++.Sh NAME
++.Nm posix-cd
++.Nd change the current working directory to a given directory, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl L | Fl P
++.Ar dir
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++changes the current working directory to
++.Ar dir
++according to the POSIX specification for a
++.Ql cd
++external utility[1].
++Then, if
++.Ar prog...
++is not empty, it execs into it.
++.Pp
++When execline has been configured with the
++.Ql --enable-pedantic-posix
++option, the
++.Pa cd
++command is a symbolic link to it.
++So scripts calling
++.Pa cd
++will use
++.Nm .
++When this configuration option has not been given,
++.Pa cd
++is a symbolic link to
++.Xr execline-cd 1 .
++.Pp
++.Nm
++fully conforms to the POSIX specification[1].
++When
++.Ar prog...
++is not empty, the behaviour of a
++.Ql cd
++utility is not specified by POSIX, so
++.Nm
++extends the spec to be actually useful and usable in an execline
++program with the same interface as the regular execline
++.Ql cd
++command
++.Po
++cf.\&
++.Xr execline-cd 1
++.Pc .
++.Pp
++Nobody ever executes or needs the external version (i.e. not a shell
++builtin) of the POSIX
++.Ql cd
++command.
++Compared to execline's regular
++.Pa cd
++binary,
++.Xr execline-cd 1 ,
++.Nm
++is uselessly bloated and slow.
++The only reason it exists is that some distributions refuse to package
++execline correctly unless it is strictly POSIX-compliant; the
++.Ql --enable-pedantic-posix
++configure option is there to satisfy their requirements.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1
++.Pp
++[1]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/cd.html
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/posix-cd.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/posix-umask.1 b/mdoc/man1/posix-umask.1
+--- a/mdoc/man1/posix-umask.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/posix-umask.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,108 @@
++.Dd February 14, 2021
++.Dt POSIX-UMASK 1
++.Os
++.Sh NAME
++.Nm posix-umask
++.Nd change file mode creation mask, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl S
++.Op Ar mask
++.Op Ar prog...
++.Sh DESCRIPTION
++When called with no argument,
++.Nm
++prints the value of the file mode creation mask of the invoking
++process, then exits 0.
++.Pp
++When called with a
++.Ar mask
++argument,
++.Nm
++changes its file mode creation mask; then, if
++.Ar prog...
++is not empty, it
++.Xr exec 3 Ns
++s into it.
++.Pp
++.Nm
++interprets
++.Ar mask
++as specified by the POSIX specification for a
++.Ql umask
++external utility[1].
++.Pp
++When execline has been configured with the
++.Ql --enable-pedantic-posix
++option, the
++.Pa umask
++command is a symbolic link to it.
++So scripts calling
++.Pa umask
++will use
++.Nm .
++When this configuration option has not been given,
++.Pa umask
++is a symbolic link to
++.Xr execline-umask 1 .
++.Pp
++.Nm
++fully conforms to the POSIX specification[1].
++When
++.Ar prog...
++is not empty, the behaviour of a
++.Ql umask
++utility is not specified by POSIX, so
++.Nm
++extends the spec to be actually useful and usable in an execline
++program with the same interface as the regular execline
++.Ql umask
++command.
++.Pp
++Nobody ever executes or needs the external version (i.e. not a shell
++builtin) of the POSIX
++.Ql umask
++command.
++Compared to execline's regular
++.Pa umask
++binary,
++.Xr execline-umask 1 ,
++.Nm
++is uselessly bloated and slow.
++The only reason it exists is that some distributions refuse to package
++execline correctly unless it is strictly POSIX-compliant; the
++.Ql --enable-pedantic-posix
++configure option is there to satisfy their requirements.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1
++.Pp
++[1]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/umask.html
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/posix-umask.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/redirfd.1 b/mdoc/man1/redirfd.1
+--- a/mdoc/man1/redirfd.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/redirfd.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,173 @@
++.Dd February 14, 2021
++.Dt REDIRFD 1
++.Os
++.Sh NAME
++.Nm redirfd
++.Nd redirect a given file descriptor to a file, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Op Fl r | Fl w | Fl u | Fl a | Fl x
++.Op Fl n
++.Op Fl b
++.Ar fd
++.Ar file
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++redirects the file descriptor number
++.Ar fd
++to
++.Ar file ,
++then
++.Xr exec 3 Ns
++s into
++.Ar prog... .
++.Bl -bullet -width x
++.It
++.Ql redirfd -r Ar n Ar file No prog...
++is roughly equivalent to
++.Ql sh -c 'exec prog... Ar n Ns < Ns Ar file'
++.It
++.Ql redirfd -w Ar n Ar file No prog...
++is roughly equivalent to
++.Ql sh -c 'exec prog... Ar n Ns > Ns Ar file'
++.It
++.Ql redirfd -u Ar n Ar file No prog...
++is roughly equivalent to
++.Ql sh -c 'exec prog... Ar n Ns <> Ns file'
++.It
++.Ql redirfd -a Ar n Ar file No prog...
++is roughly equivalent to
++.Ql sh -c 'exec prog... Ar n Ns >> Ns Ar file'
++.It
++.Ql redirfd -x Ar n Ar file No prog...
++has no portable shell equivalent.
++.El
++.Ss Special fifo handling
++The
++.Fl n
++and
++.Fl b
++options are especially useful with named pipes.
++.Bl -bullet -width x
++.It
++Opening a fifo for reading, blocking if there is no writer:
++.Bd -ragged -offset indent
++redirfd -r
++.Ar n
++.Ar fifo
++prog...
++.Ed
++.It
++Opening a fifo for reading, with instant success even if there is no
++writer, and blocking at the first attempt to read from it:
++.Bd -ragged -offset indent
++redirfd -r -nb
++.Ar n
++.Ar fifo
++prog...
++.Ed
++.It
++Opening a fifo for writing, blocking if there is no reader:
++.Bd -ragged -offset indent
++redirfd -w
++.Ar n
++.Ar fifo
++prog...
++.Ed
++.It
++Opening a fifo for writing, with instant success even if there is no
++reader:
++.Bd -ragged -offset indent
++redirfd -w -nb
++.Ar n
++.Ar fifo
++prog... .
++.Ed
++.Pp
++Warning: the first attempt to write to the fifo will raise a
++.Dv SIGPIPE
++if there is still no reader at that time.
++The named pipe semantics normally do not allow a fifo to be open for
++writing without a reading end, and you should know what you are doing
++if you're using
++.Nm
++this way.
++.El
++.Sh OPTIONS
++One and only one of the
++.Fl r ,
++.Fl w ,
++.Fl u
++.Fl a ,
++or
++.Fl x
++options must be given; the
++.Fl n
++and
++.Fl b
++options may be added in any case.
++.Bl -tag -width x
++.It Fl r
++Open
++.Ar file
++for reading.
++.It Fl w
++Open
++.Ar file
++for writing, truncating it if it already exists.
++.It Fl u
++Open
++.Ar file
++for reading and writing.
++.It Fl a
++Open
++.Ar file
++for appending, creating it if it doesn't exist.
++.It Fl x
++Open
++.Ar file
++for writing, creating it, failing if it already exists.
++.It Fl n
++Open
++.Ar file
++in non-blocking mode.
++.It Fl b
++Change mode of
++.Ar file
++after opening it:
++to non-blocking mode if the
++.Fl n
++option was not given, to blocking mode if it was.
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/redirfd.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/runblock.1 b/mdoc/man1/runblock.1
+--- a/mdoc/man1/runblock.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/runblock.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,120 @@
++.Dd February 14, 2021
++.Dt RUNBLOCK 1
++.Os
++.Sh NAME
++.Nm runblock
++.Nd execute an
++.Xr execline-block 7
++.Sh SYNOPSIS
++.Nm
++.Op Fl P
++.Op Fl n Ar argshift
++.Op Fl r
++.Ar n
++.Ar cmd...
++.Sh DESCRIPTION
++.Nm Ap
++s purpose is to help you write execline commands in the execline language.
++It can only be used inside an execline script.
++If the script has been given blocks as arguments,
++.Nm
++allows you to execute one of the blocks individually.
++It also allows you to give those blocks as a set of arguments to
++another command.
++.Pp
++.Nm
++skips the first
++.Ar argshift
++positional parameters.
++It does that to allow you to design commands that take simple
++arguments
++.Em and
++blocks.
++.Pp
++Then
++.Nm
++looks for and parses blocks
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc
++in the positional parameters.
++.Pp
++If the
++.Fl r
++option is present:
++.Nm
++skips
++.Ar n
++blocks and execs into the remaining arguments.
++.Pp
++Else it skips
++.Ar n Ns
++-1 blocks and execs into the
++.Ar n Ns
++th one.
++.Pp
++If
++.Ar cmd...
++is not empty, then instead of directly executing the block or the remainder,
++.Nm
++.Em appends
++the selected set of arguments to the
++.Ar cmd...
++command line.
++.Pp
++Normally
++.Nm
++pops
++.Po
++cf.\&
++.Xr execline-pushenv 7
++.Pc
++its environment frame before executing.
++If the
++.Fl P
++option has been given, it
++.Em does not
++pop.
++.Pp
++Of course, if the block structure doesn't match,
++.Nm
++exits 100 with an error message.
++.Ss Credits
++The
++.Nm runblock
++idea, as well as the
++.Xr ifelse 1
++idea, comes from Paul Jarc[1].
++.Sh EXAMPLES
++Suppose that we want to implement the
++.Xr ifelse 1
++command as an execline script, using the
++.Xr ifte 1
++command.
++.Nm
++allows us to do it in a simple way:
++.Bd -literal -offset indent
++#!/command/execlineb
++ifte { runblock 2 } { runblock -r 2 } runblock 1
++.Ed
++.Pp
++That's it.
++.Sh SEE ALSO
++.Xr background 1 ,
++.Xr backtick 1 ,
++.Xr foreground 1 ,
++.Xr if 1 ,
++.Xr ifelse 1 ,
++.Xr ifte 1 ,
++.Xr ifthenelse 1 ,
++.Xr pipeline 1
++.Pp
++[1]
++.Lk https://code.dogmap.org/
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/runblock.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/shift.1 b/mdoc/man1/shift.1
+--- a/mdoc/man1/shift.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/shift.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,122 @@
++.Dd February 14, 2021
++.Dt SHIFT 1
++.Os
++.Sh NAME
++.Nm shift
++.Nd shift the positional parameters of an execline script
++.Sh SYNOPSIS
++.Nm
++.Op Fl n Ar argn
++.Op Fl b Ar blockn
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++shifts
++.Ar argn
++positional parameters, then
++.Ar blockn
++blocks.
++It then
++.Xr exec 3 Ns
++s
++.Ar prog... .
++.Pp
++By default,
++.Ar argn
++and
++.Ar blockn
++are both zero; but if neither the
++.Fl n
++nor the
++.Fl b
++option is given, then
++.Ar argn
++is 1 and
++.Ar blockn
++is 0.
++.Pp
++.Ql shift
++is a standard shell builtin.
++Be careful if you want to use it outside of an execline script.
++.Pp
++The
++.Fl b
++option is only useful to implement execline commands in the execline
++language.
++You shouldn't normally have to use it.
++.Ss Details
++.Bl -bullet -width x
++.It
++.Nm
++reads the number of
++.Dq positional parameters
++in the
++.Ev \&#
++environment variable.
++Let
++.Ar n
++be that number.
++.It
++If the
++.Ev \&#
++environment variable is not set or does not contain a valid number, or
++one of the
++.Ev 0 ,
++.Ev 1 ,
++\&...,
++.Ar n
++environment variables is not set,
++.Nm
++exits 100 with an error message.
++.It
++.Nm
++calculates a shift value
++.Ar m ,
++corresponding to
++.Ar argn
++arguments followed by enough arguments to make
++.Ar blockn
++blocks.
++.It
++It shifts the positional parameters
++.Ar m
++times: the value of the
++.Sm off
++.Ar m
+++1
++.Sm on
++variable becomes the value of the
++.Ev 1
++variable,
++.Sm off
++.Ar m
+++2
++.Sm on
++becomes
++.Ev 2
++and so on, and
++.Ev \&#
++is set to
++.Sm off
++.Ar n
++-
++.Ar m
++.Sm on
++(floored at zero).
++.It
++.Nm
++then
++.Xr exec 3 Ns
++s into
++.Ar prog... .
++.El
++.Sh SEE ALSO
++.Xr dollarat 1 ,
++.Xr elgetopt 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/shift.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/trap.1 b/mdoc/man1/trap.1
+--- a/mdoc/man1/trap.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/trap.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,222 @@
++.Dd February 14, 2021
++.Dt TRAP 1
++.Os
++.Sh NAME
++.Nm trap
++.Nd trap signals and run a variety of commands according to the signals caught
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl x
++.Bd -ragged -compact
++{
++.Ed
++.Bd -ragged -compact
++.Oo
++SIGTERM
++{
++.Ar progsigterm...
++}
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++quit
++{
++.Ar progsigquit
++\&...
++}
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++1
++{
++.Ar progsighup
++\&...
++}
++.Oc
++.Ed
++.Bd -ragged -compact
++.Oo
++default
++{
++.Ar progdefault
++\&...
++}
++.Oc
++.Ed
++.Bd -ragged -compact
++\&...
++.Ed
++.Bd -ragged -compact
++}
++.Ed
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++reads a sequence of directives in a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++It expects at least one directive.
++.Pp
++Each directive is a keyword followed by a block.
++.Pp
++The keyword can be the special word
++.Ql timeout ,
++a signal name (case-insensitive, with or without the
++.Ql SIG
++prefix), or a signal number.
++The block following it is a command line to run when the specified
++event occurs.
++.Pp
++.Nm
++sets traps for the various directives it reads.
++A trap for
++.Dv SIGTERM
++will be triggered when the
++.Nm
++program receives a
++.Dv SIGTERM .
++A
++.Ql default
++trap will be used for any signal that is not caught by another trap.
++.Pp
++It spawns a child executing
++.Ar prog... .
++.Pp
++It sets the
++.Ev \&!
++environment variable to the pid of the
++.Ar prog...
++process, and the
++.Ev SIGNAL
++environment variable to the trapped signal.
++.Pp
++Whenever it catches a signal, it spawns the program described in the
++corresponding directive.
++It will not spawn a program for the same signal twice: if the first
++subprocess is still active when another instance of the same signal
++arrives, this second instance is ignored.
++.Pp
++When
++.Ar prog...
++exits,
++.Nm
++exits with an approximation
++.Po
++cf.\&
++.Xr execline-exitcodes 7
++.Pc
++of the same exit code.
++.Pp
++Programs defined in command line directives can start with
++.Ql importas \&! \&!
++.Po
++cf.\&
++.Xr importas 1
++.Pc
++to retrieve the pid of
++.Ar prog
++in
++.Ql $! .
++If they need the signal number, which can be the case in
++.Ql default
++directives, they can for instance use
++.Ql multisubstitute { importas \&! \&! importas SIGNAL SIGNAL }
++.Po
++cf.\&
++.Xr multisubstitute 1
++.Pc
++to get both
++.Ql $!
++and
++.Ql $SIGNAL
++substitutions.
++.Pp
++The
++.Fl x
++option is basically a shortcut for a
++.Ql default { multisubstitute { importas \&! \&! importas SIGNAL SIGNAL } kill -$SIGNAL $! }
++directive.
++.Pp
++.Ql trap
++is a standard shell builtin, with similar functionality.
++It is more idiomatic, and probably more efficient, to use that builtin
++in shell scripts, and to only use the
++.Nm
++program in execline scripts.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl x
++Forward signals.
++If this option is given, any signal that
++.Nm
++receives and that is not explicitly trapped will be sent to
++.Ar prog .
++By default,
++.Nm
++does not forward any signals, and does not ignore them either - for
++instance a
++.Dv SIGTERM ,
++unless caught by a
++.Ql SIGTERM
++directive, will kill the
++.Nm
++process (and leave
++.Ar prog
++running).
++With the
++.Fl x
++option, without a
++.Ql SIGTERM
++directive, a
++.Dv SIGTERM
++will still be caught by
++.Nm ,
++that will send it to
++.Ar prog .
++Note that if a
++.Ql default
++directive is present, this option does nothing.
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr execlineb 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr importas 1 ,
++.Xr multisubstitute 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr execline-block 7 ,
++.Xr execline-exitcodes 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/trap.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/tryexec.1 b/mdoc/man1/tryexec.1
+--- a/mdoc/man1/tryexec.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/tryexec.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,100 @@
++.Dd February 14, 2021
++.Dt TRYEXEC 1
++.Os
++.Sh NAME
++.Nm tryexec
++.Nd execute into a command line, with a fallback
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl n
++.Op Fl c
++.Op Fl l
++.Op Fl a Ar argv0
++{
++.Ar prog1...
++}
++.Ar prog2...
++.Sh DESCRIPTION
++.Nm
++reads
++.Ar prog1...
++in a block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++It then executes into it, completely forgetting
++.Ar prog2... .
++.Pp
++If for some reason the
++.Xr execve 2
++fails - for instance, a non-executable
++.Ar prog1 -
++then
++.Nm
++executes into
++.Ar prog2...
++instead.
++.Pp
++.Ql tryexec Ar prog1... No \(dq\(dq Ar prog2...
++would be equivalent to
++.Ql sh -c 'exec Ar prog1... No || exec Ar prog2... Ns ' ,
++if such a shell construct existed.
++Unfortunately, the shell language does not offer that functionality.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl n
++Reverse
++.Ar prog1...
++and
++.Ar prog2... Ap
++s role.
++The latter becomes the main execution path and the former becomes the
++fallback.
++.El
++.Pp
++The
++.Fl c ,
++.Fl l
++and
++.Fl a
++options have the same semantics as with the
++.Xr exec 1
++program.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr execlineb 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr execve 2 ,
++.Xr execline-block 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/tryexec.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/unexport.1 b/mdoc/man1/unexport.1
+--- a/mdoc/man1/unexport.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/unexport.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,55 @@
++.Dd February 14, 2021
++.Dt UNEXPORT 1
++.Os
++.Sh NAME
++.Nm unexport
++.Nd remove a variable from the environment, then execute a program
++.Sh SYNOPSIS
++.Nm
++.Ar var
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++removes the
++.Ar var
++variable from the environment, then
++.Xr exec 3 Ns
++s into
++.Ar prog
++with its arguments.
++.Pp
++Unsetting
++.Ar var
++is quite different from setting it to an empty value.
++Shell scripts usually won't make the distinction; execline does.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr wait 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/unexport.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/wait.1 b/mdoc/man1/wait.1
+--- a/mdoc/man1/wait.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/wait.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,168 @@
++.Dd May 31, 2022
++.Dt WAIT 1
++.Os
++.Sh NAME
++.Nm wait
++.Nd wait for a set of children, then execute a program
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl I | Fl i
++.Op Fl a | Fl o
++.Op Fl r | Fl t Ar timeout
++{
++.Op Ar pids...
++}
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++reads a list of
++.Ar pids
++in a (possibly empty) block
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc ,
++and unquotes it.
++.Pp
++.Nm
++waits for every child whose pid is listed in
++.Ar pids... .
++If
++.Ar pids...
++is an empty list, it waits for every child process it has.
++.Pp
++.Nm
++then
++.Xr exec 3 Ns
++s into
++.Ar prog... .
++.Pp
++For POSIX compatibility[1],
++.Nm
++also works when it cannot find a block.
++In that case, all the options are still supported and have the same
++effect, but the rest of the command line is interpreted as
++.Ar pids...
++arguments and
++.Nm
++does not execute into a program; instead, it exits with a conforming
++exit code.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl r
++Equivalent to
++.Ql -t 0 .
++Do not pause: only reap processes that are already dead when
++.Nm
++is invoked.
++.It Fl t Ar timeout
++Wait for a maximum of
++.Ar timeout
++milliseconds.
++If there still are living processes among
++.Ar pids...
++(or among
++.Nm Ap
++s children if
++.Ar pids...
++is an empty list), after
++.Ar timeout
++milliseconds, they will not be reaped.
++.It Fl I
++Loose.
++If
++.Nm
++times out while waiting for children to die, it will still
++.Xr exec 3
++into
++.Ar prog... .
++This is the default.
++.It Fl i
++Strict.
++If
++.Nm
++times out, it will print an error message and exit 99.
++.It Fl o
++Wait for
++.Em one
++of the listed
++.Ar pids
++-
++.Xr exec 3
++into
++.Ar prog
++as soon as one of the listed children dies.
++.Po
++If no pid is listed, wait for one child to die.
++.Pc
++The
++.Ev !\&
++environment variable will be set to the pid that died, and the
++.Ev ?\&
++environment variable will contain an approximation of its exit code -
++refer to
++.Xr execline-exitcodes 7 .
++If no listed child has died before
++.Nm
++has to
++.Xr exec 3
++.Po
++either because it timed out or it has no suitable children left
++.Pc ,
++the
++.Ev ?\&
++and
++.Ev !\&
++environment variables are unset.
++.It Fl a
++Wait for
++.Em all
++of the listed
++.Ar pids .
++Do not touch the
++.Ev !\&
++or
++.Ev ?\&
++variables.
++This is the default.
++.El
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr execlineb 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr withstdinas 1 ,
++.Xr exec 3 ,
++.Xr execline-block 7
++.Pp
++[1]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/wait.html
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/wait.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/withstdinas.1 b/mdoc/man1/withstdinas.1
+--- a/mdoc/man1/withstdinas.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/withstdinas.1	2022-10-22 19:21:59.803339395 -0300
+@@ -0,0 +1,117 @@
++.Dd February 14, 2021
++.Dt WITHSTDINAS 1
++.Os
++.Sh NAME
++.Nm withstdinas
++.Nd read the entirety of standard input in an environment variable, and run another program with that additional environment variable
++.Sh SYNOPSIS
++In an
++.Xr execlineb 1
++script:
++.Pp
++.Nm
++.Op Fl i | Fl I | Fl D Ar default
++.Op Fl N | Fl n
++.Op Fl E | Fl e
++.Ar variable
++.Ar prog...
++.Sh DESCRIPTION
++.Nm
++reads its stdin until EOF.
++.Pp
++It then
++.Xr exec 3 Ns
++s into
++.Ar prog... ,
++with
++.Ar variable
++added to the environment; the value of
++.Ar variable
++is what was read on stdin.
++.Pp
++You can start
++.Ar prog...
++with
++.Ql importas -u Ar variable Ar variable
++to perform variable substitution.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl N
++Do not chomp an ending newline off stdin.
++.It Fl n
++Chomp an ending newline off stdin.
++This is the default.
++.It Fl e
++No autoimport.
++This is the default.
++.It Fl E
++Autoimport.
++Instead of
++.Xr exec 3 Ns
++ing into
++.Ar prog... ,
++.Xr exec 3
++into
++.Ql importas -ui Ar variable Ar variable Ar prog... .
++This substitutes
++.Ar variable
++into the command line instead of putting it into the environment.
++.El
++.Pp
++The other options tell
++.Nm
++what to do if its input is not suitable as the contents of an
++environment variable, i.e. it contains a null character:
++.Bl -tag -width x
++.It Fl i
++.Nm
++exits 1.
++.It Fl I
++.Ar variable
++is
++.Sy removed
++from the environment, and execution proceeds.
++.It Fl D Ar default
++The value of
++.Ar variable
++is set to
++.Ar default ,
++and execution proceeds.
++.El
++.Pp
++When neither of those options is given, the value of
++.Ar variable
++is set to whatever the start of the input is, up to the first null
++character; and execution proceeds.
++.Sh SEE ALSO
++.Xr emptyenv 1 ,
++.Xr envfile 1 ,
++.Xr exec 1 ,
++.Xr execline-cd 1 ,
++.Xr execline-umask 1 ,
++.Xr execlineb 1 ,
++.Xr exit 1 ,
++.Xr export 1 ,
++.Xr fdblock 1 ,
++.Xr fdclose 1 ,
++.Xr fdmove 1 ,
++.Xr fdreserve 1 ,
++.Xr fdswap 1 ,
++.Xr getcwd 1 ,
++.Xr getpid 1 ,
++.Xr heredoc 1 ,
++.Xr piperw 1 ,
++.Xr posix-cd 1 ,
++.Xr posix-umask 1 ,
++.Xr redirfd 1 ,
++.Xr trap 1 ,
++.Xr tryexec 1 ,
++.Xr unexport 1 ,
++.Xr wait 1 ,
++.Xr exec 3
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/withstdinas.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-block.7 b/mdoc/man7/execline-block.7
+--- a/mdoc/man7/execline-block.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-block.7	2022-10-22 19:21:59.813339395 -0300
+@@ -0,0 +1,135 @@
++.Dd February 16, 2021
++.Dt EXECLINE-BLOCK 7
++.Os
++.Sh NAME
++.Nm execline-block
++.Nd overview of execline blocks
++.Sh DESCRIPTION
++A command line (and thus an execline script) is one-dimensional.
++But a Unix execution flow can be
++.Em two Ns
++-dimensional: when two instructions are sequenced, for instance.
++In that case, we need a way to extract
++.Em two
++command lines from
++.Em one
++argv.
++That is precisely what
++.Em blocks
++are made for.
++.Pp
++execline commands that need more than one linear set of arguments use
++blocks.
++For instance, the
++.Xr foreground 1
++command needs to spawn a first process, then execute into a second one.
++It reads the command line for the first process from a block, and the
++command line for the second process from the rest of the argv.
++In the following script:
++.Bd -literal -offset indent
++#!/command/execlineb
++foreground { echo 1 } echo 2
++.Ed
++.Pp
++.Ql echo 1
++is read from a block and spawned; then
++.Ql echo 2
++is executed.
++.Ss execlineb syntax
++In
++.Xr execlineb 1
++scripts, blocks are delimited by braces.
++They can be nested.
++.Ss argv syntax
++.Xr execlineb 1
++reads and parses the script, and converts it into an
++.Em argv
++(a simple Unix command line) with a different syntax for blocks.
++In an argv, blocks are not delimited by braces; they are made of
++.Em quoted arguments
++and terminated by an empty word
++.Po
++\(dq\(dq
++.Pc .
++A quoted argument begins with a space.
++Nested blocks are represented by arguments being quoted several times,
++i.e. having several spaces in front of them; an empty word inside a
++block gets quoted too, i.e. it will be represented as a series of
++spaces.
++.Pp
++Actually, the block-reading commands know nothing about braces;
++they only understand the
++.Dq quoted arguments + empty word
++syntax.
++So if you want to use
++.Xr foreground 1
++from your shell to sequence
++.Ql echo 1
++and
++.Ql echo 2 ,
++you will have to write
++.Bd -literal -offset indent
++$ foreground ' echo' ' 1' '' echo 2
++.Ed
++.Pp
++You do not really need to quote every argument inside a block in that
++simple case.
++The following command works as well:
++.Bd -literal -offset indent
++$ foreground echo 1 '' echo 2
++.Ed
++.Pp
++However, this is bad practice, because it leads to a security hole:
++commands that perform substitution
++.Po
++\&.cf
++.Xr execline-substitute 7
++.Pc
++inside a block may produce empty words, which may modify your script's
++execution flow.
++.Bd -literal -offset indent
++$ define FOO '' foreground ' echo' ' ${FOO}' ' rm' ' -rf' ' /' '' echo blah
++.Ed
++.Pp
++is safe, whereas
++.Bd -literal -offset indent
++$ define FOO '' foreground echo '${FOO}' rm -rf / '' echo blah
++.Ed
++.Pp
++has very much unwanted results.
++(Don't try this at home.)
++.Pp
++You can use the
++.Ev EXECLINE_STRICT
++environment variable to check proper block quoting.
++If that variable contains
++.Ql 1 ,
++commands that read blocks will print a warning message every time they
++find an unquoted argument inside a block.
++If that variable contains
++.Ql 2
++or a bigger integer, commands will print an error message and die on
++unquoted arguments.
++.Pp
++You can use
++.Xr execlineb 1 Ap Ns
++s
++.Fl w
++or
++.Fl W
++switch to set
++.Ev EXECLINE_STRICT
++to
++.Ql 1
++or
++.Ql 2 .
++.Sh SEE ALSO
++.Xr execlineb 1 ,
++.Xr foreground 1 ,
++.Xr execline-substitute 7
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/el_semicolon.html.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-components.7 b/mdoc/man7/execline-components.7
+--- a/mdoc/man7/execline-components.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-components.7	2022-10-22 19:21:59.813339395 -0300
+@@ -0,0 +1,58 @@
++.Dd September 28, 2021
++.Dt EXECLINE-COMPONENTS 7
++.Os
++.Sh NAME
++.Nm execline-components
++.Nd example components of an
++.Xr execlineb 1
++script
++.Sh DESCRIPTION
++.Bd -literal
++#!/command/execlineb -P
++
++# This execlineb script will sleep for 1 second, then print some
++# silly things on the standard output.
++
++
++foreground     # an unquoted string, evaluated to: foreground
++{              # A single opening brace, not included in the argv
++  sleep 1      # Two unquoted strings, evaluated to " sleep" and " 1"
++               # (without the quotation marks).
++}              # A single closing brace, evaluated to the empty word
++
++"echo"     # this is a quoted string. It will evaluate to the word: echo
++
++foo\e bar\e zoinx  # This is one word, since the spaces are escaped
++"foo bar zoinx"  # This is exactly the same word, written another way
++
++ " # this is not a comment, since it is inside a quoted string
++# This is not a comment either \e" # nor is this " # but this is one
++
++"\e0x41\e66\e0103D\en"   # This is the string ABCD followed by a newline.
++                     # Be careful: the newline will be part of the word.
++
++ \en   # this is not a newline, but the single word: n
++
++$23   # This will NOT be replaced by anything with execline-1.y, unless
++      # substitution is explicitly asked for in the script.
++      # The dollar is no special character for the execline binary.
++
++baz"\&$1"qux  # This will evaluate to the word baz$1qux
++baz\e$1qux   # Same here
++baz$1qux    # Same here in execline-1.y
++
++${PATH}   # This will NOT be replaced by execline ; use the importas command
++          # if you need the $PATH value.
++
++\&'this is not a string\&'  # it will be parsed as five separate words
++
++"\e
++"        # This will be parsed as the empty word. A (backslash, newline)
++         # sequence inside a quoted string is entirely removed.
++.Ed
++.Sh SEE ALSO
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/componentsb.txt
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-exitcodes.7 b/mdoc/man7/execline-exitcodes.7
+--- a/mdoc/man7/execline-exitcodes.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-exitcodes.7	2022-10-22 19:21:59.813339395 -0300
+@@ -0,0 +1,113 @@
++.Dd March 13, 2022
++.Dt EXECLINE-EXITCODES 7
++.Os
++.Sh NAME
++.Nm execline-exitcodes
++.Nd how to propagate exit codes up a process dynasty
++.Sh DESCRIPTION
++Say we have a parent process
++.Ql P ,
++child of a grandparent process
++.Ql G ,
++spawning a child process
++.Ql C
++and waiting for it.
++Either C dies normally with an exit code from 0 to 255, or it is
++killed by a signal.
++How can we make sure that P reports to G what happened to C, with as
++much precision as possible?
++.Pp
++The problem is, there's more information in a wstat (the structure
++filled in by
++.Xr waitpid 2 )
++than a process can report by simply exiting.
++P could exit with the same exit code as C, but then what should it do
++if C has been killed by a signal?
++.Pp
++An idea is to have P kill itself with the same signal that killed C.
++But that's actually not right, because P itself could be killed by a
++signal from another source, and G needs that information.
++.Dq P has been killed by a signal
++and
++.Dq C has been killed by a signal
++are two different pieces of information, so they should not be
++reported in the same way.
++.Pp
++So, any way you look at it, there is always more information than we
++can report.
++.Pp
++Shells have their own convention[1] for reporting crashes, but since
++any exit code greater than 127 is reported as is, the information
++given by the shell is unreliable:
++.Dq child exited 129
++and
++.Dq child was killed by SIGHUP
++are indistinguishable.
++When shells get nested, all bets are off - the information conveyed by
++exit codes becomes devoid of meaning pretty fast.
++We need something better.
++.Ss execline's solution
++execline commands such as
++.Xr if 1 ,
++that can report a child's exit code, proceed that way when they're in
++the position of P:
++.Bl -bullet -width x
++.It
++If C was killed by a signal: P exits 128 plus the signal number.
++.It
++If C exited 128 or more: P exits 128.
++.It
++Else, P exits with the same code as C.
++.El
++.Pp
++Rationale:
++.Bl -bullet -width x
++.It
++128+ exit codes are extremely rare and should report really
++problematic conditions; commands usually exit 127 or less.
++If C exits 128+, it's more important to convey the information
++.Do
++something really bad happened, but the C process itself was not
++killed by a signal
++.Dc
++than the exact nature of the event.
++.It
++Commands following that convention can be nested.
++If P exits 129+, G knows that C was killed by a signal.
++If G also needs to report that to its parent, it will exit 128: G's
++parent will not know the signal number, but it will know that P
++reported 128 or more, so either C or a scion of C had problems.
++.It
++Exact information is reported in the common case.
++.El
++.Ss Summary of common exit codes for execline programs
++.Bl -tag -width x
++.It 0
++Success.
++This code is rarely encountered, because most execline programs
++chainload into something else when they succeed, instead of exiting 0.
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.It 126
++Unable to chainload into another program
++.Po
++any other error than
++.Dv ENOENT
++.Pc .
++.It 127
++Unable to chainload into another program (executable not found).
++.El
++.Sh SEE ALSO
++.Xr forx 1 ,
++.Xr waitpid 2
++.Pp
++[1]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_08_02
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/exitcodes.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-grammar.7 b/mdoc/man7/execline-grammar.7
+--- a/mdoc/man7/execline-grammar.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-grammar.7	2022-10-22 19:21:59.813339395 -0300
+@@ -0,0 +1,267 @@
++.Dd March 13, 2022
++.Dt EXECLINE-GRAMMAR 7
++.Os
++.Sh NAME
++.Nm execline-grammar
++.Nd the execline language design and grammar
++.Sh DESCRIPTION
++.Ss execline principles
++Here are some basic Unix facts:
++.Bl -bullet -width x
++.It
++Unix programs are started with the
++.Xr execve 2
++system call, which takes 3 arguments: the command name (which we won't
++discuss here because it's redundant in most cases), the command line
++.Ar argv ,
++which specifies the program name and its arguments, and the environment
++.Ar envp .
++.It
++The
++.Ar argv
++structure makes it easy to read some arguments at the beginning of
++.Ar argv ,
++perform some action, then
++.Xr execve 2
++into the rest of
++.Ar argv .
++For instance, the
++.Xr nice 1
++command works that way:
++.Ql nice -10 echo blah
++will read
++.Ql nice
++and
++.Ql -10
++from the
++.Ar argv ,
++change the process'
++.Ar nice
++value, then
++.Xr exec 3
++into the command
++.Ql echo blah .
++This is called chain loading[1] by some people, and Bernstein
++chaining[2] by others.
++.It
++The purpose of the environment is to preserve some state across
++.Xr execve 2
++calls.
++This state is usually small: most programs keep their information in
++the filesystem.
++.It
++A
++.Em script
++is basically a text file whose meaning is a sequence of actions,
++i.e. calls to Unix programs, with some control over the execution
++flow.
++You need a program to interpret your script.
++Traditionally, this program is
++.Pa /bin/sh :
++scripts are written in the
++.Em shell
++language.
++.It
++The shell reads and interprets the script command after command.
++That means it must preserve a state, and stay in memory while the
++script is running.
++.It
++Standard shells have lots of built-in features and commands, so they
++are big.
++Spawning (i.e.
++.Xr fork 2 Ns
++ing then
++.Xr exec 3 Ns
++ing) a shell script takes time, because the shell program itself must
++be initialized.
++For simple programs like
++.Ql nice -10 echo blah ,
++a shell is overpowered - we only need a way to make an
++.Ar argv
++from the
++.Dq nice -10 echo blah
++string, and
++.Xr execve 2
++into that
++.Ar argv .
++.It
++Unix systems have a size limit for
++.Sm off
++.Ar argv
+++
++.Ar envp ,
++.Sm on
++but it is high.
++POSIX states that this limit must not be inferior to 4KB - and most
++simple scripts are smaller than that.
++Modern systems have a much higher limit: for instance, it is 64KB on
++.Fx 4.6 ,
++and 128KB on Linux.
++.El
++.Pp
++Knowing that, and wanting lightweight and efficient scripts, I
++wondered:
++.Do
++Why should the interpreter stay in memory while the script is
++executing?
++Why not parse the script once and for all, put it all into one
++.Ar argv ,
++and just execute into that
++.Ar argv ,
++relying on external commands (which will be called from within the
++script) to control the execution flow?
++.Dc
++.Pp
++execline was born.
++.Pp
++execline is the first script language to rely
++.Em entirely
++on chain loading.
++An execline script is a single
++.Ar argv ,
++made of a chain of programs designed to perform their action then
++.Xr exec 3
++into the next one.
++.Pp
++The
++.Xr execlineb 1
++command is a
++.Em launcher :
++it reads and parses a text file, converting it to an
++.Ar argv ,
++then executes into that
++.Ar argv .
++It does nothing more.
++.Pp
++Straightforward scripts like
++.Ql nice -10 echo blah
++will be run just as they are, without the shell overhead.
++Here is what the script could look like:
++.Bd -literal -offset indent
++#!/command/execlineb -P
++nice -10
++echo blah
++.Ed
++.Pp
++More complex scripts will include calls to other execline commands,
++which are meant to provide some control over the process state and
++execution flow from inside an
++.Ar argv .
++.Ss Grammar of an execline script
++An execline script can be parsed as follows:
++.Bd -literal -offset indent
++<instruction> = <> |
++                external options <arglist> <instruction> |
++                builtin options <arglist> <blocklist> <instruction>
++<arglist> = <> | arg <arglist>
++<blocklist> = <> | <block> <blocklist>
++<block> = { <arglist> } | { <instrlist> }
++<instrlist> = <> | <instruction> <instrlist>
++.Ed
++.Pp
++(This grammar is ambivalent, but much simpler to understand than the
++non-ambivalent ones.)
++.Pp
++An execline script is valid if it reduces to an
++.Em instruction .
++.Pp
++The empty
++.Em instruction
++is the same as the
++.Xr true 1
++command: when an execline component must exec into the empty
++instruction, it exits 0.
++.Pp
++Basically, every non-empty
++.Em instruction ,
++be it
++.Do
++.Em builtin
++.Dc -
++an execline command - or
++.Do
++.Em external
++.Dc -
++a program such as
++.Xr echo 1
++or
++.Xr cp 1 -
++takes a number of arguments, the
++.Ar arglist ,
++then executes into a (possibly empty)
++.Em instruction .
++.Pp
++Some
++.Em builtin Ns
++s are special because they also take a non-empty
++.Em blocklist
++after their
++.Ar arglist .
++For instance,
++the
++.Xr foreground 1
++command takes an empty
++.Ar arglist
++and one
++.Em block :
++.Bd -literal -offset indent
++#!/command/execlineb -P
++foreground { sleep 1 } echo blah
++.Ed
++.Pp
++is a valid
++.Xr execlineb 1
++script.
++The
++.Xr foreground 1
++command uses the
++.Ql sleep 1
++.Em block
++then
++.Xr exec 3 Ns
++s into the remaining
++.Ql echo blah
++.Em instruction .
++.Ss execline features
++execline commands can perform some transformations on their
++.Ar argv ,
++to emulate some aspects of a shell.
++Here are descriptions of these features:
++.Bl -bullet -width x
++.It
++Block management
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc .
++.It
++Variable substitution
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc .
++.El
++.Sh SEE ALSO
++.Xr cp 1 ,
++.Xr echo 1 ,
++.Xr execlineb 1 ,
++.Xr foreground 1 ,
++.Xr nice 1 ,
++.Xr true 1 ,
++.Xr execve 2 ,
++.Xr fork 2 ,
++.Xr exec 3 ,
++.Xr execline-block 7 ,
++.Xr execline-substitute 7
++.Pp
++[1]
++.Lk https://en.wikipedia.org/wiki/Chain_loading
++.Pp
++[2]
++.Lk http://www.catb.org/~esr/writings/taoup/html/ch06s06.html
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/grammar.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-pushenv.7 b/mdoc/man7/execline-pushenv.7
+--- a/mdoc/man7/execline-pushenv.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-pushenv.7	2022-10-22 19:21:59.813339395 -0300
+@@ -0,0 +1,205 @@
++.Dd February 8, 2021
++.Dt EXECLINE-PUSHENV 7
++.Os
++.Sh NAME
++.Nm execline-pushenv
++.Nd pushing and popping the environment
++.Sh DESCRIPTION
++The
++.Xr execlineb 1
++launcher can store
++.Em positional parameters ,
++i.e. arguments given to your script, into the environment.
++The
++.Ev \&#
++variable contains the number of arguments; the
++.Ev 0
++variable contains the name of your execline script; the
++.Ev 1
++variable contains the first argument; and so on.
++.Pp
++Up to execline-1.04, this could create problems with nested scripts:
++the inner script would overwrite the outer script's parameters, and
++there was no way to get them back.
++In particular, writing execline commands in the execline language via
++the
++.Xr runblock 1
++command was impossible.
++.Ss Push
++To solve that issue, execline now implements a kind of
++.Em environment stack .
++When
++.Xr execlineb 1
++reads the arguments, it does not overwrite the positional parameters,
++but
++.Em pushes
++them on a stack:
++.Bl -bullet -width x
++.It
++.Ev \&#
++will be set to the current number of arguments
++.It
++but if a variable named
++.Ev \&#
++existed before, it is renamed
++.Ev \&#:1
++.It
++and if a variable named
++.Ev \&#:1
++also existed, it is renamed
++.Ev \&#:2
++.It
++\&... and so on until
++.Ev \&# : Ns Ar n+1
++doesn't exist.
++.El
++.Pp
++Same goes for the other
++.Em positional parameters .
++.Pp
++The script then runs; and commands such as
++.Xr elgetpositionals 1
++use the current frame of positional parameters, without paying
++attention to the deeper levels.
++.Ss Pop
++When you are done with the arguments, it is advisable to
++.Em drop
++the current frame, and
++.Em pop
++the environment stack to get it back to its previous state:
++.Bl -bullet -width x
++.It
++.Ev \&#
++will be unset
++.It
++but if
++.Ev \&#:1
++exists, it will be renamed
++.Ev \&#
++.It
++and if
++.Ev \&#:2
++exists, it will be renamed
++.Ev \&#:1
++\&... and so on until
++.Ev \&# : Ns Ar n+1
++doesn't exist.
++.El
++.Pp
++Again, same goes for the other
++.Em positional parameters .
++The
++.Xr runblock 1
++command will perform that
++.Em pop
++operation automatically; the standard
++.Dq manual
++way to perform it is to use the
++.Ql emptyenv -P
++command.
++.Ss Substituting positional parameters without touching the environment
++Most of the time, you just need to substitute the positional
++parameters in your execline script, and don't need to go through the
++whole
++.Xr elgetpositionals 1
++and
++.Xr emptyenv 1
++chain.
++execline comes with an integrated substitution mechanism, that does
++not touch the environment at all: the
++.Ql -S Ar n
++option.
++.Pp
++Scripts beginning with:
++.Bd -literal -offset indent
++#!/command/execlineb -Sn
++foobar...
++.Ed
++.Pp
++are equivalent to:
++.Bd -literal -offset indent
++#!/command/execlineb
++elgetpositionals -Pn
++emptyenv -P
++foobar...
++.Ed
++.Pp
++So, to summarize, from most efficient (but less flexible) to least
++efficient (but more flexible):
++.Bl -bullet -width x
++.It
++Use
++.Ql execlineb -P
++if you don't need positional parameters at all; for instance, in s6[1]
++or runit[2]
++.Em run scripts .
++.It
++Use
++.Ql execlineb -S Ar n
++if you need only simple positional parameter substitution in your script - no
++.Xr shift 1
++or
++.Xr elgetopt 1 ,
++no
++.Ql importas 1 1 .
++.It
++Use
++.Ql execlineb -p ,
++then
++.Xr elgetpositionals 1
++if you don't mind overwriting the current stack of positional parameters.
++.It
++Use
++.Xr execlineb 1 ,
++then
++.Xr elgetpositionals 1 ,
++then
++.Ql emptyenv -P
++if you need the full power of positional parameter handling.
++.El
++.Sh EXAMPLES
++Suppose you want to run the long-lived program
++.Ar prog
++after printing the list of its arguments.
++.Bd -literal -offset indent
++#!/command/execlineb
++elgetpositionals
++foreground { echo $0 $@ }
++prog $@
++.Ed
++.Pp
++will work, but will pollute
++.Ar prog Ap
++s environment with a set of positional parameters that have no meaning
++to it.
++A better script is:
++.Bd -literal -offset indent
++#!/command/execlineb
++elgetpositionals
++foreground { echo $0 $@ }
++emptyenv -P
++prog $@
++.Ed
++.Pp
++which will run
++.Ar prog
++with the same environment as the script's caller.
++.Sh SEE ALSO
++.Xr elgetopt 1 ,
++.Xr elgetpositionals 1 ,
++.Xr emptyenv 1 ,
++.Xr execlineb 1 ,
++.Xr runblock 1 ,
++.Xr shift 1
++.Pp
++[1]
++.Lk https://skarnet.org/software/s6/
++.Pp
++[2]
++.Lk http://smarden.org/runit/
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/el_pushenv.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-substitute.7 b/mdoc/man7/execline-substitute.7
+--- a/mdoc/man7/execline-substitute.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-substitute.7	2022-10-22 19:21:59.813339395 -0300
+@@ -0,0 +1,429 @@
++.Dd February 14, 2021
++.Dt EXECLINE-SUBSTITUTE 7
++.Os
++.Sh NAME
++.Nm execline-substitute
++.Nd overview of execline variable substitution
++.Sh DESCRIPTION
++In a shell, when you write
++.Bd -literal -offset indent
++$ A='foobar' ; echo $A
++.Ed
++.Pp
++the
++.Xr echo 1
++command is given the argument
++.Ql foobar .
++The
++.Ql foobar
++.Em value
++has been substituted for the
++.Ql A
++.Em variable .
++.Pp
++Although execline maintains no state, and thus has no real variables,
++it provides such a
++.Em substitution
++facility via
++.Em substitution commands ,
++namely:
++.Bl -bullet -width x
++.It
++.Xr define 1
++.It
++.Xr importas 1
++.It
++.Xr elglob 1
++.It
++.Xr elgetpositionals 1
++.It
++.Xr multidefine 1
++.It
++.Xr multisubstitute 1
++.El
++.Pp
++A substitution command takes a
++.Em key ,
++i.e. a string (which can contain any character but
++.Ql $ ,
++.Ql {
++and
++.Ql } ,
++although it is recommended to use only alphanumerical characters), and
++a way to compute a
++.Em value .
++.Ss Basics
++If the substitution key is
++.Ar foo ,
++then the substitution command will look for every occurrence of
++.Ql ${ Ns Ar foo Ns }
++or
++.Ql $ Ns Ar foo
++in the rest of its argv.
++Note that
++.Ql ${ Ns Ar foo Ns }bar
++matches, but
++.Ql $ Ns Ar foo Ns bar
++.Sy does not .
++To be safe, always use the syntax with braces, unless
++.Ql $ Ns Ar foo
++is a word on its own.
++.Pp
++Every match is then replaced with the
++.Em value .
++.Pp
++The simplest example is the following:
++.Bd -literal -offset literal
++#!/command/execlineb
++define FOO blah
++echo $FOO
++.Ed
++.Pp
++which will replace the
++.Ql FOO
++key with the
++.Ql blah
++value, then execute the
++.Xr echo 1
++command.
++So that script will print
++.Ql blah
++on stdout.
++.Ss Quoting
++execline allows you to write literal
++.Ql ${ Ns Ar foo Ns }
++constructs even when the
++.Ar foo
++variable is being substituted, thanks to a quoting mechanism.
++Brace (pun intended) yourself: the following is the most complex part
++of the whole language.
++.Pp
++.Sy Rationale
++.Pp
++If we want to be able to have a literal <tt>${<em>foo</em>}</tt>, then:
++.Bl -bullet -width x
++.It
++The
++.Ql ${ Ns Ar foo Ns }
++sequence will mean one of two things: be substituted, or
++.Em don't
++be substituted.
++.It
++The default (unquoted) action should be: substitute.
++.It
++A sequence that means
++.Dq do not substitute
++should be able to appear literally.
++The quote character should also be able to appear literally before a
++sequence that means
++.Dq substitute .
++(Tricky, eh?)
++.It
++There should be as few quote characters as possible, to avoid
++shell-like quoting nightmares.
++.El
++.Pp
++.Sy Syntax
++.Pp
++Rule:
++.Bl -bullet -width x
++.It
++The backslash
++.Po
++.Ql \e
++.Pc
++is a quote character for substitution commands.
++.It
++The following rule applies only if the
++.Ar foo
++key is explicitly used in a substitution command.
++If no command tries to substitute anything for
++.Ar foo ,
++sequences like
++.Ql ${ Ns Ar foo Ns }
++and preceding backslashes are left untouched.
++.It
++(Substitute.)
++If
++.Ql ${ Ns Ar foo Ns }
++is preceded by
++.Ar 2*n
++backslashes
++(an
++.Sy even
++number), the whole sequence will be replaced with
++.Ar n
++backslashes, followed by the substituted value.
++.It
++(Do not substitute.)
++If
++.Ql ${ Ns Ar foo Ns }
++is preceded by
++.Ar 2*n+1
++backslashes
++(an
++.Sy odd
++number), the whole sequence will be replaced with
++.Ar n
++backslashes, followed by the literal
++.Ql ${ Ns Ar foo Ns } .
++.El
++.Pp
++And now, the catch: the
++.Xr execlineb 1
++launcher, as well as the shell, interprets backslashes as escape
++characters.
++To make a word that contains a backlash, you need to write
++.Em two
++backslashes in your execline script or shell command line.
++That means that the whole number of backslashes you must write before
++your
++.Ql ${ Ns Ar foo Ns }
++sequence must be doubled for the substitution command to read the
++proper number of backslashes and perform its work correctly.
++.Pp
++Once you keep that in mind, the quoting rule is logical.
++.Pp
++.Sy Example
++.Pp
++The quoting rule is best illustrated with the following example, where
++the
++.Ql A
++key is substituted, and the
++.Ql $B
++sequences mean nothing special.
++.Bd -literal -offset indent
++#!/command/execlineb
++define A val
++foreground { echo $A \e\e$A \e\e\e\e$A \e\e\e\e\e\e$A \e\e\e\e\e\e\e\e$A \e\e\e\e\e\e\e\e\e\e$A }
++             echo $B \e\e$B \e\e\e\e$B \e\e\e\e\e\e$B \e\e\e\e\e\e\e\e$B \e\e\e\e\e\e\e\e\e\e$B
++.Ed
++.Pp
++prints
++.Bd -literal -offset indent
++val $A \eval \e$A \e\eval \e\e$A
++$B \e$B \e\e$B \e\e\e$B \e\e\e\e$B \e\e\e\e\e$B
++.Ed
++.Pp
++Phew.
++.Ss Value transformations
++A value can go through several transformations before it is
++substituted.
++It can be crunched, chomped, and/or split
++.Po
++cf.\&
++.Xr execline-transform 7
++.Pc
++.Ss Substitution of split values
++A
++.Ql split
++value for
++.Ql FOO
++means that a word containing
++.Ql ${FOO}
++will be replaced by zero, one, or (usually) more than one word.
++The value actually means a
++.Em list
++of values.
++.Pp
++The rule is: substituting a list of values
++.Po
++.Ar v1 ,
++.Ar v2 ,
++.Ar ...
++.Pc
++for a key
++.Ar A
++is the same as listing the substitutions of every value
++.Ar v Ns Ar i
++for
++.Ar A .
++.Pp
++For instance,
++.Bd -literal -offset indent
++#!/command/execlineb
++define -s FOO "v1 v2 v3" echo prefix-${FOO}-postfix
++.Ed
++.Pp
++will substitute three values for
++.Ql $FOO :
++.Ql v1 ,
++.Ql v2
++and
++.Ql v3 .
++So the
++.Xr echo 1
++command will be called with three arguments:
++.Ql prefix-v1-postfix ,
++.Ql prefix-v2-postfix ,
++and
++.Ql prefix-v3-postfix .
++.Pp
++(Implementation note: the fact that word prefixes are kept is what
++makes execline's subtitutions secure.
++Blocks
++.Po
++cf.\&
++.Xr execline-block 7
++.Pc
++are implemented via prefix space characters; a substitution occurring
++inside a block will always produce words beginning with the right
++amount of spaces, thus substituted values cannot prematurely terminate
++a block.)
++.Pp
++.Sy Recursive substitutions
++.Pp
++A direct consequence of that rule is that substitutions will be
++performed recursively if more than one key appears in one word and the
++values for those keys are split.
++Parallel substitutions are performed from left to right.
++For instance, in
++.Bd -literal -offset indent
++#!/command/execlineb
++define -s B "1 2 3" echo ${B}x${B}
++.Ed
++.Pp
++the
++.Ql ${B}x${B}
++word will be replaced with
++.Em nine
++words:
++.Ql 1x1 ,
++.Ql 1x2 ,
++.Ql 1x3 ,
++.Ql 2x1 ,
++.Ql 2x2 ,
++.Ql 2x3 ,
++.Ql 3x1 ,
++.Ql 3x2 ,
++and
++.Ql 3x3 ,
++in that order.
++.Pp
++Here is an example with two distinct substitutions in parallel:
++.Bd -literal -offset indent
++#!/command/execlineb
++multisubstitute
++{
++  define -s A "a b c d"
++  define -s B "1 2 3"
++}
++echo ${A}x${B}
++.Ed
++.Pp
++The
++.Ql ${A}x${B}
++word will be replaced with
++.Em twelve
++words:
++.Ql ax1 ,
++.Ql ax2 ,
++.Ql ax3 ,
++.Ql bx1 ,
++.Ql bx2 ,
++.Ql bx3 ,
++.Ql cx1 ,
++.Ql cx2 ,
++.Ql cx3 ,
++.Ql dx1 ,
++.Ql dx2 ,
++and
++.Ql dx3 ,
++in that order.
++You can check that the order of the
++.Ql define
++directives in
++.Xr multisubstitute 1
++does not matter.
++.Pp
++If the left-to-right order does not suit you, then you should perform
++.Em serial
++substitutions.
++For instance, the previous script can be replaced with
++.Bd -literal -offset indent
++#!/command/execlineb
++define -s B "1 2 3"
++define -s A "a b c d"
++echo ${A}x${B}
++.Ed
++.Pp
++and will substitute
++.Ql ${B}
++first, then
++.Ql ${A} .
++So it will print
++.Bd -literal -offset indent
++ax1 bx1 cx1 dx1 ax2 bx2 cx2 dx2 ax3 bx3 cx3 dx3
++.Ed
++.Pp
++in that order.
++.Ss Not for the faint of heart
++If you think you have mastered the art of execline substitution, then
++you can try to do better than these people:
++.Bl -bullet -width x
++.It
++Jo\(:el Riou[1] wrote the first execlineb quine[2], using
++only
++.Xr echo 1
++as non-execline external command.
++.It
++Shortly after, Paul Jarc[3] wrote a much shorter quine[4], using
++.Xr echo 1
++and
++.Xr env 1
++as non-execline external commands.
++He also wrote a revised version[5], using only
++.Xr echo 1 ,
++and a shorter definitive version[6].
++The last one is probably very close to the shortest possible execline
++quine.
++.It
++David Madore[7] wrote another quine[8], using
++.Xr printf 1 .
++His quine is longer than the other ones, but is well-commented and can
++be used as a tutorial on how to write quines. :)
++.El
++.Sh SEE ALSO
++.Xr define 1 ,
++.Xr echo 1 ,
++.Xr elgetpositionals 1 ,
++.Xr elglob 1 ,
++.Xr env 1 ,
++.Xr execlineb 1 ,
++.Xr importas 1 ,
++.Xr multidefine 1 ,
++.Xr multisubstitute 1 ,
++.Xr multisubstitute 1 ,
++.Xr printf 1 ,
++.Xr execline-block 7 ,
++.Xr execline-transform 7
++.Pp
++[1]
++.Lk http://jriou.org/
++.Pp
++[2]
++.Lk https://skarnet.org/software/execline/quine-jriou.txt
++.Pp
++[3]
++.Lk https://code.dogmap.org/
++.Pp
++[4]
++.Lk https://skarnet.org/software/execline/quine-prj.txt
++.Pp
++[5]
++.Lk https://skarnet.org/software/execline/quine-prj-2.txt
++.Pp
++[6]
++.Lk https://skarnet.org/software/execline/quine-prj-3.txt
++.Pp
++[7]
++.Lk http://www.madore.org/~david/
++.Pp
++[8]
++.Lk https://skarnet.org/software/execline/quine-dam.txt
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/el_substitute.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-transform.7 b/mdoc/man7/execline-transform.7
+--- a/mdoc/man7/execline-transform.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-transform.7	2022-10-22 19:21:59.813339395 -0300
+@@ -0,0 +1,252 @@
++.Dd March 24, 2022
++.Dt EXECLINE-TRANSFORM 7
++.Os
++.Sh NAME
++.Nm execline-transform
++.Nd overview of execline value transformation
++.Sh DESCRIPTION
++You can apply 3 kinds of transformations to a value which is to be
++substituted
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc
++for a variable: crunching, chomping and splitting.
++They always occur in that order.
++.Ss Delimiters
++The transformations work around
++.Em delimiters .
++Delimiters are the semantic bounds of the
++.Dq words
++in your value.
++.Pp
++You can use any character (except the null character, which you cannot
++use in execline scripts) as a delimiter, by giving a string consisting
++of all the delimiters you want as the argument to the
++.Fl d
++option used by substitution commands.
++By default, the string
++.Ql \ \en\er\et
++is used, which means that the default delimiters are spaces, newlines,
++carriage returns and tabs.
++.Pp
++(The
++.Xr forstdin 1
++command is a small exception: by default, it only recognizes newlines
++as delimiters.)
++.Ss Crunching
++You can tell the substitution command to merge sets of consecutive
++delimiters into a single delimiter.
++For instance, to replace three consecutive spaces, or a space and 4
++tab characters, with a single space.
++This is called
++.Em crunching ,
++and it is done by giving the
++.Fl C
++switch to the substitution command.
++The remaining delimiter will always be the first in the sequence.
++Crunching is
++.Em off
++by default, or if you give the
++.Fl c
++switch.
++.Pp
++Crunching is mainly useful when also
++.Sx Splitting .
++.Ss Chomping
++Sometimes you don't want the last delimiter in a value.
++.Em Chomping
++deletes the last character of a value if it is a delimiter.
++It is requested by giving the
++.Fl n
++switch to the substitution command.
++You can turn it off by giving the
++.Fl N
++switch.
++It is off by default unless mentioned in the documentation page of
++specific binaries.
++Note that chomping always happens
++.Em after
++crunching, which means you can use crunching+chomping to ignore, for
++instance, a set of trailing spaces.
++.Ss Splitting
++In a shell, when you write
++.Bd -literal -offset indent
++$ A='foo bar' ; echo $A
++.Ed
++.Pp
++the
++.Xr echo 1
++command is given two arguments,
++.Ql foo
++and
++.Ql bar .
++The
++.Ql $A
++value has been
++.Em split ,
++and the space between
++.Ql foo
++and
++.Ql bar
++acted as a
++.Em delimiter .
++.Pp
++If you want to avoid splitting, you must write something like
++.Bd -literal -offset indent
++$ A='foo bar' ; echo "$A"
++.Ed
++.Pp
++The doublequotes
++.Dq protect
++the spaces.
++Unfortunately, it's easy to forget them and perform unwanted splits
++during script execution - countless bugs happen because of the shell's
++splitting behaviour.
++.Pp
++execline provides a
++.Em splitting
++facility, with several advantages over the shell's:
++.Bl -bullet -width x
++.It
++Splitting is off by default, which means that substitutions
++are performed as is, without interpreting the characters in the
++value.
++In execline, splitting has to be explicitly requested
++by specifying the
++.Fl s
++option to commands that perform substitution
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc .
++.It
++Positional parameters are never split, so that execline scripts can
++handle arguments the way the user intended to.
++To split
++.Ql $1 ,
++for instance, you have to ask for it specifically:
++.Bd -literal -offset indent
++#!/command/execlineb -S1
++define -sd" " ARG1S $1
++blah $ARG1S
++.Ed
++.Pp
++and
++.Ql $ARG1S
++will be split using the space character as only delimiter.
++.It
++Any character can be a delimiter.
++.El
++.Pp
++.Sy How it works
++.Bl -bullet -width x
++.It
++A substitution command can request that the substitution value be
++split, via the
++.Fl s
++switch.
++.It
++The splitting function parses the value, looking for delimiters.
++It fills up a structure, marking the split points, and the number
++.Ar n
++of words the value is to be split into.
++.Bl -bullet -width x
++.It
++A word is a sequence of characters in the value
++.Em terminated by a delimiter .
++The delimiter is not included in the word.
++.It
++If the value begins with
++.Ar x
++delimiters, the word list will begin with
++.Ar x
++empty words.
++.It
++The last sequence of characters in the value will be recognized as a
++word even if it is not terminated by a delimiter, unless you have
++requested
++.Sx Chomping
++and there was no delimiter at the end of the value
++.Em before
++the chomp operation - in which case that last sequence will not appear
++at all.
++.El
++.It
++The substitution rewrites the argv.
++A non-split value will be written as one word in the argv; a split
++value will be written as
++.Ar n
++separate words.
++.It
++Substitution of split values is performed recursively
++.Po
++cf.\&
++.Xr execline-substitute 7
++.Pc .
++.El
++.Pp
++.Sy Decoding netstrings
++.Pp
++Netstrings[1] are a way to reliably encode strings containing
++arbitrary characters.
++execline takes advantage of this to offer a completely safe splitting
++mechanism.
++If a substitution command is given an empty delimiter string (by use
++of the
++.Ql -d \(dq\(dq
++option), the splitting function will try to interpret the value as a
++sequence of netstrings, every netstring representing a word.
++For instance, in the following command line:
++.Bd -literal -offset indent
++$ define -s -d "" A '1:a,2:bb,0:,7:xyz 123,1: ,' echo '$A'
++.Ed
++.Pp
++the
++.Xr echo 1
++command will be given five arguments:
++.Bl -bullet -width x
++.It
++the
++.Ql a
++string
++.It
++the
++.Ql bb
++string
++.It
++the empty string
++.It
++the
++.Ql xyz 123
++string
++.It
++the
++.Ql \ \&
++string (a single space)
++.El
++.Pp
++However, if the value is not a valid sequence of netstrings, the
++substitution command will die with an error message.
++.Pp
++The
++.Xr dollarat 1
++command, for instance, can produce a sequence of netstrings (encoding
++all the arguments given to an execline script), meant to be decoded by
++a substitution command with the
++.Ql -d \(dq\(dq
++option.
++.Sh SEE ALSO
++.Xr dollarat 1 ,
++.Xr echo 1 ,
++.Xr forstdin 1 ,
++.Xr execline-substitute 7
++.Pp
++[1]
++.Lk https://cr.yp.to/proto/netstrings.txt
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/el_transform.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
