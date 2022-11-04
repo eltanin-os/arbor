@@ -1,4 +1,4 @@
 #!/bin/execlineb -P
-importas -iu CFLAGS CFLAGS
+importas -i CFLAGS CFLAGS
 export CFLAGS "-fno-builtin ${CFLAGS}"
 arbor.mk.eltaninredo install
