@@ -1,10 +1,11 @@
 #!/bin/execlineb -P
 multisubstitute {
-	importas -iu CPPFLAGS CPPFLAGS
-	importas -iu CFLAGS CFLAGS
-	importas -iu LDFLAGS LDFLAGS
+	importas -i CC CC
+	importas -i CPPFLAGS CPPFLAGS
+	importas -i CFLAGS CFLAGS
+	importas -i LDFLAGS LDFLAGS
 }
-export ARBOR_MK_GMAKE_FLAGS "CFLAGS=${CFLAGS} ${CPPFLAGS};LDFLAGS=${LDFLAGS}"
+export ARBOR_MK_GMAKE_FLAGS "CC=${CC};CFLAGS=${CFLAGS} ${CPPFLAGS};LDFLAGS=${LDFLAGS}"
 if { arbor.mk.gmake pigz }
 if { arbor.utils.install bin pigz }
 arbor.utils.install man1 pigz.1
