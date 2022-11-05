@@ -1,10 +1,10 @@
 name:bearssl
-version:0.6
+version:20220608091539
 license:mit
 description:The BearSSL implementation of the SSL/TLS protocol.
-cksum:4d9cc05419d22726e1a1d13586c9a4291e495f845988e91706ebc6292ebc1673f9c9cccef9a8461e36b3abadb8adbb7212d2bd0bfd8c6fb9203db1cdc6d9024c
+cksum:fb74e48a2ca8b784fef1ce13772a0b22eb9d6617ac5e279f07c819c4842cbfadf4171a652602ebb40642d1aca91e43081c97e8d90bc6b238f6d5bd64d69d6fd3
 urls{
-https://bearssl.org/bearssl-$version.tar.gz
+https://downloads.eltaninos.org/mirrors/bearssl-$version.tar.lz
 }
 hostdeps{
 stdenv
