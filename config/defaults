@@ -31,6 +31,7 @@ PKG_CONFIG=pkgconf
 RANLIB=ranlib
 STRIP=strip -s
 YACC=yacc
+LEX=lex
 # SYSTEM TOOLS
 DOAS=sudo -E
 FETCH=curl -Lo
