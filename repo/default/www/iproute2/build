@@ -1,5 +1,10 @@
 #!/bin/execlineb -P
-importas -i CC CC
-export ARBOR_MK_GMAKE_FLAGS "CC=$CC"
+multisubstitute {
+	importas -i AR AR
+	importas -i CC CC
+	importas -i LEX LEX
+	importas -i YACC YACC
+}
+export ARBOR_MK_GMAKE_FLAGS "AR=${AR};CC=${CC};LEX=${LEX};YACC=${YACC}"
 export PKG_CONFIG "false"
 arbor.mk.gmake install
