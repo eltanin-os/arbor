@@ -1,2 +1,3 @@
 #!/bin/execlineb -P
-arbor.mk.gnuconfigure install
+if { arbor.mk.gnuconfigure install }
+arbor.utils.install -l bin flex lex
