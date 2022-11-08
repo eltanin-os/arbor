@@ -1,0 +1,17 @@
+name:libnl-tiny
+version:20181203
+license:gpl-2
+description:A tiny replacement for libnl.
+cksum:6a5eee9043f2391a1528c2bb53062a5f19fb2ce4fc02ec436d0e093c505c43596a1c37578c73031c5713ef61a9c5418a881ae84608224ea23160e45754592eca
+platforms{
+linux
+}
+urls{
+https://downloads.eltaninos.org/mirrors/libnl-tiny-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
