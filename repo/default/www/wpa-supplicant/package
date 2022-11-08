@@ -1,0 +1,20 @@
+name:wpa-supplicant
+version:2.9
+license:bsd-3
+description:A WPA supplicant implementation.
+cksum:bb8160920f11e743e5069a851cd8385747aa600d0be08af44aeb226794493ad56026618ecc04d63df231ac7c59fe83bdaedb7a8bd41a995127cd5b374d9d54bc
+src:wpa_supplicant-$version
+platforms{
+linux
+}
+urls{
+https://w1.fi/releases/wpa_supplicant-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libnl-tiny
+libressl
+}

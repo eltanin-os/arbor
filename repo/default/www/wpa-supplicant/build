@@ -1,0 +1,21 @@
+#!/bin/execlineb -P
+importas -i PKG_CONFIG PKG_CONFIG
+backtick LIBNL_TINY_CFLAGS { $PKG_CONFIG --cflags libnl-tiny }
+multisubstitute {
+	importas -i LIBNL_TINY_CFLAGS LIBNL_TINY_CFLAGS
+	importas -i CFLAGS CFLAGS
+	importas -i CPPFLAGS CPPFLAGS
+	importas -i BINDIR BINDIR
+	importas -i LIBDIR LIBDIR
+}
+cd wpa_supplicant
+if { cp defconfig .config }
+if {
+	arbor.utils.sed .config
+	    -e "/CONFIG_CTRL_IFACE_DBUS/d"
+	    -e "/CONFIG_LIBNL32/d"
+	    -e "s;#\(CONFIG_LIBNL20\)=y;\1=y;"
+}
+export ARBOR_MK_GMAKE_FLAGS "BINDIR=${BINDIR};LIBDIR=${LIBDIR};CONFIG_LIBNL_TINY=y"
+export CFLAGS "-DLIBNL1_COMPAT -D_GNU_SOURCE ${LIBNL_TINY_CFLAGS} ${CFLAGS} ${CPPFLAGS}"
+arbor.mk.gmake install
