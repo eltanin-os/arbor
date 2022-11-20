@@ -30,20 +30,20 @@ foreground {
 	cd .${MANDIR}
 	foreground { find . -type f -name "*.[1-8]" -exec $DDEFLATE "{}" + }
 	# fix symbolic links
-	backtick -D "" symlinks { find . -type l }
-	importas -isu symlinks symlinks
-	forx -Ep symlink { $symlinks }
-	backtick -Ex linkpath { readlink $symlink }
-	backtick dir { dirname $symlink }
-	backtick file { basename $symlink }
-	backtick linkname { basename $linkpath }
-	multisubstitute {
-		importas -iu dir dir
-		importas -iu file file
-		importas -iu linkname linkname
-	}
-	cd $dir
-	ifelse { test -f ${linkname}.gz }
-	{ ln -sf ${linkname}.gz $file }
-	ln -sf $linkname $file
+	find . -type l -exec
+	    define slink "{}"
+	    backtick -Ex path { readlink $slink }
+	    backtick dir { dirname $slink }
+	    backtick file { basename $slink }
+	    backtick name { basename $path }
+	    multisubstitute {
+	    	importas -iu dir dir
+	    	importas -iu file file
+	    	importas -iu name name
+	    }
+	    cd $dir
+	    ifelse { test -f ${name}.gz }
+	    { ln -sf ${name}.gz $file }
+	    ln -sf $name $file
+	    ;
 }
