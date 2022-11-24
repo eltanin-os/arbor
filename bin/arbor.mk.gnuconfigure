@@ -37,10 +37,10 @@ foreground {
 	$static
 	$ARBOR_MK_CONFIGURE_ARGS
 }
-ifelse -X {
-	if -X { test -e "${ARBOR_MK_CONFIGURE}.ac" }
-	if -X { test -e "m4/libtool.m4" }
-	if -X { test "--enable-static" = "$static" }
+ifelse {
+	if { test -e "${ARBOR_MK_CONFIGURE}.ac" }
+	if { test -e "m4/libtool.m4" }
+	test "--enable-static" = "$static"
 }
 { arbor.mk.gmake LDFLAGS="${LDFLAGS} -all-static" $@ }
 arbor.mk.gmake $@

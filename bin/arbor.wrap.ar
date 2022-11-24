@@ -1,5 +1,5 @@
 #!/bin/execlineb -s1
-case -s -- $1 {
-"-*" { exec arbor.bin.ar $1 $@ }
+case -- $1 {
+"-.*" { exec arbor.bin.ar $1 $@ }
 }
 exec arbor.bin.ar -"${1}" $@

@@ -8,15 +8,15 @@ multisubstitute {
 	importas -is UNXZ UNXZ
 }
 pipeline {
-	case -s -- $1 {
-	"*.tar.bz2" { $UNBZ2 $1 }
-	"*.tbz2"    { $UNBZ2 $1 }
-	"*.tar.gz"  { $UNGZ  $1 }
-	"*.tgz"     { $UNGZ  $1 }
-	"*.tar.lz"  { $UNLZ  $1 }
-	"*.tlz"     { $UNLZ  $1 }
-	"*.tar.xz"  { $UNXZ  $1 }
-	"*.txz"     { $UNXZ  $1 }
+	case -- $1 {
+	".*\.tar\.bz2" { $UNBZ2 $1 }
+	".*\.tbz2"     { $UNBZ2 $1 }
+	".*\.tar\.gz"  { $UNGZ  $1 }
+	".*\.tgz"      { $UNGZ  $1 }
+	".*\.tar\.lz"  { $UNLZ  $1 }
+	".*\.tlz"      { $UNLZ  $1 }
+	".*\.tar\.xz"  { $UNXZ  $1 }
+	".*\.txz"      { $UNXZ  $1 }
 	}
 	arbor.utils.err "${1}: unknown format"
 }

@@ -1,4 +1,4 @@
 #!/bin/execlineb -s1
 forx -E file { $@ }
 redirfd -a 1 $1
-if -X { test -e "${file}" } cat $file
+if { test -e "${file}" } cat $file

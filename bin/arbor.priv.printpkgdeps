@@ -11,7 +11,7 @@ cd $ARBOR
 backtick deps {
 	backtick -Ex path { arbor.priv.leafpath $1 }
 	foreground {
-		if -X { test "${ARBOR_BOOTSTRAPMODE}" -eq "0" }
+		if { test "${ARBOR_BOOTSTRAPMODE}" -eq "0" }
 		arbor.priv.dbread -t hostdeps ${path}/package
 	}
 	foreground { arbor.priv.dbread -t rundeps ${path}/package }
@@ -19,7 +19,7 @@ backtick deps {
 }
 importas -i curdeps deps
 importas -isu deps deps
-ifelse -X { test "${ELGETOPT_R}" -eq "0" } {
+ifelse { test "${ELGETOPT_R}" -eq "0" } {
 	forx -Epo 0 dep { $deps } arbor.priv.printpkgdep $dep
 }
 # XXX: could(?) use "redo" db
