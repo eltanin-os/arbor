@@ -9,17 +9,13 @@ multisubstitute {
 	importas -iu version version
 }
 export ARBOR_PACKAGENAME "${name}"
-backtick -D "" cksum { arbor.priv.dbread cksum package }
 backtick -D "${name}-${version}" src { arbor.priv.dbread src package }
 backtick -D "all" arch { arbor.priv.dbread -t arch package }
 backtick -D "all" platforms { arbor.priv.dbread -t platforms package }
-backtick -D "" urls { arbor.priv.dbread -t urls package }
 multisubstitute {
 	importas -iu src src
-	importas -iu cksum cksum
 	importas -iu arch arch
 	importas -iu platforms platforms
-	importas -isu urls urls
 }
 # check if the package is available
 if {
@@ -70,7 +66,8 @@ foreground {
 		foreground {
 			cd tmp
 			foreground { arbor.utils.msg "fetch..." }
-			backtick -Ex file { arbor.priv.fetch $cksum $urls }
+			backtick -Ex file { arbor.priv.geturlfilename }
+			foreground { redo-ifchange $file }
 			arbor.priv.explode $file
 		}
 		ifelse -Xn { importas -iu ? ? test "${?}" -eq "0" } { arbor.utils.err "failed to fetch" }
