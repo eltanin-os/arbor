@@ -1,14 +1,11 @@
 #!/bin/execlineb -P
-# c++
-#foreground { arbor.utils.sed makefile "/mpm/d" }
-#foreground { arbor.utils.sed troff/troff.d/tmac.d/Makefile.mk "s/pm//" }
 multisubstitute {
 	importas -i DESTDIR DESTDIR
 	importas -iu CFLAGS CFLAGS
 	importas -i DRTDIR DRTDIR
 }
 define D "${DRTDIR}/heirloom-doctools"
-export ARBOR_MK_GMAKE_FLAGS "ROOT=${DESTDIR};LIBDIR=${D};PUBDIR=${D}/pub;MACDIR=${D}/tmac;FNTDIR=${D}/font;PSTDIR=${D}/font/devpost/postscript;TABDIR=${D}/nterm;HYPDIR=${D}/hyphen;REFDIR=$D/reftools;CFLAGS=-fcommon ${CFLAGS}"
+export ARBOR_MK_GMAKE_FLAGS "ROOT=${DESTDIR};LIBDIR=${D};PUBDIR=${D}/pub;MACDIR=${D}/tmac;FNTDIR=${D}/font;PSTDIR=${D}/font/devpost/postscript;TABDIR=${D}/nterm;HYPDIR=${D}/hyphen;REFDIR=${D}/reftools;CFLAGS=-fcommon ${CFLAGS}"
 foreground { ./configure }
 export nprocs "1"
 if { arbor.mk.gmake }
