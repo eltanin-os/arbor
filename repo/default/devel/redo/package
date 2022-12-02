@@ -1,8 +1,8 @@
 name:redo
-version:20221030194921
+version:20221202131422
 license:unlicense
 description:A recursive, general-purpose build system.
-cksum:9f04f5551e4924019a0ee6668109dd184b71c119723c9dade5283a1bec56da7869e2750614dfa41706ebb1dbbfd84ce9418e7f0438820c187e7461c68fb183c4
+cksum:22f2485a4b1597c27f3c8f69bd105b13d85063683798f9a325da1af24300d45e3585a2208cb929255da79012ec2139ca1a44029951697d1f80599610637c4c73
 urls{
 http://downloads.eltaninos.org/sources/redo/redo-$version.tar.lz
 }
