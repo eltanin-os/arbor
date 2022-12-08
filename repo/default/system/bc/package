@@ -1,0 +1,14 @@
+name:bc
+version:6.1.1
+license:bsd-2
+description:POSIX bc with GNU extensions.
+cksum:73b93204be73552be03aa5f1e28d65647a5194f6612ebc88faa9572c40e0143915563b5a3db3ff70df68769f09d9e688bfc0daf3825fa635485084aafae5d464
+urls{
+https://github.com/gavinhoward/bc/releases/download/$version/bc-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
