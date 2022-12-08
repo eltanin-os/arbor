@@ -1,0 +1,17 @@
+name:kbd
+version:2.5.1
+license:gpl-2
+description:Tools for configuring the console.
+cksum:3a086e7d987fe1d356c5b15ea656ddda2b0abc751c5876efc7ae6c17b11246f5c157a10e90a0d41aedfc59c88cbd59e7bb90538ddcb770034adc2e3fe3ac1e58
+platforms{
+linux
+}
+urls{
+https://mirrors.edge.kernel.org/pub/linux/utils/kbd/kbd-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
