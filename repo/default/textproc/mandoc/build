@@ -31,6 +31,7 @@ LIBDIR=\"${LIBDIR}\"
 MANDIR=\"${MANDIR}\"
 STATIC=\"${static}\"
 LN=\"ln -sf\"
+INSTALL_PROGRAM=\"install -m 0755\"
 "
 	cat
 }
