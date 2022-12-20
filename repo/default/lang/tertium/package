@@ -1,8 +1,8 @@
 name:tertium
-version:20221030194430
+version:20221219230414
 license:unlicense
 description:Eltanin system programming library.
-cksum:eba16cac550f6463f0170bb0372b048a449b9545f2dd6838748d923720df9851915c7bed6ac9d8549ed103cf197b5f0876a37a0560af0b403f4d795a37e301da
+cksum:ff884cdb9280e0f67de5620eeea8ad39fad8b3ab7ecca1310a7a2d1194839ef61a65b2ef39dcb6628da986cb80270fd6779cb1bebaf4447f0f30a132ba8423df
 arch{
 x86_64
 }
