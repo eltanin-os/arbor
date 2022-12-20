@@ -7,5 +7,7 @@ multisubstitute {
 }
 export ARBOR_MK_GMAKE_FLAGS "CC=${CC};CFLAGS=${CFLAGS} ${CPPFLAGS};LDFLAGS=${LDFLAGS}"
 if { arbor-mk-gmake pigz }
-if { arbor-utils-install bin pigz }
+if { arbor-utils-install bin pigz unpigz }
+if { arbor-utils-install -l bin pigz gzip }
+if { arbor-utils-install -l bin unpigz gunzip }
 arbor-utils-install man1 pigz.1
