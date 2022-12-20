@@ -5,4 +5,4 @@ foreground {
 	redirfd -w 1 $tmp
 	sed $@
 }
-mv $tmp $1
+mv -- $tmp $1
