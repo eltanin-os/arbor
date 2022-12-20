@@ -9,18 +9,18 @@ elgetpositionals -P1
 emptyenv -o
 cd $ARBOR
 backtick deps {
-	backtick -Ex path { arbor.priv.leafpath $1 }
+	backtick -Ex path { arbor-priv-leafpath $1 }
 	foreground {
 		if { test "${ARBOR_BOOTSTRAPMODE}" -eq "0" }
-		arbor.priv.dbread -t hostdeps ${path}/package
+		arbor-priv-dbread -t hostdeps ${path}/package
 	}
-	foreground { arbor.priv.dbread -t rundeps ${path}/package }
-	foreground { arbor.priv.dbread -t makedeps ${path}/package }
+	foreground { arbor-priv-dbread -t rundeps ${path}/package }
+	foreground { arbor-priv-dbread -t makedeps ${path}/package }
 }
 importas -i curdeps deps
 importas -isu deps deps
 ifelse { test "${ELGETOPT_R}" -eq "0" } {
-	forx -Epo 0 dep { $deps } arbor.priv.printpkgdep $dep
+	forx -Epo 0 dep { $deps } arbor-priv-printpkgdep $dep
 }
 # XXX: could(?) use "redo" db
 importas -uD "" ARBOR_DEPSLIST ARBOR_DEPSLIST
@@ -30,7 +30,7 @@ pipeline {
 	case -- "\n${ARBOR_DEPSLIST}\n" {
 	".*\n${dep}\n.*" { exit 0 }
 	}
-	foreground { arbor.priv.printpkgdep $dep }
+	foreground { arbor-priv-printpkgdep $dep }
 	export ARBOR_BOOTSTRAPMODE "1"
-	arbor.priv.printpkgdeps -R $dep
+	arbor-priv-printpkgdeps -R $dep
 } sort -u

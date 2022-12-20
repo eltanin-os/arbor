@@ -18,6 +18,6 @@ export PATH "${ARBOR}/bin:${PATH}"
 cd $ARBOR
 envfile "config/defaults"
 forx -Eo 0 package { $@ }
-backtick path { arbor.priv.printpkgdep $package }
+backtick path { arbor-priv-printpkgdep $package }
 importas -iu path path
 redo $path

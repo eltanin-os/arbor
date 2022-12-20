@@ -7,6 +7,6 @@ multisubstitute {
 }
 export ARBOR_MK_CONFIGURE_ARGS "--with-sysdeps=${ARBOR_ROOTDIR}/${LIBDIR}/skalibs/sysdeps"
 # not gnuconfigure but compatible
-if { arbor.mk.gnuconfigure install }
-if { arbor.utils.install man1 $man1 }
-arbor.utils.install man7 $man7
+if { arbor-mk-gnuconfigure install }
+if { arbor-utils-install man1 $man1 }
+arbor-utils-install man7 $man7

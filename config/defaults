@@ -23,7 +23,7 @@ CPPFLAGS=
 LDFLAGS=
 # COMPILER TOOLS
 ARBOR_AR=ar
-AR=arbor.wrap.ar
+AR=arbor-wrap-ar
 AS=as
 LD=ld
 LIBTOOL=slibtool-static

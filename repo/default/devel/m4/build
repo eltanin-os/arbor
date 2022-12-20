@@ -6,5 +6,5 @@ multisubstitute {
 	importas -i MANDIR MANDIR
 }
 export ARBOR_MK_GMAKE_FLAGS "DESTDIR=${DESTDIR};PREFIX=${PREFIX};BINDIR=${BINDIR};MANDIR=${MANDIR}"
-if { arbor.mk.gmake }
-arbor.mk.gmake install
+if { arbor-mk-gmake }
+arbor-mk-gmake install

@@ -1,7 +1,7 @@
 #!/bin/execlineb -P
-if { arbor.utils.sed configure.sh "s;.*Invalid option.*;;" }
+if { arbor-utils-sed configure.sh "s;.*Invalid option.*;;" }
 if { chmod +x configure.sh }
 export ARBOR_MK_CONFIGURE_ARGS "--disable-nls"
 # not gnuconfigure
-if { arbor.mk.gnuconfigure }
-arbor.mk.gmake install
+if { arbor-mk-gnuconfigure }
+arbor-mk-gmake install

@@ -1,6 +1,6 @@
 #!/bin/execlineb -S1
 importas -i ARBOR ARBOR
 cd $ARBOR
-backtick deps { arbor.priv.printpkgdeps $1 }
+backtick deps { arbor-priv-printpkgdeps $1 }
 importas -isu deps deps
 redo-ifchange $deps

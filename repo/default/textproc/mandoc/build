@@ -35,6 +35,6 @@ INSTALL_PROGRAM=\"install -m 0755\"
 "
 	cat
 }
-if { arbor.utils.sed Makefile "s/\(\t\)ar/\1$(AR)/g" }
+if { arbor-utils-sed Makefile "s/\(\t\)ar/\1$(AR)/g" }
 if { ./configure }
-arbor.mk.gmake install
+arbor-mk-gmake install

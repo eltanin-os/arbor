@@ -2,8 +2,8 @@
 if {
 	# XXX
 	importas -iu UNGZ UNGZ
-	arbor.utils.sed data/Makefile.in "s;gunzip;pigz -d;g"
+	arbor-utils-sed data/Makefile.in "s;gunzip;pigz -d;g"
 }
 export ARBOR_MK_CONFIGURE_ARGS "--disable-vlock"
 export ARBOR_MK_GMAKE_FLAGS "MYGZIP=${DDEFLATE}"
-arbor.mk.gnuconfigure install
+arbor-mk-gnuconfigure install

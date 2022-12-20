@@ -5,8 +5,8 @@ multisubstitute {
 	importas -i LDFLAGS LDFLAGS
 }
 export ARBOR_MK_GMAKE_FLAGS "CC=${CC};LD=${CC};LDFLAGS=${LDFLAGS}"
-if { arbor.mk.gmake }
-if { arbor.utils.install bin build/brssl }
-if { arbor.utils.install -m 0644 lib build/libbearssl.a }
+if { arbor-mk-gmake }
+if { arbor-utils-install bin build/brssl }
+if { arbor-utils-install -m 0644 lib build/libbearssl.a }
 elglob HDR "inc/*"
-arbor.utils.install -m 0644 inc $HDR
+arbor-utils-install -m 0644 inc $HDR

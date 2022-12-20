@@ -22,7 +22,7 @@ multisubstitute {
 	importas -iu shared shared
 }
 export enable_option_checking no
-export MAKE "arbor.mk.gmake"
+export MAKE "arbor-mk-gmake"
 foreground {
 	$ARBOR_MK_CONFIGURE
 	--prefix=${PREFIX}
@@ -42,5 +42,5 @@ ifelse {
 	if { test -e "m4/libtool.m4" }
 	test "--enable-static" = "$static"
 }
-{ arbor.mk.gmake LDFLAGS="${LDFLAGS} -all-static" $@ }
-arbor.mk.gmake $@
+{ arbor-mk-gmake LDFLAGS="${LDFLAGS} -all-static" $@ }
+arbor-mk-gmake $@

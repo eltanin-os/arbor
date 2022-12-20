@@ -7,5 +7,5 @@ multisubstitute {
 }
 export ARBOR_MK_CONFIGURE_ARGS "CC=${CC};CFLAGS=${CFLAGS};CPPFLAGS=${CPPFLAGS};LDFLAGS=${LDFLAGS}"
 # not gnuconfigure but compatible
-if { arbor.mk.gnuconfigure install }
-arbor.utils.install -l bin clzip lzip
+if { arbor-mk-gnuconfigure install }
+arbor-utils-install -l bin clzip lzip

@@ -7,4 +7,4 @@ multisubstitute {
 }
 export ARBOR_MK_GMAKE_FLAGS "AR=${AR};CC=${CC};LEX=${LEX};YACC=${YACC}"
 export PKG_CONFIG "false"
-arbor.mk.gmake install
+arbor-mk-gmake install

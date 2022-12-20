@@ -3,6 +3,6 @@ multisubstitute {
 	importas -i ARBOR ARBOR
 	importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
 }
-backtick -Ex urls { arbor.priv.dbread -t urls ${ARBOR_PACKAGEDIR}/package }
+backtick -Ex urls { arbor-priv-dbread -t urls ${ARBOR_PACKAGEDIR}/package }
 backtick -Ex name { basename $urls }
 echo ${ARBOR}/cache/${name}

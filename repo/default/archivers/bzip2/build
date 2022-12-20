@@ -12,4 +12,4 @@ multisubstitute {
 }
 export ARBOR_MK_GMAKE_FLAGS "AR=${AR};CC=${CC};CFLAGS=${CFLAGS};RANLIB=${RANLIB};LDFLAGS=${LDFLAGS};PREFIX=${PREFIX}"
 if { mkdir -p ${DESTDIR}${INCDIR} }
-arbor.mk.gmake install
+arbor-mk-gmake install

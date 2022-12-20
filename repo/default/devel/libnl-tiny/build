@@ -8,5 +8,5 @@ multisubstitute {
 }
 export CPPFLAGS "-DGENL_ID_GENERATE=0 ${CPPFLAGS}"
 export ARBOR_MK_GMAKE_FLAGS "prefix=${PREFIX};libdir=${LIBDIR};includedir=${INCDIR};CC=${CC};ALL_LIBS=libnl-tiny.a"
-if { arbor.mk.gmake all }
-arbor.mk.gmake install
+if { arbor-mk-gmake all }
+arbor-mk-gmake install

@@ -6,7 +6,7 @@ multisubstitute {
 	importas -i INCDIR INCDIR
 	importas -i MANDIR MANDIR
 }
-if { arbor.utils.sed GNUmakefile "s;INSTALL ?=;INSTALL =;" }
+if { arbor-utils-sed GNUmakefile "s;INSTALL ?=;INSTALL =;" }
 export ARBOR_MK_GMAKE_FLAGS "PREFIX=${PREFIX};BINDIR=${BINDIR};LIBDIR=${LIBDIR};INCDIR=${INCDIR};MANDIR=${MANDIR}"
-if { arbor.mk.gmake all-static install-static }
-arbor.utils.install -l inc . ncursesw
+if { arbor-mk-gmake all-static install-static }
+arbor-utils-install -l inc . ncursesw

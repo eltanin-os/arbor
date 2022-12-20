@@ -3,6 +3,6 @@ if { chmod +x Build.sh }
 if { mkdir build }
 cd build
 if { ../Build.sh }
-if { arbor.utils.install bin mksh }
-if { arbor.utils.install -l bin mksh sh }
-arbor.utils.install man1 ../mksh.1
+if { arbor-utils-install bin mksh }
+if { arbor-utils-install -l bin mksh sh }
+arbor-utils-install man1 ../mksh.1

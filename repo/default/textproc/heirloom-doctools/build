@@ -8,7 +8,7 @@ define D "${DRTDIR}/heirloom-doctools"
 export ARBOR_MK_GMAKE_FLAGS "ROOT=${DESTDIR};LIBDIR=${D};PUBDIR=${D}/pub;MACDIR=${D}/tmac;FNTDIR=${D}/font;PSTDIR=${D}/font/devpost/postscript;TABDIR=${D}/nterm;HYPDIR=${D}/hyphen;REFDIR=${D}/reftools;CFLAGS=-fcommon ${CFLAGS}"
 foreground { ./configure }
 export nprocs "1"
-if { arbor.mk.gmake }
-if { arbor.mk.gmake install }
-if { arbor.utils.install -d man1 soelim.1 }
-arbor.utils.install -d man7 man.7 mdoc.7
+if { arbor-mk-gmake }
+if { arbor-mk-gmake install }
+if { arbor-utils-install -d man1 soelim.1 }
+arbor-utils-install -d man7 man.7 mdoc.7

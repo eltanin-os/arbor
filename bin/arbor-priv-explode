@@ -18,6 +18,6 @@ pipeline {
 	".*\.tar\.xz"  { $UNXZ  $1 }
 	".*\.txz"      { $UNXZ  $1 }
 	}
-	arbor.utils.err "${1}: unknown format"
+	arbor-utils-err "${1}: unknown format"
 }
 $UNTAR

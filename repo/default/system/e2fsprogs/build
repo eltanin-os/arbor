@@ -1,5 +1,5 @@
 #!/bin/execlineb -P
 export ARBOR_MK_CONFIGURE_ARGS "--disable-nls;--disable-libuuid;--disable-libblkid"
-if { arbor.mk.gnuconfigure }
+if { arbor-mk-gnuconfigure }
 export ARBOR_MK_GMAKE_FLAGS "LINK_INSTALL_FLAGS=-s;MKDIR_P=mkdir -p"
-arbor.mk.gmake install
+arbor-mk-gmake install

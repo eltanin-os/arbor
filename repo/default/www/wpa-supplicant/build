@@ -11,11 +11,11 @@ multisubstitute {
 cd wpa_supplicant
 if { cp defconfig .config }
 if {
-	arbor.utils.sed .config
+	arbor-utils-sed .config
 	    -e "/CONFIG_CTRL_IFACE_DBUS/d"
 	    -e "/CONFIG_LIBNL32/d"
 	    -e "s;#\(CONFIG_LIBNL20\)=y;\1=y;"
 }
 export ARBOR_MK_GMAKE_FLAGS "BINDIR=${BINDIR};LIBDIR=${LIBDIR};CONFIG_LIBNL_TINY=y"
 export CFLAGS "-DLIBNL1_COMPAT -D_GNU_SOURCE ${LIBNL_TINY_CFLAGS} ${CFLAGS} ${CPPFLAGS}"
-arbor.mk.gmake install
+arbor-mk-gmake install
