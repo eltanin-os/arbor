@@ -1,10 +1,12 @@
-#!/bin/awk -f
+#!/bin/execlineb -P
+awk "
 {
-	sub(/\/[a-z]*$/,"",$1);
-	path=$1; sub(/.*\//,"",$1);
-	print "+"length($1)","length(path)":"$1"->"path
+	sub(/\\/[a-z]*$/,\"\",$1);
+	path=$1; sub(/.*\\//,\"\",$1);
+	print \"+\"length($1)\",\"length(path)\":\"$1\"->\"path
 }
 
 END {
-	printf "\n"
+	printf \"\\n\"
 }
+"
