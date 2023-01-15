@@ -1,10 +1,17 @@
 #!/bin/execlineb -s0
+backtick jobs {
+	importas -D "" nprocs nprocs
+	case -- $nprocs {
+	"[0-9]*" { echo "-j${nprocs}" }
+	}
+}
+unexport nprocs
 multisubstitute {
 	importas -D "" LIBTOOL LIBTOOL
 	importas -sud ";" ARBOR_MK_GMAKE_FLAGS ARBOR_MK_GMAKE_FLAGS
-	importas -uD "2" nprocs nprocs
+	importas -iu jobs jobs
 }
 export MAKE "arbor-mk-gmake"
 ifelse { test -n "${LIBTOOL}" }
-{ gmake -j $nprocs LIBTOOL=$LIBTOOL $ARBOR_MK_GMAKE_FLAGS $@ }
-gmake -j $nprocs $ARBOR_MK_GMAKE_FLAGS $@
+{ gmake LIBTOOL=$LIBTOOL $ARBOR_MK_GMAKE_FLAGS $@ }
+gmake $ARBOR_MK_GMAKE_FLAGS $@
