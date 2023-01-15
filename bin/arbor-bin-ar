@@ -1,5 +1,5 @@
 #!/bin/execlineb
-elgetopt "DNOPSTUVabcdfilmopqrstuvx"
+elgetopt "DNOPSTUVX:abcdfilmopqrstuvx"
 multisubstitute {
 	importas -uD "0" ELGETOPT_D ELGETOPT_D
 	importas -uD "0" ELGETOPT_N ELGETOPT_N
