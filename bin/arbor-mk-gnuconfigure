@@ -1,23 +1,27 @@
 #!/bin/execlineb -s0
 importas -D "" LDFLAGS LDFLAGS
 backtick static {
-	pipeline { echo $LDFLAGS }
-	awk "{print match($0,/-static/) ? \"--enable-static\" : \"--disable-static\"}"
+	case -- $LDFLAGS {
+	".*-static.*" { echo --enable-static }
+	}
+	echo --disable-static
 }
 backtick shared {
-	pipeline { echo $LDFLAGS }
-	awk "{print match($0,/-static/) ? \"--disable-shared\" : \"--enable-shared\"}"
+	case -- $LDFLAGS {
+	".*-static.*" { echo --disable-shared }
+	}
+	echo --enable-shared
 }
 multisubstitute {
 	importas -sud ";" ARBOR_MK_CONFIGURE_ARGS ARBOR_MK_CONFIGURE_ARGS
 	importas -suD "./configure" ARBOR_MK_CONFIGURE ARBOR_MK_CONFIGURE
 	importas -iu PREFIX PREFIX
 	importas -iu BINDIR BINDIR
-	importas -iu SBINDIR SBINDIR
-	importas -iu LIBDIR LIBDIR
-	importas -iu INCDIR INCDIR
 	importas -iu DRTDIR DRTDIR
+	importas -iu INCDIR INCDIR
+	importas -iu LIBDIR LIBDIR
 	importas -iu MANDIR MANDIR
+	importas -iu SBINDIR SBINDIR
 	importas -iu static static
 	importas -iu shared shared
 }
@@ -25,17 +29,17 @@ export enable_option_checking no
 export MAKE "arbor-mk-gmake"
 foreground {
 	$ARBOR_MK_CONFIGURE
-	--prefix=${PREFIX}
-	--bindir=${BINDIR}
-	--sbindir=${SBINDIR}
-	--libdir=${LIBDIR}
-	--includedir=${INCDIR}
-	--oldincludedir=${INCDIR}
-	--datarootdir=${DRTDIR}
-	--mandir=${MANDIR}
-	$shared
-	$static
-	$ARBOR_MK_CONFIGURE_ARGS
+	    --prefix=${PREFIX}
+	    --bindir=${BINDIR}
+	    --sbindir=${SBINDIR}
+	    --libdir=${LIBDIR}
+	    --includedir=${INCDIR}
+	    --oldincludedir=${INCDIR}
+	    --datarootdir=${DRTDIR}
+	    --mandir=${MANDIR}
+	    $shared
+	    $static
+	    $ARBOR_MK_CONFIGURE_ARGS
 }
 ifelse {
 	if { test -e "${ARBOR_MK_CONFIGURE}.ac" }
