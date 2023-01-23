@@ -1,11 +1,13 @@
 #!/bin/execlineb -P
 multisubstitute {
-	importas -i DESTDIR DESTDIR
 	importas -iu CFLAGS CFLAGS
+	importas -i DESTDIR DESTDIR
+	importas -i BINDIR BINDIR
 	importas -i DRTDIR DRTDIR
+	importas -i MANDIR MANDIR
 }
 define D "${DRTDIR}/heirloom-doctools"
-export ARBOR_MK_GMAKE_FLAGS "ROOT=${DESTDIR};LIBDIR=${D};PUBDIR=${D}/pub;MACDIR=${D}/tmac;FNTDIR=${D}/font;PSTDIR=${D}/font/devpost/postscript;TABDIR=${D}/nterm;HYPDIR=${D}/hyphen;REFDIR=${D}/reftools;CFLAGS=-fcommon ${CFLAGS}"
+export ARBOR_MK_GMAKE_FLAGS "ROOT=${DESTDIR};BINDIR=${BINDIR};LIBDIR=${D};MANDIR=${MANDIR};PUBDIR=${D}/pub;MACDIR=${D}/tmac;FNTDIR=${D}/font;PSTDIR=${D}/font/devpost/postscript;TABDIR=${D}/nterm;HYPDIR=${D}/hyphen;REFDIR=${D}/reftools;CFLAGS=-fcommon ${CFLAGS}"
 foreground { ./configure }
 export nprocs "1"
 if { arbor-mk-gmake }

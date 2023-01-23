@@ -1,0 +1,136 @@
+diff -Naur a/eqn/eqn.d/Makefile.mk b/eqn/eqn.d/Makefile.mk
+--- a/eqn/eqn.d/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/eqn/eqn.d/Makefile.mk	2023-01-23 00:56:45.768142208 -0300
+@@ -34,7 +34,7 @@
+ mrproper: clean
+ 
+ eqnchar.7: eqnchar.7.in
+-	sed 's"/usr/pub/"$(ROOT)$(PUBDIR)/"' eqnchar.7.in > $@
++	sed 's"/usr/pub/"$(PUBDIR)/"' eqnchar.7.in > $@
+ 
+ diacrit.o: ../diacrit.c ../e.h y.tab.h
+ eqnbox.o: ../eqnbox.c ../e.h y.tab.h
+diff -Naur a/grap/Makefile.mk b/grap/Makefile.mk
+--- a/grap/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/grap/Makefile.mk	2023-01-23 00:56:45.769142208 -0300
+@@ -28,7 +28,7 @@
+ mrproper: clean
+ 
+ grap.1: grap.1.in
+-	sed 's"/usr/ucblib/"$(ROOT)$(LIBDIR)/"' grap.1.in > $@
++	sed 's"/usr/ucblib/"$(LIBDIR)/"' grap.1.in > $@
+ 
+ coord.o: coord.c grap.h y.tab.h
+ for.o: for.c grap.h y.tab.h
+diff -Naur a/ptx/Makefile.mk b/ptx/Makefile.mk
+--- a/ptx/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/ptx/Makefile.mk	2023-01-23 01:02:52.197123595 -0300
+@@ -24,6 +24,6 @@
+ 
+ ptx.1: ptx.1.in
+ 	sed -e "s'/usr/5bin/sort'`which sort`'" \
+-	    -e 's"/usr/ucblib/doctools/tmac/"$(ROOT)$(BINDIR)/"' \
+-	    -e 's"/usr/ucblib/"$(ROOT)$(LIBDIR)/"' \
++	    -e 's"/usr/ucblib/doctools/tmac/"$(BINDIR)/"' \
++	    -e 's"/usr/ucblib/"$(LIBDIR)/"' \
+ 	    ptx.1.in > $@
+diff -Naur a/refer/Makefile.mk b/refer/Makefile.mk
+--- a/refer/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/refer/Makefile.mk	2023-01-23 00:56:45.771142208 -0300
+@@ -95,13 +95,13 @@
+ mrproper: clean
+ 
+ lookbib.1: lookbib.1.in
+-	sed 's"/usr/ucblib/reftools/"$(ROOT)$(REFDIR)/"' lookbib.1.in > $@
++	sed 's"/usr/ucblib/reftools/"$(REFDIR)/"' lookbib.1.in > $@
+ 
+ refer.1: refer.1.in
+-	sed 's"/usr/ucblib/reftools/"$(ROOT)$(REFDIR)/"' refer.1.in > $@
++	sed 's"/usr/ucblib/reftools/"$(REFDIR)/"' refer.1.in > $@
+ 
+ roffbib.1: roffbib.1.in
+-	sed 's"/usr/ucblib/doctools/tmac/"$(ROOT)$(MACDIR)/"' roffbib.1.in > $@
++	sed 's"/usr/ucblib/doctools/tmac/"$(MACDIR)/"' roffbib.1.in > $@
+ 
+ addbib.o: addbib.c
+ deliv2.o: deliv2.c refer..c
+diff -Naur a/soelim/Makefile.mk b/soelim/Makefile.mk
+--- a/soelim/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/soelim/Makefile.mk	2023-01-23 00:56:45.772142208 -0300
+@@ -21,4 +21,4 @@
+ mrproper: clean
+ 
+ soelim.1: soelim.1.in
+-	sed 's"/usr/ucblib/doctools/tmac/"$(ROOT)$(MACDIR)/"' soelim.1.in > $@
++	sed 's"/usr/ucblib/doctools/tmac/"$(MACDIR)/"' soelim.1.in > $@
+diff -Naur a/troff/nroff.d/Makefile.mk b/troff/nroff.d/Makefile.mk
+--- a/troff/nroff.d/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/troff/nroff.d/Makefile.mk	2023-01-23 01:01:40.270127249 -0300
+@@ -31,8 +31,8 @@
+ mrproper: clean
+ 
+ nroff.1: nroff.1.in
+-	sed -e 's"/usr/ucblib/doctools/tmac/"$(ROOT)$(MACDIR)/"' \
+-	    -e 's"/usr/ucblib/doctools/nterm/"$(ROOT)$(TABDIR)/"' \
++	sed -e 's"/usr/ucblib/doctools/tmac/"$(MACDIR)/"' \
++	    -e 's"/usr/ucblib/doctools/nterm/"$(TABDIR)/"' \
+ 	    nroff.1.in > $@
+ 
+ draw.o: ../tdef.h ../ext.h
+diff -Naur a/troff/troff.d/Makefile.mk b/troff/troff.d/Makefile.mk
+--- a/troff/troff.d/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/troff/troff.d/Makefile.mk	2023-01-23 01:03:36.782121330 -0300
+@@ -40,8 +40,8 @@
+ mrproper: clean
+ 
+ troff.1: troff.1.in
+-	sed -e 's"/usr/ucblib/doctools/font/"$(ROOT)$(FNTDIR)/"' \
+-	    -e 's"/usr/ucblib/doctools/tmac/"$(ROOT)$(MACDIR)/"' \
++	sed -e 's"/usr/ucblib/doctools/font/"$(FNTDIR)/"' \
++	    -e 's"/usr/ucblib/doctools/tmac/"$(MACDIR)/"' \
+ 	    troff.1.in > $@
+ 
+ draw.o: draw.c
+diff -Naur a/troff/troff.d/dpost.d/Makefile.mk b/troff/troff.d/dpost.d/Makefile.mk
+--- a/troff/troff.d/dpost.d/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/troff/troff.d/dpost.d/Makefile.mk	2023-01-23 00:59:50.397132830 -0300
+@@ -27,10 +27,10 @@
+ mrproper: clean
+ 
+ dpost.1: dpost.1.in
+-	sed -e 's"/usr/ucblib/doctools/font/devpost/postscript/"$(ROOT)$(PSTDIR)/"' \
+-	    -e 's"/usr/ucblib/doctools/font"$(ROOT)$(FNTDIR)"' \
+-	    -e 's"/usr/lib/lp/postscript/"$(ROOT)$(PSTDIR)/"' \
+-	    -e 's"/usr/ucblib/doctools/tmac/"$(ROOT)$(MACDIR)/"' dpost.1.in > $@
++	sed -e 's"/usr/ucblib/doctools/font/devpost/postscript/"$(PSTDIR)/"' \
++	    -e 's"/usr/ucblib/doctools/font"$(FNTDIR)"' \
++	    -e 's"/usr/lib/lp/postscript/"$(PSTDIR)/"' \
++	    -e 's"/usr/ucblib/doctools/tmac/"$(MACDIR)/"' dpost.1.in > $@
+ 
+ color.o: color.c gen.h ext.h
+ dpost.o: dpost.c comments.h gen.h path.h ext.h ../dev.h dpost.h ../afm.h \
+diff -Naur a/troff/troff.d/tmac.d/Makefile.mk b/troff/troff.d/tmac.d/Makefile.mk
+--- a/troff/troff.d/tmac.d/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/troff/troff.d/tmac.d/Makefile.mk	2023-01-23 01:03:59.069120198 -0300
+@@ -29,8 +29,8 @@
+ mrproper: clean
+ 
+ mcolor.7: mcolor.7.in
+-	sed -e 's"/usr/ucblib/doctools/font/devpost/postscript"$(ROOT)$(PSTDIR)"' \
+-	    -e 's"/usr/ucblib/doctools/tmac"$(ROOT)$(MACDIR)"' \
++	sed -e 's"/usr/ucblib/doctools/font/devpost/postscript"$(PSTDIR)"' \
++	    -e 's"/usr/ucblib/doctools/tmac"$(MACDIR)"' \
+ 	    mcolor.7.in > $@
+ 
+ $(ROOT)$(MACDIR) $(ROOT)$(MANDIR)/man7:
+diff -Naur a/vgrind/Makefile.mk b/vgrind/Makefile.mk
+--- a/vgrind/Makefile.mk	2019-10-26 01:51:56.000000000 -0300
++++ b/vgrind/Makefile.mk	2023-01-23 00:58:54.253135681 -0300
+@@ -34,5 +34,5 @@
+ mrproper: clean
+ 
+ vgrind.1: vgrind.1.in
+-	sed -e 's"/usr/ucblib/tmac/"$(ROOT)$(MACDIR)/"' \
+-	    -e 's"/usr/ucblib/"$(ROOT)$(LIBDIR)/"' vgrind.1.in > $@
++	sed -e 's"/usr/ucblib/tmac/"$(MACDIR)/"' \
++	    -e 's"/usr/ucblib/"$(LIBDIR)/"' vgrind.1.in > $@
