@@ -1,32 +1,34 @@
 #!/bin/execlineb -P
 multisubstitute {
-	importas -i BINDIR BINDIR
-	importas -i LIBDIR LIBDIR
-	importas -i DRTDIR DRTDIR
-	importas -i MANDIR MANDIR
 	importas -is DDEFLATE DDEFLATE
 	importas -is STRIP STRIP
+	importas -i ARBOR_TMPSYSTEMDIR ARBOR_TMPSYSTEMDIR
+	importas -i BINDIR BINDIR
+	importas -i DRTDIR DRTDIR
+	importas -i INCDIR INCDIR
+	importas -i LIBDIR LIBDIR
+	importas -i MANDIR MANDIR
 }
 # BLACKLIST
-foreground { find . -type f -name "*.la" -exec rm -f "{}" + }
-foreground { rm -Rf .${DRTDIR}/info }
+if { find . -type f -name "*.la" -exec rm -f "{}" + }
+if { rm -Rf .${DRTDIR}/info }
 # CONTENT
 foreground {
 	if { test -d ".${BINDIR}" }
 	find .${BINDIR} -type f -exec $STRIP "{}" +
 }
-foreground {
-	if { test -d ".${LIBDIR}" }
-	find .${LIBDIR} -type f -name "*.so" -exec $STRIP "{}" +
+if {
+	if -t { test -d ".${LIBDIR}" }
+	find .${LIBDIR} -type f -name "*.so*" -exec $STRIP "{}" +
 }
-foreground {
-	if { test -d ".${LIBDIR}/pkgconfig" }
-	foreground { mkdir -p .${DRTDIR} }
+if {
+	if -t { test -d ".${LIBDIR}/pkgconfig" }
+	if { mkdir -p .${DRTDIR} }
 	mv .${LIBDIR}/pkgconfig .${DRTDIR}
 }
-foreground {
+if {
 	# compress manpages
-	if { test -d ".${MANDIR}" }
+	if -t { test -d ".${MANDIR}" }
 	cd .${MANDIR}
 	foreground { find . -type f -name "*.[1-8]" -exec $DDEFLATE "{}" + }
 	# fix symbolic links
