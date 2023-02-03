@@ -1,7 +1,9 @@
 #!/bin/execlineb -S1
-importas -i ARBOR_PACKAGENAME ARBOR_PACKAGENAME
 fdmove 1 2
 foreground { arbor-utils-tput setaf 1 }
-foreground { echo "arbor: <error> ${ARBOR_PACKAGENAME}: ${1}" }
+foreground {
+	importas -i ARBOR_PACKAGENAME ARBOR_PACKAGENAME
+	echo "arbor: <error> ${ARBOR_PACKAGENAME}: ${1}"
+}
 foreground { arbor-utils-tput sgr0 }
 exit 1

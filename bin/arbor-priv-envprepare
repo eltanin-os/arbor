@@ -1,16 +1,24 @@
 #!/bin/execlineb -P
-multisubstitute {
-	importas -i ARBOR ARBOR
-	importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
-	importas -i ARBOR_PACKAGESRC ARBOR_PACKAGESRC
-	importas -i ARBOR_SANDBOX ARBOR_SANDBOX
-	importas -i ARBOR_TMPSYSTEMDIR ARBOR_TMPSYSTEMDIR
+importas -i ARBOR ARBOR
+if {
+	if { mkdir -p bin }
+	elglob arbin "${ARBOR}/bin/*"
+	cp $arbin bin
 }
-if { cd tmp/${ARBOR_PACKAGESRC} arbor-priv-patch $ARBOR_PACKAGEDIR }
-if { mkdir -p etc/arbor bin }
-elglob arbin "${ARBOR}/bin/*"
-elglob arcfg "${ARBOR}/config/*"
-if { arbor-priv-createconfigfile etc/arbor/config $arcfg $ARBOR_PACKAGECONFIG ${ARBOR_PACKAGEDIR}/config }
-if { cp $arbin bin }
+importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
+if {
+	importas -i ARBOR_PACKAGESRC ARBOR_PACKAGESRC
+	cd tmp/${ARBOR_PACKAGESRC}
+	arbor-priv-patch $ARBOR_PACKAGEDIR
+}
+if {
+	if { mkdir -p etc/arbor }
+	elglob arcfg "${ARBOR}/config/*"
+	arbor-priv-createconfigfile
+	    etc/arbor/config
+	    $arcfg
+	    ${ARBOR_PACKAGEDIR}/config
+}
 if { cp ${ARBOR_PACKAGEDIR}/build tmp/build.arbor }
+importas -i ARBOR_SANDBOX ARBOR_SANDBOX
 arbor-priv-create$ARBOR_SANDBOX tmp/build

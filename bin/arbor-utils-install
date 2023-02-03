@@ -1,13 +1,6 @@
 #!/bin/execlineb
 elgetopt "delm:r"
 multisubstitute {
-	importas -i DESTDIR DESTDIR
-	importas -i BINDIR BINDIR
-	importas -i DRTDIR DRTDIR
-	importas -i ETCDIR ETCDIR
-	importas -i INCDIR INCDIR
-	importas -i LIBDIR LIBDIR
-	importas -i MANDIR MANDIR
 	importas -D "0" ELGETOPT_d ELGETOPT_d
 	importas -D "0" ELGETOPT_e ELGETOPT_e
 	importas -D "0" ELGETOPT_l ELGETOPT_l
@@ -18,6 +11,15 @@ multisubstitute {
 shift
 elgetpositionals
 backtick dest {
+	multisubstitute {
+		importas -i DESTDIR DESTDIR
+		importas -i BINDIR BINDIR
+		importas -i DRTDIR DRTDIR
+		importas -i ETCDIR ETCDIR
+		importas -i INCDIR INCDIR
+		importas -i LIBDIR LIBDIR
+		importas -i MANDIR MANDIR
+	}
 	case -- $1 {
 	"bin" { echo "${DESTDIR}${BINDIR}" }
 	"drt" { echo "${DESTDIR}${DRTDIR}" }
