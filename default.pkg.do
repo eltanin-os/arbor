@@ -50,16 +50,18 @@ multisubstitute {
 	importas -i ARBOR_TMPSYSTEMDIR ARBOR_TMPSYSTEMDIR
 	importas -isu deps deps
 }
-backtick -D "" ARBOR_PACKAGECONFIG {
-	if -X { test "meta" = "${version}" }
-	echo ${PWD}/config
-}
 export ARBOR_PACKAGEDIR "${PWD}"
 export ARBOR_PACKAGESRC "${src}"
 # prepare the package build environment and build
 foreground {
 	if {
 		cd $ARBOR_TMPSYSTEMDIR
+		foreground {
+			if { mkdir -p etc/arbor }
+			redirfd -w 1 etc/arbor/packagetime
+			importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
+			arbor-priv-epochmtime ${ARBOR_PACKAGEDIR}/package
+		}
 		foreground { arbor-utils-msg "deps..." }
 		foreground { arbor-priv-pkgexplode ${ARBOR}/$deps }
 		foreground { mkdir -p tmp }

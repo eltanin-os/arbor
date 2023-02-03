@@ -1,0 +1,8 @@
+#!/bin/execlineb -S1
+backtick -Ex mtime {
+	pipeline { pax -wx ustar $1 }
+	pipeline { tail -c+137 }
+	pipeline { head -n1 }
+	cut -c1-11
+}
+printf "%d\n" "0${mtime}"

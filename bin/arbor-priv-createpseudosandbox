@@ -10,12 +10,13 @@ if {
 "#!/bin/execlineb -P
 envfile \"${ARBOR_TMPSYSTEMDIR}/etc/arbor/config\"
 multisubstitute {
+	importas -iu CPPFLAGS CPPFLAGS
+	importas -iu LDFLAGS LDFLAGS
 	importas -i DRTDIR DRTDIR
 	importas -i INCDIR INCDIR
 	importas -i LIBDIR LIBDIR
-	importas -iu CPPFLAGS CPPFLAGS
-	importas -iu LDFLAGS LDFLAGS
 }
+backtick SOURCE_DATE_EPOCH { cat ${ARBOR_TMPSYSTEMDIR}/etc/arbor/packagetime }
 export DESTDIR \"${ARBOR_TMPSYSTEMDIR}/tmp/output\"
 export ACLOCAL \"aclocal -I${ARBOR_TMPSYSTEMDIR}/${DRTDIR}/aclocal\"
 export PKG_CONFIG_PATH \"${ARBOR_TMPSYSTEMDIR}/${DRTDIR}/pkgconfig\"
