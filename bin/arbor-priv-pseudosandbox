@@ -1,6 +1,6 @@
 #!/bin/execlineb -P
 multisubstitute {
-	importas -iu ARBOR ARBOR
+	importas -i ARBOR ARBOR
 	importas -i ARBOR_TMPTARGETDIR ARBOR_TMPTARGETDIR
 	importas -i ARBOR_TMPSYSTEMDIR ARBOR_TMPSYSTEMDIR
 }
