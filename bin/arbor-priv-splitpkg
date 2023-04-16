@@ -1,0 +1,87 @@
+#!/bin/execlineb -S1
+backtick -Ex tmpdir { arbor-priv-mktempdir }
+foreground {
+	getcwd -E pwd
+	cd $tmpdir
+	if { arbor-priv-pkgexplode $1 }
+	if {
+		importas -i LIBDIR LIBDIR
+		if -t { test -d "./${LIBDIR}" }
+		if {
+			redirfd -a 1 arbor.dyn.files
+			find ./${LIBDIR} -name "*.so" ! -type d
+		}
+		redirfd -a 1 arbor.dev.files
+		find ./${LIBDIR} ! -name ".so" ! -type d
+	}
+	if {
+		importas -i INCDIR INCDIR
+		if -t { test -d "./${INCDIR}" }
+		redirfd -a 1 arbor.dev.files
+		find ./${INCDIR} ! -type d
+	}
+	if {
+		importas -i DRTDIR DRTDIR
+		if {
+			if -t { test -d "./${DRTDIR}/aclocal" }
+			redirfd -a 1 arbor.dev.files
+			find ./${DRTDIR}/aclocal ! -type d
+		}
+		if -t { test -d "./${DRTDIR}/xcb" }
+		redirfd -a 1 arbor.dev.files
+		find ./${DRTDIR}/xcb ! -type d
+	}
+	if {
+		importas -i MANDIR MANDIR
+		if -t { test -d "./${MANDIR}" }
+		redirfd -a 1 arbor.dev.files
+		find ./${MANDIR} \( -name "*.2" -o -name "*.3" \) ! -type d
+	}
+	multisubstitute {
+		importas -is DEFLATE DEFLATE
+		importas -is ARCHIVE ARCHIVE
+		importas -i name name
+		importas -i version version
+	}
+	if {
+		if -t { test -e "arbor.dev.files" }
+		if {
+			pipeline {
+				redirfd -r 0 arbor.dev.files
+				$ARCHIVE
+			}
+			redirfd -w 1 ${pwd}/${name}-dev#${version}.pkg
+			$DEFLATE
+		}
+		if { echo "${name}-dev#${version}.pkg" }
+		redirfd -r 0 arbor.dev.files
+		xargs rm -f
+	}
+	if {
+		if -t { test -e "arbor.dyn.files" }
+		if {
+			pipeline {
+				redirfd -r 0 arbor.dyn.files
+				$ARCHIVE
+			}
+			redirfd -w 1 ${pwd}/${name}-dyn#${version}.pkg
+			$DEFLATE
+		}
+		if { echo "${name}-dyn#${version}.pkg" }
+		redirfd -r 0 arbor.dev.files
+		xargs rm -f
+	}
+	if {
+		pipeline {
+			pipeline { find . ! -type d }
+			$ARCHIVE
+		}
+		redirfd -w 1 ${pwd}/${name}#${version}.pkg
+		$DEFLATE
+	}
+	if -t { test -e "${pwd}/${name}#${version}.pkg" }
+	echo "${name}#${version}.pkg"
+}
+importas -iu status ?
+foreground { arbor-priv-freetempdir $tmpdir }
+exit $status

@@ -1,3 +1,10 @@
 #!/bin/execlineb -P
-importas -i ARBOR ARBOR
-exec mktemp -p ${ARBOR}/tmp -d
+backtick -Ex name {
+	importas -i ARBOR ARBOR
+	mktemp -p ${ARBOR}/tmp -d
+}
+if {
+	importas -is DOAS DOAS
+	$DOAS mount -t tmpfs none $name
+}
+echo $name

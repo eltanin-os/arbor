@@ -62,10 +62,8 @@ foreground {
 			importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
 			arbor-priv-epochmtime ${ARBOR_PACKAGEDIR}/package
 		}
-		foreground { arbor-utils-msg "deps..." }
-		foreground { arbor-priv-pkgexplode ${ARBOR}/$deps }
-		foreground { mkdir -p tmp }
 		foreground {
+			if { mkdir -p tmp }
 			cd tmp
 			foreground { arbor-utils-msg "fetch..." }
 			backtick -Ex file { arbor-priv-geturlfilename }
@@ -74,16 +72,18 @@ foreground {
 		}
 		ifelse -Xn { importas -iu ? ? test "${?}" -eq "0" } { arbor-utils-err "failed to fetch" }
 		foreground { arbor-priv-envprepare }
+		foreground { arbor-utils-msg "deps..." }
+		foreground { arbor-priv-pkgexplode ${ARBOR}/${deps} }
 		foreground { arbor-utils-msg "build..." }
 		foreground { arbor-priv-sandboxbuild }
 		ifelse -Xn { importas -iu ? ? test "${?}" -eq "0" } { arbor-utils-err "failed to build" }
 		cd tmp/output
 		arbor-priv-postbuild
 	}
-	backtick -Ex tmpfile { mktemp }
 	foreground { arbor-utils-msg "package..." }
 	foreground { arbor-priv-pkgcreate $3 $ARBOR_TMPTARGETDIR }
 }
 importas -iu status ?
-foreground { rm -Rf $ARBOR_TMPTARGETDIR $ARBOR_TMPSYSTEMDIR }
+foreground { arbor-priv-freetempdir $ARBOR_TMPTARGETDIR }
+foreground { arbor-priv-freetempdir $ARBOR_TMPSYSTEMDIR }
 exit $status

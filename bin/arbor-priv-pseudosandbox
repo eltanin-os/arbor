@@ -6,8 +6,6 @@ multisubstitute {
 }
 export ARBOR_ROOTDIR "${ARBOR_TMPSYSTEMDIR}"
 cd $ARBOR_TMPSYSTEMDIR
-if { ln -s bin sbin }
-if { ln -s . usr }
 if { mkdir -p tmp }
 if { ln -s $ARBOR_TMPTARGETDIR tmp/output }
 ./tmp/build

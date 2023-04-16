@@ -17,7 +17,7 @@ foreground {
 	if { test -d ".${BINDIR}" }
 	find .${BINDIR} -type f -exec $STRIP "{}" +
 }
-if {
+foreground {
 	if -t { test -d ".${LIBDIR}" }
 	find .${LIBDIR} -type f -name "*.so*" -exec $STRIP "{}" +
 }

@@ -1,0 +1,77 @@
+#!/bin/execlineb -P
+backtick ARBOR_HOSTARCH { uname -m }
+backtick ARBOR_HOSTOS { pipeline { uname -s } awk "{print tolower($0)}" }
+backtick tmpdir { mktemp -p /var/tmp -d }
+multisubstitute {
+	importas -i ARBOR ARBOR
+	importas -i PATH PATH
+	importas -iu tmpdir tmpdir
+}
+export PATH "${ARBOR}/bin:${tmpdir}/bin:${tmpdir}/ellcc/bin:${PATH}"
+# XXX: the deps are assuming an unaltered "config/defaults"
+# minimal deps check
+if {
+	export ARBOR_PACKAGENAME "bootstrap"
+	define -s venus "venus-ar venus-cksum venus-conf"
+	forx -Eo 0 pkg { bzip2 cdb curl doas flex lzip pigz redo $venus xz zstd }
+	if -t {
+		importas -isd ":" P PATH
+		forx -Ex 1 path { $P }
+		test ! -f ${path}/${pkg}
+	}
+	arbor-utils-err "${pkg} not found on host system"
+}
+# compiler
+if {
+	cd $tmpdir
+	backtick -Ex HOSTARCH { uname -m }
+	# XXX: linux only
+	define file "ellcc-${HOSTARCH}-linux-2017-08-23.bz2"
+	if { curl -LO http://ellcc.org/releases/latest/${file} }
+	pipeline { bzcat $file } tar -xf -
+}
+# deps
+foreground {
+	forx -E pkg { pkgconf yacc lex slibtool }
+	if -t {
+		importas -isd ":" P PATH
+		forx -Ex 1 path { $P }
+		test ! -f ${path}/${pkg}
+	}
+	if { arbor -b $pkg }
+	backtick -Ex path { arbor-priv-printpkgdep $pkg }
+	cd $tmpdir
+	arbor-priv-pkgexplode ${ARBOR}/${path}
+}
+# bootstrap
+if {
+	if { cp config/defaults config/defaults.backup }
+	arbor-utils-sed config/defaults
+	    -e "s;^ARBOR_AR=.*;ARBOR_AR=ecc-ar;"
+	    -e "s;ARBOR_SANDBOX=.*;ARBOR_SANDBOX=pseudosandbox;"
+	    -e "s;^AS=.*;AS=ecc-as;"
+	    -e "s;^CC=.*;CC=ecc;"
+	    -e "s;^CXX=.*;CXX=ecc++;"
+	    -e "s;^LD=.*;LD=ecc-ld;"
+	    -e "s;^LDFLAGS=.*;LDFLAGS=-static;"
+	    -e "s;^RANLIB=.*;RANLIB=ecc-ranlib;"
+	    -e "s;^STRIP=.*;STRIP=ecc-strip;"
+}
+# first stage
+if { arbor -b stdenv }
+# clean
+backtick targets {
+	pipeline { redo-targets }
+	backtick -Ex stdenv {
+		backtick -Ex pkg { arbor-priv-printpkgdep stdenv }
+		basename $pkg
+	}
+	awk "/${stdenv}/{next}/.*\\.pkg/{print}"
+}
+importas -isu targets targets
+if { rm $targets }
+# last stage
+if { mv config/defaults.backup config/defaults }
+if { arbor stdenv }
+# clean
+rm $targets

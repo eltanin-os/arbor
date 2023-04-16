@@ -1,0 +1,27 @@
+#!/bin/execlineb -S1
+# $1: build file
+importas -i ARBOR_PACKAGESRC ARBOR_PACKAGESRC
+if {
+	redirfd -x 1 $1
+	heredoc 0
+"#!/bin/execlineb -P
+envfile \"/etc/arbor/config\"
+multisubstitute {
+	importas -iu PKG_CONFIG PKG_CONFIG
+	importas -i LDFLAGS LDFLAGS
+}
+backtick PKG_CONFIG {
+	case -- $LDFLAGS {
+	".*-static.*" { echo $PKG_CONFIG --static }
+	}
+	echo $PKG_CONFIG
+}
+backtick SOURCE_DATE_EPOCH { cat /etc/arbor/packagetime }
+export DESTDIR \"/tmp/output\"
+cd /tmp/${ARBOR_PACKAGESRC}
+fdmove -c 1 2
+/tmp/build.arbor
+"
+	cat
+}
+chmod +x $1

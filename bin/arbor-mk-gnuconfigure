@@ -1,33 +1,37 @@
 #!/bin/execlineb -s0
 importas -D "" LDFLAGS LDFLAGS
-backtick static {
-	case -- $LDFLAGS {
-	".*-static.*" { echo --enable-static }
-	}
-	echo --disable-static
-}
-backtick shared {
-	case -- $LDFLAGS {
-	".*-static.*" { echo --disable-shared }
-	}
-	echo --enable-shared
-}
-multisubstitute {
-	importas -sud ";" ARBOR_MK_CONFIGURE_ARGS ARBOR_MK_CONFIGURE_ARGS
-	importas -suD "./configure" ARBOR_MK_CONFIGURE ARBOR_MK_CONFIGURE
-	importas -iu PREFIX PREFIX
-	importas -iu BINDIR BINDIR
-	importas -iu DRTDIR DRTDIR
-	importas -iu INCDIR INCDIR
-	importas -iu LIBDIR LIBDIR
-	importas -iu MANDIR MANDIR
-	importas -iu SBINDIR SBINDIR
-	importas -iu static static
-	importas -iu shared shared
-}
-export enable_option_checking no
+importas -suD "./configure" ARBOR_MK_CONFIGURE ARBOR_MK_CONFIGURE
 export MAKE "arbor-mk-gmake"
 foreground {
+	if {
+		case -- $LDFLAGS {
+		".*-static.*" { touch arbor.static }
+		}
+		touch arbor.dynamic
+	}
+	backtick static {
+		ifelse { test -e arbor.static }
+		{ echo --enable-static }
+		echo --enable-static=no --disable-static
+	}
+	backtick shared {
+		ifelse { test -e arbor.dynamic }
+		{ echo --enable-shared }
+		echo --enable-shared=no --disable-shared
+	}
+	export enable_option_checking no
+	multisubstitute {
+		importas -sud ";" ARBOR_MK_CONFIGURE_ARGS ARBOR_MK_CONFIGURE_ARGS
+		importas -i PREFIX PREFIX
+		importas -i BINDIR BINDIR
+		importas -i DRTDIR DRTDIR
+		importas -i INCDIR INCDIR
+		importas -i LIBDIR LIBDIR
+		importas -i MANDIR MANDIR
+		importas -i SBINDIR SBINDIR
+		importas -isu shared shared
+		importas -isu static static
+	}
 	$ARBOR_MK_CONFIGURE
 	    --prefix=${PREFIX}
 	    --bindir=${BINDIR}
@@ -42,9 +46,13 @@ foreground {
 	    $ARBOR_MK_CONFIGURE_ARGS
 }
 ifelse {
+	if {
+		importas -D "true" ARBOR_MK_CONFIGURE_LIBTOOL ARBOR_MK_CONFIGURE_LIBTOOL
+		${ARBOR_MK_CONFIGURE_LIBTOOL}
+	}
 	if { test -e "${ARBOR_MK_CONFIGURE}.ac" }
 	if { test -e "m4/libtool.m4" }
-	test "--enable-static" = "$static"
+	test -e "arbor.static"
 }
 { arbor-mk-gmake LDFLAGS="${LDFLAGS} -all-static" $@ }
 arbor-mk-gmake $@

@@ -1,0 +1,6 @@
+#!/bin/execlineb -S1
+if {
+	importas -i DOAS DOAS
+	$DOAS umount $1
+}
+rmdir $1

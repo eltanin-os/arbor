@@ -4,5 +4,21 @@ multisubstitute {
 	importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
 }
 backtick -Ex urls { arbor-priv-dbread -t urls ${ARBOR_PACKAGEDIR}/package }
-backtick -Ex name { basename $urls }
-echo ${ARBOR}/cache/${name}
+if {
+	backtick cksum { arbor-priv-dbread cksum ${ARBOR_PACKAGEDIR}/package }
+	backtick name { arbor-priv-dbread name ${ARBOR_PACKAGEDIR}/package }
+	backtick version { arbor-priv-dbread version ${ARBOR_PACKAGEDIR}/package }
+	multisubstitute {
+		importas -iu cksum cksum
+		importas -iu name name
+		importas -iu version version
+	}
+	echo -n "${ARBOR}/cache/${cksum}.${name}-${version}"
+}
+case -- $urls {
+".*\.tar\.bz2|.*\.tbz2" { echo ".tar.bz2" }
+".*\.tar\.gz|.*\.tgz" { echo ".tar.gz" }
+".*\.tar\.lz|.*\.tlz" { echo ".tar.lz" }
+".*\.tar\.xz|.*\.txz" { echo ".tar.xz" }
+}
+exit 1

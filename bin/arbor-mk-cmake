@@ -1,0 +1,48 @@
+#!/bin/execlineb -s0
+importas -i nprocs nprocs
+foreground {
+	backtick buildtype {
+		importas -D "" CFLAGS CFLAGS
+		case -- "${CFLAGS}" {
+		".*-O[2s].*" { echo MinSizeRel }
+		}
+		echo Release
+	}
+	backtick libtype {
+		importas -D "" LDFLAGS LDFLAGS
+		case -- $LDFLAGS {
+		".*-static.*" { echo -DBUILD_SHARED_LIBS=OFF -DLIBTYPE=STATIC }
+		}
+		echo -DBUILD_SHARED_LIBS=ON
+	}
+	multisubstitute {
+		importas -sud ";" ARBOR_MK_CMAKE_ARGS ARBOR_MK_CMAKE_ARGS
+		importas -isu libtype libtype
+		importas -iu buildtype buildtype
+		importas -i ARBOR_ROOTDIR ARBOR_ROOTDIR
+		importas -i PREFIX PREFIX
+		importas -i BINDIR BINDIR
+		importas -i ETCDIR ETCDIR
+		importas -i LIBDIR LIBDIR
+		importas -i INCDIR INCDIR
+		importas -i DRTDIR DRTDIR
+		importas -i MANDIR MANDIR
+	}
+	cmake
+	    -GNinja
+	    -DCMAKE_PREFIX_PATH=$ARBOR_ROOTDIR
+	    -DCMAKE_BUILD_RPATH_USE_ORIGIN=ON
+	    -DCMAKE_INSTALL_PREFIX=${PREFIX}
+	    -DCMAKE_INSTALL_BINDIR=${BINDIR}
+	    -DCMAKE_INSTALL_SBINDIR=${BINDIR}
+	    -DCMAKE_INSTALL_SYSCONFDIR=${ETCDIR}
+	    -DCMAKE_INSTALL_LIBDIR=${LIBDIR}
+	    -DCMAKE_INSTALL_INCLUDEDIR=${INCDIR}
+	    -DCMAKE_INSTALL_DATAROOTDIR=${DRTDIR}
+	    -DCMAKE_INSTALL_MANDIR=${MANDIR}
+	    -DCMAKE_BUILD_TYPE=${buildtype}
+	    $libtype
+	    $ARBOR_MK_CMAKE_ARGS
+	    .
+}
+ninja -j$nprocs $@

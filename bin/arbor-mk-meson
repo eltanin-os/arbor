@@ -1,0 +1,50 @@
+#!/bin/execlineb -s0
+define tmpdir "arbor-build-dir"
+foreground {
+	backtick buildtype {
+		importas -D "" CFLAGS CFLAGS
+		case -- "${CFLAGS}" {
+		".*-O[2s].*" { echo minsize }
+		}
+		echo release
+	}
+	backtick libtype {
+		importas -D "" LDFLAGS LDFLAGS
+		case -- $LDFLAGS {
+		".*-static.*" { echo static }
+		}
+		echo shared
+	}
+	multisubstitute {
+		importas -sud ";" ARBOR_MK_MESON_ARGS ARBOR_MK_MESON_ARGS
+		importas -i PREFIX PREFIX
+		importas -i BINDIR BINDIR
+		importas -i DRTDIR DRTDIR
+		importas -i ETCDIR ETCDIR
+		importas -i INCDIR INCDIR
+		importas -i LIBDIR LIBDIR
+		importas -i MANDIR MANDIR
+		importas -i SBINDIR SBINDIR
+		importas -i ARBOR_ROOTDIR ARBOR_ROOTDIR
+		importas -iu buildtype buildtype
+		importas -iu libtype libtype
+	}
+	meson setup
+	    -Dprefix=${PREFIX}
+	    -Dbindir=${BINDIR}
+	    -Ddatadir=${DRTDIR}
+	    -Dincludedir=${INCDIR}
+	    -Dlibdir=${LIBDIR}
+	    -Dmandir=${MANDIR}
+	    -Dsbindir=${SBINDIR}
+	    -Dsysconfdir=${ETCDIR}
+	    -Dbuildtype=$buildtype
+	    -Ddefault_library=$libtype
+	    -Db_lto=false
+	    -Ddebug=false
+	    -Dwarning_level=0
+	    $ARBOR_MK_MESON_ARGS
+	    --
+	    $tmpdir
+}
+ninja -C $tmpdir $@

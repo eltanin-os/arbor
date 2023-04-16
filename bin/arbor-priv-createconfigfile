@@ -1,4 +1,16 @@
 #!/bin/execlineb -s1
-forx -E file { $@ }
-redirfd -a 1 $1
-if { test -e "${file}" } cat $file
+pipeline {
+	fdclose 2
+	cat $@
+}
+redirfd -w 1 $1
+awk -F"="
+"
+!/^#/ {
+	if (index(dict[$1], $2)) $2=\"\"
+	dict[$1]=dict[$1]\" \"$2
+}
+END {
+	for (w in dict) print w\"=\"dict[w]
+}
+"

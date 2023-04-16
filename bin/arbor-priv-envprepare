@@ -1,4 +1,8 @@
 #!/bin/execlineb -P
+if { ln -s bin sbin }
+if { ln -s . usr }
+if { mkdir -p etc }
+if { touch etc/passwd etc/group }
 importas -i ARBOR ARBOR
 if {
 	if { mkdir -p bin }
@@ -11,14 +15,22 @@ if {
 	cd tmp/${ARBOR_PACKAGESRC}
 	arbor-priv-patch $ARBOR_PACKAGEDIR
 }
+importas -i ARBOR_SANDBOX ARBOR_SANDBOX
 if {
 	if { mkdir -p etc/arbor }
-	elglob arcfg "${ARBOR}/config/*"
+	backtick -Ex repo {
+		pipeline {
+			pipeline { echo ${ARBOR_PACKAGEDIR} }
+			awk "{n=length(\"${ARBOR}\"); print substr($0, n+2)}"
+		}
+		cut -d"/" -f2
+	}
 	arbor-priv-createconfigfile
 	    etc/arbor/config
-	    $arcfg
+	    ${ARBOR}/config/defaults
+	    ${ARBOR}/config/${ARBOR_SANDBOX}
+	    ${ARBOR}/repo/${repo}/repo.conf
 	    ${ARBOR_PACKAGEDIR}/config
 }
 if { cp ${ARBOR_PACKAGEDIR}/build tmp/build.arbor }
-importas -i ARBOR_SANDBOX ARBOR_SANDBOX
 arbor-priv-create$ARBOR_SANDBOX tmp/build
