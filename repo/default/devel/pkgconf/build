@@ -1,3 +1,4 @@
 #!/bin/execlineb -P
 # not gnuconfigure but compatible
-arbor-mk-gnuconfigure install
+if { arbor-mk-gnuconfigure install }
+arbor-utils-install -l bin pkgconf pkg-config
