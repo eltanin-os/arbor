@@ -1,0 +1,40 @@
+diff -Naur a/Source/CMakeLists.txt b/Source/CMakeLists.txt
+--- a/Source/CMakeLists.txt	2023-01-19 11:32:19.000000000 -0300
++++ b/Source/CMakeLists.txt	2023-03-12 01:28:45.582510000 -0300
+@@ -746,20 +746,31 @@
+     "${CMAKE_CURRENT_SOURCE_DIR}/LexerParser"
+     ${CMake_HAIKU_INCLUDE_DIRS}
+   )
++find_package(PkgConfig)
++pkg_search_module(CURL REQUIRED libcurl)
++pkg_search_module(EXPAT REQUIRED expat)
++pkg_search_module(LIBARCHIVE REQUIRED libarchive)
++pkg_search_module(LIBUV REQUIRED libuv)
++pkg_search_module(ZLIB REQUIRED zlib)
+ target_link_libraries(
+   CMakeLib
+   PUBLIC
+     cmstd
+     cmsys
+-    CURL::libcurl
+-    EXPAT::EXPAT
++#   CURL::libcurl
++    ${CURL_LIBRARIES}
++#   EXPAT::EXPAT
++    ${EXPAT_LIBRARIES}
+     JsonCpp::JsonCpp
+     $<TARGET_NAME_IF_EXISTS:kwiml::kwiml>
+-    LibArchive::LibArchive
++#   LibArchive::LibArchive
++    ${LIBARCHIVE_LIBRARIES}
+     LibRHash::LibRHash
+-    LibUV::LibUV
++#   LibUV::LibUV
++    ${LIBUV_LIBRARIES}
+     Threads::Threads
+-    ZLIB::ZLIB
++#   ZLIB::ZLIB
++    ${ZLIB_LIBRARIES}
+   )
+ 
+ # Check if we can build the Mach-O parser.

@@ -1,0 +1,20 @@
+#!/bin/execlineb -P
+if {
+	multisubstitute {
+		importas -i PREFIX PREFIX
+		importas -i BINDIR BINDIR
+		importas -i DRTDIR DRTDIR
+		importas -i MANDIR MANDIR
+		importas -i nprocs nprocs
+	}
+	./bootstrap
+	    --prefix=${PREFIX}
+	    --bindir=${BINDIR}
+	    --datadir=${DRTDIR}
+	    --mandir=${MANDIR}
+	    --system-libs
+	    --parallel=$nprocs
+	    --no-system-jsoncpp
+	    --no-system-librhash
+}
+arbor-mk-gmake install

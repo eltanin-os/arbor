@@ -1,0 +1,25 @@
+name:cmake
+version:3.25.2
+license:bsd-3
+description:Cross-platform, open-source make system.
+cksum:6530ee1801e91f82e368f9ce70048d4c7f3c89c3820f274d8d3b7621444e2a3541c4454df6ecd8e0ebfdd5a379cb72ea71305ba1dbdb0812e138d03552161f6d
+urls{
+https://github.com/Kitware/CMake/releases/download/v$version/cmake-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+bzip2
+curl
+expat
+libarchive
+libc
+libuv
+nghttp2
+xz
+zlib
+}
+rundeps{
+ninja
+}
