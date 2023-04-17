@@ -1,7 +1,6 @@
-# from flexibeast
 diff -Naur a/mdoc/man1/background.1 b/mdoc/man1/background.1
 --- a/mdoc/man1/background.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/background.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/background.1	2023-04-16 04:44:01.496525657 -0300
 @@ -0,0 +1,75 @@
 +.Dd February 14, 2021
 +.Dt BACKGROUND 1
@@ -80,7 +79,7 @@ diff -Naur a/mdoc/man1/background.1 b/mdoc/man1/background.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/backtick.1 b/mdoc/man1/backtick.1
 --- a/mdoc/man1/backtick.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/backtick.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/backtick.1	2023-04-16 04:44:01.496525657 -0300
 @@ -0,0 +1,128 @@
 +.Dd February 16, 2021
 +.Dt BACKTICK 1
@@ -212,7 +211,7 @@ diff -Naur a/mdoc/man1/backtick.1 b/mdoc/man1/backtick.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/case.1 b/mdoc/man1/case.1
 --- a/mdoc/man1/case.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/case.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/case.1	2023-04-16 04:44:01.496525657 -0300
 @@ -0,0 +1,302 @@
 +.Dd March 13, 2022
 +.Dt CASE 1
@@ -518,7 +517,7 @@ diff -Naur a/mdoc/man1/case.1 b/mdoc/man1/case.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/define.1 b/mdoc/man1/define.1
 --- a/mdoc/man1/define.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/define.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/define.1	2023-04-16 04:44:01.496525657 -0300
 @@ -0,0 +1,51 @@
 +.Dd February 14, 2021
 +.Dt DEFINE 1
@@ -573,7 +572,7 @@ diff -Naur a/mdoc/man1/define.1 b/mdoc/man1/define.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/dollarat.1 b/mdoc/man1/dollarat.1
 --- a/mdoc/man1/dollarat.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/dollarat.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/dollarat.1	2023-04-16 04:44:01.496525657 -0300
 @@ -0,0 +1,116 @@
 +.Dd February 14, 2021
 +.Dt DOLLARAT 1
@@ -693,9 +692,9 @@ diff -Naur a/mdoc/man1/dollarat.1 b/mdoc/man1/dollarat.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/elgetopt.1 b/mdoc/man1/elgetopt.1
 --- a/mdoc/man1/elgetopt.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/elgetopt.1	2022-10-22 19:21:59.803339395 -0300
-@@ -0,0 +1,85 @@
-+.Dd February 14, 2021
++++ b/mdoc/man1/elgetopt.1	2023-04-16 04:44:01.497525657 -0300
+@@ -0,0 +1,108 @@
++.Dd April 3, 2023
 +.Dt ELGETOPT 1
 +.Os
 +.Sh NAME
@@ -705,6 +704,7 @@ diff -Naur a/mdoc/man1/elgetopt.1 b/mdoc/man1/elgetopt.1
 +-style parsing on the arguments to an execline script
 +.Sh SYNOPSIS
 +.Nm
++.Op Fl D Ar default
 +.Ar optstring
 +.Ar prog...
 +.Sh DESCRIPTION
@@ -752,7 +752,14 @@ diff -Naur a/mdoc/man1/elgetopt.1 b/mdoc/man1/elgetopt.1
 +environment variable.
 +The value of that variable is the argument to the
 +.Fl c
-+switch if it has one, and 1 otherwise.
++switch if it has one, and
++.Ql 1
++.Po
++or
++.Ar default
++if given
++.Pc
++otherwise.
 +.Pp
 +After setting all recognized options,
 +.Nm
@@ -769,6 +776,21 @@ diff -Naur a/mdoc/man1/elgetopt.1 b/mdoc/man1/elgetopt.1
 +.Ar prog... .
 +.Pp
 +GNU-style options are not supported.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl D Ar default
++Use
++.Ar default
++as the value for the
++.Ev ELGETOPT_ Ns Ar c
++environment variable if there is no argument to the
++.Fl c
++switch.
++Default is
++.Ql 1 .
++The value is the same for all the options defined by
++.Nm .
++.El
 +.Sh SEE ALSO
 +.Xr dollarat 1 ,
 +.Xr getopt 1 ,
@@ -782,7 +804,7 @@ diff -Naur a/mdoc/man1/elgetopt.1 b/mdoc/man1/elgetopt.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/elgetpositionals.1 b/mdoc/man1/elgetpositionals.1
 --- a/mdoc/man1/elgetpositionals.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/elgetpositionals.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/elgetpositionals.1	2023-04-16 04:44:01.497525657 -0300
 @@ -0,0 +1,162 @@
 +.Dd February 14, 2021
 +.Dt ELGETPOSITIONALS 1
@@ -948,7 +970,7 @@ diff -Naur a/mdoc/man1/elgetpositionals.1 b/mdoc/man1/elgetpositionals.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/elglob.1 b/mdoc/man1/elglob.1
 --- a/mdoc/man1/elglob.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/elglob.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/elglob.1	2023-04-16 04:44:01.497525657 -0300
 @@ -0,0 +1,100 @@
 +.Dd February 14, 2021
 +.Dt ELGLOB 1
@@ -1050,9 +1072,269 @@ diff -Naur a/mdoc/man1/elglob.1 b/mdoc/man1/elglob.1
 +.Sh AUTHORS
 +.An Laurent Bercot
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/eltest.1 b/mdoc/man1/eltest.1
+--- a/mdoc/man1/eltest.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/eltest.1	2023-04-16 04:44:01.497525657 -0300
+@@ -0,0 +1,256 @@
++.Dd January 15, 2023
++.Dt ELTEST 1
++.Os
++.Sh NAME
++.Nm eltest
++.Nd evaluate an expression and indicate the result via its exit status
++.Sh SYNOPSIS
++.Nm
++.Ar expression...
++.Sh DESCRIPTION
++.Nm
++acts as the generic POSIX
++.Pa test\&
++utility[1], but it diverges from the specification on how it parses
++ambiguous arguments, see below.
++.Pp
++.Nm
++supports all the standard
++.Pa test\&
++operands, plus all the extensions from GNU test[2], plus a few
++extensions from the
++.Ql test
++builtin from bash[3].
++The extensions to POSIX
++.Pa test\&
++are listed below.
++.Pp
++.Nm
++accepts an arbitrary number of arguments and, if the expression is
++valid, always returns the result of the expression no matter how
++complex it is.
++.Ss Extensions
++.Bl -tag -width x
++.It Ar expr1 No -a Ar expr2
++Test whether
++.Ar expr1
++.Em and
++.Ar expr2
++are true.
++If
++.Ar expr1
++is false, then
++.Ar expr2
++is not evaluated.
++.It Ar expr1 No -o Ar expr2
++Test whether
++.Ar expr1
++.Em or
++.Ar expr2
++is true.
++If
++.Ar expr1
++is true, then
++.Ar expr2
++is not evaluated.
++.It No -k Ar file
++Test whether
++.Ar file
++has the sticky bit.
++.It No -O Ar file
++Test whether
++.Ar file
++is owned by the effective uid of the current process.
++.It No -U Ar file
++As for
++.Ql -O .
++.It No -G Ar file
++Test whether
++.Ar file Ap
++s gid is the effective gid of the current process.
++.It No -N Ar file
++Test whether
++.Ar file
++exists and has been modified since it was last read.
++.It Ar file1 No -nt Ar file2
++Test whether
++.Ar file1
++has a (strictly) newer modification date than
++.Ar file2 .
++.It Ar file1 No -ot Ar file2
++Test whether
++.Ar file1
++has a (strictly) older modification date than
++.Ar file2 .
++.It Ar file1 No -ef Ar file2
++Test whether
++.Ar file1
++and
++.Ar file2
++are physically the same file (same device and inode numbers).
++.It No -v Ar var
++Test whether the
++.Ar var
++variable is defined in the current environment.
++.It Ar string No =~ Ar pattern
++Tries to match
++.Ar string
++against extended regular expression
++.Ar pattern .
++True if any part of
++.Ar string
++matches
++.Ar pattern ;
++in order to match whole strings, you must anchor
++.Ar pattern
++with
++.Ql ^
++and
++.Ql $
++markers.
++.El
++.Ss Argument disambiguation
++Unlike
++.Pa test Ns
++[1], which has different fixed syntax trees depending on the number of
++arguments it receives and has undefined behaviour when called with
++more than 5 arguments,
++.Nm
++accepts any
++number of arguments and builds its syntax trees on the fly.
++This means that expressions such
++as
++.Ql -n = -n
++cannot be automatically disambiguated:
++.Nm
++does not know that
++there are 3 arguments, so when it reads the first
++.Ql -n
++it assumes that it is an unary operator, then when it reads
++.Ql =
++it assumes it is the argument to
++.Ql -n ,
++then when it reads the second
++.Ql -n
++it exits with a syntax error.
++.Pp
++Doing otherwise would result in a combinatory explosion of possible
++syntax trees, making it easy for users to trigger unbounded RAM
++consumption, and turning a simple utility into a programming
++nightmare.
++This is why POSIX
++.Pa test Ns
++[1] is so restricted.
++But we don't want the same restrictions.
++.Pp
++So, instead,
++.Nm
++provides the user with a mechanism to make sure that operands are
++never mistaken for operators:
++.Bl -bullet -width x
++.It
++A word that looks like an operator will always be interpreted like an operator.
++So, expressions like
++.Ql -n = -n
++will result in a syntax error, because the first
++.Ql -n
++will never be understood as data for the
++.Ql =
++operator.
++.It
++A word that starts with a
++.Ql \e
++(backslash) will always be interpreted like data, never like an
++operator, and the backslash will be removed.
++This means
++.Ql \e-n = \e-n
++is a valid expression testing the equality between
++the strings
++.Ql -n
++and
++.Ql -n .
++.Bl -bullet -width x
++.It
++Be aware that execline as well as the shell use one backlash for their
++own unquoting mechanism, so when using backslashes in an execline or
++shell script, they must be doubled.
++You would probably need to type something like
++.Ql \e\e-n = \e\e-n .
++.El
++.It
++So, if your script tests equality between
++.Ql $a
++and
++.Ql $b ,
++and there's a possiblity that the contents of these variables look like
++.Nm
++operators, the proper syntax would be:
++.Ql eltest \e\e${a} = \e\e${b} .
++.El
++.Pp
++Note that these details are irrelevant to a huge majority of
++.Nm
++use cases, because most of the time users only need a simple test
++such as
++.Ql eltest -r ${file}
++to check that
++.Ql $file
++is readable, and there's no possible ambiguity.
++So don't panic over this.
++.Ss Notes
++.Nm
++is a replacement for the ill-named, and now deprecated,
++.Xr s6-test 1
++program, part of the (just as ill-named) s6-portable-utils[4] package.
++It is too valuable a utility to be part of a marginal package, and has
++nothing to do with s6[5].
++.Sh OPTIONS
++None.
++.Sh EXIT STATUS
++.Bl -tag -width x
++.It 0
++The test is true.
++.It 1
++The test is false.
++.It 100
++Wrong usage.
++.It 101
++Internal error (should never happen, warrants a bug-report).
++.It 111
++System call failure.
++.El
++.Sh SEE ALSO
++[1]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html
++.Pp
++[2]
++.Lk https://man7.org/linux/man-pages/man1/test.1.html
++.Pp
++[3]
++.Lk https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions
++.Pp
++[4]
++.Lk https://skarnet.org/software/s6-portable-utils/
++.Pp
++[5]
++.Lk https://skarnet.org/software/s6/
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/eltest.html
++.Sh STANDARDS
++.Nm
++.Em is not
++suitable as a Single Unix
++.Pa test Ns
++[1] program, due to the way it disambiguates between arguments and
++operators, as described in the
++.Sx Argument diambiguation
++section.
++However, if you never use arguments that start with a backslash, or
++that have the same name as an existing operator, then
++.Nm
++exhibits the same behaviour as
++.Pa test .
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/emptyenv.1 b/mdoc/man1/emptyenv.1
 --- a/mdoc/man1/emptyenv.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/emptyenv.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/emptyenv.1	2023-04-16 04:44:01.497525657 -0300
 @@ -0,0 +1,99 @@
 +.Dd February 14, 2021
 +.Dt EMPTYENV 1
@@ -1155,7 +1437,7 @@ diff -Naur a/mdoc/man1/emptyenv.1 b/mdoc/man1/emptyenv.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/envfile.1 b/mdoc/man1/envfile.1
 --- a/mdoc/man1/envfile.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/envfile.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/envfile.1	2023-04-16 04:44:01.497525657 -0300
 @@ -0,0 +1,178 @@
 +.Dd September 29, 2021
 +.Dt ENVFILE 1
@@ -1337,7 +1619,7 @@ diff -Naur a/mdoc/man1/envfile.1 b/mdoc/man1/envfile.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/exec.1 b/mdoc/man1/exec.1
 --- a/mdoc/man1/exec.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/exec.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/exec.1	2023-04-16 04:44:01.497525657 -0300
 @@ -0,0 +1,87 @@
 +.Dd February 14, 2021
 +.Dt EXEC 1
@@ -1428,7 +1710,7 @@ diff -Naur a/mdoc/man1/exec.1 b/mdoc/man1/exec.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/execline-cd.1 b/mdoc/man1/execline-cd.1
 --- a/mdoc/man1/execline-cd.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/execline-cd.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/execline-cd.1	2023-04-16 04:44:01.497525657 -0300
 @@ -0,0 +1,77 @@
 +.Dd February 14, 2021
 +.Dt EXECLINE-CD 1
@@ -1509,7 +1791,7 @@ diff -Naur a/mdoc/man1/execline-cd.1 b/mdoc/man1/execline-cd.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/execline-shell.1 b/mdoc/man1/execline-shell.1
 --- a/mdoc/man1/execline-shell.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/execline-shell.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/execline-shell.1	2023-04-16 04:44:01.498525657 -0300
 @@ -0,0 +1,52 @@
 +.Dd February 16, 2021
 +.Dt EXECLINE-SHELL 1
@@ -1565,7 +1847,7 @@ diff -Naur a/mdoc/man1/execline-shell.1 b/mdoc/man1/execline-shell.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/execline-startup.1 b/mdoc/man1/execline-startup.1
 --- a/mdoc/man1/execline-startup.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/execline-startup.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/execline-startup.1	2023-04-16 04:44:01.498525657 -0300
 @@ -0,0 +1,67 @@
 +.Dd February 14, 2021
 +.Dt EXECLINE-STARTUP 1
@@ -1636,7 +1918,7 @@ diff -Naur a/mdoc/man1/execline-startup.1 b/mdoc/man1/execline-startup.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/execline-umask.1 b/mdoc/man1/execline-umask.1
 --- a/mdoc/man1/execline-umask.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/execline-umask.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/execline-umask.1	2023-04-16 04:44:01.498525657 -0300
 @@ -0,0 +1,65 @@
 +.Dd February 14, 2021
 +.Dt EXECLINE-UMASK 1
@@ -1703,9 +1985,114 @@ diff -Naur a/mdoc/man1/execline-umask.1 b/mdoc/man1/execline-umask.1
 +.Sh AUTHORS
 +.An Laurent Bercot
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man1/execline.1 b/mdoc/man1/execline.1
+--- a/mdoc/man1/execline.1	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man1/execline.1	2023-04-16 04:44:01.498525657 -0300
+@@ -0,0 +1,101 @@
++.Dd February 19, 2023
++.Dt EXECLINE 1
++.Os
++.Sh NAME
++.Nm execline
++.Nd multicall binary for the execline suite
++.Sh SYNOPSIS
++.Nm
++.Ar subcommand
++.Ar subcommand_arguments...
++.Sh DESCRIPTION
++The
++.Nm
++program is only available when the
++.Ql --enable-multicall
++option has been given to the
++.Pa configure
++program at build time.
++In this configuration,
++.Nm
++is a multicall binary implementing the functionality of
++.Em all
++the programs in the execline package; and the other programs, instead
++of being executables of their own, are symbolic links to the
++execline binary.
++.Pp
++.Nm
++will run the
++.Ar subcommand
++with its arguments.
++For instance,
++.Ql execline cd / ls
++will run the equivalent of the
++.Xr execline-cd 1
++program, so this command will list the contents of the
++.Pa /
++directory.
++.Pp
++Alternatively, if
++.Nm
++is called with the name of an existing command, it will run the
++equivalent of that command.
++For instance, if the
++.Pa /usr/bin/cd
++file is a (hard or symbolic) link to the
++.Pa execline
++binary,
++.Ql /usr/bin/cd / ls
++will list the contents of the
++.Pa /
++directory.
++.Pp
++The
++.Ql --enable-multicall
++option is a user-requested feature to save disk space.
++Its goal is purely to save disk space; functionality-wise, the
++execline package should be the exact same whether it has been built
++with
++.Ql --enable-multicall
++or not.
++That means: any execline script should work the exact same way.
++.Pp
++Multicall binaries have a number of issues, most of them hidden from
++regular users.
++One user-visible issue is that their behaviour changes depending on
++how they are called, which is not good practice (it breaks naming
++agnosticism) despite being common in traditional Unix.
++Other, more important issues are only visible to software authors and
++maintainers: for instance, they make it difficult to add functionality
++to a software package without inadvertently blowing up the amount of
++RAM used by the software, and they encourage bad engineering practices
++to work around specific problems created by this configuration.
++.Pp
++I am not a fan of multicall binaries at all.
++.Pp
++However, it just so happens that the execline package already was a
++good candidate for a multicall configuration, and several users had
++been asking for it (and complaining about the amount of disk space
++that the traditional execline package uses).
++So I did an experiment, and it turned out that a multicall execline
++binary does save a
++.Em huge
++amount of space.
++Depending on your shared/static library configuration and your libc,
++the gain in disk space on Linux can range from 66% to 87%!
++The results were contrary to my expectations \(em and simply too good
++to pass up.
++.Pp
++So now, the multicall configuration is supported for execline.
++Do not expect anything similar for other skarnet.org packages such as
++s6[1], because they're not as good candidates and it would require a
++tremendous amount of work for less benefit.
++.Sh SEE ALSO
++[1]
++.Lk https://skarnet.org/software/s6/
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/execline.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/execlineb.1 b/mdoc/man1/execlineb.1
 --- a/mdoc/man1/execlineb.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/execlineb.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/execlineb.1	2023-04-16 04:44:01.498525657 -0300
 @@ -0,0 +1,446 @@
 +.Dd May 31, 2022
 +.Dt EXECLINEB 1
@@ -2155,7 +2542,7 @@ diff -Naur a/mdoc/man1/execlineb.1 b/mdoc/man1/execlineb.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/exit.1 b/mdoc/man1/exit.1
 --- a/mdoc/man1/exit.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/exit.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/exit.1	2023-04-16 04:44:01.498525657 -0300
 @@ -0,0 +1,56 @@
 +.Dd February 14, 2021
 +.Dt EXIT 1
@@ -2215,7 +2602,7 @@ diff -Naur a/mdoc/man1/exit.1 b/mdoc/man1/exit.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/export.1 b/mdoc/man1/export.1
 --- a/mdoc/man1/export.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/export.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/export.1	2023-04-16 04:44:01.498525657 -0300
 @@ -0,0 +1,57 @@
 +.Dd February 14, 2021
 +.Dt EXPORT 1
@@ -2276,7 +2663,7 @@ diff -Naur a/mdoc/man1/export.1 b/mdoc/man1/export.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/fdblock.1 b/mdoc/man1/fdblock.1
 --- a/mdoc/man1/fdblock.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/fdblock.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/fdblock.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,67 @@
 +.Dd February 14, 2021
 +.Dt FDBLOCK 1
@@ -2347,7 +2734,7 @@ diff -Naur a/mdoc/man1/fdblock.1 b/mdoc/man1/fdblock.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/fdclose.1 b/mdoc/man1/fdclose.1
 --- a/mdoc/man1/fdclose.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/fdclose.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/fdclose.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,55 @@
 +.Dd February 14, 2021
 +.Dt FDCLOSE 1
@@ -2406,7 +2793,7 @@ diff -Naur a/mdoc/man1/fdclose.1 b/mdoc/man1/fdclose.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/fdmove.1 b/mdoc/man1/fdmove.1
 --- a/mdoc/man1/fdmove.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/fdmove.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/fdmove.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,95 @@
 +.Dd February 16, 2021
 +.Dt FDMOVE 1
@@ -2505,7 +2892,7 @@ diff -Naur a/mdoc/man1/fdmove.1 b/mdoc/man1/fdmove.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/fdreserve.1 b/mdoc/man1/fdreserve.1
 --- a/mdoc/man1/fdreserve.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/fdreserve.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/fdreserve.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,117 @@
 +.Dd February 14, 2021
 +.Dt FDRESERVE 1
@@ -2626,7 +3013,7 @@ diff -Naur a/mdoc/man1/fdreserve.1 b/mdoc/man1/fdreserve.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/fdswap.1 b/mdoc/man1/fdswap.1
 --- a/mdoc/man1/fdswap.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/fdswap.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/fdswap.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,55 @@
 +.Dd February 14, 2021
 +.Dt FDSWAP 1
@@ -2685,7 +3072,7 @@ diff -Naur a/mdoc/man1/fdswap.1 b/mdoc/man1/fdswap.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/forbacktickx.1 b/mdoc/man1/forbacktickx.1
 --- a/mdoc/man1/forbacktickx.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/forbacktickx.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/forbacktickx.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,195 @@
 +.Dd February 14, 2021
 +.Dt FORBACKTICKX 1
@@ -2884,7 +3271,7 @@ diff -Naur a/mdoc/man1/forbacktickx.1 b/mdoc/man1/forbacktickx.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/foreground.1 b/mdoc/man1/foreground.1
 --- a/mdoc/man1/foreground.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/foreground.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/foreground.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,88 @@
 +.Dd February 14, 2021
 +.Dt FOREGROUND 1
@@ -2976,7 +3363,7 @@ diff -Naur a/mdoc/man1/foreground.1 b/mdoc/man1/foreground.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/forstdin.1 b/mdoc/man1/forstdin.1
 --- a/mdoc/man1/forstdin.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/forstdin.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/forstdin.1	2023-04-16 04:44:01.499525657 -0300
 @@ -0,0 +1,159 @@
 +.Dd September 28, 2021
 +.Dt FORSTDIN 1
@@ -3139,7 +3526,7 @@ diff -Naur a/mdoc/man1/forstdin.1 b/mdoc/man1/forstdin.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/forx.1 b/mdoc/man1/forx.1
 --- a/mdoc/man1/forx.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/forx.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/forx.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,129 @@
 +.Dd February 14, 2021
 +.Dt FORX 1
@@ -3272,7 +3659,7 @@ diff -Naur a/mdoc/man1/forx.1 b/mdoc/man1/forx.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/getcwd.1 b/mdoc/man1/getcwd.1
 --- a/mdoc/man1/getcwd.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/getcwd.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/getcwd.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,88 @@
 +.Dd February 14, 2021
 +.Dt GETCWD 1
@@ -3364,7 +3751,7 @@ diff -Naur a/mdoc/man1/getcwd.1 b/mdoc/man1/getcwd.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/getpid.1 b/mdoc/man1/getpid.1
 --- a/mdoc/man1/getpid.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/getpid.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/getpid.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,85 @@
 +.Dd March 13, 2022
 +.Dt GETPID 1
@@ -3453,7 +3840,7 @@ diff -Naur a/mdoc/man1/getpid.1 b/mdoc/man1/getpid.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/heredoc.1 b/mdoc/man1/heredoc.1
 --- a/mdoc/man1/heredoc.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/heredoc.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/heredoc.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,78 @@
 +.Dd February 14, 2011
 +.Dt HEREDOC 1
@@ -3535,7 +3922,7 @@ diff -Naur a/mdoc/man1/heredoc.1 b/mdoc/man1/heredoc.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/homeof.1 b/mdoc/man1/homeof.1
 --- a/mdoc/man1/homeof.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/homeof.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/homeof.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,22 @@
 +.Dd February 11, 2021
 +.Dt HOMEOF 1
@@ -3561,7 +3948,7 @@ diff -Naur a/mdoc/man1/homeof.1 b/mdoc/man1/homeof.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/if.1 b/mdoc/man1/if.1
 --- a/mdoc/man1/if.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/if.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/if.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,127 @@
 +.Dd February 16, 2021
 +.Dt IF 1
@@ -3692,7 +4079,7 @@ diff -Naur a/mdoc/man1/if.1 b/mdoc/man1/if.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/ifelse.1 b/mdoc/man1/ifelse.1
 --- a/mdoc/man1/ifelse.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/ifelse.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/ifelse.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,88 @@
 +.Dd February 14, 2021
 +.Dt IFELSE 1
@@ -3784,7 +4171,7 @@ diff -Naur a/mdoc/man1/ifelse.1 b/mdoc/man1/ifelse.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/ifte.1 b/mdoc/man1/ifte.1
 --- a/mdoc/man1/ifte.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/ifte.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/ifte.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,98 @@
 +.Dd February 14, 2021
 +.Dt IFTE 1
@@ -3886,7 +4273,7 @@ diff -Naur a/mdoc/man1/ifte.1 b/mdoc/man1/ifte.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/ifthenelse.1 b/mdoc/man1/ifthenelse.1
 --- a/mdoc/man1/ifthenelse.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/ifthenelse.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/ifthenelse.1	2023-04-16 04:44:01.500525657 -0300
 @@ -0,0 +1,91 @@
 +.Dd February 14, 2021
 +.Dt IFTHENELSE 1
@@ -3981,7 +4368,7 @@ diff -Naur a/mdoc/man1/ifthenelse.1 b/mdoc/man1/ifthenelse.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/importas.1 b/mdoc/man1/importas.1
 --- a/mdoc/man1/importas.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/importas.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/importas.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,120 @@
 +.Dd February 14, 2021
 +.Dt IMPORTAS 1
@@ -4105,7 +4492,7 @@ diff -Naur a/mdoc/man1/importas.1 b/mdoc/man1/importas.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/loopwhilex.1 b/mdoc/man1/loopwhilex.1
 --- a/mdoc/man1/loopwhilex.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/loopwhilex.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/loopwhilex.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,78 @@
 +.Dd February 14, 2021
 +.Dt LOOPWHILEX 1
@@ -4187,7 +4574,7 @@ diff -Naur a/mdoc/man1/loopwhilex.1 b/mdoc/man1/loopwhilex.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/multidefine.1 b/mdoc/man1/multidefine.1
 --- a/mdoc/man1/multidefine.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/multidefine.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/multidefine.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,124 @@
 +.Dd February 14, 2021
 +.Dt MULTIDEFINE 1
@@ -4315,7 +4702,7 @@ diff -Naur a/mdoc/man1/multidefine.1 b/mdoc/man1/multidefine.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/multisubstitute.1 b/mdoc/man1/multisubstitute.1
 --- a/mdoc/man1/multisubstitute.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/multisubstitute.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/multisubstitute.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,180 @@
 +.Dd February 14, 2021
 +.Dt MULTISUBSTITUTE 1
@@ -4499,7 +4886,7 @@ diff -Naur a/mdoc/man1/multisubstitute.1 b/mdoc/man1/multisubstitute.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/pipeline.1 b/mdoc/man1/pipeline.1
 --- a/mdoc/man1/pipeline.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/pipeline.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/pipeline.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,103 @@
 +.Dd February 14, 2021
 +.Dt PIPELINE 1
@@ -4606,7 +4993,7 @@ diff -Naur a/mdoc/man1/pipeline.1 b/mdoc/man1/pipeline.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/piperw.1 b/mdoc/man1/piperw.1
 --- a/mdoc/man1/piperw.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/piperw.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/piperw.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,51 @@
 +.Dd February 14, 2021
 +.Dt PIPERW 1
@@ -4661,7 +5048,7 @@ diff -Naur a/mdoc/man1/piperw.1 b/mdoc/man1/piperw.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/posix-cd.1 b/mdoc/man1/posix-cd.1
 --- a/mdoc/man1/posix-cd.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/posix-cd.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/posix-cd.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,100 @@
 +.Dd February 14, 2021
 +.Dt POSIX-CD 1
@@ -4765,7 +5152,7 @@ diff -Naur a/mdoc/man1/posix-cd.1 b/mdoc/man1/posix-cd.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/posix-umask.1 b/mdoc/man1/posix-umask.1
 --- a/mdoc/man1/posix-umask.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/posix-umask.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/posix-umask.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,108 @@
 +.Dd February 14, 2021
 +.Dt POSIX-UMASK 1
@@ -4877,7 +5264,7 @@ diff -Naur a/mdoc/man1/posix-umask.1 b/mdoc/man1/posix-umask.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/redirfd.1 b/mdoc/man1/redirfd.1
 --- a/mdoc/man1/redirfd.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/redirfd.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/redirfd.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,173 @@
 +.Dd February 14, 2021
 +.Dt REDIRFD 1
@@ -5054,7 +5441,7 @@ diff -Naur a/mdoc/man1/redirfd.1 b/mdoc/man1/redirfd.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/runblock.1 b/mdoc/man1/runblock.1
 --- a/mdoc/man1/runblock.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/runblock.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/runblock.1	2023-04-16 04:44:01.501525657 -0300
 @@ -0,0 +1,120 @@
 +.Dd February 14, 2021
 +.Dt RUNBLOCK 1
@@ -5178,7 +5565,7 @@ diff -Naur a/mdoc/man1/runblock.1 b/mdoc/man1/runblock.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/shift.1 b/mdoc/man1/shift.1
 --- a/mdoc/man1/shift.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/shift.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/shift.1	2023-04-16 04:44:01.502525657 -0300
 @@ -0,0 +1,122 @@
 +.Dd February 14, 2021
 +.Dt SHIFT 1
@@ -5304,7 +5691,7 @@ diff -Naur a/mdoc/man1/shift.1 b/mdoc/man1/shift.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/trap.1 b/mdoc/man1/trap.1
 --- a/mdoc/man1/trap.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/trap.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/trap.1	2023-04-16 04:44:01.502525657 -0300
 @@ -0,0 +1,222 @@
 +.Dd February 14, 2021
 +.Dt TRAP 1
@@ -5530,7 +5917,7 @@ diff -Naur a/mdoc/man1/trap.1 b/mdoc/man1/trap.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/tryexec.1 b/mdoc/man1/tryexec.1
 --- a/mdoc/man1/tryexec.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/tryexec.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/tryexec.1	2023-04-16 04:44:01.502525657 -0300
 @@ -0,0 +1,100 @@
 +.Dd February 14, 2021
 +.Dt TRYEXEC 1
@@ -5634,7 +6021,7 @@ diff -Naur a/mdoc/man1/tryexec.1 b/mdoc/man1/tryexec.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/unexport.1 b/mdoc/man1/unexport.1
 --- a/mdoc/man1/unexport.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/unexport.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/unexport.1	2023-04-16 04:44:01.502525657 -0300
 @@ -0,0 +1,55 @@
 +.Dd February 14, 2021
 +.Dt UNEXPORT 1
@@ -5693,7 +6080,7 @@ diff -Naur a/mdoc/man1/unexport.1 b/mdoc/man1/unexport.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/wait.1 b/mdoc/man1/wait.1
 --- a/mdoc/man1/wait.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/wait.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/wait.1	2023-04-16 04:44:01.502525657 -0300
 @@ -0,0 +1,168 @@
 +.Dd May 31, 2022
 +.Dt WAIT 1
@@ -5865,7 +6252,7 @@ diff -Naur a/mdoc/man1/wait.1 b/mdoc/man1/wait.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man1/withstdinas.1 b/mdoc/man1/withstdinas.1
 --- a/mdoc/man1/withstdinas.1	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man1/withstdinas.1	2022-10-22 19:21:59.803339395 -0300
++++ b/mdoc/man1/withstdinas.1	2023-04-16 04:44:01.502525657 -0300
 @@ -0,0 +1,117 @@
 +.Dd February 14, 2021
 +.Dt WITHSTDINAS 1
@@ -5986,7 +6373,7 @@ diff -Naur a/mdoc/man1/withstdinas.1 b/mdoc/man1/withstdinas.1
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/execline-block.7 b/mdoc/man7/execline-block.7
 --- a/mdoc/man7/execline-block.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/execline-block.7	2022-10-22 19:21:59.813339395 -0300
++++ b/mdoc/man7/execline-block.7	2023-04-16 04:44:01.502525657 -0300
 @@ -0,0 +1,135 @@
 +.Dd February 16, 2021
 +.Dt EXECLINE-BLOCK 7
@@ -6125,7 +6512,7 @@ diff -Naur a/mdoc/man7/execline-block.7 b/mdoc/man7/execline-block.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/execline-components.7 b/mdoc/man7/execline-components.7
 --- a/mdoc/man7/execline-components.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/execline-components.7	2022-10-22 19:21:59.813339395 -0300
++++ b/mdoc/man7/execline-components.7	2023-04-16 04:44:01.503525657 -0300
 @@ -0,0 +1,58 @@
 +.Dd September 28, 2021
 +.Dt EXECLINE-COMPONENTS 7
@@ -6187,7 +6574,7 @@ diff -Naur a/mdoc/man7/execline-components.7 b/mdoc/man7/execline-components.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/execline-exitcodes.7 b/mdoc/man7/execline-exitcodes.7
 --- a/mdoc/man7/execline-exitcodes.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/execline-exitcodes.7	2022-10-22 19:21:59.813339395 -0300
++++ b/mdoc/man7/execline-exitcodes.7	2023-04-16 04:44:01.503525657 -0300
 @@ -0,0 +1,113 @@
 +.Dd March 13, 2022
 +.Dt EXECLINE-EXITCODES 7
@@ -6304,7 +6691,7 @@ diff -Naur a/mdoc/man7/execline-exitcodes.7 b/mdoc/man7/execline-exitcodes.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/execline-grammar.7 b/mdoc/man7/execline-grammar.7
 --- a/mdoc/man7/execline-grammar.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/execline-grammar.7	2022-10-22 19:21:59.813339395 -0300
++++ b/mdoc/man7/execline-grammar.7	2023-04-16 04:44:01.503525657 -0300
 @@ -0,0 +1,267 @@
 +.Dd March 13, 2022
 +.Dt EXECLINE-GRAMMAR 7
@@ -6575,7 +6962,7 @@ diff -Naur a/mdoc/man7/execline-grammar.7 b/mdoc/man7/execline-grammar.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/execline-pushenv.7 b/mdoc/man7/execline-pushenv.7
 --- a/mdoc/man7/execline-pushenv.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/execline-pushenv.7	2022-10-22 19:21:59.813339395 -0300
++++ b/mdoc/man7/execline-pushenv.7	2023-04-16 04:44:01.503525657 -0300
 @@ -0,0 +1,205 @@
 +.Dd February 8, 2021
 +.Dt EXECLINE-PUSHENV 7
@@ -6784,7 +7171,7 @@ diff -Naur a/mdoc/man7/execline-pushenv.7 b/mdoc/man7/execline-pushenv.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/execline-substitute.7 b/mdoc/man7/execline-substitute.7
 --- a/mdoc/man7/execline-substitute.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/execline-substitute.7	2022-10-22 19:21:59.813339395 -0300
++++ b/mdoc/man7/execline-substitute.7	2023-04-16 04:44:01.503525657 -0300
 @@ -0,0 +1,429 @@
 +.Dd February 14, 2021
 +.Dt EXECLINE-SUBSTITUTE 7
@@ -7217,7 +7604,7 @@ diff -Naur a/mdoc/man7/execline-substitute.7 b/mdoc/man7/execline-substitute.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/execline-transform.7 b/mdoc/man7/execline-transform.7
 --- a/mdoc/man7/execline-transform.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/execline-transform.7	2022-10-22 19:21:59.813339395 -0300
++++ b/mdoc/man7/execline-transform.7	2023-04-16 04:44:01.504525657 -0300
 @@ -0,0 +1,252 @@
 +.Dd March 24, 2022
 +.Dt EXECLINE-TRANSFORM 7
@@ -7468,6 +7855,385 @@ diff -Naur a/mdoc/man7/execline-transform.7 b/mdoc/man7/execline-transform.7
 +.Pp
 +This man page is ported from the authoritative documentation at:
 +.Lk https://skarnet.org/software/execline/el_transform.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/execline-why.7 b/mdoc/man7/execline-why.7
+--- a/mdoc/man7/execline-why.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/execline-why.7	2023-04-16 04:44:01.504525657 -0300
+@@ -0,0 +1,375 @@
++.Dd April 9, 2023
++.Dt EXECLINE-WHY 7
++.Os
++.Sh NAME
++.Nm execline-why
++.Nd why execline
++.Sh DESCRIPTION
++.Ss Why not just use /bin/sh?
++.Sy Security
++.Pp
++One of the most frequent sources of security problems in programs is
++.Em parsing .
++Parsing is a complex operation, and it is easy to make mistakes while
++designing and implementing a parser.
++.Po
++See what Dan Bernstein says on the subject[1], section 5.
++.Pc
++.Pp
++But shells parse all the time.
++Worse, the
++.Em essence
++of the shell is parsing: the parser and the runner are intimately
++interleaved and cannot be clearly separated, thanks to the
++specification[2].
++The shell performs several kinds of expansions, automatic filename
++globbing, and automatic word splitting, in an unintuitive order,
++requiring users to memorize numerous arbitrary quoting rules in order
++to achieve what they want.
++Pages abound[3] where common mistakes are listed, more often than not
++leading to security holes.
++Did you know that
++.Ql \(dq Ns $@ Ns \(dq
++is a special case of double quoting, because it will split the
++arguments into several words, whereas every other use of double quotes
++in a shell is meant to prevent splitting?
++.Pp
++.Xr execlineb 1
++parses the script only once: when reading it.
++The parser has been designed to be simple and systematic, to reduce
++the potential for bugs \(em which you just cannot do with a shell.
++After
++.Xr execlineb 1
++has split up the script into words, no other parsing phase will
++happen, unless the user explicitly requires it.
++Positional parameters, when used, are never split, even if they
++contain spaces or newlines, unless the user explicitly requires it.
++Users control exactly what is split, what is done, and how.
++.Pp
++.Sy Portability
++.Pp
++The shell language was designed to make scripts portable across
++various versions of Unix.
++But it is actually really hard to write a portable shell script.
++There are dozens of distinct
++.Pa sh
++flavours, not even counting the openly incompatible
++.Pa csh
++approach and its various
++.Pa tcsh Ns
++-like followers.
++The
++.Pa ash ,
++.Pa bash ,
++.Pa ksh
++and
++.Pa zsh
++shells all exhibit a different behaviour,
++.Em even when they are run with the so-called compatibility mode .
++From what I have seen on various experiments, only
++.Pa zsh
++is able to follow the specification to the letter, at the expense
++of being big and complex to configure.
++This is a source of endless problems for shell script writers, who
++.Em should
++be able to assume that a script will run everywhere, but
++.Pa cannot
++in practice.
++Even a simple utility like
++.Pa test
++cannot be used safely with the normalized options, because most shells
++come with a builtin
++.Ql test
++that does not respect the specification to the letter.
++And let's not get started about
++.Pa echo ,
++which has its own set of problems.
++Rich Felker has a page listing tricks to use to write portable shell
++scripts[4].
++Writing a portable script should not be that hard.
++.Pp
++execline scripts are portable.
++There is no complex syntax with opportunity to have an undefined or
++nonportable behaviour.
++The execline package is portable across platforms: there is no reason
++for vendors or distributors to fork their own incompatible version.
++Scripts will not break from one machine to another; if they do, it's
++not a
++.Dq portability problem ,
++it's a bug.
++You are then encouraged to find the program that is responsible for
++the different behaviour, and send a bug-report to the program author
++\(em including me, if the relevant program is part of the execline
++distribution.
++.Pp
++A long-standing problem with Unix scripts is the shebang line, which
++requires an absolute path to the interpreter.
++Scripts are only portable as is if the interpreter can be found at the
++same absolute path on every system.
++With
++.Pa /bin/sh ,
++it is almost the case
++.Po
++Solaris manages to get it wrong by having a non-POSIX shell as
++.Pa /bin/sh
++and requiring something like
++.Ql #!/usr/xpg4/bin/sh
++to get a POSIX shell to interpret your script
++.Pc .
++Other scripting languages are not so lucky: perl can be
++.Pa /bin/perl ,
++.Pa /usr/bin/perl ,
++.Pa /usr/local/bin/perl
++or something else entirely.
++For those cases, some people advocate the use of
++.Xr env 1 :
++.Ql #!/usr/bin/env perl .
++But first,
++.Xr env 1
++can only find interpreters that can be found via the user's
++.Ev PATH
++environment variable, which defeats the purpose of having an absolute
++path in the shebang line in the first place; and second, this only
++displaces the problem: the
++.Xr env 1
++utility does not have a guaranteed absolute path.
++.Pa /usr/bin/env
++is the usual convention, but not a strong guarantee: it is valid for
++systems to have
++.Pa /bin/env
++instead, for instance.
++.Pp
++execline suffers from the same issues.
++.Ql #!/bin/execlineb ?
++.Ql #!/usr/bin/execlineb ?
++This is the only portability problem that you will find with execline,
++and it is common to every script language.
++.Pp
++The real solution to this portability problem is a convention that
++guarantees fixed absolute paths for executables, which the FHS does
++not do.
++The slashpackage[5] convention is such an initiative, and is
++well-designed; but as with every convention, it only works if everyone
++follows it, and unfortunately, slashpackage has not found many
++followers.
++Nevertheless, like every skarnet.org package, execline can be
++configured to follow the slashpackage convention.
++.Pp
++.Sy Simplicity
++.Pp
++I originally wanted a shell that could be used on an embedded system.
++Even the
++.Pa ash
++shell seemed big, so I thought of writing my own.
++Hence I had a look at the sh specification[2]... and ran away
++screaming.
++This specification is
++.Em insane .
++It goes against every good programming practice; it seems to have been
++designed only to give headaches to wannabe
++.Pa sh
++implementors.
++.Pp
++POSIX cannot really be blamed for that: it only normalizes existing,
++historical behaviour.
++One can argue whether it is a good idea to normalize atrocious
++behaviour for historical reasons, as is the case with the infamous
++.Fn gets
++function[6], but this is the way it is.
++.Pp
++The fact remains that modern shells have to be compatible with that
++historical nonsense and that makes them big and complex at best, or
++incompatible and ridden with bugs at worst.
++An
++.Ox
++developer said to me, when asked about the
++.Ox
++.Pa /bin/sh :
++.Dq \&It works, but it's far from not being a nightmare .
++.Pp
++Nobody should have nightmare-like software on their system.
++Unix is simple.
++Unix was designed to be simple.
++And if, as Dennis Ritchie said,
++.Dq it takes a genius to understand the simplicity ,
++that's because incompetent people took advantage of the huge Unix
++flexibility to write insanely crappy or complex software.
++System administrators can only do a decent job when they understand
++how the programs they run are supposed to work.
++People are slowly starting to grasp this
++.Po
++or are they?
++We finally managed to get rid of sendmail and BIND, but GNU/Linux
++users seem happy to welcome the era of D-Bus and systemd.
++Will we ever learn?
++.Pc
++\(em but even
++.Pa sh ,
++a seemingly simple and basic Unix program, is hard to understand when
++you lift the cover.
++.Pp
++So I decided to forego
++.Pa sh
++entirely and take a new approach.
++So far it has been working.
++The execline specification
++.Po
++cf.\&
++.Xr execline-grammar 7
++.Pc
++is simple, and, as I hope to have shown, easy to implement without too
++many bugs or glitches.
++.Pp
++.Sy Performance
++.Pp
++Since it was made to run on an embedded system, execline was designed
++to be light in memory usage.
++And it is.
++.Bl -bullet
++.It
++No overhead due to interactive support.
++.It
++No overhead due to unneeded features.
++Since every command performs its task then executes another command,
++all occupied resources are instantly freed.
++By contrast, a shell stays in memory during the whole execution time.
++.It
++Very limited use of the C library.
++Only the C interface to the kernel's system calls, and some very basic
++functions like
++.Xr malloc 3 ,
++are used in the C library.
++In addition to avoiding the horrible interfaces like stdio and the
++legacy libc bugs, this approach makes it easy to statically compile
++execline \(em you will want to do that on an embedded system, or just
++to gain performance.
++.El
++.Pp
++You can have hundreds of execline scripts running simultaneously on an
++embedded box.
++Not exactly possible with a shell.
++.Pp
++For scripts that do not require many computations that a shell can do
++without calling external programs, execline is faster than the shell.
++Unlike
++.Pa sh Ap
++s one, the execline parser is simple and straightforward; actually,
++it's more of a lexer than a parser, because the execline language has
++been designed to be LL(1) \(em keep it simple, stupid.
++execline scripts get analysed and launched practically without a delay.
++.Bl -bullet
++.It
++The best use case of execline is a linear, straightforward script, a
++simple command line that does not require the shell's processing
++power.
++In that case, execline will skip the shell's overhead and win big time
++on resource usage and execution speed.
++.It
++For longer scripts that fork a few commands, with a bit of control
++flow, on average, an execline script will run at roughly the same
++speed as the equivalent shell script, while using less resources.
++.It
++The worst use case of execline is when the shell is used as a
++programming language, and the script loops over complex internal
++constructs that execline is unable to replicate without forking.
++In that case, execline will waste a lot of time in
++.Sm off
++.Xr fork 2
++/\&
++.Xr exec 2
++.Sm on
++system calls that the shell does not have to perform, and be
++noticeably slower.
++execline has been designed as a
++.Em scripting
++language, not as a
++.Em programming
++language: it is efficient at being the glue that ties together
++programs doing a job, not at implementing a program's logic.
++.El
++.Pp
++.Sy execline limitations
++.Bl -bullet
++.It
++execline can only handle scripts that fit in one
++.Va argv .
++Unix systems have a limit on the
++.Sm off
++.Va argv
+++
++.Va envp
++.Sm on
++size; execline cannot execute scripts that are bigger than this limit.
++.It
++execline commands do not perform signal handling.
++It is not possible to trap signals efficiently inside an execline
++script.
++The
++.Xr trap 1
++binary, part of the execline suite, provides a signal management
++primitive, but it is more limited and slower than its equivalent shell
++construct.
++.It
++Due to the execline design, maintaining a state is difficult.
++Information has to transit via environment variables or temporary
++files, which makes commands like
++.Xr loopwhilex 1
++a bit painful to handle.
++.It
++Despite all its problems, the main shell advantage
++.Po
++apart from being available on every Unix platform, that is
++.Pc
++is that it is often convenient.
++Shell constructs can be terse and short, where execline constructs
++will be verbose and lengthy.
++.It
++An execline script is generally heavier on
++.Xr execve 2
++than the average shell script \(em notably in programs where the shell
++can use builtins.
++This can lead to a performance loss, especially when executed programs
++make numerous calls to the dynamic linker: the system ends up spending
++a lot of time resolving dynamic symbols.
++If it is a concern to you, you should try and
++.Em statically compile
++the execline package, to eliminate the dynamic resolution
++costs.
++Unless you're heavily looping around
++.Xr execve 2 ,
++the remaining costs will be negligible.
++.El
++.Sh SEE ALSO
++.Xr env 1 ,
++.Xr execlineb 1 ,
++.Xr loopwhilex 1 ,
++.Xr trap 1 ,
++.Xr exec 2 ,
++.Xr execve 2 ,
++.Xr fork 2 ,
++.Xr malloc 3 ,
++.Xr execline-grammar 7
++.Pp
++[1]
++.Lk https://cr.yp.to/qmail/guarantee.html
++.Pp
++[2]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html
++.Pp
++[3]
++.Lk https://www.google.com/search?q=shell+script+pitfalls
++.Pp
++[4]
++.Lk https://www.etalabs.net/sh_tricks.html
++.Pp
++[5]
++.Lk https://cr.yp.to/slashpackage.html
++.Pp
++[6]
++.Lk https://pubs.opengroup.org/onlinepubs/9699919799/functions/gets.html
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/execline/dieshdiedie.html
 +.Sh AUTHORS
 +.An Laurent Bercot
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
