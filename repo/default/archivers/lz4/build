@@ -1,0 +1,11 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i PREFIX PREFIX
+	importas -i BINDIR BINDIR
+	importas -i DRTDIR DRTDIR
+	importas -i LIBDIR LIBDIR
+	importas -i INCDIR INCDIR
+	importas -i DESTDIR DESTDIR
+}
+export ARBOR_MK_GMAKE_FLAGS "PREFIX=${PREFIX};bindir=${BINDIR};includedir=${INCDIR};libdir=${LIBDIR};pkgconfdir=${DRTDIR}/pkgconfig;DESTDIR=${DESTDIR}"
+arbor-mk-gmake install

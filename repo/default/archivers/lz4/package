@@ -1,0 +1,14 @@
+name:lz4
+version:1.9.4
+license:bsd-2,gpl-2
+description:Extremely Fast Compression algorithm.
+cksum:d6b7dc738d9d532a07081f749e5a8f5de7410f91c09f34413617da7c798712718cab6772396b3c6ec4a4a88fc0b3de2fb0947589709c8c00937707c96b8f7930
+urls{
+https://github.com/lz4/lz4/archive/v$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
