@@ -1,0 +1,10 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i PREFIX PREFIX
+	importas -i BINDIR BINDIR
+	importas -i MANDIR MANDIR
+	importas -i DESTDIR DESTDIR
+}
+export ARBOR_MK_GMAKE_FLAGS "PREFIX=${PREFIX};BINDIR=${BINDIR};MANDIR=${MANDIR};DESTDIR=${DESTDIR}"
+if { arbor-mk-gmake install }
+arbor-utils-install -l bin samu ninja
