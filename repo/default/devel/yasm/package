@@ -1,0 +1,14 @@
+name:yasm
+version:1.3.0
+license:bsd-2
+description:A rewrite of NASM to allow for multiple syntax supported.
+cksum:025454780e4e7ccc443fc604e49a5cc9b8489eaff9d50a443786c462604dc16890a07fba6985e2cc53c1076b23fda472aedb6c1cf9c8adcac6c05f90fdf696a7
+urls{
+https://www.tortall.net/projects/yasm/releases/yasm-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
