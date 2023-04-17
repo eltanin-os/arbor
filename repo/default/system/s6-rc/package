@@ -1,8 +1,8 @@
 name:s6-rc
-version:0.5.3.2
+version:0.5.4.1
 license:isc
 description:A complete service manager for s6 systems.
-cksum:110e6c67aef9ead5c70b12a6e664ebe4c29f4c000fd959872fe8ea41b0ce10d608737c715c0f893ce5a4fd9512cef30894781a67bbb01b911bd327450e813388
+cksum:de5d2c178058c8cef5ec6f42234e729747e2e1a12a867a86795d4095d5b0d38ef47f2f50b6b1c55347733473594918c601ac75c0660caef97c0b5a70312943db
 urls{
 https://skarnet.org/software/s6-rc/s6-rc-$version.tar.gz
 }
