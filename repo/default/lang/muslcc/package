@@ -12,3 +12,6 @@ linux
 urls{
 http://downloads.eltaninos.org/repo/binaries/$HOSTARCH-muslcc-$version.tar.lz
 }
+hostdeps{
+stdenv
+}
