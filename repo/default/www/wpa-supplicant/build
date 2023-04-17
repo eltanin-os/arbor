@@ -1,6 +1,8 @@
 #!/bin/execlineb -P
-importas -i PKG_CONFIG PKG_CONFIG
-backtick LIBNL_TINY_CFLAGS { $PKG_CONFIG --cflags libnl-tiny }
+backtick LIBNL_TINY_CFLAGS {
+	importas -is PKG_CONFIG PKG_CONFIG
+	$PKG_CONFIG --cflags libnl-tiny
+}
 multisubstitute {
 	importas -i LIBNL_TINY_CFLAGS LIBNL_TINY_CFLAGS
 	importas -i CFLAGS CFLAGS
