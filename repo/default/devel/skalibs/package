@@ -1,8 +1,8 @@
 name:skalibs
-version:2.12.0.1
+version:2.13.1.1
 license:isc
 description:The skarnet.org C system programming library.
-cksum:533492bbb988647e3a81f7a32cba9cbb5855aca99f3e00bba9ced887ee4ee5b4bb99e6b0a9be1285058a2439a06749f54feb826d95bf0f1c0a8dbd2ca6be9388
+cksum:0c506c6d9ce9b4aa4377d51903999d9490d983e41cf332db2df0d796f355f84258cf567a6e66f8d4dc384f3437b93aa20282cfb09aeb8480454f78371c2a2f91
 urls{
 https://skarnet.org/software/skalibs/skalibs-$version.tar.gz
 }
