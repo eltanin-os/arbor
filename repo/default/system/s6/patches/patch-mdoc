@@ -1,7 +1,6 @@
-# from flexibeast
 diff -Naur a/mdoc/man7/s6-accessrules.7 b/mdoc/man7/s6-accessrules.7
 --- a/mdoc/man7/s6-accessrules.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-accessrules.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-accessrules.7	2023-04-16 04:52:39.110496467 -0300
 @@ -0,0 +1,527 @@
 +.Dd September 29, 2021
 +.Dt S6-ACCESSRULES 7
@@ -532,7 +531,7 @@ diff -Naur a/mdoc/man7/s6-accessrules.7 b/mdoc/man7/s6-accessrules.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-fdholder-error-codes.7 b/mdoc/man7/s6-fdholder-error-codes.7
 --- a/mdoc/man7/s6-fdholder-error-codes.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-fdholder-error-codes.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-fdholder-error-codes.7	2023-04-16 04:52:39.110496467 -0300
 @@ -0,0 +1,136 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-ERROR-CODES 7
@@ -672,7 +671,7 @@ diff -Naur a/mdoc/man7/s6-fdholder-error-codes.7 b/mdoc/man7/s6-fdholder-error-c
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-fdholder.7 b/mdoc/man7/s6-fdholder.7
 --- a/mdoc/man7/s6-fdholder.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-fdholder.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-fdholder.7	2023-04-16 04:52:39.110496467 -0300
 @@ -0,0 +1,237 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER 7
@@ -913,9 +912,9 @@ diff -Naur a/mdoc/man7/s6-fdholder.7 b/mdoc/man7/s6-fdholder.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-fifodir.7 b/mdoc/man7/s6-fifodir.7
 --- a/mdoc/man7/s6-fifodir.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-fifodir.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-fifodir.7	2023-04-16 04:52:39.110496467 -0300
 @@ -0,0 +1,171 @@
-+.Dd September 29, 2021
++.Dd January 15, 2023
 +.Dt S6-FIFODIR 7
 +.Os
 +.Sh NAME
@@ -1079,7 +1078,7 @@ diff -Naur a/mdoc/man7/s6-fifodir.7 b/mdoc/man7/s6-fifodir.7
 +The libftrig interface takes care of all the subtleties.
 +.Sh SEE ALSO
 +[1]
-+.Lk https://skarnet.org/software/skalibs/doc/libstddjb/djbunix.html
++.Lk https://skarnet.org/software/skalibs/libstddjb/djbunix.html
 +.Pp
 +This man page is ported from the authoritative documentation at:
 +.Lk https://skarnet.org/software/s6/fifodir.html
@@ -1088,7 +1087,7 @@ diff -Naur a/mdoc/man7/s6-fifodir.7 b/mdoc/man7/s6-fifodir.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-ftrigr.7 b/mdoc/man7/s6-ftrigr.7
 --- a/mdoc/man7/s6-ftrigr.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-ftrigr.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-ftrigr.7	2023-04-16 04:52:39.110496467 -0300
 @@ -0,0 +1,383 @@
 +.Dd May 31, 2022
 +.Dt S6-FTRIGR 7
@@ -1475,7 +1474,7 @@ diff -Naur a/mdoc/man7/s6-ftrigr.7 b/mdoc/man7/s6-ftrigr.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-ftrigw.7 b/mdoc/man7/s6-ftrigw.7
 --- a/mdoc/man7/s6-ftrigw.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-ftrigw.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-ftrigw.7	2023-04-16 04:52:39.110496467 -0300
 @@ -0,0 +1,119 @@
 +.Dd September 29, 2021
 +.Dt S6-FTRIGW 7
@@ -1596,9 +1595,175 @@ diff -Naur a/mdoc/man7/s6-ftrigw.7 b/mdoc/man7/s6-ftrigw.7
 +.Sh AUTHORS
 +.An Laurent Bercot
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/s6-instanced-service.7 b/mdoc/man7/s6-instanced-service.7
+--- a/mdoc/man7/s6-instanced-service.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/s6-instanced-service.7	2023-04-16 04:52:39.111496467 -0300
+@@ -0,0 +1,162 @@
++.Dd February 19, 2023
++.Dt S6-INSTANCED-SERVICE 7
++.Os
++.Sh NAME
++.Nm s6-instanced-service
++.Nd dynamic instantiation
++.Sh DESCRIPTION
++An
++.Em instanced service
++is a parameterized service that you want to run several copies of,
++with only the parameter changing.
++Each copy of the service is called an
++.Em instance .
++.Pp
++With s6, an
++.Xr s6-service-directory 7
++can only handle one process at a time.
++So, if we want instanced services, there will have to be one service
++directory per instance, always.
++.Pp
++.Em Static instantiation
++means that the set of possible instances is finite and known in
++advance.
++With s6, it means that all the service directories for all possible
++instances are created, typically by a preprocessor, and instances are
++treated like regular services.
++.Pp
++.Em Dynamic instantiation
++means that instances are created on demand instead of preallocated.
++Starting with version 2.11.2.0, s6 provides a few tools to help users
++set up and manage dynamically instanced services.
++.Ss How to make a dynamically instanced service under s6
++.Bl -bullet -width x
++.It
++Write a template for a service directory that would run under
++.Xr s6-supervise 8 .
++The
++.Pa run
++script should take the name of the instance as its first argument; the
++.Pa finish
++script, if present, should take the name of the instance as its third
++argument.
++.It
++Call the
++.Xr s6-instance-maker 8
++program with this template as first argument, and a path
++.Pa dir
++as second argument.
++.Xr s6-instance-maker 8
++will create a service directory in
++.Pa dir .
++This is an offline tool: it does not interact with any currently
++active services or supervision trees.
++.It
++Supervise
++.Pa dir
++by adding it to your regular
++.Xr s6-scan-directory 7 .
++This will be your instanced service, but it's not running any instances yet.
++It is, instead, a nested supervision tree - the instanced service is an
++.Xr s6-svscan 8
++process that will supervise all the instances.
++.It
++Create and delete instances at will with the
++.Xr s6-instance-create 8
++and
++.Xr s6-instance-delete 8
++programs; you can list all the available instances with
++.Xr s6-instance-list 8 .
++These tools are
++.Em online :
++they work with live service directories, i.e. that are being supervised by
++.Xr s6-supervise 8 .
++.It
++Instances are regular supervised processes.
++You can control individual instances with
++.Xr s6-instance-control 8 ,
++and check their status with
++.Xr s6-instance-status 8 .
++These tools are online as well.
++.El
++.Ss Internal workings
++This section is not normative; users should not rely on it.
++It is only here for informational purposes.
++.Bl -bullet -width x
++.It
++The service directory created by
++.Xr s6-instance-maker 8
++has three specifics subdirectories in it:
++.Pa instance
++and
++.Pa instances ,
++which are initially empty, and
++.Pa template ,
++storing the template service directory.
++.It
++When the service is active, there is an
++.Xr s6-svscan 8
++process running on
++.Pa instance .
++.It
++.Xr s6-instance-create 8
++makes a copy of
++.Pa template
++into
++.Pa instances/ Ns Ar name ,
++and
++.Xr s6-svlink 8 Ns
++s
++.Pa instances/ Ns Ar name
++to
++.Pa instance .
++When it returns, there is an
++.Xr s6-supervise 8
++process running on
++.Pa instance/ Ns Ar name ,
++and the instance may be up or not depending on the given options.
++.It
++.Xr s6-instance-control 8
++is syntactic sugar around
++.Xr s6-svc 8
++on
++.Pa instance/ Ns Ar name .
++.It
++.Xr s6-instance-status 8
++is syntactic sugar around
++.Xr s6-svstat 8
++on
++.Pa instance/ Ns Ar name .
++.It
++.Xr s6-instance-delete 8
++is syntactic sugar around
++.Xr s6-svunlink 8
++on
++.Pa instance/ Ns Ar name .
++.It
++.Xr s6-instance-list 8
++is roughly equivalent to
++.Ql ls -1 instance .
++.El
++.Ss Notes
++This implementation of dynamic instances may seem expensive: it
++creates one
++.Xr s6-svscan 8
++process per instanced service, and one
++.Xr s6-supervise 8
++process per instance.
++However, remember that these processes use very little private memory,
++so having additional copies of them is far less expensive than it
++looks.
++It's really a convenient way to implement the feature by reusing
++existing code.
++.Sh SEE ALSO
++.Xr s6-instance-control 8 ,
++.Xr s6-instance-create 8 ,
++.Xr s6-instance-delete 8 ,
++.Xr s6-instance-list 8 ,
++.Xr s6-instance-maker 8 ,
++.Xr s6-instance-status 8
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-libftrig.7 b/mdoc/man7/s6-libftrig.7
 --- a/mdoc/man7/s6-libftrig.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-libftrig.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-libftrig.7	2023-04-16 04:52:39.111496467 -0300
 @@ -0,0 +1,233 @@
 +.Dd September 29, 2021
 +.Dt S6-LIBFTRIG 7
@@ -1835,7 +2000,7 @@ diff -Naur a/mdoc/man7/s6-libftrig.7 b/mdoc/man7/s6-libftrig.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-libs6.7 b/mdoc/man7/s6-libs6.7
 --- a/mdoc/man7/s6-libs6.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-libs6.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-libs6.7	2023-04-16 04:52:39.111496467 -0300
 @@ -0,0 +1,89 @@
 +.Dd September 29, 2021
 +.Dt S6-LIBS6 7
@@ -1928,7 +2093,7 @@ diff -Naur a/mdoc/man7/s6-libs6.7 b/mdoc/man7/s6-libs6.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-local-service.7 b/mdoc/man7/s6-local-service.7
 --- a/mdoc/man7/s6-local-service.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-local-service.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-local-service.7	2023-04-16 04:52:39.111496467 -0300
 @@ -0,0 +1,142 @@
 +.Dd September 29, 2021
 +.Dt S6-LOCAL-SERVICE 7
@@ -2074,7 +2239,7 @@ diff -Naur a/mdoc/man7/s6-local-service.7 b/mdoc/man7/s6-local-service.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-notifywhenup.7 b/mdoc/man7/s6-notifywhenup.7
 --- a/mdoc/man7/s6-notifywhenup.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-notifywhenup.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-notifywhenup.7	2023-04-16 04:52:39.111496467 -0300
 @@ -0,0 +1,272 @@
 +.Dd September 29, 2021
 +.Dt S6-NOTIFYWHENUP 7
@@ -2348,9 +2513,634 @@ diff -Naur a/mdoc/man7/s6-notifywhenup.7 b/mdoc/man7/s6-notifywhenup.7
 +.Sh AUTHORS
 +.An Laurent Bercot
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/s6-overview.7 b/mdoc/man7/s6-overview.7
+--- a/mdoc/man7/s6-overview.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/s6-overview.7	2023-04-16 04:52:39.112496467 -0300
+@@ -0,0 +1,621 @@
++.Dd January 15, 2023
++.Dt S6-OVERVIEW 7
++.Os
++.Sh NAME
++.Nm s6-overview
++.Nd an overview of s6
++.Sh DESCRIPTION
++s6 is a collection of utilities revolving around process supervision
++and management, logging, and system initialization.
++This page is a high-level description of the different parts of s6.
++.Ss Process supervision
++At its core, s6 is a
++.Em process supervision suite ,
++like its ancestor daemontools[1] and its close cousin runit[2].
++.Pp
++.Sy Concept
++.br
++The concept of process supervision comes from several observations:
++.Bl -bullet -width x
++.It
++Unix systems, even minimalistic ones, need to run
++.Em long-lived processes ,
++aka
++.Em daemons .
++That is one of the core design principles of Unix: one service \(-> one daemon.
++.It
++Daemons can die unexpectedly.
++Maybe they are missing a vital resource and cannot handle a certain
++failure; maybe they tripped on a bug; maybe a misconfigured
++administration program killed them; maybe the kernel killed them.
++Processes are fragile, but daemons are vital to a Unix system: a
++fundamental discrepancy that needs to be solved.
++.It
++Automatically restarting daemons when they die is generally a good
++thing.
++In any case, sysadmin intervention is necessary, but at least the
++daemon is providing service, or trying to, until the sysadmin can log
++in and investigate the underlying problem.
++.It
++Ad-hoc shell scripts that restart daemons
++.Em suck ,
++for several reasons that would each justify their own page.
++The difficulty of keeping track of the PID, explained below, is one of
++those reasons.
++.It
++It is sometimes necessary to send signals to a daemon.
++To kill it, of course, but also to make it read its config file again,
++for instance; signalling a daemon is a natural and very common way of
++sending it simple commands.
++.It
++Generally, to send a signal to a daemon, you need to know its PID.
++Without a supervision suite, knowing the proper PID is hard.
++Most non-supervision systems use a hack known as
++.Em .pid files ,
++i.e. the script that starts the daemon stores its PID into a file, and
++other scripts read that file.
++This is a bad mechanism for several reasons, and the case against .pid
++files would also justify its own page; the most important drawback
++of .pid files is that they create race conditions and management
++scripts may kill the wrong process.
++.It
++Non-supervision systems provide scripts to start and stop daemons, but
++those scripts may fail at boot time even though they work when run
++manually, and vice versa.
++If a sysadmin logs in and runs the script to restart a daemon that has
++died, the result might not be the same as if the whole system had been
++rebooted, and the daemon may exhibit strange behaviours!
++This is because the boot-time environment and the restart-time
++environment are not the same when the script is run; and a
++non-supervision system just cannot ensure reproducibility of the
++environment.
++This is a core problem of non-supervision systems: countless bugs have
++been falsely reported because of simple environment differences or
++configuration errors, countless man-hours have been wasted to try and
++understand what was going on.
++.El
++.Pp
++A process supervision system organizes the process hierarchy in a
++radically different way.
++.Bl -bullet -width x
++.It
++A process supervision system starts an independent hierarchy of
++processes at boot time, called a
++.Em supervision tree .
++This supervision tree never dies: when one of its components dies, it
++is restarted automatically.
++To ensure availability of the supervision tree at all times, it should
++be rooted in process 1, which cannot die.
++.It
++A daemon is never started, either manually or in a script, as a scion
++of the script that starts it.
++Instead, to start a daemon, you configure a specific directory which
++contains all the information about your daemon; then you send a
++command to the supervision tree.
++The supervision tree will start the daemon as a leaf.
++.Bf Em
++In a process supervision system, daemons are always spawned by the
++supervision tree, and never by an admin's shell.
++.Ef
++.It
++The parent of your daemon is a
++.Em supervisor .
++Since your daemon is its direct child,
++.Sm off
++.Bf Em
++the supervisor always knows the correct PID of your daemon
++.Ef
++\&.
++.Sm on
++.It
++The supervisor watches your daemon and can restart it when it dies,
++automatically.
++.It
++The supervision tree always has the same environment, so starting
++conditions are reproducible.
++Your daemon will always be started with the same environment, whether
++it is at boot time via init scripts or for the 100th automatic - or
++manual - restart.
++.It
++To send signals to your daemon, you send a command to its supervisor,
++which will then send a signal to the daemon on your behalf.
++Your daemon is identified by the directory containing its information,
++which is stable, instead of by its PID, which is not stable; the
++supervisor maintains the correct association without a race condition
++or the other problems of .pid files.
++.El
++.Pp
++.Sy Implementation
++.br
++s6 is a straightforward implementation of those concepts.
++.Bl -bullet -width x
++.It
++The
++.Xr s6-svscan 8
++and
++.Xr s6-supervise 8
++programs are the components of the
++.Em supervision tree .
++They are long-lived programs.
++.Bl -bullet -width x
++.It
++.Xr s6-supervise 8
++is a daemon's
++.Em supervisor ,
++its direct parent.
++For every long-lived process on a system, there is a corresponding
++.Xr s6-supervise 8
++process watching it.
++This is okay, because every instance of
++.Xr s6-supervise 8
++uses very few resources.
++.It
++.Xr s6-svscan 8
++is, in a manner of speaking, a supervisor for the supervisors.
++It watches and maintains a collection of
++.Xr s6-supervise 8
++processes: it is the branch of the supervision tree that all
++supervisors are stemming from.
++It can be run and supervised by your regular init process, or it can
++run as process 1 itself; refer to
++.Xr s6-svscan-not-as-process-1 7
++an
++.Xr s6-svscan-as-process-1 7 .
++Running
++.Xr s6-svscan 8
++as process 1 requires some effort from the user, because of the
++inherent non-portability of init processes; the s6-linux-init
++package[3] automates that effort and allows users to run s6 as an init
++replacement.
++.It
++The configuration of a daemon to be supervised by
++.Xr s6-supervise 8
++is done via an
++.Xr s6-service-directory 7 .
++.It
++The place to gather all service directories to be watched by an
++.Xr s6-svscan 8
++instance is called an
++.Xr s6-scan-directory 7 .
++.El
++.It
++The command that controls a single supervisor, and allows you to send
++signals to a daemon, is
++.Xr s6-svc 8 .
++It is a short-lived program.
++.It
++The command that controls a set of supervisors, and allows you to
++start and stop supervision trees, is
++.Xr s6-svscanctl 8 .
++It is a short-lived program.
++.El
++.Pp
++These four programs,
++.Xr s6-svscan 8 ,
++.Xr s6-supervise 8 ,
++.Xr s6-svscanctl 8
++and
++.Xr s6-svc 8 ,
++are the very core of s6.
++Technically, once you have them, you have a functional s6
++installation, and the other utilities are just a bonus.
++.Pp
++.Sy Practical usage
++.br
++To use s6's supervision features, you need to perform the following
++steps:
++.Bl -enum -width x
++.It
++For every daemon you potentially want supervised, write an
++.Xr s6-service-directory 7 .
++Make sure that your daemon does not background itself when started in
++the
++.Pa ./run
++script!
++Auto-backgrounding is a historical hack that was implemented when
++supervision suites did not exist; since you're using a supervision
++suite, auto-backgrounding is unnecessary and in this case detrimental.
++.It
++Write a single
++.Xr s6-scan-directory 7
++for the set of daemons you want to actually run.
++This set can be modified at run time.
++.It
++At some point in your initialization scripts, run
++.Xr s6-svscan 7
++on the scan directory.
++This will start the supervision tree, including your set of daemons.
++The exact way of running
++.Xr s6-svscan 8
++depends on your system: it is not quite the same when you want to run
++it as process 1 on a real machine, or under another init on a real
++machine, or as process 1 in a Docker[4] container, or in another
++context entirely.
++.It
++Alternatively, you can start
++.Xr s6-svscan 8
++on an empty scan directory, then populate it step by step and send an
++update command to
++.Xr s6-svscan 8
++via
++.Xr s6-svscanctl 8
++whenever the supervision tree should pick up the differences and start
++the services you added.
++.It
++That's it, your services are running.
++To control them manually, you can use the
++.Xr s6-svc 8
++command.
++.It
++At the end of the system's lifetime, you can use
++.Xr s6-svscanctl 8
++to bring down the supervision tree.
++.El
++.Ss Service-specific logging
++.Xr s6-svscan 8
++can monitor a supervision tree, but it can also do one more thing.
++It can ensure that a daemon's log, i.e. what the daemon outputs to its
++stdout (or stderr if you redirect it), gets processed by another,
++supervised, long-lived process, called a
++.Em logger ;
++and it can make sure that the logs are never lost between the daemon
++and the logger - even if the daemon dies, even if the logger dies.
++.Pp
++If your daemon is outputting messages, you have a decision to make
++about where to send them.
++.Bl -bullet -width x
++.It
++You can do as non-supervision systems do, and send the messages to
++syslog.
++It's entirely possible with a supervision system too.
++However, like auto-backgrounding, syslog is a historical mechanism
++that predates supervision suites, and is technically inferior; it is
++recommended that you do not use it whenever you can avoid it.
++.It
++You can send them to the daemon's stdout/stderr and do nothing special about it.
++The logs will then be sent to
++.Xr s6-svscan 8 Ap
++s stdout/stderr; what mechanism will read them depends on how you
++started
++.Xr s6-svscan 8 .
++.It
++You can use
++.Xr s6-svscan 8 Ap
++s service-specific logging mechanism and dedicate a logger process to
++your daemon's messages.
++.El
++.Pp
++s6 provides you with a long-lived process to use as a logger:
++.Xr s6-log 8 .
++It will store your logs in one (or more) specific directory of your
++choice, and rotate them automatically.
++.Ss Helpers for run scripts
++Creating a working
++.Xr s6-service-directory 7 ,
++and especially a good
++.Em run script ,
++is the most important part of the work when adapting a daemon to a
++supervision framework.
++.Pp
++If you can find your daemon's invocation script on a non-supervision
++system, for instance a System V-style init script, you can see the
++exact options that the daemon is being run with: environment
++variables, uid and gid, open descriptors, etc.
++This is what you need to replicate in your run script.
++.Pp
++.Po
++Do not replicate the auto-backgrounding, or things like
++start-stop-daemon[5] invocation: start-stop-daemon and its friends are
++hideous and kludgy attempts to work around the lack of proper
++supervision mechanisms.
++Now that you have s6, you should remove them from your system, throw
++them into a bonfire, and dance and laugh while they burn.
++Generally speaking, as a system administrator you want daemons that
++have been designed following the principles described in [6], or at
++least you want to use the command-line options that make them behave
++in such a way.
++.Pc
++.Pp
++The vast majority of the tools provided by s6 are meant to be used in
++run scripts: they help you control the process state and environment
++in your script before it executes into your daemon.
++Or, sometimes, they are daemons themselves, designed to be supervised.
++.Pp
++s6, like other skarnet.org
++software[7], makes heavy use of chain loading[8], also known as
++.Dq Bernstein chaining :
++a lot of s6 tools will perform some action that changes the process
++state, then execute into the rest of their command line.
++This allows the user to change the process state in a very flexible
++way, by combining the right components in the right order.
++Very often, a run script can be reduced to a single command line
++\(em
++likely a long one, but still a single one.
++.Po
++That is the main reason why using the execline[9] language to write
++run scripts is recommended: execline makes it natural to handle long
++command lines made of massive amounts of chain loading.
++This is by no means mandatory, though: a run script can be any
++executable file you want, provided that running it eventually results
++in a long-lived process with the same PID.
++.Pc
++.Pp
++Some examples of s6 programs meant to be used in run scripts:
++.Bl -bullet -width x
++.It
++The
++.Xr s6-log 8
++program is a long-lived process.
++It is meant to be executed into by a
++.Pa ./log/run
++script: it will be supervised, and will process what it reads on its
++stdin
++.Po
++i.e. the output of the
++.Pa ./run
++daemon
++.Pc .
++.It
++The
++.Xr s6-envdir 8
++program is a short-lived process that will update its current
++environment according to what it reads in a given directory, then
++execute into the rest of its command line.
++It is meant to be used in a run script to adjust the
++environment with which the final daemon will be executed into.
++.It
++Similarly, the
++.Xr s6-softlimit 8
++program adjusts its resource limits, then executes into the rest of
++its command line: it is meant to set the resources the final daemon
++will have access to.
++.It
++The
++.Xr s6-applyuidgid 8
++program, part of the
++.Ql s6-*uidgid
++family, drops root privileges before executing into the rest of its
++command line: it is meant to be used in run scripts that need root
++privileges when starting but do not need it for the execution of the
++long-lived process.
++.It
++.Xr s6-ipcserverd 8
++is a daemon that listens to a Unix socket and spawns a program for
++every connection.
++It is meant to be supervised, so it should be used in a run script,
++and it's also meant to be a flexible super-server that you can use for
++different applications: so it is a building block that may appear in
++several of your run scripts defining
++.Xr s6-local-service 7 Ns
++s.
++.El
++.Ss Readiness notification and dependency management
++Now that you have a supervision tree, and long-lived processes running
++supervised, you may want to introduce dependencies between them: do not
++perform an action
++.Po
++e.g. start
++.Po
++with
++.Ql s6-svc -u
++.Pc
++the Web server connecting to a database
++.Pc
++before a given daemon is up and running
++.Po
++e.g. the database server
++.Pc .
++s6 provides tools to do that:
++.Bl -bullet -width x
++.It
++The
++.Xr s6-svwait 8 ,
++.Xr s6-svlisten1 8
++and
++.Xr s6-svlisten 8
++programs will wait until a set of daemons is up, ready, down
++.Po
++as soon as the
++.Pa ./run
++process dies
++.Pc
++or really down
++.Po
++when the
++.Pa ./finish
++process has also died
++.Pc .
++.It
++Unfortunately, a daemon being
++.Em up
++does not mean that it is
++.Em ready :
++.Xr s6-notifywhenup 7
++goes into the details.
++s6 supports a simple mechanism: when a daemon wants to signal that it
++is
++.Em ready ,
++it simply writes a newline to a file descriptor of its choice, and
++.Xr s6-supervise 8
++will pick that notification up and broadcast the information to
++processes waiting for it.
++.It
++s6 also has a legacy mechanism for daemons that do not notify their
++own readiness but provide a way for an external program to check
++whether they're ready or not:
++.Xr s6-notifyoncheck 8 .
++This is polling, which is bad, but unfortunately necessary for many
++daemons as of 2019.
++.El
++.Pp
++s6 does not provide a complete dependency management framework, i.e. a
++program to automatically start (or stop) a set of services in a
++specific order - that order being automatically computed from a graph
++of dependencies between services.
++That functionality belongs to a
++.Em service manager ,
++and is implemented for instance in the s6-rc package[10].
++.Ss Fine-grained control over services
++s6 provides you with a few more tools to control and monitor your
++services.
++For instance:
++.Bl -bullet -width x
++.It
++.Xr s6-svstat 8
++gives you access to the detailed state of a service.
++.It
++.Xr s6-svperms 8
++allows you to configure what users can read that state, what users can
++send control commands to your service, and what users can be notified
++of service start/stop events.
++.It
++.Xr s6-svdt 8
++allows you to see what caused the latest deaths of a supervised
++process.
++.El
++.Pp
++These tools make s6 the most powerful and flexible of the existing
++process supervision suites.
++.Ss Additional utilities
++The other programs in the s6 package are various utilities that may be
++useful in designing servers, and more generally multi-process software.
++They can be used with or without a supervision environment, although
++it is of course recommended to have one; but they are not part of the
++core s6 functionality, and you may safely ignore them for now if you
++are just getting into the supervision world.
++.Pp
++.Sy Generic inter-process notification
++.br
++The
++.Ql s6-ftrig*
++family of programs allows notifications between unrelated processes: a
++set of processes can subscribe to a certain channel - identified by a
++directory in the filesystem - and ask to be notified of certain events
++on that channel; another set of processes can send events to the
++channel.
++.Pp
++The underlying mechanism is the same as the one used by the supervision
++tree for readiness notification, but the
++.Ql s6-ftrig*
++tools provide a more generic access to that mechanism.
++.Pp
++.Sy Helpers for designing local services
++.br
++Local services, i.e. daemons listening to a Unix domain socket, are a
++powerful and flexible mechanism, especially with modern Unix systems
++that allow client authentication.
++s6 includes tools to take advantage of that mechanism.
++.Bl -bullet -width x
++.It
++The
++.Ql s6-ipc*
++family of programs is about designing clients or servers that
++communicate over Unix domain sockets.
++.It
++The
++.Ql s6-*access*
++and
++.Xr s6-connlimit 8
++family of programs is about client access control.
++.It
++The
++.Ql s6-sudo*
++family of programs is about using a local service in order to give
++selected clients the ability to run a command line with the privileges
++of the server, without using suid programs.
++.El
++.Pp
++.Sy Keeping file descriptors open
++.br
++Sometimes you want to keep a file descriptor open, even if the program
++normally using it dies - so the program can restart and use the same
++file descriptor without losing any data.
++To do that, you need to
++.Em hold
++the descriptor in another process, i.e. that process should have it
++open but do nothing with it.
++.Pp
++.Xr s6-svscan 8 ,
++for instance, holds the pipe existing between a supervised daemon and
++its logger, so even if the daemon or the logger dies while there are
++logs in the pipe, the pipe remains open and the logs are not lost.
++.Pp
++s6 provides a mechanism to store and retrieve open file descriptors in
++a totally generic way: the
++.Ql s6-fdholder*
++family of programs.
++.Bl -bullet -width x
++.It
++The
++.Xr s6-fdholder-daemon 8
++program is a daemon
++.Po
++or, rather, executes into the
++.Xr s6-fdholderd 8
++daemon
++.Pc ,
++meant to be supervised, that will hold file descriptors on its
++clients' behalf.
++.It
++Other programs in the family, such as
++.Xr s6-fdholder-store 8 ,
++are client programs that interact with this daemon to store and
++retrieve file descriptors.
++.El
++.Pp
++Note that
++.Dq socket activation ,
++one of the main advertised benefits of the systemd[11] init system,
++sounds similar to fd-holding.
++The reality is that socket activation is a mixture of several
++different mechanisms, one of which is fd-holding; s6 allows you to
++implement the healthy parts of socket activation.
++Refer to
++.Xr s6-socket-activation 7
++for details.
++.Pp
++.Sy Other miscellaneous utilities
++.br
++This page does not list or classify every s6 tool.
++Please explore the
++.Dq Reference
++section of the main s6 page[12] for details on a specific program.
++.Sh SEE ALSO
++[1]
++.Lk https://cr.yp.to/daemontools.html
++.Pp
++[2]
++.Lk http://smarden.org/runit/
++.Pp
++[3]
++.Lk https://skarnet.org/software/s6-linux-init/
++.Pp
++[4]
++.Lk https://www.docker.com/
++.Pp
++[5]
++.Lk http://man.he.net/man8/start-stop-daemon
++.Pp
++[6]
++.Lk https://jdebp.uk/FGA/unix-daemon-design-mistakes-to-avoid.html
++.Pp
++[7]
++.Lk https://skarnet.org/software/
++.Pp
++[8]
++.Lk https://en.wikipedia.org/wiki/Chain_loading#Chain_loading_in_Unix
++.Pp
++[9]
++.Lk https://skarnet.org/software/execline/
++.Pp
++[10]
++.Lk https://skarnet.org/software/s6-rc/
++.Pp
++[11]
++.Lk https://www.freedesktop.org/wiki/Software/systemd/
++.Pp
++[12]
++.Lk https://skarnet.org/software/s6/
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-s6lock.7 b/mdoc/man7/s6-s6lock.7
 --- a/mdoc/man7/s6-s6lock.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-s6lock.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-s6lock.7	2023-04-16 04:52:39.112496467 -0300
 @@ -0,0 +1,276 @@
 +.Dd September 29, 2021
 +.Dt S6-S6LOCK 7
@@ -2630,7 +3420,7 @@ diff -Naur a/mdoc/man7/s6-s6lock.7 b/mdoc/man7/s6-s6lock.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-scan-directory.7 b/mdoc/man7/s6-scan-directory.7
 --- a/mdoc/man7/s6-scan-directory.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-scan-directory.7	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man7/s6-scan-directory.7	2023-04-16 04:52:39.112496467 -0300
 @@ -0,0 +1,176 @@
 +.Dd September 29, 2021
 +.Dt S6-SCAN-DIRECTORY 7
@@ -2810,9 +3600,9 @@ diff -Naur a/mdoc/man7/s6-scan-directory.7 b/mdoc/man7/s6-scan-directory.7
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man7/s6-service-directory.7 b/mdoc/man7/s6-service-directory.7
 --- a/mdoc/man7/s6-service-directory.7	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man7/s6-service-directory.7	2022-10-22 19:55:38.863439109 -0300
-@@ -0,0 +1,515 @@
-+.Dd June 15, 2022
++++ b/mdoc/man7/s6-service-directory.7	2023-04-16 04:52:39.113496467 -0300
+@@ -0,0 +1,558 @@
++.Dd January 15, 2023
 +.Dt S6-SERVICE-DIRECTORY 7
 +.Os
 +.Sh NAME
@@ -2851,12 +3641,37 @@ diff -Naur a/mdoc/man7/s6-service-directory.7 b/mdoc/man7/s6-service-directory.7
 +contains the commands that will setup and run your
 +.Em foo
 +service.
++.Bl -bullet -width x
++.It
 +It is forked and executed by
 +.Xr s6-supervise 8
 +every time the service must be started, i.e. normally when
 +.Xr s6-supervise 8
 +starts, and whenever the service goes down when it is supposed to be
 +up.
++.It
++It is given one argument, which is the same argument that the
++.Xr s6-supervise 8
++process is running with, i.e. the name of the service directory
++\(em
++or, if
++.Xr s6-supervise 8
++is run under
++.Xr s6-svscan 8 ,
++the name of the service directory as seen by
++.Xr s6-svscan 8
++in its
++.Xr s6-scan-directory 7 .
++That is,
++.Pa "" Ns Ar foo
++or
++.Pa "" Ns Ar foo Ns /log ,
++if
++.Ar foo
++is the name of the
++.Em symbolic link
++in the scan directory.
++.El
 +A run script should normally:
 +.Bl -bullet -width x
 +.It
@@ -2970,10 +3785,18 @@ diff -Naur a/mdoc/man7/s6-service-directory.7 b/mdoc/man7/s6-service-directory.7
 +.Pa timeout-finish
 +file, see below.
 +.It
-+The finish script is executed with two arguments: the exit code from
-+the run script (resp. 256 if the run script was killed by a signal),
-+and an undefined number (resp. the number of the signal that killed
-+the run script).
++The finish script is executed with three arguments:
++.Bl -enum -width x
++.It
++the exit code from the run script (resp. 256 if the run script was
++killed by a signal);
++.It
++an undefined number (resp. the number of the signal that killed the
++run script);
++.It
++the name of the service directory, the same that has been given to
++.Pa ./run .
++.El
 +.It
 +If the finish script exits 125, then
 +.Xr s6-supervise 8
@@ -3002,7 +3825,7 @@ diff -Naur a/mdoc/man7/s6-service-directory.7 b/mdoc/man7/s6-service-directory.7
 +if it does not exist.
 +This is where
 +.Xr s6-supervise 8
-+stores its information.
++stores its internal information.
 +The directory must be writable.
 +.It
 +An optional, empty, regular file named
@@ -3131,10 +3954,20 @@ diff -Naur a/mdoc/man7/s6-service-directory.7 b/mdoc/man7/s6-service-directory.7
 +It is automatically created by
 +.Xr s6-supervise 8
 +if it does not exist.
-+.Pa foo/event
++.Pa "" Ns Ar foo Ns /event
 +is the rendez-vous point for listeners, where
 +.Xr s6-supervise 8
 +will send notifications when the service goes up or down.
++.It
++Optional directories named
++.Pa instance
++and
++.Pa instances .
++Those are internal subdirectories created by
++.Xr s6-instance maker 8
++in a templated service directory.
++Outside of instanced services, these directories should never appear,
++and you should never create them manually.
 +.It
 +An optional service directory named
 +.Pa log .
@@ -3327,9 +4160,1263 @@ diff -Naur a/mdoc/man7/s6-service-directory.7 b/mdoc/man7/s6-service-directory.7
 +.Sh AUTHORS
 +.An Laurent Bercot
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/s6-socket-activation.7 b/mdoc/man7/s6-socket-activation.7
+--- a/mdoc/man7/s6-socket-activation.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/s6-socket-activation.7	2023-04-16 04:52:39.113496467 -0300
+@@ -0,0 +1,152 @@
++.Dd January 15, 2023
++.Dt S6-SOCKET-ACTIVATION 7
++.Os
++.Sh NAME
++.Nm s6-socket-activation
++.Nd performing socket activation with s6
++.Sh DESCRIPTION
++First, it's important to realize that you don't
++.Em need
++socket activation.
++It's a marketing word used by systemd advocates that mixes a couple
++useful architecture concepts and several horrible ideas, for a very
++minor speed benefit.
++Read [1] and [2] for details.
++.Bl -bullet -width x
++.It
++s6
++.Em will not
++help you implement super-servers in process 1, because doing so is bad
++engineering.
++However, it
++.Em will
++help you set up super-servers.
++The
++.Xr s6-ipcserver 8
++program, for Unix domain sockets, as well as the
++.Xr s6-tcpserver4 8
++and
++.Xr s6-tcpserver6 8
++programs, for TCP INET domain sockets
++.Po
++available in the s6-networking package[3]
++.Pc
++are super-servers you can use to your heart's content.
++They are even wrappers around simpler programs, and you can use their
++components in the way you choose: bind sockets, drop privileges,
++accept connections from clients, it's all about what you write in your
++command line.
++Super-servers are a good thing; using process 1 to act as a
++super-server is not.
++s6 provides you with the tools to get the good without the bad.
++.It
++s6
++.Em will not
++help you run all your services before their dependencies are met,
++because doing so is
++.Em very
++bad engineering.
++However, it
++.Em will
++provide you with:
++.Bl -bullet -width x
++.It
++a reliable logging infrastructure, that makes sure your services
++never lose logs:
++.Xr s6-log 8 ,
++in conjunction with
++.Xr s6-supervise 8
++and
++.Xr s6-svscan 8 .
++.It
++ways to open your sockets and bind them as early as you want in your
++boot process, and make them accept client connections later:
++.Xr s6-ipcserver-socketbinder 8 ,
++.Xr s6-tcpserver4-socketbinder 8
++and
++.Xr s6-tcpserver6-socketbinder 8 .
++.It
++a supervision infrastructure that can start as many services in
++parallel as you want:
++.Xr s6-supervise 8
++and
++.Xr s6-svscan 8 .
++.El
++.It
++s6
++.Em will not
++help you centralize all your socket information in process 1, because
++doing so is contrary to modularity and independence of services.
++However, s6
++.Em will
++provide you with a way to store your open sockets and retrieve them
++when you want, which it calls
++.Dq fd holding :
++.Xr s6-fdholder-daemon 8 .
++.El
++.Ss So, how do I open all my sockets first, store them, and dispatch them to daemons later?
++Again, it's not necessary to do that: you'll be fine, and quite
++speedy, just starting your daemons in their good time.
++You
++.Em will not
++reap any noticeable benefit from performing
++.Dq socket activation .
++But if you really want to:
++.Bl -enum -width x
++.It
++Make sure you have an early supervision infrastructure running.
++Ideally, you would make
++.Xr s6-svscan 8
++your process 1 .
++.It
++Start an early fd-holding service, e.g.
++.Xr s6-fdholder-daemon 8 .
++Let's say the fd-holding daemon is listening on socket
++.Pa /service/fdholder/s .
++.It
++For every Unix domain socket
++.Pa /my/socket
++you need to open, run:
++.Bd -literal
++s6-ipcserver-socketbinder /my/socket s6-fdholder-store /service/fdholder/s unix:/my/socket
++.Ed
++.Pp
++You can do the same with INET domain sockets.
++.It
++Proceed to your initialization.
++.It
++When you want to run a daemon
++.Ql myserverd
++that accepts clients connecting to
++.Pa /my/socket ,
++run:
++.Bd -literal
++s6-fdholder-retrieve /service/fdholder/s unix:/my/socket myserverd
++.Ed
++.Pp
++.Ql myserverd
++will be executed with
++.Pa /my/socket
++as its standard input.
++.It
++The descriptors remain safely stored in the fd-holding daemon and you
++can retrieve them again whenever you want, for instance when your
++service crashes and is restarted.
++.El
++.Pp
++That is all there is to it.
++You don't have to use specific libraries or write complex unit files,
++you just need to understand how a command line works.
++This is Unix.
++.Sh SEE ALSO
++[1]
++.Lk https://skarnet.org/lists/supervision/0422.html
++.Pp
++[2]
++.Lk https://forums.gentoo.org/viewtopic-t-994548-postdays-0-postorder-asc-start-25.html#7581522
++.Pp
++[3]
++.Lk https://skarnet.org/software/s6-networking/
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/s6-svscan-as-process-1.7 b/mdoc/man7/s6-svscan-as-process-1.7
+--- a/mdoc/man7/s6-svscan-as-process-1.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/s6-svscan-as-process-1.7	2023-04-16 04:52:39.113496467 -0300
+@@ -0,0 +1,581 @@
++.Dd January 15, 2023
++.Dt S6-SVSCAN-AS-PROCESS-1 7
++.Os
++.Sh NAME
++.Nm s6-svscan-as-process-1
++.Nd running
++.Xr s6-svscan 8
++as process 1
++.Sh DESCRIPTION
++.Bf Em
++Since 2015-06-17, if you're a Linux user, you can use the
++s6-linux-init package[1] to help you do so!
++Please read this documentation page first, though, it will help you
++understand what s6-linux-init does.
++.Ef
++.Pp
++It is possible to run
++.Xr s6-svscan 8
++as process 1, i.e. the
++.Ql init
++process.
++However, that does not mean you can directly
++.Em boot
++on
++.Xr s6-svscan 8 ;
++that little program cannot do everything your stock init does.
++Replacing the
++.Ql init
++process requires a bit of understanding of what is going on.
++.Ss The three stages of init
++Okay, it's actually four, but the fourth stage is an implementation
++detail that users don't care about, so we'll stick with three.
++.Pp
++The life of a Unix machine has three stages.
++Yes, three.
++.Bl -enum -width x
++.It
++The
++.Em early initialization
++phase.
++It starts when the kernel launches the first userland process,
++traditionally called
++.Ql init .
++During this phase, init is the only lasting process; its duty is to
++prepare the machine for the start of
++.Em other
++long-lived processes, i.e. services.
++Work such as mounting filesystems, setting the system clock, etc. can
++be done at this point.
++This phase ends when process 1 launches its first services.
++.It
++The
++.Em cruising
++phase.
++This is the
++.Dq normal ,
++stable state of an up and running Unix machine.
++Early work is done, and init launches and maintains
++.Em services ,
++i.e. long-lived processes such as gettys, the ssh server, and so on.
++During this phase, init's duties are to reap orphaned zombies and to
++supervise services
++\(em
++also allowing the administrator to add or remove services.
++This phase ends when the administrator requires a shutdown.
++.It
++The
++.Em shutdown
++phase.
++Everything is cleaned up, services are stopped, filesystems are
++unmounted, the machine is getting ready to be halted.
++At the end of this phase, all processes are killed, first with a
++.Dv SIGTERM ,
++then with a
++.Dv SIGKILL
++.Po
++to catch processes that resist
++.Dv SIGTERM
++.Pc .
++The only processes that survive it are process 1; if this process is
++.Xr s6-svscan 8
++and its
++.Xr s6-scan-directory 7
++is not empty, then the supervision tree is restarted.
++.It
++The
++.Em hardware shutdown
++phase.
++The system clock is stored, filesystems are unmounted, and the system
++call that reboots the machine or powers it off is called.
++.El
++.Pp
++Unless you're implementing a shutdown procedure over a supervision
++tree, you can absolutely consider that the hardware shutdown is part of stage 3.
++.Pp
++As you can see, process 1's duties are
++.Em radically different
++from one stage to the next, and init has the most work when the
++machine is booting or shutting down, which means a normally negligible
++fraction of the time it is up.
++The only common thing is that at no point is process 1 allowed to
++exit.
++.Pp
++Still, all common init systems insist that the same
++.Ql init
++executable must handle these three stages.
++From System V init to launchd, via busybox init, you name it
++\(em
++one init program from bootup to shutdown.
++No wonder those programs, even basic ones, seem complex to write and
++complex to understand!
++.Pp
++Even the runit[2] program, designed with supervision in mind, remains
++as process 1 all the time; at least runit makes things simple by
++clearly separating the three stages and delegating every stage's work
++to a different script that is
++.Em not
++run as process 1.
++.Po
++Since runit does not distinguish between stage 3 and stage 4, it needs
++very careful handling of the
++.Ql kill -9 -1
++part of stage 3: getting
++.Pa /etc/runit/3
++killed before it unmounts the filesystems would be bad.
++.Pc
++.Pp
++One init to rule them all?
++It ain't necessarily so!
++.Ss The role of s6-svscan
++init does not have the right to die, but fortunately,
++.Bf Em
++it has the right to
++.Xr execve 3 !
++.Ef
++During stage 2, why use precious RAM, or at best, swap space, to store
++data that are only relevant to stages 1 or 3-4?
++It only makes sense to have an init process that handles stage 1, then
++executes into an init process that handles stage 2, and when told to
++shutdown, this
++.Dq stage 2
++init executes into a
++.Dq stage 3
++init which just performs shutdown.
++Just as runit does with the
++.Pa /etc/runit/[123]
++scripts, but
++.Xr exec 3 Ns
++ing the scripts as process 1 instead of forking them.
++.Pp
++It becomes clear now that
++.Xr s6-svscan 8
++is perfectly suited to exactly fulfill process 1's role
++.Em during stage 2 .
++.Bl -bullet -width x
++.It
++It does not die.
++.It
++The reaper takes care of every zombie on the system.
++.It
++The scanner maintains services alive.
++.It
++It can be sent commands via the
++.Xr s6-svscanctl 8
++interface.
++.It
++It
++.Xr exec 3 Ns
++s into a given script when told to.
++.El
++.Pp
++However, an init process for stage 1 and another one for stage 3 are
++still needed.
++Fortunately, those processes are very easy to design!
++The only difficulty here is that they're heavily system-dependent, so
++it's not possible to provide a stage 1 init and a stage 3 init that
++will work everywhere.
++s6 was designed to be as portable as possible, and it should run on
++virtually every Unix platform; but outside of stage 2 is where
++portability stops.
++.Pp
++The s6-linux-init package[1] provides a tool,
++.Ql s6-linux-init-maker ,
++to automatically create a suitable stage 1 init
++.Po
++so, the
++.Pa /sbin/init
++binary
++.Pc
++for Linux.
++It is also possible to write similar tools for other operating
++systems, but the details are heavily system-dependent.
++.Pp
++For the adventurous and people who need to do this by hand, though, here are
++are some general design tips.
++.Ss How to design a stage 1 init
++.Sy What stage 1 init must do
++.Bl -bullet -width x
++.It
++Prepare an initial
++.Xr s6-scan-directory 7 ,
++say in
++.Pa /run/service ,
++with a few vital services, such as
++.Xr s6-svscan 8 Ap
++s own logger, and an early getty (in case debugging is needed).
++That implies mounting a read-write filesystem, creating it in RAM if
++needed, if the root filesystem is read-only.
++.It
++Either perform all the one-time initialization, as stage 1 runit[2] does;
++.It
++or fork a process that will perform most of the one-time initialization once
++.Xr s6-svscan 8
++is in charge.
++.It
++Be extremely simple and not fail, because recovery is almost impossible
++here.
++.El
++.Pp
++Unlike the
++.Pa /etc/runit/1
++script, an init-stage1 script running as process 1 has nothing to back
++it up, and if it fails and dies, the machine crashes.
++Does that mean the runit approach is better?
++It's certainly safer, but not necessarily better, because init-stage1
++can be made
++.Em extremely small ,
++to the point it is practically failproof, and if it fails, it means
++something is so wrong that you would have had to reboot the machine
++with
++.Ql init=/bin/sh
++anyway.
++.Pp
++To make init-stage1 as small as possible, only this realization is
++needed: you do not need to perform all of the one-time initialization
++tasks before launching
++.Xr s6-svscan 8 .
++Actually, once init-stage1 has made it possible for
++.Xr s6-svscan 8
++to run, it can fork a background
++.Dq init-stage2
++process and
++.Xr exec 3
++into
++.Xr s6-svscan 8
++immediately!
++The
++.Dq init-stage2
++process can then pursue the one-time initialization, with a big
++advantage over the
++.Dq init-stage1
++process:
++.Xr s6-svscan 8
++is running, as well as a few vital services, and if something bad
++happens, there's a getty for the administrator to log on.
++No need to play fancy tricks with
++.Pa /dev/console
++anymore!
++Yes, the theoretical separation in 3 stages is a bit more flexible in
++practice: the
++.Dq stage 2
++process 1 can be already running when a part of the
++.Dq stage 1
++one-time tasks are still being run.
++.Pp
++Of course, that means that the scan directory is still incomplete when
++.Xr s6-svscan 8
++first starts, because most services can't yet be run, for
++lack of mounted filesystems, network etc.
++The
++.Dq init-stage2
++one-time initialization script must populate the scan directory when
++it has made it possible for all wanted services to run, and trigger
++the scanner.
++Once all the one-time tasks are done, the scan directory is fully
++populated and the scanner has been triggered, the machine is fully
++operational and in stage 2, and the
++.Dq init-stage2
++script can die.
++.Pp
++.Sy Is it possible to write stage 1 init in a scripting language?
++.br
++It is very possible, and if you are attempting to write your own stage
++1, I definitely recommend it.
++If you are using
++.Xr s6-svscan 8
++as stage 2 init, stage 1 init should be simple enough that it can be
++written in any scripting language you want, just as
++.Pa /etc/runit/1
++is if you're using runit.
++And since it should be so small, the performance impact will be
++negligible, while maintainability is enhanced.
++Definitely make your stage 1 init a script.
++.Pp
++Of course, most people will use the
++.Em shell
++as scripting language; however, I advocate the use of execline[3] for
++this, and not only for the obvious reasons.
++Piping
++.Xr s6-svscan 8 Ap
++s stderr to a logging service before said service is even up requires
++some tricky FIFO handling that execline can do and the shell cannot.
++.Ss  How to design a stage 3-4 init
++If you're using
++.Xr s6-svscan 8
++as stage 2 init on
++.Pa /run/service ,
++then stage 3 init is naturally the
++.Pa /run/service/.s6-svscan/finish
++program.
++Of course,
++.Pa /run/service/.s6-svscan/finish
++can be a symbolic link to anything else; just make sure it points to
++something in the root filesystem (unless your program is an execline
++script, in which case it is not even necessary).
++.Pp
++.Sy What stage 3-4 init must do
++.Bl -bullet -width x
++.It
++Destroy the supervision tree and stop all services.
++.It
++Kill all processes
++.Em save itself ,
++first gently, then harshly, and
++.Em reap all the zombies .
++.It
++Up until that point we were in stage 3; now we're in stage 4.
++.It
++Unmount all the filesystems.
++.It
++Halt or reboot the machine, depending on what root asked for.
++.El
++.Pp
++This is seemingly very simple, even simpler than stage 1, but
++experience shows that it's trickier than it looks.
++.Pp
++One tricky part is the
++.Ql kill -9 -1
++operation at the end of stage 3: you must make sure that
++.Em process 1
++regains control and keeps running after it, because it will be the
++only process left alive.
++If you are running a stage 3 script as process 1, it is almost
++automatic: your script survives the kill and continues running, up
++into stage 4.
++If you are using another model, the behaviour becomes
++system-dependent: your script may or may not survive the kill, so on
++systems where it does not, you will have to design a way to regain
++control in order to accomplish stage 4 tasks.
++.Pp
++Another tricky part, that is only apparent with practice, is solidity.
++It is even more vital that
++.Em nothing fails
++during stages 3 and 4 than it is in stage 1, because in stage 1, the
++worst that can happen is that the machine does not boot, whereas in
++stages 3 and 4, the worst that can happen is that the machine
++.Em does not shut down ,
++and that is a much bigger issue.
++.Pp
++For these reasons, I now recommend
++.Em not
++tearing down the supervision tree for stages 3-4.
++It is easier to work in a stable environment, as a regular process,
++than it is to manage a whole shutdown sequence as pid 1: the presence
++of
++.Xr s6-svscan 8
++as pid 1, and of a working supervision tree, is a pillar
++you can rely on, and with experience I find it a good idea to keep the
++supervision infrastructure running until the end.
++Of course, that requires the scandir, and the active supervision
++directories, to be on a RAM filesystem such as
++.Ql tmpfs ;
++that is good policy anyway.
++.Pp
++.Sy Is it possible to write stage 3 init in a scripting language?
++.br
++Yes, definitely, just like stage 1.
++.Pp
++However, you really should leave
++.Pa /run/service/.s6-svscan/finish
++.Po
++and the other scripts in
++.Pa /run/service/.s6-svscan
++.Pc
++alone, and write your shutdown sequence without dismantling the
++supervision tree.
++You will still have to stop most of the services, but
++.Xr s6-svscan 8
++should stay.
++.Pp
++For a more in-depth study of what to do in stages 3-4 and how
++to do it, you can look at the source of
++.Ql s6-linux-init-shutdownd
++in the s6-linux-init package[1].
++.Ss How to log the supervision tree's messages
++When the Unix kernel launches your (stage 1) init process, it does it
++with descriptors 0, 1 and 2 open and reading from or writing to
++.Pa /dev/console .
++This is okay for the early boot: you actually want early error
++messages to be displayed to the system console.
++But this is not okay for stage 2: the system console should only be
++used to display extremely serious error messages such as kernel
++errors, or errors from the logging system itself; everything else
++should be handled by the logging system, following the logging chain
++mechanism
++.Po
++refer to
++.Xr s6-log 8
++for details
++.Pc .
++The supervision tree's messages should go to the catch-all logger
++instead of the system console.
++.Po
++And the console should never be read, so no program should run with
++.Pa /dev/console
++as stdin, but this is easy enough to fix:
++.Xr s6-svscan 8
++will be started with stdin redirected from
++.Pa /dev/null .
++.Pc
++.Pp
++The catch-all logger is a service, and we want
++.Em every
++service to run under the supervision tree.
++Chicken and egg problem: before starting
++.Xr s6-svscan 8 ,
++we must redirect
++.Xr s6-svscan 8 Ap
++s output to the input of a program that will only be started once
++.Xr s6-svscan 8
++is running and can start services.
++.Pp
++There are several solutions to this problem, but the simplest one is
++to use a FIFO, a.k.a. named pipe.
++.Xr s6-svscan 8 Ap
++s stdout and stderr can be redirected to a named pipe before
++.Xr s6-svscan 8
++is run, and the catch-all logger service can be made to read from this
++named pipe.
++Only two minor problems remain:
++.Bl -bullet -width x
++.It
++If
++.Xr s6-svscan 8
++or
++.Xr s6-supervise 8
++writes to the FIFO before there is a reader, i.e. before the catch-all
++logging service is started, the write will fail
++.Po
++and a
++.Dv SIGPIPE
++will be emitted
++.Pc .
++This is not a real issue for an s6 installation because
++.Xr s6-svscan 8
++and
++.Xr s6-supervise 8
++ignore
++.Dv SIGPIPE ,
++and they only write to their stderr if an error occurs; and if an
++error occurs before they are able to start the catch-all logger, this
++means that the system is seriously damaged (as if an error occurs
++during stage 1) and the only solution is to reboot with
++.Ql init=/bin/sh
++anyway.
++.It
++Normal Unix semantics
++.Em do not allow
++a writer to open a FIFO before there is a reader: if there is no
++reader when the FIFO is opened for writing, the
++.Xr open 3
++system call
++.Em blocks
++until a reader appears.
++This is obviously not what we want: we want to be able to
++.Em actually start
++.Xr s6-svscan 8
++with its stdout and stderr pointing to the logging FIFO, even without
++a reader process, and we want it to run normally so it can start the
++logging service that will provide such a reader process.
++.El
++.Pp
++This second point cannot be solved in a shell script, and that is why
++you are discouraged to write your stage 1 init script in the shell
++language: you cannot properly set up a FIFO output for
++.Xr s6-svscan 8
++without resorting to horrible and unreliable hacks involving a
++temporary background FIFO reader process.
++.Pp
++Instead, you are encouraged to use the execline[3] language
++\(em
++or, at least, the
++.Xr redirfd 1
++command, which is part of the execline distribution.
++The
++.Xr redirfd 1
++command does just the right amount of trickery with FIFOs for you to
++be able to properly redirect process 1's stdout and stderr to the
++logging FIFO without blocking:
++.Bd -literal
++redirfd -w 1 /run/service/s6-svscan-log/fifo
++.Ed
++.Pp
++blocks if there's no process reading on
++.Pa /run/service/s6-svscan-log/fifo ,
++but
++.Bd -literal
++redirfd -wnb 1 /run/service/s6-svscan-log/fifo
++.Ed
++.Pp
++.Em does not .
++.Pp
++This trick with FIFOs can even be used to avoid potential race
++conditions in the one-time initialization script that runs in stage 2.
++If forked from init-stage1 right before executing
++.Xr s6-svscan 8 ,
++depending on the scheduler mood, this script may actually run a long
++way before
++.Xr s6-svscan 8
++is actually executed and running the initial services
++\(em
++and may do dangerous things, such as writing messages to the logging
++FIFO before there's a reader, and eating a
++.Dv SIGPIPE
++and dying without completing the initialization.
++To avoid that and be sure that
++.Xr s6-svscan 8
++really runs and initial services are really started before the stage 2
++init script is allowed to continue, it is possible to redirect the
++child script's output (stdout and/or stderr)
++.Em once again
++to the logging FIFO, but in the normal way without
++.Xr redirfd 1
++trickery,  before it
++.Xr exec 3 Ns
++s into the init-stage2 script.
++So, the child process blocks on the FIFO until a reader appears, while
++process 1 - which does not block -
++.Xr exec 3 Ns
++s into
++.Xr s6-svscan 8
++and starts the logging service, which then opens the logging FIFO for
++reading and unblocks the child process, which then runs the
++initialization tasks with the guarantee that
++.Xr s6-svscan 8
++is running.
++.Pp
++It really is simpler than it sounds. :-)
++.Ss A working example
++This whole page may sound very theoretical, dry, wordy, and hard to
++grasp without a live example to try things on; unfortunately, s6
++cannot provide live examples without becoming system-specific.
++.Pp
++However, the s6-linux-init package[1] provides you with the
++.Ql s6-linux-init-maker Ns
++[4] command, which produces a set of working scripts, including a
++script that is suitable as
++.Pa /sbin/init ,
++for you to study and edit.
++You can
++.Em run
++the
++.Ql s6-linux-init-maker
++command even on non-Linux systems: it will produce scripts that do not
++work as is for another OS, but can still be used for study and as a
++basis for a working stage 1 script.
++.Sh SEE ALSO
++[1]
++.Lk https://skarnet.org/software/s6-linux-init/
++.Pp
++[2]
++.Lk http://smarden.org/runit/runit.8.html
++.Pp
++[3]
++.Lk https://skarnet.org/software/execline/
++.Pp
++[4]
++.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-maker.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/s6-svscan-not-as-process-1.7 b/mdoc/man7/s6-svscan-not-as-process-1.7
+--- a/mdoc/man7/s6-svscan-not-as-process-1.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/s6-svscan-not-as-process-1.7	2023-04-16 04:52:39.113496467 -0300
+@@ -0,0 +1,149 @@
++.Dd January 15, 2023
++.Dt S6-SVSCAN-NOT-AS-PROCESS-1 7
++.Os
++.Sh NAME
++.Nm s6-svscan-not-as-process-1
++.Nd running
++.Xr s6-svscan 8
++under another init process
++.Sh DESCRIPTION
++You can have a reliable supervision tree even if
++.Xr s6-svscan 8
++is not your process 1.
++The supervision tree just has to be
++.Em rooted
++in process 1: that means that your process 1 will have to supervise
++your
++.Xr s6-svscan 8
++process somehow.
++That way, if
++.Xr s6-svscan 8
++dies, it will be restarted, and your set of services will always be
++maintained.
++.Pp
++Be aware, though, that pipes between services and loggers are
++maintained by the
++.Xr s6-svscan 8
++process; if this process dies, the pipes will be closed and some logs
++may be lost.
++.Ss Logging the supervision tree's output
++.Xr s6-svscan 8
++and the various
++.Xr s6-supervise 8
++processes might produce error or warning messages; those messages are written to
++.Xr s6-svscan 8 Ap
++s stderr
++.Po
++which is inherited by the
++.Xr s6-supervise 8
++processes
++.Pc .
++To log these messages:
++.Bl -bullet -width x
++.It
++You can use your init system's logging tools, and make your init
++system launch
++.Xr s6-svscan 8
++as is; its stderr should already be taken care of by the logging
++tools.
++.It
++You can use a trick similar to the
++.Xr s6-svscan-as-process-1 7
++process 1 output logging trick so the supervision tree's messages are
++logged via a service that's maintained by the supervision tree itself.
++Then your init system should not launch
++.Xr s6-svscan 8
++directly, but a wrapper script that performs the proper redirections.
++The
++.Pa examples/s6-svscanboot
++file in the s6 distribution gives an example of such a script.
++Make sure that your initial
++.Xr s6-scan-directory 7
++contains an
++.Xr s6-service-directory 7
++for your initial logging service, that must read on the logging FIFO.
++.El
++.Pp
++In some of the following examples, we'll assume that
++.Pa /command/s6-svscanboot
++is the name of the script you are using to start
++.Xr s6-svscan 8 .
++We will also assume that all of the s6 executables are available
++through the
++.Pa /command
++path.
++Adjust this accordingly.
++.Ss System V init
++Put an appropriate line in your
++.Pa /etc/inittab
++file, then reload this config file with
++.Ql telinit q :
++.Bd -literal
++SV:123456:respawn:/command/s6-svscanboot
++.Ed
++.Ss Upstart
++Put an appropriate configuration file in the
++.Pa /etc/init
++folder, for instance
++.Pa /etc/init/s6-svscan.conf ,
++then start the service with
++.Ql start s6-svscan :
++.Bd -literal
++# s6-svscan
++start on runlevel [2345]
++stop on runlevel [!2345]
++
++oom never
++respawn
++exec /command/s6-svscanboot
++.Ed
++.Ss systemd
++Put an appropriate unit file in the
++.Pa /etc/systemd/system
++folder, for instance
++.Pa /etc/systemd/system/s6.service .
++It will be picked up by systemd at boot time:
++.Bd -literal
++[Unit]
++Description=s6 supervision tree
++Documentation=https://skarnet.org/software/s6/
++
++[Install]
++WantedBy=multi-user.target
++
++[Service]
++Type=simple
++ExecStart=/command/s6-svscan /service
++ExecStop=/command/s6-svscanctl -t /service
++ExecReload=/command/s6-svscanctl -an /service
++Restart=always
++RestartSec=1
++.Ed
++.Pp
++Please note that, among other things, systemd performs process
++supervision, so depending on the level of integration with your
++distribution that you wish to achieve, you may be better off using
++systemd to directly manage your daemons.
++Please also note that systemd is a terrible piece of software
++engineering[1], and if at all possible, you should try and switch to a
++distribution that does not use it.
++.Ss BSD init
++Put an appropriate line in your
++.Pa /etc/ttys
++file, then reload this file with
++.Ql kill -s HUP 1 :
++.Bd -literal
++sv /command/s6-svscanboot "" on
++.Ed
++.Ss MacOS launchd
++Like systemd, launchd comes with its own way of supervising
++services[2]; if you are a launchd user, you probably do not need s6.
++.Sh SEE ALSO
++[1]
++.Lk https://skarnet.org/software/systemd.html
++.Pp
++[2]
++.Lk https://developer.apple.com/library/mac/documentation/macosx/conceptual/bpsystemstartup/chapters/CreatingLaunchdJobs.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man7/s6-why.7 b/mdoc/man7/s6-why.7
+--- a/mdoc/man7/s6-why.7	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man7/s6-why.7	2023-04-16 04:52:39.114496467 -0300
+@@ -0,0 +1,356 @@
++.Dd April 9, 2023
++.Dt S6-WHY 7
++.Os
++.Sh NAME
++.Nm s6-why
++.Nd why another supervision suite
++.Sh DESCRIPTION
++.Ss Why another supervision suite?
++Supervision suites are becoming quite common.
++Today, we already have:
++.Bl -bullet
++.It
++Good (?) old System V init, which can be made to supervise services if
++you perform
++.Pa /etc/inittab
++voodoo.
++BSD init can also be used the same way with the
++.Pa /etc/ttys
++file, but for some reason, nobody among BSD developers is using
++.Pa /etc/ttys
++to this purpose, so I won't consider BSD init here.
++.It
++daemontools[1], the pioneer.
++.It
++daemontools-encore[2], Bruce Guenter's upgrade to daemontools.
++.It
++runit[3], Gerrit Pape's suite, well-integrated with Debian.
++.It
++perp[4], Wayne Marshall's take on supervision.
++.It
++Integrated init systems providing a lot of features, process
++supervision being one of them.
++For instance, Upstart[5], MacOS X's launchd[6], and Fedora's
++systemd[7].
++.El
++.Pp
++Why is s6 needed?
++What does it do differently?
++Here are the criteria I used.
++.Pp
++.Sy Supervision suites should not wake up unless notified
++.Pp
++System V init fails the test: it wakes up every 5 seconds, for the
++reason that
++.Pa /dev/initctl
++might have changed.
++.Pp
++daemontools fails the test: it wakes up every 5 seconds to check for
++new services.
++.Pp
++daemontools-encore does the same.
++.Pp
++The current version of runit fails the test: it wakes up every 14
++seconds.
++But this is a workaround for a bug in some Linux kernels; there is no
++design flaw in runit that prevents it from passing the test.
++.Pp
++perp works.
++.Pp
++Upstart works.
++.Pp
++I have no idea what other integrated init systems do: it's much too
++difficult to
++.Xr strace 1
++them to see exactly where they're spending their time, and when it is
++possible, the trace output is so big that it's hard to extract any
++valuable information from it.
++.Pp
++s6 works.
++The
++.Fl t
++option to
++.Xr s6-svscan 8
++makes it check its services with a configurable timeout; by default,
++this timeout is infinite, i.e. it never wakes up unless it receives a
++command via
++.Xr s6-svscanctl 8 .
++.Pp
++.Sy Supervision suites should provide a program that can run as process 1
++.Pp
++System V init is process 1, so no problem here.
++.Pp
++Integrated init systems, by definition, provide a process 1.
++.Pp
++daemontools was not designed to take over init, although it can be
++made to work[8] with enough hacking skills.
++Same thing with daemontools-encore.
++.Pp
++runit provides an init functionality, but the mechanism is separate
++from the supervision itself; the
++.Pa runit
++process, not the
++.Pa runsvdir
++process, runs as process 1.
++This lengthens the supervision chain.
++.Pp
++perp was not designed to run as process 1.
++It probably could be made to work too without too much trouble.
++.Pp
++.Xr s6-svscan 8
++was designed from the start to be run as process 1, although it does
++not have to.
++.Pp
++.Sy Supervision suites should be bug-free, lightweight and easy to understand
++.Pp
++daemontools, daemontools-encore, runit and perp all qualify.
++All of this is excellent quality code, unsurprisingly.
++.Pp
++System V init is understandable, and reasonably lightweight; but it is
++still too big for what it does \(em poorly.
++The
++.Pa /etc/inittab
++file needs to be parsed; that parser has to be in process 1.
++There is support in process 1 for the whole
++.Dq runlevel
++concept, which is a primitive form of service management.
++The same executable handles all 3 stages of the machine's lifetime and
++does not separate them properly.
++All in all, System V init does its job, but is showing its age and
++nowadays we know much better designs.
++.Pp
++This is where integrated init systems fail, hard.
++By wanting to organize the way a the machine is operated \(em so,
++machine state management \(em in the same package as the init and
++process supervision system, they add incredible complexity where it
++does not belong:
++.Bl -bullet
++.It
++Upstart uses
++.Xr ptrace 2
++to watch its children
++.Xr fork 2 ,
++and links process 1 against libdbus.
++This is insane.
++Process 1 should be absolutely stable, it should be guaranteed to
++never crash, so the whole of its source code should be under control.
++At Upstart's level of complexity, those goals are outright impossible
++to achieve, so this approach is flawed by design.
++It is a shame, because the concepts and ideas behind Upstart are good
++and sound; it's the implementation choices that are its downfall.
++.It
++launchd suffers from the same kind of problems.
++Example: Services running under launchd must be configured using XML;
++the launchctl process interprets the XML, converts it into a key-value
++store
++.Po
++which is strictly less powerful than XML, so why do they even use XML
++in the first place?
++.Pc
++and sends it to launchd via a Mach-specific IPC.
++Process 1 needs to be linked against the library that handles the Mach
++IPC, it needs to decode the key-value store, and use it to run and
++supervise a daemon.
++And it needs to keep everything in memory.
++This is a lot more complex and resource-consuming than it needs to be.
++.It
++systemd is much, much worse than the other ones, and a real danger for
++the future of GNU/Linux.
++I have a special page dedicated to it[9].
++.El
++.Pp
++What those systems fail to recognize is that process supervision,
++rooted in process 1, is a good thing, and machine management is also a
++good thing, but
++.Em those are two different functions ,
++and a good init
++system needs, and
++.Em should ,
++only provide process supervision, in order to keep such a crucial
++piece of code as easy to maintain as possible.
++Machine management can be added
++.Em on top of
++a process supervision suite, in a different package, and it has
++nothing to do with process 1.
++.Pp
++s6, which has been designed with embedded environments in mind, tries
++harder than anyone to pass this.
++It tries so hard that
++.Xr s6-svscan 8
++and
++.Xr s6-supervise 8 ,
++the two long-running programs that make the supervision chain,
++.Em do not even allocate heap memory ,
++and their main program source files are less than 500 lines long.
++.Pp
++.Sy Supervision suites should provide a basis for high-level service management
++.Pp
++Neither System V init, daemontools, runit or perp provides any hooks
++to wait for a service to go up or down.
++runit provides a waiting mechanism, but it's based on polling, and the
++.Pa ./check
++script has to be manually written for every service.
++.Pp
++daemontools-encore qualifies: the
++.Em notify script
++can be used for inter-service communication.
++But it's just a hook: all the real notification work has to be done by
++the notify script itself, no notification framework is provided.
++.Pp
++Integrated init systems provide high-level service management themselves.
++Again, this is not good design: service management has nothing to do
++with init or process supervision, and should be implemented on top of
++it, not as a part of it.
++.Pp
++s6 comes with an event notification library
++.Po
++.Xr s6-libftrig 7
++.Pc ,
++and command-line tools based on this library, thus providing a simple
++API for future service management tools to build upon.
++.Pp
++.Sy Artistic considerations
++.Pp
++.Xr s6-svscan 8
++and
++.Xr s6-supervise 8
++are
++.Em entirely asynchronous .
++Even during trouble
++.Po
++full process table, for instance
++.Pc ,
++they'll remain reactive and instantly respond to commands they may
++receive.
++.Xr s6-supervise 8
++has even been implemented as a full deterministic finite automaton, to
++ensure it always does the right thing under any circumstance.
++Other supervision suites do not achieve that for now.
++.Pp
++daemontools' svscan[10] maintains an open pipe between a daemon and
++its logger, so even if the daemon, the logger,
++.Em and
++both supervise[11] processes die, the pipe is still the same
++.Em so no logs are lost, ever ,
++unless svscan itself dies.
++.Pp
++runit has only one supervisor, runsv[12], for both a daemon and its
++logger.
++The pipe is maintained by
++.Pa runsv .
++If the
++.Pa runsv
++process dies, the pipe disappears and logs are lost.
++So, runit does not offer as strong a guarantee as daemontools.
++.Pp
++perp has only one process, perpd[13], acting both as a
++.Dq daemon and logger supervisor
++.Po like runsv
++.Pc
++and as a
++.Dq service directory scanner
++.Po
++like runsvdir
++.Pc .
++It maintains the pipes between the daemons and their respective
++loggers.
++If perpd dies, everything is lost.
++Since perpd cannot be run as process 1, this is a possible SPOF for a
++perp installation; however, perpd is well-written and has virtually no
++risk of dying, especially compared to process 1 behemoths provided by
++integrated init systems.
++.Pp
++Besides, the
++.Pa runsv
++model, which has to handle both a daemon and its logger, is more
++complex than the
++.Pa supervise
++model
++.Po
++which only has to handle a daemon
++.Pc .
++Consequently, the
++.Pa runsvdir
++model is simpler than the
++.Pa svscan
++model, but there is only one
++.Pa svscan
++instance when there are several
++.Pa runsv Ns s
++and
++.Pa supervise Ns
++s .
++The
++.Pa perpd
++model is obviously the most complex; while very understandable,
++.Pa perpd
++is unarguably harder to maintain than the other two.
++.Pp
++So, to achieve maximum simplicity and code reuse, and minimal memory
++footprint, s6's design is close to daemontools' one.
++And when
++.Xr s6-svscan 8
++is run as process 1
++.Po
++cf.\&
++.Xr s6-svscan-as-process-1 7
++.Pc ,
++pipes between daemons and loggers are never lost.
++.Pp
++.Sy Conclusion
++.Pp
++All in all, I believe that s6 offers the best overall implementation
++of a supervision suite as it should be designed.
++At worst, it's just another take on daemontools with a reliable base
++library and a few nifty features.
++.Sh SEE ALSO
++.Xr s6-libftrig 7 ,
++.Xr s6-svscan-as-process-1 7 ,
++.Xr s6-supervise 8 ,
++.Xr s6-svscan 8 ,
++.Xr s6-svscanctl 8
++.Pp
++[1]
++.Lk https://cr.yp.to/daemontools.html
++.Pp
++[2]
++.Lk https://untroubled.org/daemontools-encore/
++.Pp
++[3]
++.Lk http://smarden.org/runit/
++.Pp
++[4]
++.Lk http://b0llix.net/perp/
++.Pp
++[5]
++.Lk https://upstart.ubuntu.com/
++.Pp
++[6]
++.Lk https://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man8/launchd.8.html
++.Pp
++[7]
++.Lk https://freedesktop.org/wiki/Software/systemd
++.Pp
++[8]
++.Lk https://code.dogmap.org./svscan-1/
++.Pp
++[9]
++.Lk https://skarnet.org/software/systemd.html
++.Pp
++[10]
++.Lk https://cr.yp.to/daemontools/svscan.html
++.Pp
++[11]
++.Lk https://cr.yp.to/daemontools/supervise.html
++.Pp
++[12]
++.Lk http://smarden.org/runit/runsv.8.html
++.Pp
++[13]
++.Lk http://b0llix.net/perp/site.cgi?page=perpd.8
++.Pp
++This man page is ported from the authoritative documentation at:
++.Lk https://skarnet.org/software/s6/why.html
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-accessrules-cdb-from-fs.8 b/mdoc/man8/s6-accessrules-cdb-from-fs.8
 --- a/mdoc/man8/s6-accessrules-cdb-from-fs.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-accessrules-cdb-from-fs.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-accessrules-cdb-from-fs.8	2023-04-16 04:52:39.114496467 -0300
 @@ -0,0 +1,179 @@
 +.Dd September 29, 2021
 +.Dt S6-ACCESSRULES-CDB-FROM-FS 8
@@ -3512,7 +5599,7 @@ diff -Naur a/mdoc/man8/s6-accessrules-cdb-from-fs.8 b/mdoc/man8/s6-accessrules-c
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-accessrules-fs-from-cdb.8 b/mdoc/man8/s6-accessrules-fs-from-cdb.8
 --- a/mdoc/man8/s6-accessrules-fs-from-cdb.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-accessrules-fs-from-cdb.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-accessrules-fs-from-cdb.8	2023-04-16 04:52:39.114496467 -0300
 @@ -0,0 +1,75 @@
 +.Dd September 29, 2021
 +.Dt S6-ACCESSRULES-FS-FROM-CDB 8
@@ -3591,7 +5678,7 @@ diff -Naur a/mdoc/man8/s6-accessrules-fs-from-cdb.8 b/mdoc/man8/s6-accessrules-f
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-applyuidgid.8 b/mdoc/man8/s6-applyuidgid.8
 --- a/mdoc/man8/s6-applyuidgid.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-applyuidgid.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-applyuidgid.8	2023-04-16 04:52:39.114496467 -0300
 @@ -0,0 +1,82 @@
 +.Dd September 29, 2021
 +.Dt S6-APPLYUIDGID 8
@@ -3677,7 +5764,7 @@ diff -Naur a/mdoc/man8/s6-applyuidgid.8 b/mdoc/man8/s6-applyuidgid.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-cleanfifodir.8 b/mdoc/man8/s6-cleanfifodir.8
 --- a/mdoc/man8/s6-cleanfifodir.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-cleanfifodir.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-cleanfifodir.8	2023-04-16 04:52:39.114496467 -0300
 @@ -0,0 +1,37 @@
 +.Dd September 29, 2021
 +.Dt S6-CLEANFIFODIR 8
@@ -3718,7 +5805,7 @@ diff -Naur a/mdoc/man8/s6-cleanfifodir.8 b/mdoc/man8/s6-cleanfifodir.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-connlimit.8 b/mdoc/man8/s6-connlimit.8
 --- a/mdoc/man8/s6-connlimit.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-connlimit.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-connlimit.8	2023-04-16 04:52:39.115496467 -0300
 @@ -0,0 +1,129 @@
 +.Dd September 29, 2021
 +.Dt S6-CONNLIMIT 8
@@ -3851,7 +5938,7 @@ diff -Naur a/mdoc/man8/s6-connlimit.8 b/mdoc/man8/s6-connlimit.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-envdir.8 b/mdoc/man8/s6-envdir.8
 --- a/mdoc/man8/s6-envdir.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-envdir.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-envdir.8	2023-04-16 04:52:39.115496467 -0300
 @@ -0,0 +1,116 @@
 +.Dd March 13, 2022
 +.Dt S6-ENVDIR 8
@@ -3971,7 +6058,7 @@ diff -Naur a/mdoc/man8/s6-envdir.8 b/mdoc/man8/s6-envdir.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-envuidgid.8 b/mdoc/man8/s6-envuidgid.8
 --- a/mdoc/man8/s6-envuidgid.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-envuidgid.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-envuidgid.8	2023-04-16 04:52:39.115496467 -0300
 @@ -0,0 +1,167 @@
 +.Dd September 29, 2021
 +.Dt S6-ENVUIDGID 8
@@ -4142,7 +6229,7 @@ diff -Naur a/mdoc/man8/s6-envuidgid.8 b/mdoc/man8/s6-envuidgid.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-daemon.8 b/mdoc/man8/s6-fdholder-daemon.8
 --- a/mdoc/man8/s6-fdholder-daemon.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-daemon.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-daemon.8	2023-04-16 04:52:39.115496467 -0300
 @@ -0,0 +1,225 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-DAEMON 8
@@ -4371,7 +6458,7 @@ diff -Naur a/mdoc/man8/s6-fdholder-daemon.8 b/mdoc/man8/s6-fdholder-daemon.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-delete.8 b/mdoc/man8/s6-fdholder-delete.8
 --- a/mdoc/man8/s6-fdholder-delete.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-delete.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-delete.8	2023-04-16 04:52:39.116496467 -0300
 @@ -0,0 +1,74 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-DELETE 8
@@ -4449,7 +6536,7 @@ diff -Naur a/mdoc/man8/s6-fdholder-delete.8 b/mdoc/man8/s6-fdholder-delete.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-getdump.8 b/mdoc/man8/s6-fdholder-getdump.8
 --- a/mdoc/man8/s6-fdholder-getdump.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-getdump.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-getdump.8	2023-04-16 04:52:39.116496467 -0300
 @@ -0,0 +1,127 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-GETDUMP 8
@@ -4580,7 +6667,7 @@ diff -Naur a/mdoc/man8/s6-fdholder-getdump.8 b/mdoc/man8/s6-fdholder-getdump.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-list.8 b/mdoc/man8/s6-fdholder-list.8
 --- a/mdoc/man8/s6-fdholder-list.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-list.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-list.8	2023-04-16 04:52:39.116496467 -0300
 @@ -0,0 +1,62 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-LIST 8
@@ -4646,7 +6733,7 @@ diff -Naur a/mdoc/man8/s6-fdholder-list.8 b/mdoc/man8/s6-fdholder-list.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-retrieve.8 b/mdoc/man8/s6-fdholder-retrieve.8
 --- a/mdoc/man8/s6-fdholder-retrieve.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-retrieve.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-retrieve.8	2023-04-16 04:52:39.116496467 -0300
 @@ -0,0 +1,107 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-RETRIEVE 8
@@ -4757,7 +6844,7 @@ diff -Naur a/mdoc/man8/s6-fdholder-retrieve.8 b/mdoc/man8/s6-fdholder-retrieve.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-setdump.8 b/mdoc/man8/s6-fdholder-setdump.8
 --- a/mdoc/man8/s6-fdholder-setdump.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-setdump.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-setdump.8	2023-04-16 04:52:39.116496467 -0300
 @@ -0,0 +1,88 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-SETDUMP 8
@@ -4849,7 +6936,7 @@ diff -Naur a/mdoc/man8/s6-fdholder-setdump.8 b/mdoc/man8/s6-fdholder-setdump.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-store.8 b/mdoc/man8/s6-fdholder-store.8
 --- a/mdoc/man8/s6-fdholder-store.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-store.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-store.8	2023-04-16 04:52:39.116496467 -0300
 @@ -0,0 +1,97 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-STORE 8
@@ -4950,7 +7037,7 @@ diff -Naur a/mdoc/man8/s6-fdholder-store.8 b/mdoc/man8/s6-fdholder-store.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholder-transferdump.8 b/mdoc/man8/s6-fdholder-transferdump.8
 --- a/mdoc/man8/s6-fdholder-transferdump.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholder-transferdump.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholder-transferdump.8	2023-04-16 04:52:39.117496466 -0300
 @@ -0,0 +1,106 @@
 +.Dd September 29, 2021
 +.Dt S6-FDHOLDER-TRANSFERDUMP 8
@@ -5060,9 +7147,9 @@ diff -Naur a/mdoc/man8/s6-fdholder-transferdump.8 b/mdoc/man8/s6-fdholder-transf
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fdholderd.8 b/mdoc/man8/s6-fdholderd.8
 --- a/mdoc/man8/s6-fdholderd.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fdholderd.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fdholderd.8	2023-04-16 04:52:39.117496466 -0300
 @@ -0,0 +1,480 @@
-+.Dd September 29, 2021
++.Dd January 15, 2023
 +.Dt S6-FDHOLDERD 8
 +.Os
 +.Sh NAME
@@ -5298,7 +7385,7 @@ diff -Naur a/mdoc/man8/s6-fdholderd.8 b/mdoc/man8/s6-fdholderd.8
 +descriptors.
 +This right is given if a non-empty file named
 +.Pa S6_FDHOLDER_STORE_REGEX
-+is found is the
++is found in the
 +.Pa env/
 +subdirectory of one of the subdirectories checked by
 +.Fn s6_accessrules_keycheck_uidgid .
@@ -5318,7 +7405,7 @@ diff -Naur a/mdoc/man8/s6-fdholderd.8 b/mdoc/man8/s6-fdholderd.8
 +descriptors.
 +This right is given if a non-empty file named
 +.Pa S6_FDHOLDER_RETRIEVE_REGEX
-+is found is the
++is found in the
 +.Pa env/
 +subdirectory of one of the subdirectories checked by
 +.Fn s6_accessrules_keycheck_uidgid .
@@ -5544,7 +7631,7 @@ diff -Naur a/mdoc/man8/s6-fdholderd.8 b/mdoc/man8/s6-fdholderd.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-fghack.8 b/mdoc/man8/s6-fghack.8
 --- a/mdoc/man8/s6-fghack.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-fghack.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-fghack.8	2023-04-16 04:52:39.117496466 -0300
 @@ -0,0 +1,55 @@
 +.Dd September 29, 2021
 +.Dt S6-FGHACK 8
@@ -5603,7 +7690,7 @@ diff -Naur a/mdoc/man8/s6-fghack.8 b/mdoc/man8/s6-fghack.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ftrig-listen.8 b/mdoc/man8/s6-ftrig-listen.8
 --- a/mdoc/man8/s6-ftrig-listen.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ftrig-listen.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ftrig-listen.8	2023-04-16 04:52:39.118496466 -0300
 @@ -0,0 +1,99 @@
 +.Dd September 29, 2021
 +.Dt S6-FTRIG-LISTEN 8
@@ -5706,7 +7793,7 @@ diff -Naur a/mdoc/man8/s6-ftrig-listen.8 b/mdoc/man8/s6-ftrig-listen.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ftrig-listen1.8 b/mdoc/man8/s6-ftrig-listen1.8
 --- a/mdoc/man8/s6-ftrig-listen1.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ftrig-listen1.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ftrig-listen1.8	2023-04-16 04:52:39.118496466 -0300
 @@ -0,0 +1,103 @@
 +.Dd September 29, 2021
 +.Dt S6-FTRIG-LISTEN1 8
@@ -5813,7 +7900,7 @@ diff -Naur a/mdoc/man8/s6-ftrig-listen1.8 b/mdoc/man8/s6-ftrig-listen1.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ftrig-notify.8 b/mdoc/man8/s6-ftrig-notify.8
 --- a/mdoc/man8/s6-ftrig-notify.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ftrig-notify.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ftrig-notify.8	2023-04-16 04:52:39.118496466 -0300
 @@ -0,0 +1,37 @@
 +.Dd September 29, 2021
 +.Dt S6-FTRIG-NOTIFY 8
@@ -5854,7 +7941,7 @@ diff -Naur a/mdoc/man8/s6-ftrig-notify.8 b/mdoc/man8/s6-ftrig-notify.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ftrig-wait.8 b/mdoc/man8/s6-ftrig-wait.8
 --- a/mdoc/man8/s6-ftrig-wait.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ftrig-wait.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ftrig-wait.8	2023-04-16 04:52:39.118496466 -0300
 @@ -0,0 +1,60 @@
 +.Dd September 29, 2021
 +.Dt S6-FTRIG-WAIT 8
@@ -5918,7 +8005,7 @@ diff -Naur a/mdoc/man8/s6-ftrig-wait.8 b/mdoc/man8/s6-ftrig-wait.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ftrigrd.8 b/mdoc/man8/s6-ftrigrd.8
 --- a/mdoc/man8/s6-ftrigrd.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ftrigrd.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ftrigrd.8	2023-04-16 04:52:39.118496466 -0300
 @@ -0,0 +1,102 @@
 +.Dd September 29, 2021
 +.Dt S6-FTRIGRD 8
@@ -6022,11 +8109,744 @@ diff -Naur a/mdoc/man8/s6-ftrigrd.8 b/mdoc/man8/s6-ftrigrd.8
 +.Sh AUTHORS
 +.An Laurent Bercot
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man8/s6-instance-control.8 b/mdoc/man8/s6-instance-control.8
+--- a/mdoc/man8/s6-instance-control.8	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man8/s6-instance-control.8	2023-04-16 04:52:39.118496466 -0300
+@@ -0,0 +1,67 @@
++.Dd January 11, 2023
++.Dt S6-INSTANCE-CONTROL 8
++.Os
++.Sh NAME
++.Nm s6-instance-control
++.Nd send commands to a running instance of an
++.Xr s6-instanced-service 7
++.Sh SYNOPSIS
++.Nm
++.Op Fl wu | Fl wU | Fl wd | Fl wD | Fl wr | Fl wR ]
++.Op Fl T Ar timeout
++.Op Fl abqhkti12pcyroduDUxO
++.Ar servicedir
++.Ar name
++</pre>
++.Sh DESCRIPTION
++.Nm
++expects a running, supervised
++.Xr s6-instanced-service 7
++in
++.Ar servicedir ,
++as well as an existing instance of this service named
++.Ar name .
++.Pp
++It sends the given series of commands to the supervisor monitoring the
++.Ar name
++instance.
++.Pp
++It exits 0.
++.Sh OPTIONS
++The options, and the commands they represent, are exactly the same as
++the ones understood by
++.Xr s6-svc 8 .
++.Pp
++In fact,
++.Nm
++is nothing more than a call to
++.Xr s6-svc 8
++on the service directory representing the
++.Ar name
++instance.
++It is syntactic sugar so the user does not have to depend on the
++internal representation of instances and the location of instances'
++service directories.
++.Sh EXIT STATUS
++.Bl -tag -width x
++.It 0
++Success.
++.It 99
++With one of the
++.Fl w
++options, timed out while waiting for the command to complete.
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.El
++.Sh SEE ALSO
++.Xr s6-instanced-service 7 ,
++.Xr s6-instance-create 8 ,
++.Xr s6-instance-delete 8 ,
++.Xr s6-instance-list 8 ,
++.Xr s6-instance-maker 8 ,
++.Xr s6-instance-status 8
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man8/s6-instance-create.8 b/mdoc/man8/s6-instance-create.8
+--- a/mdoc/man8/s6-instance-create.8	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man8/s6-instance-create.8	2023-04-16 04:52:39.119496466 -0300
+@@ -0,0 +1,137 @@
++.Dd January 11, 2023
++.Dt S6-INSTANCE-CREATE 8
++.Os
++.Sh NAME
++.Nm s6-instance-create
++.Nd create a new instance of a currently supervised
++.Xr s6-instanced-service 7
++.Sh SYNOPSIS
++.Nm
++.Op Fl d | Fl D
++.Op Fl P
++.Op Fl f
++.Op Fl t Ar timeout
++.Ar servicedir
++.Ar name
++.Sh DESCRIPTION
++.Nm
++expects a running, supervised
++.Xr s6-instanced-service 7
++in
++.Ar servicedir .
++This service typically has been created by linking the result of an
++.Xr s6-instance-maker 8
++invocation into an existing
++.Xr s6-scan-directory 7 .
++.Pp
++.Nm
++creates a new instance of that service, named
++.Ar name .
++Depending on the given options, it may start it immediately, or keep
++it down until a later
++.Xr s6-instance-control 8
++invocation.
++.Pp
++It waits for the new instance to be ready to take commands from
++.Xr s6-instance-control 8
++.Pp
++It exits 0.
++.Pp
++.Nm
++is similar to
++.Xr s6-svlink 8 ,
++because it uses the same underlying library functions.
++Under the hood, an instance is a regular service running on a
++supervision tree that is specific to the instanced service, and
++.Nm
++adds a service directory to that tree and ensures it gets
++supervised.
++.Pp
++If the template for the service is logged, then
++.Nm
++will wait until supervisors have been spawned for both the instance
++and its logger.
++.Pp
++.Nm
++and
++.Xr s6-instance-delete 8
++are relatively expensive operations, because they have to recursively
++copy or delete directories and use the
++.Xr s6-ftrigr 7
++synchronization mechanism with the instance supervisor, compared to
++.Xr s6-instance-control 8
++which only has to send commands to already existing supervisors.
++If you are going to turn instances on and off on a regular basis, it
++is more efficient to keep the instance existing and control it with
++.Xr s6-instance-control 8
++than it is to repeatedly create and delete it.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl d
++Down.
++The instance supervisor will be started, but the instance
++itself will remain down.
++Any
++.Pa down
++file for the instance will be deleted.
++By default, if neither the
++.Fl d
++nor
++.Fl D
++options have been given, the supervisor auto-starts the instance as
++soon as it runs.
++.It Fl D
++Down, and stay down.
++The instance supervisor will be started, but the instance itself will
++remain down.
++A
++.Pa down
++file will be created for the instance.
++By default, if neither the
++.Fl d
++nor
++.Fl D
++options have been given, the supervisor auto-starts the instance as
++soon as it runs.
++.It Fl P
++Public.
++Everyone will be able to subscribe to the instance supervisor's
++notification.
++By default, only processes running with the same gid as the instanced
++service can subscribe to it.
++.It Fl f
++Force permissions.
++You should never need to use this option, it is only there for testing
++purposes.
++.It Fl t Ar timeout
++If the
++instance supervisor has not started after
++.Ar timeout
++milliseconds,
++.Nm
++will print a message to stderr and exit 99.
++By default,
++.Ar timeout
++is 0, which means no time limit.
++.El
++.Sh EXIT STATUS
++.Bl -tag -width -x
++.It 0
++Success.
++.It 99
++Timeout while waiting for the instance supervisor to start.
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.El
++.Sh SEE ALSO
++.Xr s6-instanced-service 7 ,
++.Xr s6-instance-control 8 ,
++.Xr s6-instance-delete 8 ,
++.Xr s6-instance-list 8 ,
++.Xr s6-instance-maker 8 ,
++.Xr s6-instance-status 8
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man8/s6-instance-delete.8 b/mdoc/man8/s6-instance-delete.8
+--- a/mdoc/man8/s6-instance-delete.8	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man8/s6-instance-delete.8	2023-04-16 04:52:39.119496466 -0300
+@@ -0,0 +1,91 @@
++.Dd January 11, 2023
++.Dt S6-INSTANCE-DELETE 8
++.Os
++.Sh NAME
++.Nm s6-instance-delete
++.Nd delete an existing instance of a currently supervised
++.Xr s6-instanced-service 7
++.Sh SYNOPSIS
++.Nm
++.Op Fl X
++.Op Fl t Ar timeout
++.Ar servicedir
++.Ar name
++.Sh DESCRIPTION
++.Nm
++expects a running, supervised
++.Xr s6-instanced-service 7
++in
++.Ar servicedir ,
++as well as an existing instance of this service named
++.Ar name
++(it doesn't matter if the instance is up or down).
++.Pp
++It deletes the
++.Ar name
++instance.
++.Pp
++It exits 0.
++.Pp
++.Nm
++is similar to
++.Xr s6-svunlink 8 ,
++because it uses the same underlying library functions.
++Under the hood, an instance is a regular service running on a
++supervision tree that is specific to the instanced service, and
++.Nm
++removes a service directory from that tree.
++.Pp
++If the template for the service is logged, then
++.Nm
++will delete both the instance and its logger.
++.Pp
++.Nm
++and
++.Xr s6-instance-create 8
++are relatively expensive operations, because they have to recursively
++copy or delete directories and use the
++.Xr s6-ftrigr 7
++synchronization mechanism with the instance supervisor, compared to
++.Xr s6-instance-control 8
++which only has to send commands to already existing supervisors.
++If you are going to turn instances on and off on a regular basis, it
++is more efficient to keep the instance existing and control it with
++.Xr s6-instance-control 8
++than it is to repeatedly create and delete it.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl X
++Don't wait.
++.Nm
++will exit right away, without waiting for the instance (and its
++supervisor) to properly disappear.
++.It Fl t Ar timeout
++If the instance supervisor has not exited after
++.Ar timeout
++milliseconds,
++.Nm
++will still exit.
++By default,
++.Ar timeout
++is 0, which means no time limit.
++.El
++.Sh EXIT STATUS
++.Bl -tag -width x
++.It 0
++Success.
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.El
++.Sh SEE ALSO
++.Xr s6-instanced-service 7 ,
++.Xr s6-instance-control 8 ,
++.Xr s6-instance-create 8 ,
++.Xr s6-instance-list 8 ,
++.Xr s6-instance-maker 8 ,
++.Xr s6-instance-status 8
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man8/s6-instance-list.8 b/mdoc/man8/s6-instance-list.8
+--- a/mdoc/man8/s6-instance-list.8	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man8/s6-instance-list.8	2023-04-16 04:52:39.119496466 -0300
+@@ -0,0 +1,54 @@
++.Dd January 15, 2023
++.Dt S6-INSTANCE-LIST 8
++.Os
++.Sh NAME
++.Nm s6-instance-list
++.Nd give a list of all currently created instances of an
++.Xr s6-instanced-service 7
++.Sh SYNOPSIS
++.Nm
++.Ar servicedir
++.Sh DESCRIPTION
++.Nm
++expects a running, supervised
++.Xr s6-instanced-service 7
++in
++.Ar servicedir ,
++as well as an existing instance of this service named
++.Ar name .
++.Pp
++It prints to stdout, one per line, the names of all existing instances of
++.Ar servicedir ,
++i.e. the ones that have been created and not deleted.
++It does not matter if the instances are up or down; if they've been
++created and not deleted, they're printed.
++.Pp
++It exits 0.
++.Pp
++The list is unsorted, the instance names are printed in an unspecified order.
++.Pp
++You can use
++.Nm
++to script commands that handle sets of instances.
++For example, to get the status of all the instances of a given
++service, you could write:
++.Ql for i in `s6-instance-list Ar service Ns ` ; do printf "%s: " $i ; s6-instance-status Ar service $i ; done
++.Sh EXIT STATUS
++.Bl -tag -width x
++.It 0
++Success.
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.El
++.Sh SEE ALSO
++.Xr s6-instanced-service 7 ,
++.Xr s6-instance-control 8 ,
++.Xr s6-instance-create 8 ,
++.Xr s6-instance-delete 8 ,
++.Xr s6-instance-maker 8 ,
++.Xr s6-instance-status 8
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man8/s6-instance-maker.8 b/mdoc/man8/s6-instance-maker.8
+--- a/mdoc/man8/s6-instance-maker.8	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man8/s6-instance-maker.8	2023-04-16 04:52:39.119496466 -0300
+@@ -0,0 +1,300 @@
++.Dd January 15, 2023
++.Dt S6-INSTANCE-MAKER 8
++.Os
++.Sh NAME
++.Nm s6-instance-maker
++.Nd create an
++.Xr s6-service-directory 7
++implementing an
++.Xr s6-instanced-service 7
++.Sh SYNOPSIS
++.Nm
++.Op Fl c Ar maxinstances
++.Op Fl r Ar service Ns Op / Ns Ar logger Ns Op / Ns Ar pipeline
++.Op Fl u Ar user
++.Op Fl l Ar loguser
++.Op Fl L Ar logdir
++.Op Fl t Ar stamptype
++.Op Fl n Ar nfiles
++.Op Fl s Ar filesize
++.Op Fl S Ar maxsize
++.Op Fl P Ar prefix
++.Ar template
++.Ar dir
++.Sh DESCRIPTION
++Give
++.Nm
++a templated service directory describing how to run an instance of a
++service, and it will create a different service directory that can
++launch and manage several instances; each of these instances will be
++running a copy of the service directory you gave.
++.Pp
++Alternatively,
++.Nm
++can create source definition directories for the s6-rc service manager[1].
++.Pp
++.Nm
++creates a service directory in
++.Ar dir
++(which must not already exist).
++The created service will be a supervisor for a set of instances \(em
++initially empty \(em each running a copy of the service directory
++given in
++.Ar template .
++.Pp
++.Nm
++is an
++.Em offline
++tool: it is run before you need instances.
++Once the created service directory is live, i.e. there is a supervisor
++running on it, then you can create and delete individual instances via
++the
++.Xr s6-instance-create 8
++and
++.Xr s6-instance-delete 8
++.Em online
++tools, that work with active services.
++.Pp
++.Nm
++makes use of the fact that execline[2] scripts are much easier to
++generate programmatically and to harden than shell scripts, so it is
++only built if s6 is built with execline support - i.e. the
++.Ql --disable-execline
++switch has
++.Em not
++been given to configure.
++.Pp
++If
++.Nm
++encounters failure (and exits 111), it does not clean up the
++directories it created.
++Make sure to always test
++.Nm Ap
++s return code and clean up after it if needed.
++.Ss The templated service directory
++.Ar template
++should be a directory that looks exactly like a service directory.
++It will not be live, i.e. at no point will
++.Ar template
++itself be supervised; instead, a copy of it is stored under
++.Ar dir
++.Po
++and a copy of that copy will be used for every instance of the
++service
++.Pc .
++You can safely move or delete
++.Ar template
++after running
++.Nm .
++.Pp
++To differentiate between instances, the
++.Pa run
++and
++.Pa finish
++script in
++.Ar template
++should take one additional argument
++.Po
++the first argument for
++.Pa run
++and the third argument for
++.Pa finish
++.Pc .
++This argument will be the name of the instance, as provided by the
++.Xr s6-instance-create 8
++invocation.
++.Ss Logging
++The service is logged: its stderr and stdout are piped to an
++.Xr s6-log 8
++process running as
++.Ar loguser
++and writing to the
++.Ar logdir
++directory.
++This logger is the catch-all logger for all the instances and the
++supervision tree hosting them.
++If
++.Ar user
++and
++.Ar loguser
++are provided, it is recommended to make them distinct from each other.
++.Pp
++Additionally, if
++.Ar template
++has a
++.Ar log
++subdirectory, then each instance will have its own dedicated logger.
++The
++.Pa run
++and
++.Pa finish
++scripts for the logger of an instance named
++.Ar name
++will be called with an additional argument of
++.Ar name Ns /log .
++They should make use of this, to ensure loggers are properly
++differentiated between instances: for instance, it is not possible to
++run several
++.Xr s6-log 8
++processes on the same log directory, so an instance logger script
++containing an invocation of
++.Xr s6-log 8
++on a fixed logdir will fail as soon as there are 2 instances.
++.Sh OPTIONS
++.Bl -tag -width x
++.It Fl c Ar max
++Plan for a maximum of
++.Ar max
++instances.
++Default is
++.Em 500 .
++You can't set it lower than 2 or higher than 90000.
++If your template service directory is logged, it's unadvisable to set
++this above the default.
++.It Fl r Ar service Ns Op / Ns Ar logger Ns Op / Ns Ar pipeline
++Create s6-rc[1] source definition directories.
++When this option is given,
++.Ar dir
++is not created as a service directory, but as a directory containing
++at least one service:
++.Pa "" Ns Ar dir Ns / Ns Ar service .
++.Ar dir
++is suitable as a source argument to s6-rc-compile[3].
++If a
++.Ar logger
++part is given, then a second service,
++.Pa "" Ns Ar dir Ns /logger ,
++is also created, as a consumer for
++.Pa "" Ns Ar dir Ns / Ns Ar service ,
++and the
++.Fl L
++option must also be used, to provide a directory to store the logs into.
++If the
++.Pa "" Ns / Ns Ar pipeline
++part is also given,
++.Ar pipeline
++is used as a name for a bundle containing both
++.Ar service
++and
++.Pa logger .
++When the
++.Fl r
++option is not given at all,
++.Pa "" Ns Ar dir
++is a regular service directory for direct inclusion (or linking) in a host
++.Xr s6-scan-directory 7 ,
++and if the
++.Fl L
++option is given then the logger for the instance supervisor and all
++its instances is declared in
++.Pa "" Ns Ar dir Ns /log .
++.It Fl u Ar user
++Run the instance supervisor, and all of the instances, as user
++.Ar user .
++This option should only be used when the supervision tree that will
++host the instanced service is run as root.
++The default is that the service runs as the same user as the host
++supervision tree.
++.It Fl l Ar loguser
++Run the logger of the instance supervisor, if any
++.Po
++see
++.Fl L
++below
++.Pc
++as user
++.Ar loguser .
++This option should only be used when the supervision tree that will
++host the instanced service is run as root.
++The default is that the logger runs as the same user as the host
++supervision tree.
++.It Fl L Ar logdir
++Make the service logged via
++.Xr s6-log 8 ,
++and ensure its log messages go into
++.Ar logdir .
++Error messages from the instance supervisor as well as from every
++instance will be logged to
++.Ar logdir .
++If this option is not given, these error messages will fall through to
++the host supervision tree's catch-all logger, if any, or standard
++error otherwise.
++The options listed below are only used to configured the logger and
++are meaningless if
++.Fl L
++is not given.
++.It Fl t Ar stamptype
++How logs are timestamped in
++.Ar logdir .
++0 means no timestamp, 1 means external TAI64N format[4], 2 means ISO
++8601 format[5], and 3 means both.
++Default is
++.Em 1 .
++.It Fl n Ar nfiles
++Maximum number of archive files in
++.Ar logdir .
++Default is
++.Em 10 .
++.It Fl s Ar filesize
++Maximum size of the
++.Pa current
++file
++.Po
++and archive files
++.Pc
++in
++.Ar logdir .
++Default is
++.Em 1000000 .
++.It Fl S Ar maxsize
++Maximum total size of the archives in
++.Ar logdir .
++Default is
++.Em 0 ,
++meaning no limits apart from those enforced by the
++.Fl n
++and
++.Fl s
++options.
++.It Fl P Ar prefix
++when logging to
++.Ar logdir ,
++prefix logged lines with the
++.Ar prefix
++string.
++Default is no prefix.
++.El
++.Sh EXIT STATUS
++.Bl -tag -width x
++.It 0
++Success.
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.El
++.Sh SEE ALSO
++.Xr s6-instanced-service 7 ,
++.Xr s6-instance-control 8 ,
++.Xr s6-instance-create 8 ,
++.Xr s6-instance-delete 8 ,
++.Xr s6-instance-list 8 ,
++.Xr s6-instance-status 8
++.Pp
++[1]
++.Lk https://skarnet.org/software/s6-rc/
++.Pp
++[2]
++.Lk https://skarnet.org/software/execline/
++.Pp
++[3]
++.Lk https://skarnet.org/software/s6-rc/s6-rc-compile.html
++.Pp
++[4]
++.Lk https://cr.yp.to/libtai/tai64.html
++.Pp
++[5]
++.Lk https://www.iso.org/iso/home/standards/iso8601.htm
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
+diff -Naur a/mdoc/man8/s6-instance-status.8 b/mdoc/man8/s6-instance-status.8
+--- a/mdoc/man8/s6-instance-status.8	1969-12-31 21:00:00.000000000 -0300
++++ b/mdoc/man8/s6-instance-status.8	2023-04-16 04:52:39.119496466 -0300
+@@ -0,0 +1,60 @@
++.Dd January 11, 2023
++.Dt S6-INSTANCE-STATUS 8
++.Os
++.Sh NAME
++.Nm s6-instance-status
++.Nd give the status of a running instance of an
++.Xr s6-instanced-service 7 ,
++as a short human-readable summary or programmatically parsable output
++.Sh SYNOPSIS
++.Nm
++.Op Fl uwNrpest | Fl o No up,wantedup,normallyup,ready,paused,pid,exitcode,signal,signum,updownsince,readysince,updownfor,readyfor
++.Op Fl n
++.Ar servicedir
++.Ar name
++.Sh DESCRIPTION
++.Nm
++expects a running, supervised
++.Xr s6-instanced-service 7
++in
++.Ar servicedir ,
++as well as an existing instance of this service named
++.Ar name .
++.Pp
++It prints information to stdout about the monitored instance of
++.Ar servicedir
++named
++.Ar name .
++.Pp
++It exits 0.
++.Sh OPTIONS
++The options are exactly the same as the ones understood by
++.Xr s6-svstat 8 .
++.Pp
++In fact, s6-instance-status is nothing more than a call to
++.Xr s6-svstat 8
++on the service directory representing the
++.Ar name
++instance.
++It is syntactic sugar so the user does not have to depend on the
++internal representation of instances and the location of instances'
++service directories.
++.Sh EXIT STATUS
++.Bl -tag -width x
++.It 0
++Success.
++.It 100
++Wrong usage.
++.It 111
++System call failed.
++.El
++.Sh SEE ALSO
++.Xr s6-instanced-service 7 ,
++.Xr s6-instance-control 8 ,
++.Xr s6-instance-create 8 ,
++.Xr s6-instance-delete 8 ,
++.Xr s6-instance-list 8 ,
++.Xr s6-instance-maker 8
++.Sh AUTHORS
++.An Laurent Bercot
++.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ioconnect.8 b/mdoc/man8/s6-ioconnect.8
 --- a/mdoc/man8/s6-ioconnect.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ioconnect.8	2022-10-22 19:55:38.863439109 -0300
-@@ -0,0 +1,112 @@
-+.Dd September 29, 2021
++++ b/mdoc/man8/s6-ioconnect.8	2023-04-16 04:52:39.119496466 -0300
+@@ -0,0 +1,118 @@
++.Dd February 19, 2023
 +.Dt S6-IOCONNECT 8
 +.Os
 +.Sh NAME
@@ -6037,10 +8857,6 @@ diff -Naur a/mdoc/man8/s6-ioconnect.8 b/mdoc/man8/s6-ioconnect.8
 +.Op Fl t Ar millisecs
 +.Op Fl r Ar fdr
 +.Op Fl w Ar fdw
-+.Op Fl 0
-+.Op Fl 1
-+.Op Fl 6
-+.Op Fl 7
 +.Sh DESCRIPTION
 +.Nm
 +reads data from its stdin and writes it as-is to file descriptor 7,
@@ -6052,14 +8868,6 @@ diff -Naur a/mdoc/man8/s6-ioconnect.8 b/mdoc/man8/s6-ioconnect.8
 +When both sides have transmitted EOF and
 +.Nm
 +has flushed its buffers, it exits 0.
-+.Pp
-+Transmitting EOF across full-duplex sockets is ugly[1].
-+The right thing in every case cannot be automatically determined, so
-+it is up to the user to mention that a socket must be shut down.
-+Most of the time, though, shutting down sockets after EOF is the right
-+thing to do, so
-+.Ql s6-ioconnect -67
-+should be the common use case.
 +.Pp
 +The point of
 +.Nm
@@ -6084,6 +8892,22 @@ diff -Naur a/mdoc/man8/s6-ioconnect.8 b/mdoc/man8/s6-ioconnect.8
 +examples here involve TCP.
 +Nevertheless, it can be used with connections across Unix domain
 +sockets as well, and has its place in the s6 package.
++.Pp
++If one of the endpoints is a socket,
++.Nm
++will call
++.Xr shutdown 2
++on it (for reading or writing, depending on the endpoint) when it
++needs to transmit EOF.
++This is a necessary workaround to a misdesign[1] of the socket API,
++but it could have unintended consequences when the socket is shared
++among several processes that expect a persistent connection.
++Most of the time, however, it is a mistake to share a data socket
++between processes, so
++.Nm Ap s
++behaviour is suited to an overwhelming majority of cases, and the
++exceptions are specialized enough that they won't need to use
++.Nm .
 +.Sh OPTIONS
 +.Bl -tag -width x
 +.It Fl t Ar millisecs
@@ -6107,19 +8931,21 @@ diff -Naur a/mdoc/man8/s6-ioconnect.8 b/mdoc/man8/s6-ioconnect.8
 +for
 +.Dq remote
 +writing instead of fd 7.
-+.It Fl 0
-+Assume stdin is a socket and needs to be shut down for reading after
-+an EOF.
-+.It Fl 1
-+Assume stdout is a socket and needs to be shut down for writing to
-+correctly transmit an EOF.
-+.It Fl 6
-+Assume the remote reading fd is a socket and needs to be shut down for
-+reading after an EOF.
-+.It Fl 7
-+Assume the remote writing fd is a socket and needs to be shut down for
-+writing to correctly transmit an EOF.
 +.El
++.Pp
++The
++.Fl 0 ,
++.Fl 1 ,
++.Fl 6
++and
++.Fl 7
++options are still recognized for compatibility, but do nothing; they
++are deprecated.
++They were previously used to tell
++.Nm
++that the local reading, local writing, remote reading and remote
++writing endpoints, respectively, were sockets \(em but this is now
++autodetected.
 +.Sh SEE ALSO
 +.Xr s6-accessrules-cdb-from-fs 8 ,
 +.Xr s6-accessrules-fs-from-cdb 8 ,
@@ -6140,7 +8966,7 @@ diff -Naur a/mdoc/man8/s6-ioconnect.8 b/mdoc/man8/s6-ioconnect.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ipcclient.8 b/mdoc/man8/s6-ipcclient.8
 --- a/mdoc/man8/s6-ipcclient.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ipcclient.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ipcclient.8	2023-04-16 04:52:39.120496466 -0300
 @@ -0,0 +1,79 @@
 +.Dd September 29, 2021
 +.Dt S6-IPCCLIENT 8
@@ -6223,7 +9049,7 @@ diff -Naur a/mdoc/man8/s6-ipcclient.8 b/mdoc/man8/s6-ipcclient.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ipcserver-access.8 b/mdoc/man8/s6-ipcserver-access.8
 --- a/mdoc/man8/s6-ipcserver-access.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ipcserver-access.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ipcserver-access.8	2023-04-16 04:52:39.120496466 -0300
 @@ -0,0 +1,249 @@
 +.Dd September 29, 2021
 +.Dt S6-IPCSERVER-ACCESS 8
@@ -6476,7 +9302,7 @@ diff -Naur a/mdoc/man8/s6-ipcserver-access.8 b/mdoc/man8/s6-ipcserver-access.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ipcserver-socketbinder.8 b/mdoc/man8/s6-ipcserver-socketbinder.8
 --- a/mdoc/man8/s6-ipcserver-socketbinder.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ipcserver-socketbinder.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ipcserver-socketbinder.8	2023-04-16 04:52:39.120496466 -0300
 @@ -0,0 +1,117 @@
 +.Dd September 29, 2021
 +.Dt S6-IPCSERVER-SOCKETBINDER 8
@@ -6597,7 +9423,7 @@ diff -Naur a/mdoc/man8/s6-ipcserver-socketbinder.8 b/mdoc/man8/s6-ipcserver-sock
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ipcserver.8 b/mdoc/man8/s6-ipcserver.8
 --- a/mdoc/man8/s6-ipcserver.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ipcserver.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ipcserver.8	2023-04-16 04:52:39.120496466 -0300
 @@ -0,0 +1,225 @@
 +.Dd September 29, 2021
 +.Dt S6-IPCSERVER 8
@@ -6826,7 +9652,7 @@ diff -Naur a/mdoc/man8/s6-ipcserver.8 b/mdoc/man8/s6-ipcserver.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-ipcserverd.8 b/mdoc/man8/s6-ipcserverd.8
 --- a/mdoc/man8/s6-ipcserverd.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-ipcserverd.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-ipcserverd.8	2023-04-16 04:52:39.121496466 -0300
 @@ -0,0 +1,157 @@
 +.Dd September 29, 2021
 +.Dt S6-IPCSERVERD 8
@@ -6987,9 +9813,9 @@ diff -Naur a/mdoc/man8/s6-ipcserverd.8 b/mdoc/man8/s6-ipcserverd.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-log.8 b/mdoc/man8/s6-log.8
 --- a/mdoc/man8/s6-log.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-log.8	2022-10-22 19:55:38.863439109 -0300
-@@ -0,0 +1,850 @@
-+.Dd September 29, 2021
++++ b/mdoc/man8/s6-log.8	2023-04-16 04:52:39.121496466 -0300
+@@ -0,0 +1,868 @@
++.Dd January 15, 2023
 +.Dt S6-LOG 8
 +.Os
 +.Sh NAME
@@ -7292,6 +10118,24 @@ diff -Naur a/mdoc/man8/s6-log.8 b/mdoc/man8/s6-log.8
 +.Ar statussize
 +is 1001.
 +.Sm off
++.It p Ns Ar prefix
++Set
++.Ar prefix
++as a prefix to be printed on every output line.
++For instance, a
++.Ql pfoobar:\&
++directive means that the next action directives should prepend every
++line with
++.Ql foobar:\&
++.Po
++plus a space
++.Pc
++before outputting it.
++Note that a prefix is always printed
++.Em after
++the timestamps, if any.
++To remove a prefix for the next action directives, use a standalone
++.Ql p .
 +.It ! Ar processor
 +.Sm on
 +Registers
@@ -7841,7 +10685,7 @@ diff -Naur a/mdoc/man8/s6-log.8 b/mdoc/man8/s6-log.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-mkfifodir.8 b/mdoc/man8/s6-mkfifodir.8
 --- a/mdoc/man8/s6-mkfifodir.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-mkfifodir.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-mkfifodir.8	2023-04-16 04:52:39.121496466 -0300
 @@ -0,0 +1,53 @@
 +.Dd September 29, 2021
 +.Dt S6-MKFIFODIR 8
@@ -7898,7 +10742,7 @@ diff -Naur a/mdoc/man8/s6-mkfifodir.8 b/mdoc/man8/s6-mkfifodir.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-notifyoncheck.8 b/mdoc/man8/s6-notifyoncheck.8
 --- a/mdoc/man8/s6-notifyoncheck.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-notifyoncheck.8	2022-10-22 19:55:38.863439109 -0300
++++ b/mdoc/man8/s6-notifyoncheck.8	2023-04-16 04:52:39.122496466 -0300
 @@ -0,0 +1,255 @@
 +.Dd September 29, 2021
 +.Dt S6-NOTIFYONCHECK 8
@@ -8157,7 +11001,7 @@ diff -Naur a/mdoc/man8/s6-notifyoncheck.8 b/mdoc/man8/s6-notifyoncheck.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-permafailon.8 b/mdoc/man8/s6-permafailon.8
 --- a/mdoc/man8/s6-permafailon.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-permafailon.8	2022-10-22 19:55:38.873439109 -0300
++++ b/mdoc/man8/s6-permafailon.8	2023-04-16 04:52:39.122496466 -0300
 @@ -0,0 +1,138 @@
 +.Dd September 29, 2021
 +.Dt S6-PERMAFAILON 8
@@ -8299,7 +11143,7 @@ diff -Naur a/mdoc/man8/s6-permafailon.8 b/mdoc/man8/s6-permafailon.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-setlock.8 b/mdoc/man8/s6-setlock.8
 --- a/mdoc/man8/s6-setlock.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-setlock.8	2022-10-22 19:55:38.873439109 -0300
++++ b/mdoc/man8/s6-setlock.8	2023-04-16 04:52:39.122496466 -0300
 @@ -0,0 +1,82 @@
 +.Dd September 29, 2021
 +.Dt S6-SETLOCK 8
@@ -8385,7 +11229,7 @@ diff -Naur a/mdoc/man8/s6-setlock.8 b/mdoc/man8/s6-setlock.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-setsid.8 b/mdoc/man8/s6-setsid.8
 --- a/mdoc/man8/s6-setsid.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-setsid.8	2022-10-22 19:55:38.873439109 -0300
++++ b/mdoc/man8/s6-setsid.8	2023-04-16 04:52:39.122496466 -0300
 @@ -0,0 +1,107 @@
 +.Dd September 29, 2021
 +.Dt S6-SETSID 8
@@ -8496,9 +11340,9 @@ diff -Naur a/mdoc/man8/s6-setsid.8 b/mdoc/man8/s6-setsid.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-setuidgid.8 b/mdoc/man8/s6-setuidgid.8
 --- a/mdoc/man8/s6-setuidgid.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-setuidgid.8	2022-10-22 19:55:38.903439111 -0300
-@@ -0,0 +1,56 @@
-+.Dd September 29, 2021
++++ b/mdoc/man8/s6-setuidgid.8	2023-04-16 04:52:39.122496466 -0300
+@@ -0,0 +1,68 @@
++.Dd January 15, 2023
 +.Dt S6-SETUIDGID 8
 +.Os
 +.Sh NAME
@@ -8509,6 +11353,15 @@ diff -Naur a/mdoc/man8/s6-setuidgid.8 b/mdoc/man8/s6-setuidgid.8
 +.Ar account
 +.Ar prog...
 +.Sh DESCRIPTION
++If
++.Ar account
++is the empty string, then
++.Nm
++directly
++.Xr exec 3 Ns
++s into
++.Ar prog...
++without any state changes.
 +If
 +.Ar account
 +contains a colon, it is interpreted as
@@ -8536,6 +11389,9 @@ diff -Naur a/mdoc/man8/s6-setuidgid.8 b/mdoc/man8/s6-setuidgid.8
 +Then it executes into
 +.Ar prog... .
 +.Pp
++Unless
++.Ar account
++is empty,
 +.Nm
 +can only be run as root.
 +Its main use is to drop root privileges before starting a daemon.
@@ -8556,7 +11412,7 @@ diff -Naur a/mdoc/man8/s6-setuidgid.8 b/mdoc/man8/s6-setuidgid.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-socklog.8 b/mdoc/man8/s6-socklog.8
 --- a/mdoc/man8/s6-socklog.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-socklog.8	2022-10-22 19:55:38.913439111 -0300
++++ b/mdoc/man8/s6-socklog.8	2023-04-16 04:52:39.122496466 -0300
 @@ -0,0 +1,247 @@
 +.Dd September 29, 2021
 +.Dt S6-SOCKLOG 8
@@ -8807,7 +11663,7 @@ diff -Naur a/mdoc/man8/s6-socklog.8 b/mdoc/man8/s6-socklog.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-softlimit.8 b/mdoc/man8/s6-softlimit.8
 --- a/mdoc/man8/s6-softlimit.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-softlimit.8	2022-10-22 19:55:38.913439111 -0300
++++ b/mdoc/man8/s6-softlimit.8	2023-04-16 04:52:39.123496466 -0300
 @@ -0,0 +1,96 @@
 +.Dd September 29, 2021
 +.Dt S6-SOFTLIMIT 8
@@ -8907,7 +11763,7 @@ diff -Naur a/mdoc/man8/s6-softlimit.8 b/mdoc/man8/s6-softlimit.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-sudo.8 b/mdoc/man8/s6-sudo.8
 --- a/mdoc/man8/s6-sudo.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-sudo.8	2022-10-22 19:55:38.913439111 -0300
++++ b/mdoc/man8/s6-sudo.8	2023-04-16 04:52:39.123496466 -0300
 @@ -0,0 +1,70 @@
 +.Dd September 29, 2021
 +.Dt S6-SUDO 8
@@ -8981,7 +11837,7 @@ diff -Naur a/mdoc/man8/s6-sudo.8 b/mdoc/man8/s6-sudo.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-sudoc.8 b/mdoc/man8/s6-sudoc.8
 --- a/mdoc/man8/s6-sudoc.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-sudoc.8	2022-10-22 19:55:38.913439111 -0300
++++ b/mdoc/man8/s6-sudoc.8	2023-04-16 04:52:39.123496466 -0300
 @@ -0,0 +1,108 @@
 +.Dd September 29, 2021
 +.Dt S6-SUDOC 8
@@ -9093,7 +11949,7 @@ diff -Naur a/mdoc/man8/s6-sudoc.8 b/mdoc/man8/s6-sudoc.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-sudod.8 b/mdoc/man8/s6-sudod.8
 --- a/mdoc/man8/s6-sudod.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-sudod.8	2022-10-22 19:55:38.913439111 -0300
++++ b/mdoc/man8/s6-sudod.8	2023-04-16 04:52:39.123496466 -0300
 @@ -0,0 +1,333 @@
 +.Dd September 29, 2021
 +.Dt S6-SUDOD 8
@@ -9430,9 +12286,9 @@ diff -Naur a/mdoc/man8/s6-sudod.8 b/mdoc/man8/s6-sudod.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-supervise.8 b/mdoc/man8/s6-supervise.8
 --- a/mdoc/man8/s6-supervise.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-supervise.8	2022-10-22 19:55:38.913439111 -0300
-@@ -0,0 +1,456 @@
-+.Dd September 29, 2021
++++ b/mdoc/man8/s6-supervise.8	2023-04-16 04:52:39.123496466 -0300
+@@ -0,0 +1,509 @@
++.Dd February 19, 2023
 +.Dt S6-SUPERVISE 8
 +.Os
 +.Sh NAME
@@ -9633,6 +12489,27 @@ diff -Naur a/mdoc/man8/s6-supervise.8 b/mdoc/man8/s6-supervise.8
 +.Nm
 +spawns
 +.Pa ./run .
++One argument is given to the
++.Pa ./run
++program:
++.Ar servicedir ,
++the name of the directory
++.Nm
++is being run on.
++It is given exactly as given to s6-supervise, without
++recanonicalization.
++In particular, if
++.Nm
++is being managed by
++.Xr s6-svscan 8 ,
++.Ar servicedir
++is always of the form
++.Pa "" Ns Ar foo
++or
++.Pa "" Ns Ar foo Ns /log ,
++and
++.Ar foo
++contains no slashes.
 +.It
 +.Nm
 +sends a
@@ -9686,7 +12563,9 @@ diff -Naur a/mdoc/man8/s6-supervise.8 b/mdoc/man8/s6-supervise.8
 +.Pa ./run
 +as second argument, or an undefined number if
 +.Pa ./run
-+was not signaled.
++was not signaled; and it will have
++.Ar servicedir
++as third argument.
 +.It
 +By default,
 +.Pa ./finish
@@ -9733,6 +12612,13 @@ diff -Naur a/mdoc/man8/s6-supervise.8 b/mdoc/man8/s6-supervise.8
 +spawns, to avoid busylooping if
 +.Pa ./run
 +exits too quickly.
++If the service has been
++.Em ready
++for more than one second, it will restart immediately, but if it is not
++.Em ready
++when it dies,
++.Nm
++will always pause for 1 second before spawning it again.
 +.It
 +When killed or asked to exit, it waits for the service to go down one
 +last time, then sends a
@@ -9818,6 +12704,29 @@ diff -Naur a/mdoc/man8/s6-supervise.8 b/mdoc/man8/s6-supervise.8
 +/event
 +.Sm on
 +need to be read-write.
++.Pp
++If
++.Ar servicedir
++isn't writable by
++.Nm ,
++for any reason, then the
++.Xr s6-svc 8
++.Fl D
++and
++.Fl U
++commands will not work properly since
++.Nm
++will be unable to create or delete a
++.Pa "" Ns Ar servicedir Ns /down
++file; in this case
++.Nm
++will print a warning on stderr, and perform the equivalent of
++.Fl d
++or
++.Fl u
++instead
++\(em
++it will just be unable to change the permanent service configuration.
 +.Sh OPTIONS
 +.Nm
 +does not support options, because it is normally not run manually via
@@ -9890,9 +12799,9 @@ diff -Naur a/mdoc/man8/s6-supervise.8 b/mdoc/man8/s6-supervise.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svc.8 b/mdoc/man8/s6-svc.8
 --- a/mdoc/man8/s6-svc.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svc.8	2022-10-22 19:55:38.923439112 -0300
-@@ -0,0 +1,265 @@
-+.Dd September 29, 2021
++++ b/mdoc/man8/s6-svc.8	2023-04-16 04:52:39.124496466 -0300
+@@ -0,0 +1,343 @@
++.Dd February 19, 2023
 +.Dt S6-SVC 8
 +.Os
 +.Sh NAME
@@ -9904,7 +12813,7 @@ diff -Naur a/mdoc/man8/s6-svc.8 b/mdoc/man8/s6-svc.8
 +.Nm
 +.Op Fl wu | wU | wd | wD | wr | wR
 +.Op Fl T Ar timeout
-+.Op Fl abqhkti12pcyoduxOr
++.Op Fl abqhkti12pcyroduDUxO
 +.Ar servicedir
 +.Sh DESCRIPTION
 +.Nm
@@ -9942,6 +12851,63 @@ diff -Naur a/mdoc/man8/s6-svc.8 b/mdoc/man8/s6-svc.8
 +To avoid that, make sure your service is wanted up by using
 +.Ql s6-svc -ruwr Ar servicedir
 +instead.
++.Pp
++The
++.Ql U
++and
++.Ql D
++letters, which convey the same idea as
++.Ql u
++and
++.Ql d
++.Po
++.Em up
++and
++.Em down
++.Pc
++but with added emphasis, do not have the same meaning in the
++.Fl U
++/
++.Fl D
++and
++.Fl wU
++/
++.Fl wD
++options.
++In the
++.Fl U
++/
++.Fl D
++case, they mean
++.Do
++change the external service configuration to match what the supervisor
++has been instructed that the starting state of the service should be
++.Dc .
++In the
++.Fl wU
++/
++.Fl wD
++case, they mean
++.Do
++wait until the service has reached the wanted state
++.Em and also
++is ready
++.Dc
++.Po
++or
++.Do
++ready to be started again
++.Dc
++for
++.Fl wD
++.Pc .
++The thing to remember is
++.Do
++it's up/down, with something more
++.Dc ,
++but the
++.Dq something
++isn't the same.
 +.Sh OPTIONS
 +.Bl -tag -width x
 +.It Fl a
@@ -9981,10 +12947,24 @@ diff -Naur a/mdoc/man8/s6-svc.8 b/mdoc/man8/s6-svc.8
 +.Pa ./down-signal
 +file in the
 +.Xr s6-service-directory 7 .
++.It Fl D
++Down, and create a
++.Pa ./down
++file so the service does not restart automatically if the supervisor
++dies.
++This option is mostly used by automated systems working on top of s6;
++as a human user, you probably don't need it.
 +.It Fl u
 +Up.
 +If the supervised process is down, start it.
 +Automatically restart it when it dies.
++.It Fl U
++Up, and remove any
++.Pa ./down
++file that may exist, in order to make sure the service is
++automatically restarted even if the supervisor dies.
++This option is mostly used by automated systems working on top of s6;
++as a human user, you probably don't need it.
 +.It Fl x
 +Exit.
 +When the service is asked to be down and the supervised process dies,
@@ -10003,6 +12983,13 @@ diff -Naur a/mdoc/man8/s6-svc.8 b/mdoc/man8/s6-svc.8
 +Mark the service to run once at most.
 +iow: do not restart the supervised process when it dies.
 +If it is down when the command is received, do not even start it.
++.It Fl Q
++Once at most, and create a
++.Pa ./down
++file.
++Like
++.Fl D ,
++but do not terminate the service if it is currently running.
 +.It Fl r
 +If the service is up, restart it, by sending it a signal to kill it
 +and letting
@@ -10159,7 +13146,7 @@ diff -Naur a/mdoc/man8/s6-svc.8 b/mdoc/man8/s6-svc.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svdt-clear.8 b/mdoc/man8/s6-svdt-clear.8
 --- a/mdoc/man8/s6-svdt-clear.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svdt-clear.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svdt-clear.8	2023-04-16 04:52:39.124496466 -0300
 @@ -0,0 +1,59 @@
 +.Dd September 29, 2021
 +.Dt S6-SVDT-CLEAR 8
@@ -10222,7 +13209,7 @@ diff -Naur a/mdoc/man8/s6-svdt-clear.8 b/mdoc/man8/s6-svdt-clear.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svdt.8 b/mdoc/man8/s6-svdt.8
 --- a/mdoc/man8/s6-svdt.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svdt.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svdt.8	2023-04-16 04:52:39.124496466 -0300
 @@ -0,0 +1,93 @@
 +.Dd September 29, 2021
 +.Dt S6-SVDT 8
@@ -10319,7 +13306,7 @@ diff -Naur a/mdoc/man8/s6-svdt.8 b/mdoc/man8/s6-svdt.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svlink.8 b/mdoc/man8/s6-svlink.8
 --- a/mdoc/man8/s6-svlink.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svlink.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svlink.8	2023-04-16 04:52:39.124496466 -0300
 @@ -0,0 +1,194 @@
 +.Dd September 29, 2021
 +.Dt S6-SVLINK 8
@@ -10517,7 +13504,7 @@ diff -Naur a/mdoc/man8/s6-svlink.8 b/mdoc/man8/s6-svlink.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svlisten.8 b/mdoc/man8/s6-svlisten.8
 --- a/mdoc/man8/s6-svlisten.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svlisten.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svlisten.8	2023-04-16 04:52:39.125496466 -0300
 @@ -0,0 +1,188 @@
 +.Dd September 29, 2021
 +.Dt S6-SVLISTEN 8
@@ -10709,7 +13696,7 @@ diff -Naur a/mdoc/man8/s6-svlisten.8 b/mdoc/man8/s6-svlisten.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svlisten1.8 b/mdoc/man8/s6-svlisten1.8
 --- a/mdoc/man8/s6-svlisten1.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svlisten1.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svlisten1.8	2023-04-16 04:52:39.125496466 -0300
 @@ -0,0 +1,144 @@
 +.Dd September 29, 2021
 +.Dt S6-SVLISTEN1 8
@@ -10857,7 +13844,7 @@ diff -Naur a/mdoc/man8/s6-svlisten1.8 b/mdoc/man8/s6-svlisten1.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svok.8 b/mdoc/man8/s6-svok.8
 --- a/mdoc/man8/s6-svok.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svok.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svok.8	2023-04-16 04:52:39.125496466 -0300
 @@ -0,0 +1,37 @@
 +.Dd September 29, 2021
 +.Dt S6-SVOK 8
@@ -10898,7 +13885,7 @@ diff -Naur a/mdoc/man8/s6-svok.8 b/mdoc/man8/s6-svok.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svperms.8 b/mdoc/man8/s6-svperms.8
 --- a/mdoc/man8/s6-svperms.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svperms.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svperms.8	2023-04-16 04:52:39.125496466 -0300
 @@ -0,0 +1,183 @@
 +.Dd September 29, 2021
 +.Dt S6-SVPERMS 8
@@ -11085,9 +14072,9 @@ diff -Naur a/mdoc/man8/s6-svperms.8 b/mdoc/man8/s6-svperms.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svscan.8 b/mdoc/man8/s6-svscan.8
 --- a/mdoc/man8/s6-svscan.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svscan.8	2022-10-22 19:55:38.923439112 -0300
-@@ -0,0 +1,425 @@
-+.Dd September 29, 2021
++++ b/mdoc/man8/s6-svscan.8	2023-04-16 04:52:39.125496466 -0300
+@@ -0,0 +1,426 @@
++.Dd January 15, 2023
 +.Dt S6-SVSCAN 8
 +.Os
 +.Sh NAME
@@ -11447,14 +14434,15 @@ diff -Naur a/mdoc/man8/s6-svscan.8 b/mdoc/man8/s6-svscan.8
 +Maintain services for up to max service directories.
 +Default is 500.
 +Lower limit is 2.
-+There is no upper limit, but:
++Upper limit is 90000.
++If you're increasing this value from the default, please note that:
 +.Bl -bullet -width x
 +.It
 +The higher
 +.Ar max
 +is, the more stack memory
 +.Nm
-+will use, approximately 50 bytes per service.
++will use, up to 100 bytes per service.
 +.It
 +.Nm
 +uses 2 file descriptors per logged service.
@@ -11514,7 +14502,7 @@ diff -Naur a/mdoc/man8/s6-svscan.8 b/mdoc/man8/s6-svscan.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svscanctl.8 b/mdoc/man8/s6-svscanctl.8
 --- a/mdoc/man8/s6-svscanctl.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svscanctl.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svscanctl.8	2023-04-16 04:52:39.126496466 -0300
 @@ -0,0 +1,152 @@
 +.Dd September 29, 2021
 +.Dt S6-SVSCANCTL 8
@@ -11670,7 +14658,7 @@ diff -Naur a/mdoc/man8/s6-svscanctl.8 b/mdoc/man8/s6-svscanctl.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svstat.8 b/mdoc/man8/s6-svstat.8
 --- a/mdoc/man8/s6-svstat.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svstat.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svstat.8	2023-04-16 04:52:39.126496466 -0300
 @@ -0,0 +1,278 @@
 +.Dd September 29, 2021
 +.Dt S6-SVSTAT 8
@@ -11952,7 +14940,7 @@ diff -Naur a/mdoc/man8/s6-svstat.8 b/mdoc/man8/s6-svstat.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svunlink.8 b/mdoc/man8/s6-svunlink.8
 --- a/mdoc/man8/s6-svunlink.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svunlink.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svunlink.8	2023-04-16 04:52:39.126496466 -0300
 @@ -0,0 +1,121 @@
 +.Dd September 29, 2021
 +.Dt S6-SVUNLINK 8
@@ -12077,7 +15065,7 @@ diff -Naur a/mdoc/man8/s6-svunlink.8 b/mdoc/man8/s6-svunlink.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-svwait.8 b/mdoc/man8/s6-svwait.8
 --- a/mdoc/man8/s6-svwait.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-svwait.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-svwait.8	2023-04-16 04:52:39.126496466 -0300
 @@ -0,0 +1,171 @@
 +.Dd September 29, 2021
 +.Dt S6-SVWAIT 8
@@ -12252,7 +15240,7 @@ diff -Naur a/mdoc/man8/s6-svwait.8 b/mdoc/man8/s6-svwait.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-tai64n.8 b/mdoc/man8/s6-tai64n.8
 --- a/mdoc/man8/s6-tai64n.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-tai64n.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-tai64n.8	2023-04-16 04:52:39.126496466 -0300
 @@ -0,0 +1,43 @@
 +.Dd September 29, 2021
 +.Dt S6-TAI64N 8
@@ -12299,7 +15287,7 @@ diff -Naur a/mdoc/man8/s6-tai64n.8 b/mdoc/man8/s6-tai64n.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-tai64nlocal.8 b/mdoc/man8/s6-tai64nlocal.8
 --- a/mdoc/man8/s6-tai64nlocal.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-tai64nlocal.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6-tai64nlocal.8	2023-04-16 04:52:39.127496466 -0300
 @@ -0,0 +1,88 @@
 +.Dd September 29, 2021
 +.Dt S6-TAI64NLOCAL 8
@@ -12391,9 +15379,9 @@ diff -Naur a/mdoc/man8/s6-tai64nlocal.8 b/mdoc/man8/s6-tai64nlocal.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6-usertree-maker.8 b/mdoc/man8/s6-usertree-maker.8
 --- a/mdoc/man8/s6-usertree-maker.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6-usertree-maker.8	2022-10-22 19:55:38.923439112 -0300
-@@ -0,0 +1,487 @@
-+.Dd September 29, 2021
++++ b/mdoc/man8/s6-usertree-maker.8	2023-04-16 04:52:39.127496466 -0300
+@@ -0,0 +1,494 @@
++.Dd January 15, 2023
 +.Dt S6-USERTREE-MAKER 8
 +.Os
 +.Sh NAME
@@ -12402,7 +15390,7 @@ diff -Naur a/mdoc/man8/s6-usertree-maker.8 b/mdoc/man8/s6-usertree-maker.8
 +.Xr s6-service-directory 7
 +implementing a service that runs an
 +.Xr s6-svscan 8
-+instance owned by a given user, on an
++process owned by a given user, on an
 +.Xr s6-scan-directory 7
 +belonging to that user
 +.Sh SYNOPSIS
@@ -12416,6 +15404,7 @@ diff -Naur a/mdoc/man8/s6-usertree-maker.8 b/mdoc/man8/s6-usertree-maker.8
 +.Op Fl n Ar nfiles
 +.Op Fl s Ar filesize
 +.Op Fl S Ar maxsize
++.Op Fl P Ar prefix
 +.Ar user
 +.Ar logdir
 +.Ar dir
@@ -12808,6 +15797,12 @@ diff -Naur a/mdoc/man8/s6-usertree-maker.8 b/mdoc/man8/s6-usertree-maker.8
 +and
 +.Fl s
 +options.
++.It Fl P Ar prefix
++When logging to
++.Ar logdir ,
++prefix logged lines with the
++.Ar prefix
++string.
 +.El
 +.Sh EXIT STATUS
 +.Bl -tag -width x
@@ -12882,7 +15877,7 @@ diff -Naur a/mdoc/man8/s6-usertree-maker.8 b/mdoc/man8/s6-usertree-maker.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6lockd-helper.8 b/mdoc/man8/s6lockd-helper.8
 --- a/mdoc/man8/s6lockd-helper.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6lockd-helper.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6lockd-helper.8	2023-04-16 04:52:39.127496466 -0300
 @@ -0,0 +1,54 @@
 +.Dd September 29, 2021
 +.Dt S6LOCKD-HELPER 8
@@ -12940,7 +15935,7 @@ diff -Naur a/mdoc/man8/s6lockd-helper.8 b/mdoc/man8/s6lockd-helper.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/s6lockd.8 b/mdoc/man8/s6lockd.8
 --- a/mdoc/man8/s6lockd.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/s6lockd.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/s6lockd.8	2023-04-16 04:52:39.127496466 -0300
 @@ -0,0 +1,79 @@
 +.Dd September 29, 2021
 +.Dt S6LOCKD 8
@@ -13023,7 +16018,7 @@ diff -Naur a/mdoc/man8/s6lockd.8 b/mdoc/man8/s6lockd.8
 +.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
 diff -Naur a/mdoc/man8/ucspilogd.8 b/mdoc/man8/ucspilogd.8
 --- a/mdoc/man8/ucspilogd.8	1969-12-31 21:00:00.000000000 -0300
-+++ b/mdoc/man8/ucspilogd.8	2022-10-22 19:55:38.923439112 -0300
++++ b/mdoc/man8/ucspilogd.8	2023-04-16 04:52:39.127496466 -0300
 @@ -0,0 +1,101 @@
 +.Dd September 29, 2021
 +.Dt UCSPILOGD 8
