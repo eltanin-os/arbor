@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+unexport LIBTOOL
+arbor-mk-gnuconfigure install

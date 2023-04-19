@@ -1,0 +1,14 @@
+name:xtrans
+version:1.4.0
+license:mit
+description:X.Org X11 transport library.
+cksum:ca6c49ac17c66bba6e463bae59c7cbbda8eee01898a871db2427d8b0e9ad9800e77379ae896448e17e7bcf6bc8450f16ebda39edcc0a3a0b48a6d3355e383159
+urls{
+https://www.x.org/releases/individual/lib/xtrans-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

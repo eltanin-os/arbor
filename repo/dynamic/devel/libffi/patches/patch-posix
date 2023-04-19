@@ -1,0 +1,66 @@
+diff -Naur a/configure b/configure
+--- a/configure	2022-10-23 21:09:52.000000000 -0300
++++ b/configure	2023-02-10 07:27:11.766815825 -0300
+@@ -22203,9 +22203,9 @@
+ 	; BUILD=$x grep "^#### \$\$HOST " Makefile | sed -e 's/.*|//' $x \\\\\\
+ 	; use=$x basename "\$\@" -all $x; n=$x echo \$\$BUILD | wc -w $x \\\\\\
+ 	; echo "MAKE \$\$HOST : \$\$n * \$\@"; if test "\$\$n" -eq "0" ; then : \\\\\\
+-	; BUILD=$x grep "^####.*|" Makefile |tail -1| sed -e 's/.*|//' $x ; fi \\\\\\
++	; BUILD=$x grep "^####.*|" Makefile |tail -n1| sed -e 's/.*|//' $x ; fi \\\\\\
+ 	; test ".\$\$BUILD" = "." && BUILD="." \\\\\\
+-	; test "\$\$use" = "\$\@" && BUILD=$x echo "\$\$BUILD" | tail -1 $x \\\\\\
++	; test "\$\$use" = "\$\@" && BUILD=$x echo "\$\$BUILD" | tail -n1 $x \\\\\\
+ 	; for i in \$\$BUILD ; do test ".\$\$i" = "." && continue \\\\\\
+ 	; (cd "\$\$i" && test ! -f configure && \$(MAKE) \$\$use) || exit; done
+ /dist-all *:/a\\
+@@ -22215,7 +22215,7 @@
+ 	; found=$x echo \$\$BUILD | wc -w $x \\\\\\
+ 	; echo "MAKE \$\$HOST : \$\$found \$(PACKAGE)-\$(VERSION).tar.*" \\\\\\
+ 	; if test "\$\$found" -eq "0" ; then : \\\\\\
+-	; BUILD=$x grep "^#### .*|" Makefile |tail -1| sed -e 's/.*|//' $x \\\\\\
++	; BUILD=$x grep "^#### .*|" Makefile |tail -n1| sed -e 's/.*|//' $x \\\\\\
+ 	; fi ; for i in \$\$BUILD ; do test ".\$\$i" = "." && continue \\\\\\
+ 	; for f in \$\$i/\$(PACKAGE)-\$(VERSION).tar.* \\\\\\
+ 	; do test -f "\$\$f" && mv "\$\$f" \$(PUB). ; done ; break ; done
+@@ -22226,7 +22226,7 @@
+ 	; found=$x echo \$\$BUILD | wc -w $x \\\\\\
+ 	; echo "MAKE \$\$HOST : \$\$found \$(PACKAGE)-\$(VERSION).*" \\\\\\
+ 	; if test "\$\$found" -eq "0" ; then : \\\\\\
+-	; BUILD=$x grep "^#### .*|" Makefile |tail -1| sed -e 's/.*|//' $x \\\\\\
++	; BUILD=$x grep "^#### .*|" Makefile |tail -n1| sed -e 's/.*|//' $x \\\\\\
+ 	; fi ; for i in \$\$BUILD ; do test ".\$\$i" = "." && continue \\\\\\
+ 	; for f in \$\$i/\$(PACKAGE)-\$(VERSION).* \\\\\\
+ 	; do test -f "\$\$f" && mv "\$\$f" \$(PUB). ; done ; break ; done
+diff -Naur a/m4/ax_enable_builddir.m4 b/m4/ax_enable_builddir.m4
+--- a/m4/ax_enable_builddir.m4	2022-10-23 12:23:27.000000000 -0300
++++ b/m4/ax_enable_builddir.m4	2023-02-10 07:27:43.619814207 -0300
+@@ -207,9 +207,9 @@
+ 	; BUILD=$x grep "^#### \$\$HOST " Makefile | sed -e 's/.*|//' $x \\\\\\
+ 	; use=$x basename "\$\@" _ALL $x; n=$x echo \$\$BUILD | wc -w $x \\\\\\
+ 	; echo "MAKE \$\$HOST : \$\$n * \$\@"; if test "\$\$n" -eq "0" ; then : \\\\\\
+-	; BUILD=$x grep "^####.*|" Makefile |tail -1| sed -e 's/.*|//' $x ; fi \\\\\\
++	; BUILD=$x grep "^####.*|" Makefile |tail -n1| sed -e 's/.*|//' $x ; fi \\\\\\
+ 	; test ".\$\$BUILD" = "." && BUILD="." \\\\\\
+-	; test "\$\$use" = "\$\@" && BUILD=$x echo "\$\$BUILD" | tail -1 $x \\\\\\
++	; test "\$\$use" = "\$\@" && BUILD=$x echo "\$\$BUILD" | tail -n1 $x \\\\\\
+ 	; for i in \$\$BUILD ; do test ".\$\$i" = "." && continue \\\\\\
+ 	; (cd "\$\$i" && test ! -f configure && \$(MAKE) \$\$use) || exit; done
+ dnl special rule add-on: "dist" copies the tarball to $(PUB). (source tree)
+@@ -220,7 +220,7 @@
+ 	; found=$x echo \$\$BUILD | wc -w $x \\\\\\
+ 	; echo "MAKE \$\$HOST : \$\$found \$(PACKAGE)-\$(VERSION).tar.*" \\\\\\
+ 	; if test "\$\$found" -eq "0" ; then : \\\\\\
+-	; BUILD=$x grep "^#### .*|" Makefile |tail -1| sed -e 's/.*|//' $x \\\\\\
++	; BUILD=$x grep "^#### .*|" Makefile |tail -n1| sed -e 's/.*|//' $x \\\\\\
+ 	; fi ; for i in \$\$BUILD ; do test ".\$\$i" = "." && continue \\\\\\
+ 	; for f in \$\$i/\$(PACKAGE)-\$(VERSION).tar.* \\\\\\
+ 	; do test -f "\$\$f" && mv "\$\$f" \$(PUB). ; done ; break ; done
+@@ -232,7 +232,7 @@
+ 	; found=$x echo \$\$BUILD | wc -w $x \\\\\\
+ 	; echo "MAKE \$\$HOST : \$\$found \$(PACKAGE)-\$(VERSION).*" \\\\\\
+ 	; if test "\$\$found" -eq "0" ; then : \\\\\\
+-	; BUILD=$x grep "^#### .*|" Makefile |tail -1| sed -e 's/.*|//' $x \\\\\\
++	; BUILD=$x grep "^#### .*|" Makefile |tail -n1| sed -e 's/.*|//' $x \\\\\\
+ 	; fi ; for i in \$\$BUILD ; do test ".\$\$i" = "." && continue \\\\\\
+ 	; for f in \$\$i/\$(PACKAGE)-\$(VERSION).* \\\\\\
+ 	; do test -f "\$\$f" && mv "\$\$f" \$(PUB). ; done ; break ; done

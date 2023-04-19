@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+export LIBS "-lcurses -lterminfo"
+arbor-mk-gnuconfigure install

@@ -1,0 +1,18 @@
+name:wayland
+version:1.21.0
+license:mit
+description:A display server protocol.
+cksum:df72e5f67c994e4b90a6ebf45735f06a27b1906001328e0866b838128c49de582e78fdc1b9e1d18df511772de2bf956846cb80e891bbafe8146ed8a131e8123c
+urls{
+https://gitlab.freedesktop.org/wayland/wayland/-/releases/$version/downloads/wayland-$version.tar.xz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+expat-dynamic
+libc
+libffi
+libxml2-dynamic
+}

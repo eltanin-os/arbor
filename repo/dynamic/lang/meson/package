@@ -1,0 +1,18 @@
+name:meson
+version:1.0.1
+license:apache-2.0
+description:Fast and user friendly build system.
+cksum:de8b25b25e31af1bf20add9f10ad54892035349689d62d5fab1aeff2f811cb4eb92758b90bdc39b341abe76a207531792c3e0c031384e4649ec32581a1041541
+urls{
+https://github.com/mesonbuild/meson/releases/download/$version/meson-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+py-setuptools
+}
+rundeps{
+python
+ninja
+}

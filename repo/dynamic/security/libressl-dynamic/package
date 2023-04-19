@@ -1,0 +1,15 @@
+name:libressl-dynamic
+version:3.6.1
+license:mit
+description:Is a fork of, and drop in replacement for OpenSSL.
+cksum:505e4822eab7b7f26f5c7fbd7e5b7a42130c6f53871ce4254ba028616a16ff897950b0289f84b3504404644d1bb483e4a9d3d6cb3c22551d4adead8e6e1ac81b
+src:libressl-$version
+urls{
+https://cdn.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

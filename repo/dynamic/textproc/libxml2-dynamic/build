@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+export ARBOR_MK_CONFIGURE_ARGS "--without-python"
+if { arbor-mk-gnuconfigure install }
+arbor-utils-install -d bin xml2-config

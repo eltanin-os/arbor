@@ -1,0 +1,17 @@
+name:openal-soft
+version:1.22.2
+license:lgpl-2+
+description:Software implementation of OpenAL API.
+cksum:1ed2478ed92f8813f90d51577864c7dd6f95c4ff1c1670d0cc4d38051e2b73f51953aa9fb0d23535cee58d361815129df94dc846154ea17a038b5db55684da83
+urls{
+https://openal-soft.org/openal-releases/openal-soft-$version.tar.bz2
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+alsa-lib
+libc
+sndio
+}

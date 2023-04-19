@@ -1,0 +1,16 @@
+name:libxfixes
+version:6.0.0
+license:
+description:X11 miscellaneous 'fixes' extension library.
+cksum:616a3153f634d2e01a416b94311221f5a9b7c9c6522ea5de9f0a51c7a823d787a5837db840d72504016d7aae015aa0b2f5dc9e72430bd7b9f726d2da0cbbc7a4
+src:libXfixes-$version
+urls{
+https://www.x.org/releases/individual/lib/libXfixes-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libx11
+}

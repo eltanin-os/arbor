@@ -1,0 +1,11 @@
+name:util-macros
+version:1.19.3
+license:mit
+description:
+cksum:9f6e56bda2e0352160752759005402589127d7d8b2c4dbcc9231cb0a10199a85d2393355f2bad1794bb907265d633d7163c2e8d834b6638c32a160bd553dfc69
+urls{
+https://www.x.org/releases/individual/util/util-macros-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}

@@ -1,0 +1,19 @@
+name:libxcb
+version:1.15
+license:mit
+description:X.Org X11 protocol C binding library.
+cksum:f343317e27fe26b48ea205e33e39e9cdf33ba9346e54d791eef48a1f18b0805f1a8d5794d26b3aa4eeae8c2461d8bde8bba1dcc8f1c974118eec1610d4d82322
+urls{
+https://www.x.org/releases/individual/xcb/libxcb-$version.tar.xz
+}
+hostdeps{
+python
+stdenv
+}
+makedeps{
+libc
+libpthread-stubs
+libxau
+libxdmcp
+xcb-proto
+}

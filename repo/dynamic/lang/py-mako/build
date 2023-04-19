@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+importas -i DESTDIR DESTDIR
+python setup.py install --prefix="/usr" --root="${DESTDIR}"

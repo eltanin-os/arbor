@@ -1,0 +1,22 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i AR AR
+	importas -i CC CC
+	importas -i RANLIB RANLIB
+	importas -i CFLAGS CFLAGS
+	importas -i CPPFLAGS CPPFLAGS
+	importas -i LDFLAGS LDFLAGS
+	importas -i BINDIR BINDIR
+	importas -i INCDIR INCDIR
+	importas -i MANDIR MANDIR
+	importas -i LIBDIR LIBDIR
+	importas -i PREFIX PREFIX
+}
+export ARBOR_MK_GMAKE_FLAGS "AR=${AR};CC=${CC};CFLAGS=${CFLAGS} ${CPPFLAGS};RANLIB=${RANLIB};LDFLAGS=${LDFLAGS};PREFIX=${PREFIX};BINDIR=${BINDIR};LIBDIR=${LIBDIR};MANDIR=${MANDIR};INCDIR=${INCDIR}"
+if { arbor-mk-gmake -f Makefile-libbz2_so }
+if { arbor-mk-gmake install }
+# XXX: hardcoded
+if { arbor-utils-install lib libbz2.so.1.0.8 }
+if { arbor-utils-install -l lib libbz2.so.1.0.8 libbz2.so.1 }
+if { arbor-utils-install -l lib libbz2.so.1.0.8 libbz2.so.1.0 }
+arbor-utils-install -l lib libbz2.so.1.0.8 libbz2.so

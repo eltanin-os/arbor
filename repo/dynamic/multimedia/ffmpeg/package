@@ -1,0 +1,21 @@
+name:ffmpeg
+version:5.1.2
+license:gpl-2+,lgpl-2.1+
+description:Decoding, encoding and streaming software.
+cksum:ae4c22bd6b014f998a0d81b273f175a13077aeee84ee8e4c96c14cb5e0b9c4a2cab5e9778560a32fb0961dfe02fc741a84a4d4de1f30142b117371afe659ab58
+urls{
+http://ffmpeg.org/releases/ffmpeg-$version.tar.xz
+}
+hostdeps{
+stdenv
+yasm
+}
+makedeps{
+bzip2-dynamic
+libc
+libopus
+libressl-dynamic
+libvorbis
+sdl2
+zlib-dynamic
+}

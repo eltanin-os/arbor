@@ -1,0 +1,14 @@
+name:alsa-lib
+version:1.2.8
+license:lgpl-2.1+
+description:Advanced Linux Sound Architecture (ALSA) library.
+cksum:9b167cd030cdf2d4dce1a9bb3453c1b5d1c454c140a2bd3804ee27eba01ee718f207ef30ec983d561d9cbdad219adee29d91fc476632965550a5e6a3b9a4f8d7
+urls{
+http://www.alsa-project.org/files/pub/lib/alsa-lib-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

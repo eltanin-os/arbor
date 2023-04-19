@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+# XXX: not reproducible
+arbor-mk-meson install

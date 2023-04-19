@@ -1,0 +1,15 @@
+name:ncurses-dynamic
+version:0.3.2
+license:bsd-3
+description:A NetBSD curses library.
+cksum:8b46d98225b1e3d5c3ec2003546b1c6dc8d7aecdbed9c1a1d326c7275ff126df208eca934ba568dcf24fb1f59286078347c51e7925e1f8b4324edb90bcf2e0dc
+src:netbsd-curses-$version
+urls{
+http://ftp.barfooze.de/pub/sabotage/tarballs/netbsd-curses-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

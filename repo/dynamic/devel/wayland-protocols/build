@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+export ARBOR_MK_MESON_ARGS "-Dtests=false"
+arbor-mk-meson install

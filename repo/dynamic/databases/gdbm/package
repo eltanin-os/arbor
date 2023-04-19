@@ -1,0 +1,14 @@
+name:gdbm
+version:1.23
+license:gpl-3+
+description:GNU database routines.
+cksum:7279b7f41de95c75485cf69a835d8a899f4b068ff2801b919e127b2433f629a548ad6934e20e8cbcf9b529abe11d42670d2305da3bd58438333ba043c06ce5a8
+urls{
+https://ftp.gnu.org/gnu/gdbm/gdbm-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

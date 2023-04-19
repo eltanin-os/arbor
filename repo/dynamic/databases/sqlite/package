@@ -1,0 +1,16 @@
+name:sqlite
+version:3.40.1
+license:public-domain
+description:SQL Database Engine in a C Library.
+cksum:8f0a73a8c5a08a90b44cd2a0b385059e6aa6c3cc9cab5314b8f5bfca83d3f7fc5a7af8e1ae3a8d2d63a3d571ed176c9f2baa83d5100d5a2e71a4099dfeb40a11
+src:sqlite-autoconf-3400100
+urls{
+https://sqlite.org/2022/$src.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+readline
+}

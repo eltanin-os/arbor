@@ -1,0 +1,18 @@
+name:py-markupsafe
+version:2.1.2
+license:bsd-3
+description:Implements a XML/HTML/XHTML Markup safe string.
+cksum:d4f744968f1322e947e3553c2c1f25b26b668aeb62fa68360b279dcf4d2a18acd91520d5483713899aa193e0b5ac953b73d8db1693985de2676bf9d35988d176
+src:MarkupSafe-$version
+urls{
+https://files.pythonhosted.org/packages/source/M/MarkupSafe/MarkupSafe-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+py-setuptools
+}
+rundeps{
+python
+}

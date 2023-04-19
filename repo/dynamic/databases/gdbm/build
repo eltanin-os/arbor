@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+if { arbor-utils-sed src/version.c -e "27d" -e "28d" -e "29d" } # date string
+export ARBOR_MK_CONFIGURE_ARGS "--enable-libgdbm-compat"
+arbor-mk-gnuconfigure install

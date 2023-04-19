@@ -1,0 +1,16 @@
+name:libxdmcp
+version:1.1.4
+license:mit
+description:X.Org X11 display manager control protocol library.
+cksum:6cf03e9be3de318b94942d3504d7ca2c3afaecd98593ada9bdc9fa8827adb8edbe853e8856a5487aad80e43a0d579aec328dd1b2023c5c1e268b6e709416c412
+src:libXdmcp-$version
+urls{
+https://www.x.org/releases/individual/lib/libXdmcp-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+xorg-proto
+}

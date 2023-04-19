@@ -1,0 +1,37 @@
+#!/bin/execlineb -P
+# XXX: not reproducible
+if {
+	backtick static {
+		importas -D "" LDFLAGS LDFLAGS
+		case -- $LDFLAGS {
+		".*-static.*" { echo }
+		}
+		echo --disable-static --enable-shared
+	}
+	multisubstitute {
+		importas -i PREFIX PREFIX
+		importas -i BINDIR BINDIR
+		importas -i DRTDIR DRTDIR
+		importas -i LIBDIR LIBDIR
+		importas -i INCDIR INCDIR
+		importas -i MANDIR MANDIR
+		importas -isu static static
+	}
+	./configure
+	    --prefix=${PREFIX}
+	    --bindir=${BINDIR}
+	    --datadir=${DRTDIR}
+	    --docdir=${DRTDIR}/doc/ffmpeg
+	    --libdir=${LIBDIR}
+	    --incdir=${INCDIR}
+	    --mandir=${MANDIR}
+	    --enable-small
+	    --enable-libvorbis
+	    --enable-libopus
+	    --enable-libtls
+	    --enable-zlib
+	    --disable-stripping
+	    $static
+
+}
+arbor-mk-gmake install

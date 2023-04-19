@@ -1,0 +1,12 @@
+name:xcb-proto
+version:1.15.2
+license:mit
+description:X.Org X11 protocol C binding protocol.
+cksum:011bef7003159f1219dc12c3c1568fe52cd706f29b1c58f19482571db4d33a19c06041791be3e7787d50257e12e5584c3ba9da80c34f91426b5b3115c9f7da82
+urls{
+https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-$version.tar.xz
+}
+hostdeps{
+python
+stdenv
+}

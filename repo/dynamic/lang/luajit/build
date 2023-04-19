@@ -1,0 +1,13 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	importas -i PREFIX PREFIX
+	importas -i BINDIR BINDIR
+	importas -i DRTDIR DRTDIR
+	importas -i INCDIR INCDIR
+	importas -i LIBDIR LIBDIR
+}
+define DPREFIX "${DESTDIR}${PREFIX}"
+export ARBOR_MK_GMAKE_FLAGS "PREFIX=${PREFIX};INSTALL_BIN=${DPREFIX}${BINDIR};INSTALL_LIB=${DPREFIX}${LIBDIR};INSTALL_SHARE=${DPREFIX}${DRTDIR};INSTALL_DEFINC=${DPREFIX}${INCDIR}/luajit-2.1"
+if { arbor-mk-gmake install }
+arbor-utils-install -l bin luajit-2.1.0-beta3 luajit

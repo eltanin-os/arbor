@@ -1,0 +1,6 @@
+#!/bin/execlineb -P
+if { arbor-mk-gnuconfigure install }
+# readline compat
+if { arbor-utils-install -l lib libedit.a libreadline.a }
+if { arbor-utils-install -l inc ../editline/readline.h readline/readline.h }
+arbor-utils-install -e inc readline/history.h readline/tilde.h

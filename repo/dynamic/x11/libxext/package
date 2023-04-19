@@ -1,0 +1,17 @@
+name:libxext
+version:1.3.5
+license:mit
+description:X11 miscellaneous extensions library.
+cksum:2f2ad40f0d9628e3ee80a67b3941efacdf9be1bede70f4bd2949441b3145faf32d93d42ea30dfee26b2a7e5c7658489e0d536d970116b1a216b0ad2e19b14d6a
+src:libXext-$version
+urls{
+https://www.x.org/releases/individual/lib/libXext-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libx11
+xorg-proto
+}
