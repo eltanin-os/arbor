@@ -29,7 +29,6 @@ ifelse -Xn { test "${ELGETOPT_o}" -eq "0" } {
 	define PKGDIR "${ARBOR}/populate/${name}"
 	if -t { test -d "${PKGDIR}" }
 	if {
-		cd repo/disk
 		if { cp ${PKGDIR}/chksum . }
 		arbor-priv-pkgexplode ${PKGDIR}/database
 	}
@@ -52,4 +51,4 @@ backtick path {
 	arbor-priv-printpkgdep $package
 }
 importas -iu path path
-redo $path
+redo-ifchange $path
