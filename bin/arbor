@@ -1,11 +1,11 @@
 #!/bin/execlineb
 elgetopt "ac:bo:p"
 multisubstitute {
-	importas -uD "0" ELGETOPT_a ELGETOPT_a
-	importas -uD "../../cache" ELGETOPT_c ELGETOPT_c
-	importas -uD "0" ELGETOPT_b ELGETOPT_b
-	importas -uD "0" ELGETOPT_o ELGETOPT_o
-	importas -uD "0" ELGETOPT_p ELGETOPT_p
+	importas -D "0" ELGETOPT_a ELGETOPT_a
+	importas -D "../../cache" ELGETOPT_c ELGETOPT_c
+	importas -D "0" ELGETOPT_b ELGETOPT_b
+	importas -D "0" ELGETOPT_o ELGETOPT_o
+	importas -D "0" ELGETOPT_p ELGETOPT_p
 	importas -i ARBOR ARBOR
 	importas -i PATH PATH
 }
@@ -51,4 +51,4 @@ backtick path {
 	arbor-priv-printpkgdep $package
 }
 importas -iu path path
-redo-ifchange $path
+redo $path
