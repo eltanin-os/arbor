@@ -30,20 +30,7 @@ if {
 	if { curl -LO http://ellcc.org/releases/latest/${file} }
 	pipeline { bzcat $file } tar -xf -
 }
-# deps
-foreground {
-	forx -E pkg { pkgconf yacc lex slibtool }
-	if -t {
-		importas -isd ":" P PATH
-		forx -Ex 1 path { $P }
-		test ! -f ${path}/${pkg}
-	}
-	if { arbor -b $pkg }
-	backtick -Ex path { arbor-priv-printpkgdep $pkg }
-	cd $tmpdir
-	arbor-priv-pkgexplode ${ARBOR}/${path}
-}
-# bootstrap
+# bootstrap config
 if {
 	if { cp config/defaults config/defaults.backup }
 	arbor-utils-sed config/defaults
@@ -56,6 +43,20 @@ if {
 	    -e "s;^LDFLAGS=.*;LDFLAGS=-static;"
 	    -e "s;^RANLIB=.*;RANLIB=ecc-ranlib;"
 	    -e "s;^STRIP=.*;STRIP=ecc-strip;"
+}
+# deps
+foreground {
+	forx -E pkg { pkgconf yacc lex slibtool }
+	if -t {
+		importas -isd ":" P PATH
+		forx -Ex 1 path { $P }
+		test ! -f ${path}/${pkg}
+	}
+	if { arbor -b $pkg }
+	backtick -Ex path { arbor-priv-printpkgdep $pkg }
+	envfile ${ARBOR}/config/defaults
+	cd $tmpdir
+	arbor-priv-pkgexplode ${ARBOR}/${path}
 }
 # first stage
 if { arbor -b stdenv }
