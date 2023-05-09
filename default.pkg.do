@@ -75,7 +75,7 @@ foreground {
 		foreground { arbor-utils-msg "deps..." }
 		foreground { arbor-priv-pkgexplode ${ARBOR}/${deps} }
 		foreground { arbor-utils-msg "build..." }
-		foreground { arbor-priv-sandboxbuild }
+		foreground { arbor-priv-build }
 		ifelse -Xn { importas -iu ? ? test "${?}" -eq "0" } { arbor-utils-err "failed to build" }
 		cd tmp/output
 		arbor-priv-postbuild
