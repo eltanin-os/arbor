@@ -1,11 +1,10 @@
 name:dhcpcd
-version:9.5.0
+version:10.0.1
 license:bsd-2
 description:RFC2131 compliant DHCP client daemon.
-cksum:f63372f2740ed7220556c44a936333387004535ef2ff8d7168c3b23b6f4a28739aee44283956717fc3643e491984d748566528089f177d1ba5fa770fa36b076e
-src:$name-$name-$version
+cksum:90e8618d2b48bbc47136eede0c238d25be3389676706a3b4f336bc23c1c7d382d868c815c8ded81a1886c887e8b1dc934cedc9a6a2e743b8f1c1aed0f908c482
 urls{
-https://github.com/NetworkConfiguration/dhcpcd/archive/refs/tags/dhcpcd-$version.tar.gz
+https://github.com/NetworkConfiguration/dhcpcd/releases/download/v$version/dhcpcd-$version.tar.xz
 }
 hostdeps{
 stdenv
