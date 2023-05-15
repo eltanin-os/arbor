@@ -1,4 +1,5 @@
 #!/bin/execlineb -P
-export ARBOR_MK_CONFIGURE_ARGS "--with-bearssl"
+importas -i ETCDIR ETCDIR
+export ARBOR_MK_CONFIGURE_ARGS "--with-ca-bundle=${ETCDIR}/ssl/certs/ca-certificates.crt;--with-bearssl"
 if { arbor-mk-gnuconfigure install }
 arbor-utils-install -d bin curl-config
