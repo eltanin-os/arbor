@@ -35,7 +35,6 @@ if {
 	if { cp config/defaults config/defaults.backup }
 	arbor-utils-sed config/defaults
 	    -e "s;^ARBOR_AR=.*;ARBOR_AR=ecc-ar;"
-	    -e "s;ARBOR_SANDBOX=.*;ARBOR_SANDBOX=pseudosandbox;"
 	    -e "s;^AS=.*;AS=ecc-as;"
 	    -e "s;^CC=.*;CC=ecc;"
 	    -e "s;^CXX=.*;CXX=ecc++;"
