@@ -1,0 +1,14 @@
+name:xkeyboard-config
+version:2.38
+license:mit
+description:X keyboard configuration files.
+cksum:b6b3c16d1376970cfcd2e0eca4cbbe30acbc00d4cf16dafe61d84872b3fc58207f9913e20e852a88cfc64d1864ff7ea19a99cd66516af2111815b561c1f70941
+src:xkeyboard-config-xkeyboard-config-$version
+urls{
+https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/archive/xkeyboard-config-$version/xkeyboard-config-xkeyboard-config-$version.tar.bz2
+}
+hostdeps{
+meson
+perl
+stdenv
+}
