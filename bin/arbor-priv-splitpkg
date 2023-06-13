@@ -1,5 +1,14 @@
 #!/bin/execlineb -S1
-backtick -Ex tmpdir { arbor-priv-mktempdir }
+backtick files { mktemp }
+backtick devfiles { mktemp }
+backtick dynfiles { mktemp }
+backtick tmpdir { arbor-priv-mktempdir }
+multisubstitute {
+	importas -iu files files
+	importas -iu devfiles devfiles
+	importas -iu dynfiles dynfiles
+	importas -iu tmpdir tmpdir
+}
 foreground {
 	getcwd -E pwd
 	cd $tmpdir
@@ -8,33 +17,36 @@ foreground {
 		importas -i LIBDIR LIBDIR
 		if -t { test -d "./${LIBDIR}" }
 		if {
-			redirfd -a 1 arbor.dyn.files
-			find ./${LIBDIR} -name "*.so" ! -type d
+			redirfd -a 1 $dynfiles
+			find ./${LIBDIR} -name "*.so*" ! -type d
 		}
-		redirfd -a 1 arbor.dev.files
-		find ./${LIBDIR} ! -name ".so" ! -type d
+		redirfd -a 1 $devfiles
+		find ./${LIBDIR} ! -name "*.so*" ! -type d
 	}
 	if {
 		importas -i INCDIR INCDIR
 		if -t { test -d "./${INCDIR}" }
-		redirfd -a 1 arbor.dev.files
+		redirfd -a 1 $devfiles
 		find ./${INCDIR} ! -type d
 	}
 	if {
 		importas -i DRTDIR DRTDIR
+		redirfd -a 1 $devfiles
 		if {
 			if -t { test -d "./${DRTDIR}/aclocal" }
-			redirfd -a 1 arbor.dev.files
 			find ./${DRTDIR}/aclocal ! -type d
 		}
+		if {
+			if -t { test -d "./${DRTDIR}/pkgconfig" }
+			find ./${DRTDIR}/pkgconfig ! -type d
+		}
 		if -t { test -d "./${DRTDIR}/xcb" }
-		redirfd -a 1 arbor.dev.files
 		find ./${DRTDIR}/xcb ! -type d
 	}
 	if {
 		importas -i MANDIR MANDIR
 		if -t { test -d "./${MANDIR}" }
-		redirfd -a 1 arbor.dev.files
+		redirfd -a 1 $devfiles
 		find ./${MANDIR} \( -name "*.2" -o -name "*.3" \) ! -type d
 	}
 	multisubstitute {
@@ -44,44 +56,59 @@ foreground {
 		importas -i version version
 	}
 	if {
-		if -t { test -e "arbor.dev.files" }
+		if -t { test -s "${devfiles}" }
 		if {
 			pipeline {
-				redirfd -r 0 arbor.dev.files
+				redirfd -r 0 $devfiles
 				$ARCHIVE
 			}
 			redirfd -w 1 ${pwd}/${name}-dev#${version}.pkg
 			$DEFLATE
 		}
-		if { echo "${name}-dev#${version}.pkg" }
-		redirfd -r 0 arbor.dev.files
-		xargs rm -f
+		if {
+			if { echo "${name}-dev" }
+			redirfd -r 0 $devfiles
+			xargs rm -f
+		}
+		rm $devfiles
 	}
 	if {
-		if -t { test -e "arbor.dyn.files" }
+		if -t { test -s "${dynfiles}" }
 		if {
 			pipeline {
-				redirfd -r 0 arbor.dyn.files
+				redirfd -r 0 $dynfiles
 				$ARCHIVE
 			}
 			redirfd -w 1 ${pwd}/${name}-dyn#${version}.pkg
 			$DEFLATE
 		}
-		if { echo "${name}-dyn#${version}.pkg" }
-		redirfd -r 0 arbor.dev.files
-		xargs rm -f
+		if {
+			if { echo "${name}-dyn" }
+			redirfd -r 0 $dynfiles
+			xargs rm -f
+		}
+		rm $dynfiles
 	}
 	if {
-		pipeline {
-			pipeline { find . ! -type d }
-			$ARCHIVE
+		if {
+			redirfd -w 1 $files
+			find . ! -type d
 		}
-		redirfd -w 1 ${pwd}/${name}#${version}.pkg
-		$DEFLATE
+		if -t { test -s "${files}" }
+		if {
+			pipeline {
+				redirfd -r 0 ${files}
+				$ARCHIVE
+			}
+			redirfd -w 1 ${pwd}/${name}#${version}.pkg
+			$DEFLATE
+		}
+		rm $files
 	}
 	if -t { test -e "${pwd}/${name}#${version}.pkg" }
-	echo "${name}#${version}.pkg"
+	echo "${name}"
 }
 importas -iu status ?
+foreground { rm -f $files $devfiles $dynfiles }
 foreground { arbor-priv-freetempdir $tmpdir }
 exit $status
