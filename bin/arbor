@@ -4,7 +4,7 @@ multisubstitute {
 	importas -D "0" ELGETOPT_a ELGETOPT_a
 	importas -D "../../cache" ELGETOPT_c ELGETOPT_c
 	importas -D "0" ELGETOPT_b ELGETOPT_b
-	importas -D "0" ELGETOPT_o ELGETOPT_o
+	importas -D "" ELGETOPT_o ELGETOPT_o
 	importas -D "0" ELGETOPT_p ELGETOPT_p
 	importas -i ARBOR ARBOR
 	importas -i PATH PATH
@@ -13,33 +13,44 @@ elgetpositionals
 emptyenv -Po
 backtick ARBOR_HOSTARCH { uname -m }
 backtick ARBOR_HOSTOS { pipeline { uname -s } awk "{print tolower($0)}" }
-export ARBOR_BOOTSTRAPMODE "${ELGETOPT_b}"
 export PATH "${ARBOR}/bin:${PATH}"
 cd $ARBOR
 envfile "config/defaults"
+# set sandbox mode
+importas -iu ARBOR_SANDBOX ARBOR_SANDBOX
+backtick ARBOR_SANDBOX {
+	ifelse -Xn { test "${ELGETOPT_b}" -eq "0" } {
+		echo "pseudosandbox"
+	}
+	echo "${ARBOR_SANDBOX}"
+}
+export ARBOR_BOOTSTRAPMODE "${ELGETOPT_b}"
+# getopts
 ifelse -Xn { test "${ELGETOPT_a}" -eq "0" } {
 	redo all
 }
-ifelse -Xn { test "${ELGETOPT_o}" -eq "0" } {
-	if { test -d "${ELGETOPT_o}" }
+ifelse -Xn { test -z "${ELGETOPT_o}" } {
 	elglob repositories "./repo/*"
+	if { mkdir -p $ELGETOPT_o }
 	cd $ELGETOPT_o
 	forx -E repo { $repositories }
 	backtick -Ex name { basename $repo }
 	define PKGDIR "${ARBOR}/populate/${name}"
-	if -t { test -d "${PKGDIR}" }
+	if -t { test -f "${PKGDIR}/chksum" }
 	if {
-		if { cp ${PKGDIR}/chksum . }
+		if {
+			redirfd -a 1 chksum
+			cat ${PKGDIR}/chksum
+		}
 		arbor-priv-pkgexplode ${PKGDIR}/database
 	}
+	if { mkdir -p $ELGETOPT_c }
 	cd $ELGETOPT_c
 	find ${PKGDIR} -name "*.pkg" -exec
 	    define pkg "{}"
-	    backtick -Ex chksum {
-	    	backtick -Ex file { basename $pkg }
-	    	venus-conf ${file} ${PKGDIR}/chksum
-	    }
-	    cp $pkg ./${chksum}.${pkg}
+	    backtick -Ex file { basename $pkg }
+	    backtick -Ex chksum { venus-conf ${file} ${PKGDIR}/chksum }
+	    cp $pkg ./${chksum}.${file}
 	    ;
 }
 ifelse -Xn { test "${ELGETOPT_p}" -eq "0" } {
