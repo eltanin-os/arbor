@@ -1,5 +1,4 @@
 #!/bin/execlineb -P
-# XXX: not reproducible
 if {
 	backtick static {
 		importas -D "" LDFLAGS LDFLAGS
