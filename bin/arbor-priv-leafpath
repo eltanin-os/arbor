@@ -1,8 +1,11 @@
 #!/bin/execlineb -S1
 importas -i ARBOR ARBOR
 cd $ARBOR
-if { redo-ifchange repo/packages.cdb }
-backtick -ED "" path { arbor-priv-cdbquery $1 repo/packages.cdb }
+if {
+	fdclose 2
+	redo repo/packages.cdb
+}
+backtick -xED "" path { arbor-priv-cdbquery $1 repo/packages.cdb }
 ifelse -Xn { test -n $path } { arbor-utils-err "package ${1} not found" }
 pipeline {
 	cd $path
