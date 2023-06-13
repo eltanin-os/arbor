@@ -16,7 +16,9 @@ foreground {
 	if { mount -o ro,bind /sys sys }
 	if { mount -o ro,bind /proc proc }
 	if { mount -o rw,bind $ARBOR_TMPTARGETDIR tmp/output }
-	chroot . /tmp/build
+	if { chroot . /tmp/build }
+	cd tmp/output
+	arbor-priv-postbuild
 }
 importas -iu status ?
 foreground { $DOAS umount dev sys proc tmp/output }

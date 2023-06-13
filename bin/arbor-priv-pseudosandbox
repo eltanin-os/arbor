@@ -8,4 +8,6 @@ export ARBOR_ROOTDIR "${ARBOR_TMPSYSTEMDIR}"
 cd $ARBOR_TMPSYSTEMDIR
 if { mkdir -p tmp }
 if { ln -s $ARBOR_TMPTARGETDIR tmp/output }
-./tmp/build
+if { ./tmp/build }
+cd tmp/output
+arbor-priv-postbuild

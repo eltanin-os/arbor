@@ -76,9 +76,8 @@ foreground {
 		foreground { arbor-priv-pkgexplode ${ARBOR}/${deps} }
 		foreground { arbor-utils-msg "build..." }
 		foreground { arbor-priv-build }
-		ifelse -Xn { importas -iu ? ? test "${?}" -eq "0" } { arbor-utils-err "failed to build" }
-		cd tmp/output
-		arbor-priv-postbuild
+		if -Xn { importas -iu ? ? test "${?}" -eq "0" }
+		arbor-utils-err "failed to build"
 	}
 	foreground { arbor-utils-msg "package..." }
 	foreground { arbor-priv-pkgcreate $3 $ARBOR_TMPTARGETDIR }
