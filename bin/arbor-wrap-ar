@@ -1,5 +1,9 @@
 #!/bin/execlineb -s1
 case -- $1 {
+"--version" {
+	importas -i ARBOR_AR ARBOR_AR
+	$ARBOR_AR $1
+}
 "-.*" { exec arbor-bin-ar $1 $@ }
 }
 exec arbor-bin-ar -"${1}" $@
