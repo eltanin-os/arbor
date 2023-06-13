@@ -1,0 +1,33 @@
+#!/bin/execlineb -P
+if {
+	if { ln -s gmake /bin/make }
+	export BUILD_BZIP2 "0"
+	export BUILD_ZLIB "False"
+	export PERL_HASH_SEED "0"
+	if {
+		importas -i SOURCE_DATE_EPOCH SOURCE_DATE_EPOCH
+		heredoc 0
+"
+myhostname=\"arbor\"
+cf_by=\"arbor\"
+cf_email=\"maintainer@eltaninos.org\"
+cf_time=\"${SOURCE_DATE_EPOCH}\"
+"
+		redirfd -w 1 config.over
+		cat
+	}
+	multisubstitute {
+		importas -i PREFIX PREFIX
+		importas -i MANDIR MANDIR
+	}
+	./Configure -des
+	    -Dprefix="${PREFIX}"
+	    -Dman1dir="${MANDIR}/man1"
+	    -Dman3dir="${MANDIR}/man3"
+	    -Dman1ext="1"
+	    -Dman3ext="3pm"
+	    -Duseshrplib
+	    -Dusethreads
+}
+if { arbor-mk-gmake }
+arbor-mk-gmake install.perl
