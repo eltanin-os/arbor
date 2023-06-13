@@ -2,5 +2,9 @@
 importas -i ARBOR ARBOR
 cd $ARBOR
 backtick deps { arbor-priv-printpkgdeps $1 }
+if -t {
+	importas -i deps deps
+	test -n "${deps}"
+}
 importas -isu deps deps
 redo-ifchange $deps
