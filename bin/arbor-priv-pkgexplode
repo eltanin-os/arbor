@@ -1,7 +1,11 @@
 #!/bin/execlineb -s0
-multisubstitute {
-	importas -is INFLATE INFLATE
-	importas -is UNARCHIVE UNARCHIVE
+if {
+	multisubstitute {
+		importas -is INFLATE INFLATE
+		importas -is UNARCHIVE UNARCHIVE
+	}
+	forx -Eo 0 package { $@ }
+	pipeline { $INFLATE $package } $UNARCHIVE
 }
-forx -Eo 0 package { $@ }
-pipeline { $INFLATE $package } $UNARCHIVE
+importas -i ARBOR ARBOR
+find . -type f -exec touch -r ${ARBOR}/default.pkg.do {} +
