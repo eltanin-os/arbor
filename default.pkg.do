@@ -76,7 +76,7 @@ foreground {
 		foreground { arbor-priv-pkgexplode ${ARBOR}/${deps} }
 		foreground { arbor-utils-msg "build..." }
 		foreground { arbor-priv-build }
-		if -Xn { importas -iu ? ? test "${?}" -eq "0" }
+		if -Xnt { importas -iu ? ? test "${?}" -eq "0" }
 		arbor-utils-err "failed to build"
 	}
 	foreground { arbor-utils-msg "package..." }
