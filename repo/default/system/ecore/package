@@ -1,8 +1,8 @@
 name:ecore
-version:20230313182600
+version:20230624202514
 license:unlicense
 description:Eltanin core utilities.
-cksum:b76179c20d89880883f44b279fe8557b15ab034b4eac39a4874ffc9d414f1b06a5a0f9f0402b4743cad89b6df842385d04385ca9be68d8ee94247ee29956e720
+cksum:ee4cd43c77d8dcb946eaeb0dc53464a0708bc6240d5d35ba689d569051557fb61fcec34b1642f259bf9b50a36dcad7f20d64428605febee5e4c0547f1e4a7fc1
 urls{
 http://downloads.eltaninos.org/sources/ecore/ecore-$version.tar.lz
 }
