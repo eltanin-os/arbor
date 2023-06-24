@@ -26,26 +26,24 @@ if {
 	if { mkdir -p .${DRTDIR} }
 	mv .${LIBDIR}/pkgconfig .${DRTDIR}
 }
-if {
-	# compress manpages
-	if -t { test -d ".${MANDIR}" }
-	cd .${MANDIR}
-	foreground { find . -type f -name "*.[1-8]" -exec $DDEFLATE "{}" + }
-	# fix symbolic links
-	find . -type l -exec
-	    define slink "{}"
-	    backtick -Ex path { readlink $slink }
-	    backtick dir { dirname $slink }
-	    backtick file { basename $slink }
-	    backtick name { basename $path }
-	    multisubstitute {
-	    	importas -iu dir dir
-	    	importas -iu file file
-	    	importas -iu name name
-	    }
-	    cd $dir
-	    ifelse { test -f ${name}.gz }
-	    { ln -sf ${name}.gz $file }
-	    ln -sf $name $file
-	    ;
-}
+# compress manpages
+if -t { test -d ".${MANDIR}" }
+cd .${MANDIR}
+foreground { find . -type f -name "*.[1-8]" -exec $DDEFLATE "{}" + }
+# fix symbolic links
+find . -type l -exec
+    define symlink "{}"
+    backtick -Ex path { readlink $symlink }
+    backtick dir { dirname $symlink }
+    backtick file { basename $symlink }
+    backtick name { basename $path }
+    multisubstitute {
+    	importas -iu dir dir
+    	importas -iu file file
+    	importas -iu name name
+    }
+    cd $dir
+    ifelse { test -f ${name}.gz }
+    { ln -sf ${name}.gz $file }
+    ln -sf $name $file
+    ;
