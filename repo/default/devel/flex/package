@@ -2,7 +2,7 @@ name:flex
 version:2.6.4
 license:bsd-2,lgpl-2
 description:A tool for generating text-scanning programs.
-cksum:66dbb3ebf32afb0f661338d7ce2c51172d7bc783215b2579a16a4780c619ff5b35b1a52760c74d3ac9bf6bc6d61a4afdad59fbc14e9570cac018e4c1ffb85854
+cksum:ab36d31515137de367e320f621a045d4d2166c026b01fc6036dee14e50b86b47f03823b41c0e198caf892a96a6e3ee6f08093dddcf6610d9ce1c71685ea54e8d
 urls{
 https://github.com/westes/flex/releases/download/v$version/flex-$version.tar.lz
 }

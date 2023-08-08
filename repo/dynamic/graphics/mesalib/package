@@ -2,7 +2,7 @@ name:mesalib
 version:21.3.9
 license:mit,sgi-b-2.0,bsl-1.0
 description:Mesa DRI OpenGL library.
-cksum:1f817c63d7f1259505d773df3b04c9929b74c6892a83f66c8652ea1c5419f79834d9e548941da6c178eda3e9f6dfd42424734de8e7cbce41d5e542bad052ae52
+cksum:1d7d94979354bcef87d1732830bb2ce4110bcb39bc6d60bba107e029838605ddc090540d7a465c8af6ee9b13dbffc82134244a0e9fa78222dc76d9999883ad1f
 src:mesa-$version
 urls{
 https://mesa.freedesktop.org/archive/mesa-$version.tar.xz

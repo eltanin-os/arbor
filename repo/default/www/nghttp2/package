@@ -2,7 +2,7 @@ name:nghttp2
 version:1.52.0
 license:mit
 description:An implementation of HTTP/2 in C.
-cksum:e422d4e2e4db7f8ab28343db71758a3f7e62a9fd74f835e79e05f9e46ba757e9d7bb9f4a098485b24dca14cb030781a98301c4a469fff6579f4da7b1f231b957
+cksum:da7bec6450329d80ad17408083db772703631ef708018f1030039880672f813a84af69a41cceac15632bbf6dffbc68a156438fd67634ad514ec154886ebb6ab8
 urls{
 https://github.com/nghttp2/nghttp2/releases/download/v$version/nghttp2-$version.tar.xz
 }

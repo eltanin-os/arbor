@@ -2,7 +2,7 @@ name:libxshmfence
 version:1.3.2
 license:mit
 description:X11 shared memory fences.
-cksum:53520db9569e43a4e257e6e15a3701081e8673ed4508ae713d9b78e96f8374ec3c1aeb0ccc2c91d93817c7cb708e727f2fa516ef62e9bda47b8490f42fead2d6
+cksum:f57f48fda6cd3b46cbec0f189177c9f2a125b915ebbb7abe97629e346db3166748e27188c949dad1bea42bfdd334b2a4ac6cd24ef395f5b967e08ae72d8a136b
 urls{
 https://www.x.org/releases/individual/lib/libxshmfence-$version.tar.xz
 }

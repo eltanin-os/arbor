@@ -2,7 +2,7 @@ name:xcb-util-wm
 version:0.4.2
 license:mit
 description:Client and window-manager helpers for ICCCM and EWMH.
-cksum:44f55ded5069ab03c6c1aa7b95fb859deb4cb24251ffc7bc37a67b9f3fdf4e2d1653ad9d14ffd5e4807eb28f55786b82adbb7cd970b8d005d4a89be9c9b348a9
+cksum:e89650403be2d5e3bb2293f6bebecc2f0c509f0310737d385b445af65c49dc835b34e50dfd3f8ac82ffcb4ec9e6d92b3e46a700d474fb885ef012c1120098476
 urls{
 https://xcb.freedesktop.org/dist/xcb-util-wm-$version.tar.xz
 }

@@ -2,7 +2,7 @@ name:libxxf86vm
 version:1.1.5
 license:
 description:X11 XFree86 video mode extension library.
-cksum:7111c9d0f9adff26e4e1a98a84fff50ec267a26b2f12004b127965107444cbb03a832e38563f1ccc9e9200b2499a4a1c08d73ee18685f9909944964bc1a3ea30
+cksum:04331d261ede127ced6ee9337ef6e024abf6f2baf903decf89872167f177700eef00c62edb01f104711cf35e1330fa5be1f2efd1b9d74536a535951c2bb17388
 src:libXxf86vm-$version
 urls{
 https://www.x.org/releases/individual/lib/libXxf86vm-$version.tar.xz

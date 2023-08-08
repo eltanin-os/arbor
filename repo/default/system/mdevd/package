@@ -2,7 +2,7 @@ name:mdevd
 version:0.1.6.2
 license:isc
 description:A mdev-compatible hotplug manager daemon.
-cksum:bc56ee3b074ac259994014b2669aeaaa696742b64e54cd9811ec7096a7b7f5294eb2d47aecf690eaf366f067f6223f6694f857f0f01fa24dd0f79524502110fa
+cksum:272c88c0dedd8a330e64d1b4f5897a25e7e445c212a77c6348cabbeb0c02dab6afecf640ac3bd24663871b2cdfbb02ac5429f0fe0c0dc47d6e11328cf289a616
 urls{
 https://skarnet.org/software/mdevd/mdevd-$version.tar.gz
 }

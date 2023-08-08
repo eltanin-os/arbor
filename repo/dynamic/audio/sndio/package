@@ -2,7 +2,7 @@ name:sndio
 version:1.9.0
 license:isc
 description:A small audio and MIDI framework.
-cksum:be28422382d4db3bb06ca85a8057055d1517660b6c2380aee8e4c8fe184924ef2deb06056003bc9cd33015d53c31ab72a1b94579757873b404d2ca3b9f097cdc
+cksum:3efd59591aac29a3c0efc49aaa57f3860c20117e5e915dfdaa4275e3136b89731c08c55c29924a2ddf994eaef726d5684d209d5957d26eb49eb2e5752439e2fa
 urls{
 https://sndio.org/sndio-$version.tar.gz
 }

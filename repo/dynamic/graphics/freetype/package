@@ -2,7 +2,7 @@ name:freetype
 version:2.12.1
 license:ftl,gpl-2+
 description:TrueType font rendering library.
-cksum:0421c2edbffcb77c1590821c275353c95588b88bdc43c0032ab52adf5e04c3dd8faf79611bf60a7287ac6ba427cfef616abf350b3c7d7cbe3ec8caff5cd352aa
+cksum:3b635eebfd29d461383ff7bf12de01ad69e27caa988c8863190cb41d0e5b9a31f60b05575d86bfdb7464bcdf086d45e70f35149bf9ee84c698721d9af549d7bb
 urls{
 http://download.savannah.gnu.org/releases/freetype/freetype-$version.tar.xz
 }

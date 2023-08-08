@@ -2,7 +2,7 @@ name:libedit
 version:20221030-3.1
 license:bsd-3
 description:NetBSD command line editor library.
-cksum:9fff579c6d55694bc517a49fe6c2fc02ec526a517d15e1c21c5a820402d5c9453ea386c6d61a4e71c6adc56964e17f006a46b24275e75b4d05869871393d515e
+cksum:91c6fc3c3c916c717e59c3bec5bccec27f9a2f1e965bd3585214271d86ee8b34441d978d66c185e6f494c491b6540b897a15f59b0a7e5fa103b3ada5b843bf8f
 urls{
 http://thrysoee.dk/editline/libedit-$version.tar.gz
 }

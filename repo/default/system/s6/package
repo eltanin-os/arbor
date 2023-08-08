@@ -2,7 +2,7 @@ name:s6
 version:2.11.3.2
 license:isc
 description:skarnet.org's small & secure supervision software suite.
-cksum:07573324563cee370f81192afcf54d5a207f6de656e198e4a556d9bb6ccf01900748b3fb6652807ac7f2ee5b849497116a83486f6e1205a1a05a57178cdb0666
+cksum:3f7344e9fe1af5dda4a644ec1ee676834cde7c9d4903c23ac7b887214cf4e09ee0205ece3abb5f8d71ef0def76169a0cd355890e7a948c0612f990052cf22a6b
 urls{
 https://skarnet.org/software/s6/s6-$version.tar.gz
 }

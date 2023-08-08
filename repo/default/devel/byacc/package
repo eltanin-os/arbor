@@ -2,7 +2,7 @@ name:byacc
 version:20220128
 license:public-domain
 description:The Berkeley Yacc general-purpose parser generator.
-cksum:6687d42cda2fbce4841e1d537cce13a2d160c225ac535cee0da35912ab9738829b512ff8cfd842277fb42b36895853071b2061d04af7db4eb8f54005806eabfd
+cksum:3d80b01367762e0f80d515e959727e9de1f7a6f9461e801a3530326021ed1cef0db8918aa5bc314fb27da8c3d1b06a77bed6dc688988a9ce3db0a69a7f194da9
 urls{
 https://invisible-mirror.net/archives/byacc/byacc-$version.tgz
 }

@@ -2,7 +2,7 @@ name:wayland-protocols
 version:1.31
 license:mit
 description:Protocols and extensions complementing the Wayland core protocol
-cksum:1b050203b14952d003df04417a2a0196e907acfb7e694267902f5751be327337637f3ebabbe311a22a646648b06f598cd4e06f8c8bf68f70e3b625e3aa9601b0
+cksum:cec7a49909e5e6030241ce90ec388115ab4a2d677824cb0dd0ff88d14cad171bb2f17ee738198fb6155de5b6e3db7d0349d1e4a52e33873a80fe25d4f550ce11
 urls{
 https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$version/downloads/wayland-protocols-$version.tar.xz
 }

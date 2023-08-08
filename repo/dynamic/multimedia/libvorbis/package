@@ -2,7 +2,7 @@ name:libvorbis
 version:1.3.7
 license:bsd-3
 description:Reference implementation of the Ogg Vorbis audio format.
-cksum:914402029c70d29984f692ac58a7b8b8ae5366b4d61466b37e86666cf124ecdc8aa77e2ea1c965e4465e9eae9769ab5cfd066594818c6296841e91fbc62d6614
+cksum:278a99892587990ae3dc409eee139032338a52987f24cc6829e0e6c1e3889d2acfa9feb011b23d614e9395da4e0198658a1e342c64e20fb1ef5e35440e4ee849
 urls{
 https://downloads.xiph.org/releases/vorbis/libvorbis-$version.tar.xz
 }

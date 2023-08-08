@@ -2,7 +2,7 @@ name:wpa-supplicant
 version:2.9
 license:bsd-3
 description:A WPA supplicant implementation.
-cksum:bb8160920f11e743e5069a851cd8385747aa600d0be08af44aeb226794493ad56026618ecc04d63df231ac7c59fe83bdaedb7a8bd41a995127cd5b374d9d54bc
+cksum:8db2b3e7037d5064a2e89c9a2ac2b19c1129ec3a97d715a7ce587b355b65db1f3da199d79c2a782aaf070a79b703dff956a49cb83ea07e3eb4e6fbdc44e25f9b
 src:wpa_supplicant-$version
 platforms{
 linux

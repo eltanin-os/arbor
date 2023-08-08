@@ -2,7 +2,7 @@ name:lame
 version:3.100
 license:lgpl-2.0+
 description:An MP3 encoder and graphical frame analyzer.
-cksum:6e940e2995dec8d1f6b73b87fc5441f9d85bdccfb3faf670ca06f9001ce752e9efbad17dc8fb5641e0e14e4e27aa2ff33f4c2c9df2fafd5e522ca0894e4c8efb
+cksum:0f0378a12d3cc381b80a82ec6b2164ebcde927001297363a482d3a033b11bedd42a7cc02c71a5caa2741de86a6fefdb66bc88eddabe711548a7cb2954857be82
 urls{
 https://downloads.sourceforge.net/project/lame/lame/$version/lame-$version.tar.gz
 }

@@ -2,7 +2,7 @@ name:libopus
 version:1.3.1
 license:bsd-3
 description:Totally open, royalty-free, highly versatile audio codec.
-cksum:2cf62559d2be252040249e5893154f2837cabcda5e1d9cf3d5e4cc02bafe14a954c4205f8b9907540f5f8001324d627ec7e165c20cb0de0822ab48966488692e
+cksum:f2aa2913e334d159eb7da49e90740a800ca637a99fb151fa3dfefbd264b18454dcb72a601b053ac08e6ba97f77224fda8a9f3f6011ab65ebc9c94f1db10a0269
 src:opus-$version
 urls{
 https://archive.mozilla.org/pub/opus/opus-$version.tar.gz

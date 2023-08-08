@@ -2,7 +2,7 @@ name:util-macros
 version:1.19.3
 license:mit
 description:
-cksum:9f6e56bda2e0352160752759005402589127d7d8b2c4dbcc9231cb0a10199a85d2393355f2bad1794bb907265d633d7163c2e8d834b6638c32a160bd553dfc69
+cksum:008966f065cd1cbfae89d5bbabd05b9976dbd50111810b650997003cb188c67b9f4a0b46a5c39732e50d635dd36509c1059c682aeccce81f02f71fa968dd20e6
 urls{
 https://www.x.org/releases/individual/util/util-macros-$version.tar.bz2
 }

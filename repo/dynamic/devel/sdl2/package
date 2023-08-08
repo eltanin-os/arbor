@@ -2,7 +2,7 @@ name:sdl2
 version:2.26.2
 license:zlib
 description:Simple DirectMedia Layer (version 2).
-cksum:fbad32640b7bc1bff6e99b30418d5caafd64f3290a09742ee16e46464b708ec609b19c9bd55817a5ef82443c10824e3d511d2c5632093a9ba755e92073f77c99
+cksum:3102cb142e9d53ee5e8e1457127399bdcf4bec532ea6826fbec971c6cdd9ef367acc597beeb154b5172816d3d22ce3ee57264b39e9444870ce737bfd6e6666e5
 src:SDL2-$version
 urls{
 https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-$version.tar.gz

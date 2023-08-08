@@ -2,7 +2,7 @@
 name:muslcc
 version:20211123
 description:Static cross- and native- musl-based toolchain.
-cksum:bfc20f075b0757c8d8730ce1dbed40f3873f38f6a60d78c05571ad49ac2ac304f5dd68719b368cda8d5066f8c7d89f1d2741a59c0fe1239def3f990935436143
+cksum:b9162fe9d053b83d7d74257d7d36eb6ab3c33ccbf1020ab7a92acb61896da92e9dbcc8d13e5a01ba90600be2b7d5d133fddceff2988bc011d0d50d88ceef38d5
 arch{
 x86_64
 }

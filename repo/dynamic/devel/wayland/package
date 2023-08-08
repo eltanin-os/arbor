@@ -2,7 +2,7 @@ name:wayland
 version:1.21.0
 license:mit
 description:A display server protocol.
-cksum:df72e5f67c994e4b90a6ebf45735f06a27b1906001328e0866b838128c49de582e78fdc1b9e1d18df511772de2bf956846cb80e891bbafe8146ed8a131e8123c
+cksum:42accc68dd0b62beccee6d5294493211ec6e30e57c5499d510dbc56260dde5765a5b05ab092fddd4a59806a5d496ba430b52c0fb6c98acabe4572ec7c5bc0795
 urls{
 https://gitlab.freedesktop.org/wayland/wayland/-/releases/$version/downloads/wayland-$version.tar.xz
 }

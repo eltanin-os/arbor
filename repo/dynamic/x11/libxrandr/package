@@ -2,7 +2,7 @@ name:libxrandr
 version:1.5.3
 license:mit
 description:X11 RandR extension library.
-cksum:b8cf2122128b34eb0db12923c14d54611b42d026df7a865ef14b12278f0ac9106be9e078db446d42395952e393a4fa1492983037924e7a2f2c09c2c1925b223a
+cksum:d927e7792aaff6b323e00c28fab958dfa832ec2cf1abc67e1ffd19b741cd2ad38dd97757bbe0a7bd3882ac677f014e1a62bb31004e6942a7de34125a5db8d9e0
 src:libXrandr-$version
 urls{
 https://www.x.org/releases/individual/lib/libXrandr-$version.tar.xz

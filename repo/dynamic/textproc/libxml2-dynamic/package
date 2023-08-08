@@ -2,7 +2,7 @@ name:libxml2-dynamic
 version:2.10.3
 license:mit
 description:XML parser library from GNOME.
-cksum:4c91020bbebc2a6a6291c291e148920e85c3e903404a28bbd8c497f8dedd845112375a10db08a8a322172b759ab5fd80534d52e2ecdb3e0742e15ad598232952
+cksum:e0e86bc1bbef238097d364c86317f8e7b71cf27b94051f31594acd4255cd07969adf26139fbbd93566fd835059567dd132e25d9ca8862f94a209dc136ba01006
 src:libxml2-$version
 urls{
 https://download.gnome.org/sources/libxml2/2.10/libxml2-$version.tar.xz

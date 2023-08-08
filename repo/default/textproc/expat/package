@@ -2,7 +2,7 @@ name:expat
 version:2.5.0
 license:mit
 description:XML Parser library written in C.
-cksum:b8938b659d4461f1823821d4c8f2f47c6cc059d7bf2b25fe463a25b61b618cf7881e33f86c389f5110ca2a7d0d81ce6a0407c40ed0eb9b6d22018a02d243312a
+cksum:125392df7d28f3fb5938a7e184545f12943186faa859e36d438685f48dd408fe63828d99339b727cb5fce390d16bcfac9a0460b591dbf29daf1d259adc6d762f
 urls{
 https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-$version.tar.lz
 }

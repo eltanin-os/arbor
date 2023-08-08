@@ -2,7 +2,7 @@ name:m4
 version:2
 license:bsd-2
 description:A general-purpose macro processor.
-cksum:1288af919b3dd597deb020421bb94888af5253619c27093f383facda72e2a5c79f1bef45ee3734031634842bc14bed132a31efed2725caa2b0a96b9404353819
+cksum:dc312fffab08147a6b47477210f5342bef280c56949427fa3be046d70e6e35b0857fba2dcea21a5fc50678c4566d7c2a8a061dfc2d4ed211ad83a018cd9aec95
 urls{
 http://haddonthethird.net/m4/m4-$version.tar.bz2
 }

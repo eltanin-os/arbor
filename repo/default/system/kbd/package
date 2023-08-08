@@ -2,7 +2,7 @@ name:kbd
 version:2.5.1
 license:gpl-2
 description:Tools for configuring the console.
-cksum:3a086e7d987fe1d356c5b15ea656ddda2b0abc751c5876efc7ae6c17b11246f5c157a10e90a0d41aedfc59c88cbd59e7bb90538ddcb770034adc2e3fe3ac1e58
+cksum:2e45cf492e647302d9a9aed2c46a6d673425ed97019eecc7f881dad9ab972bd4dccc40235a2f4b6dae51c048258e689ffefeacecccd1c6f03cb920455925ab72
 platforms{
 linux
 }

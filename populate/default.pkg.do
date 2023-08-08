@@ -11,9 +11,9 @@ multisubstitute {
 	importas -i version version
 }
 if -nt {
-	if -nt { test -e ${name}#${version}.pkg }
-	if -nt { test -e ${name}-dev#${version}.pkg }
-	test -e ${name}-dyn#${version}.pkg
+	if -nt { test -e ${2}#${version}.pkg }
+	if -nt { test -e ${2}-dev#${version}.pkg }
+	test -e ${2}-dyn#${version}.pkg
 }
 if { redo-ifchange ${pkgdir}/package }
 ifelse { test -h "${pkgdir}" } {
@@ -28,7 +28,7 @@ multisubstitute {
 if { redo-ifchange ${files}#${version}.pkg }
 if {
 	redirfd -a 1 chksum
-	venus-cksum -w ${files}#${version}.pkg
+	venus-cksum ${files}#${version}.pkg
 }
 if { forx -E file { $files } ln -s $name dbfiles/${file} }
 if { rm -f dbfiles/${name} }

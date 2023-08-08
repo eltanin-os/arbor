@@ -2,7 +2,7 @@ name:s6-linux-init
 version:1.1.1.0
 license:isc
 description:Set of tools to create and run an s6-based init system.
-cksum:558b1c2dacc4af04cab625b3096ebb6af49b2e49d75e7890504a3ca2b9eb4ee1d2650b3bc17cd88ad79caf06983b091923cfa0ec8fa8f271697b0e58819ea116
+cksum:1f0e4a42bd232b9dd3fa811d295bf2fb4fe3e9680273a92716f768a3989713ade745340abc2af6e7c98868a02d583fcd54a074498067bf28f9314dd96b5646f1
 platforms{
 linux
 }

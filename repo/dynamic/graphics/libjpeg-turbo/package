@@ -2,7 +2,7 @@ name:libjpeg-turbo
 version:2.1.4
 license:bsd-3,ijg,zlib
 description:Accelerated baseline JPEG compression and decompression library.
-cksum:e6d89fa7e35fd154d1bc63a9c4ef0a5f8419245a7e0f6572178993fd7b87fe1e889573ba5d7c86d563ababa5e890fce3bce6427087edef0dec41c75b3ea176a3
+cksum:350c2740713231fd1b557fd72e95b885cc1a855a7206b1e8c80562788de63252a545f48037d19bfad844b4ff50c6bb921fd6f4a5e1b00184f7ac6b7b4de7a355
 urls{
 https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-$version.tar.gz
 }

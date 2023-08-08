@@ -2,7 +2,7 @@ name:luajit
 version:2.1.0-beta3
 license:mit
 description:Just-In-Time compiler for Lua.
-cksum:10dfccc3c47f224804ef71addce0a47228ba21a9b9d7c995dd46ae86e2cd290efb4d7b78187725f2c3cf45c7859fa6b14061df0e67bb7570b924941d522db906
+cksum:4ba4f4aa5a00801c6ac01a30d5977e88a82d45c9b921b02ee6d7b50c33c3a853e7f446728705f4ca179f108da0929e0354c1b557f1cb1f185195537d2130f09b
 src:LuaJIT-2.1.0-beta3
 urls{
 https://luajit.org/download/LuaJIT-$version.tar.gz

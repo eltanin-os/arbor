@@ -2,7 +2,7 @@ name:openal-soft
 version:1.23.1
 license:lgpl-2+
 description:Software implementation of OpenAL API.
-cksum:8fddca1635fd2970da55cf6bc6cd1a32856543621a7183ce735d6fed327edbdd9b8b9141d429f9a2a7c7e1b59d7e5734d365d35d902d61a5d1e817ab6d94119b
+cksum:186fd81a930eb7120e6d8d24cd854ed2a3bd7a7ef51c351da5c40d362adae2ffdcadb2df0f4e758da40b26b1b995c4c8a4afffb6d0b78d8a5b75cf3bd149e762
 urls{
 https://github.com/kcat/openal-soft/archive/$version.tar.gz
 }

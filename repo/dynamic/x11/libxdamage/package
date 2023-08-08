@@ -2,7 +2,7 @@ name:libxdamage
 version:1.1.6
 license:mit
 description:X11 damaged region extension library.
-cksum:44482482e61db601fd9602a789e3486ff4a96a0fec563cfe4ab28c07fa42ee2a71142508c28602224a8d60fb59f97e4a40fbe8e5b1e3891bd594475be82c5284
+cksum:62d785e79bf48ec69d7619a43ace1c16f6f3af21e295be13db9de601d16fb7c8c920a66793887b510ef509624e7ebd20d9ddbb23f359a99162822d2802cc99d8
 src:libXdamage-$version
 urls{
 https://www.x.org/releases/individual/lib/libXdamage-$version.tar.xz

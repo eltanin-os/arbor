@@ -2,7 +2,7 @@ name:libffi
 version:3.4.4
 license:mit
 description:A portable, high level programming interface to various calling conventions.
-cksum:3e70982708d1501bfafa92469d303ad6f48fa1c82bb1904dee390d0a68c36dc1732bee21797bdb474f60234166eb4f9a05b726dfe17af22320bc3e92a6a84738
+cksum:32922a7a86dc9fc808ba61d7dc40e6048cb19f04a4e72679fe44a59134602cf4a59e35d1697564320e55b6e73438fd39534be54b5632cd210a8298a8dfabb293
 urls{
 https://github.com/libffi/libffi/releases/download/v$version/libffi-$version.tar.gz
 }

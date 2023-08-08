@@ -2,7 +2,7 @@ name:libxau
 version:1.0.11
 license:mit
 description:X.Org X11 authentication protocol library.
-cksum:3a7164d7128e4b999a5f4bc05e75565ba75615ea8e7a6c5eda087ff3473fa73fa437b591e42f75d6d919f9dc26370ac78ed948447fa889e25b953f6a5c39d649
+cksum:f60fd8638b450135cf2174e2cca5f36a502a3ec9f859f8e6f10daed2ab43afbdf4b3174f8dd0d45c1f4eed9ce1369a41f09d21b24ee75bbb8c55e56a8448fe0b
 src:libXau-$version
 urls{
 https://www.x.org/releases/individual/lib/libXau-$version.tar.xz

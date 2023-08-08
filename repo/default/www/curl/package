@@ -2,7 +2,7 @@ name:curl
 version:8.0.1
 license:mit
 description:URL retrival utility and library.
-cksum:cd058e3ea2897952da4a4fdf04b102d39ced6c6d2ca881617d63f3c72e9a5b4b6093a75491754f2cfaa3b8fcdf7af678a222ce95cd2efea3aa1313df92849e88
+cksum:1cb7b8786119645c8c904ef16796970501dbde8c32202f6041df95ce23b65cd57801ada4471fe12d93d513c80e271ba37dd25c3f9eba9b78c6bc2f6dc81c7c64
 urls{
 https://curl.se/download/curl-$version.tar.xz
 }

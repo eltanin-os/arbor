@@ -2,7 +2,7 @@ name:libz
 version:1.2.8.2015.12.26
 license:zlib
 description:An ABI-compatible and API-compatible drop-in replacement for zlib.
-cksum:194b125fff49b941fa8ee0dac89e64a733c770773e278f28d0b8595c273075e2bd9babf24101523a47e7f306f473c427c5e25ed65c46df9ba7e9bbd866743b6b
+cksum:b0af636d12cb1e355e73d630877c90f2cf029205c05aeb9837f286f71408840f72e6bdeed34ee32f9374d588ae0744a9bfbeedf51c658189ec39853e7f11eadb
 urls{
 http://sortix.org/libz/release/libz-$version.tar.gz
 }

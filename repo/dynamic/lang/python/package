@@ -2,7 +2,7 @@ name:python
 version:3.11.2
 license:psf-2.0
 description:A high-level scripting language.
-cksum:6f5f3bb8c6d5956ba6922bc4ade2e02ce43dd3178043474fb46bd15fd746ec8fd8d2306fd36d70009319b7e51d351912ab26cc484094f4b4921d709033e6ed1f
+cksum:0d78b2854796d35f18c08094a9dc1229a4093cb42e091c698fcb3eee19f050047f41f9693bf9d034d981f13f02aa30cd04a76be2cc849fdc0bdcfe93d4ea38f2
 src:Python-$version
 urls{
 https://www.python.org/ftp/python/$version/Python-$version.tar.xz

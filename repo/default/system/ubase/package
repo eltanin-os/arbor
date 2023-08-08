@@ -2,7 +2,7 @@ name:ubase
 version:20190312
 license:mit
 description:A collection of unportable tools.
-cksum:f2eace45833fd923e05e0ceea697418bf2cb37c806eeedad5d85089d4c72e75d3ce1b6fceb4910397a1f8d1451fb85d42488ecd8229157d09b78d3e31262ad19
+cksum:8b50d01a42ef2b6102d9eb9df8b7f13bd3091be76ead36842ec0d83165e1627be452d0e8dd9f48ad63b6c7e31032753a99643b1099e9f135cd8da16bf0d526e4
 platforms{
 linux
 }

@@ -2,7 +2,7 @@ name:gdbm
 version:1.23
 license:gpl-3+
 description:GNU database routines.
-cksum:7279b7f41de95c75485cf69a835d8a899f4b068ff2801b919e127b2433f629a548ad6934e20e8cbcf9b529abe11d42670d2305da3bd58438333ba043c06ce5a8
+cksum:c5f8d64710ba7bc7d07b7cf74881ca676e6133a0f6befd33fd7306eff91ca25ff3f7058f4f5f16228ff884148011650529a110a50401668abdfa423e8511364b
 urls{
 https://ftp.gnu.org/gnu/gdbm/gdbm-$version.tar.gz
 }

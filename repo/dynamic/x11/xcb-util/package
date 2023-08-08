@@ -2,7 +2,7 @@ name:xcb-util
 version:0.4.1
 license:mit
 description:Utility libraries for X C-language Binding.
-cksum:1ee0f557a0493de598aace2be7d6de9f5c70e7bbb6e3bdfda4bbf9a7597acf7609a622b077e6dda3fa5f37c2aebd897bf631db84df772f43c82a374ec8f5393f
+cksum:951bc4e55b7e671be0e24d569764d072c8b6b45d13c84126482792406b9a550537fc84797101288924b5211e57c3a62530063f727fc848334aca69d5dc828921
 urls{
 https://xcb.freedesktop.org/dist/xcb-util-$version.tar.xz
 }

@@ -2,7 +2,7 @@ name:clzip
 version:1.13
 license:gpl-2.0+
 description:A lossless data compressor.
-cksum:e46ea91b6b76d42896cbbac5d65ac349e11808834f6add017c011b651b2a29172e4ed7e7bc2c0066564d7acf8104cab8320f74d44ed96ecd225b80573ff82976
+cksum:295c20565ab928ad808662f003ea5bb0c9da9e3547cb40c17dff31095852375026828fb3b281051083dbf7e67aa94e2577d2210adf3ca0587e9b95f98d95e61b
 urls{
 https://download.savannah.gnu.org/releases/lzip/clzip/clzip-$version.tar.lz
 }

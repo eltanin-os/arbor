@@ -2,7 +2,7 @@ name:execline
 version:2.9.3.0
 license:isc
 description:The execline scripting language.
-cksum:8c7f002e9ac15bbe5a7910504ff8d3bcfda8e343c3bf38d47a04d03a8a84f0d8f3190e380df9f4c6308b84274ad34e25decd116c122347b52328658f9100316e
+cksum:d4c4d45808c7c967f68492064b51ffa6a18657ae85abc428ed64eaedc9be370e6da06cb4f0da713926e12a571bee3685b95e863682fc1e770a126a697d79a22d
 urls{
 https://skarnet.org/software/execline/execline-$version.tar.gz
 }

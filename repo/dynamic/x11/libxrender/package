@@ -2,7 +2,7 @@ name:libxrender
 version:0.9.11
 license:
 description:X Rendering Extension client library.
-cksum:16ff4eda9c61364acebbd45915071b9346f48d7f6976df11432095077214e71d393ba82b5eb2337b26180bf82795caf40e55de8c43ac9c6340a80abf5e6548da
+cksum:c6ad624a0df3e6a80897a9ed7e4a3e372eaa5d71da1febbe125c870cbbe46f6a9314b3ac7d5b93c2474d5adf5eb2b28fefebc5a9dbe6a2a41d95d66a37a9723b
 src:libXrender-$version
 urls{
 https://www.x.org/releases/individual/lib/libXrender-$version.tar.xz

@@ -2,7 +2,7 @@ name:util-linux
 version:2.38.1
 license:gpl-3+,gpl-2+,gpl-2
 description:Miscellaneous linux utilities.
-cksum:49cff6b6dd9ff1f04d04c1061ada88d55844f7fe8d99f69b7bc0bf9b114497112b239601871e9453420c3fdb02955e112a9db5869302aeb91f37c4506816ef62
+cksum:0902697c2058aa2400bd23342defb036e03a857af15b2d65104725ef6630ca4d274757987e961e60041468607c2e7ff8a011f9c046dcabd2e7d3cfbeafc37b2c
 platforms{
 linux
 }

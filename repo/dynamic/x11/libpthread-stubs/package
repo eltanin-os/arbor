@@ -2,7 +2,7 @@ name:libpthread-stubs
 version:0.4
 license:mit
 description:Pthread functions stubs for platforms missing them.
-cksum:230f6b83dce06fbe6d2bf66c66ae94b1e2a005f748e3069140abc1d9236d233d5031072b5596a5dc60a0da3d5ea5694dbbfcebdda8434d83048dc645624209a7
+cksum:bd7917636cf168f715e0aa27fd90a3b34803092d0aaacbb23c250cd8a3ca2f7a502632aa9f7d421c82be094db38a0008a451681937c12386f3c68bb0ef6d7362
 urls{
 https://xcb.freedesktop.org/dist/libpthread-stubs-$version.tar.bz2
 }

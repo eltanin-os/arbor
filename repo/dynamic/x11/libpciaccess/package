@@ -2,7 +2,7 @@ name:libpciaccess
 version:0.17
 license:mit
 description:X11 PCI access library.
-cksum:b0ce415bb4b11d6932435e51ea74483747fc7d55556cf3853ceb61afdcbc0c717dcfd69b60043c75b251dc66e559ca903c694d5e12514e03b3ef24dad23451ba
+cksum:96a20e5e85b941c16996b78c61db7a584f197b392d4972f3a8d95a8d5b42a614ca3ceb0eb01fd992e7e4ef8d3c381cbad284ff5f50d9bd9f7b23c0ad9f51c7b9
 urls{
 https://www.x.org/releases/individual/lib/libpciaccess-$version.tar.xz
 }

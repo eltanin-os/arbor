@@ -2,7 +2,7 @@ name:limine-bin
 version:4.20221017.0
 license:bsd-2
 description:x86/x86_64 BIOS/UEFI Bootloader.
-cksum:2d1f87c5fde9dfc2be0ddd6682b4b81174af2c9ee1a04d3227f484c7b236bd6f5762b585bce32b4c34fca7760b04d4c88367fceb78cee3a6eff1b310d2bb381c
+cksum:bc5dbdad40970b3146034cd95d980d3f2810948716e6dcdc052d612357460322f3be8a039580dc13992a8c78c85af7bc178f843bd2d19d133a05cd75030d1875
 arch{
 aarch64
 i386
