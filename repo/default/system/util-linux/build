@@ -5,7 +5,6 @@ if {
 	-e "s;${exec_prefix}/bin;${exec_prefix}${BINDIR};g"
 	-e "s;${exec_prefix}/sbin;${exec_prefix}${BINDIR};g"
 }
-if { chmod +x configure }
 export ARBOR_MK_CONFIGURE_ARGS "--disable-eject;--disable-fallocate;--disable-hwclock;--disable-last;--disable-mesg;--disable-mount;--disable-mountpoint;--disable-nologin;--disable-pivot_root;--disable-switch_root;--disable-unshare;--disable-makeinstall-chown;--disable-use-tty-group;--without-systemd;--without-python"
 if { arbor-mk-gnuconfigure install }
 arbor-utils-install -d bin

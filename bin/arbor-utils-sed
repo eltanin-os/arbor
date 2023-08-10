@@ -1,5 +1,6 @@
 #!/bin/execlineb -s1
-backtick -Ex tmp { mktemp "XXXXXXXXX" }
+backtick -Ex tmp { mktemp -u "XXXXXXXXX" }
+if { cp -p $1 $tmp }
 foreground {
 	redirfd -r 0 $1
 	redirfd -w 1 $tmp
