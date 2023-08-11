@@ -1,0 +1,19 @@
+name:arcan-tui-bindings
+version:20221201204413
+license:bsd-3
+description:Language bindings for the arcan-tui API.
+cksum:e538c7e6a762d4ed055db4c93f90dd16237908c2dadccb7d64fd6cd43844530fdae613d81bd83d17375c1af4c058db8d729a342483908a184a58fbd551610f34
+urls{
+https://downloads.eltaninos.org/mirrors/arcan-tui-bindings-$version.tar.lz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+lua51
+luajit
+}
+rundeps{
+arcan
+}
