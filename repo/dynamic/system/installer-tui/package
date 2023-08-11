@@ -1,0 +1,17 @@
+name:installer-tui
+version:20230802022014
+license:unlicense
+description:An arcan appl and installer tui for the EltaninOS.
+cksum:5c2b46a0406745547e7847b91d1eacc5c0fb0022efbe421c9b5e78d883c48db652be7c835d7e7f7eb63afb307d0039a1a6faf75b27ac0cbaffb0a17b777e2929
+urls{
+https://downloads.eltaninos.org/sources/installer-tui/installer-tui-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+arcan-tui-bindings
+}
+rundeps{
+arcan
+}
