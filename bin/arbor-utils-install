@@ -30,6 +30,8 @@ backtick dest {
 		backtick -Ex x { pipeline { echo "${1}" } cut -c4 }
 		echo "${DESTDIR}${MANDIR}/man${x}"
 	}
+	"pc" { echo "${DESTDIR}${DRTDIR}/pkgconfig" }
+	"root" { echo "${DESTDIR}" }
 	}
 	exit 1
 }
