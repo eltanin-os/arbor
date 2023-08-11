@@ -1,10 +1,10 @@
 name:arcan
-version:0.6.2.1
+version:20230723033815
 license:bsd-3,gpl-2.0+,lgpl
 description:High-quality "Desktop Engine" [Display Server, Multimedia Framework, Game Engine].
-cksum:764b300ee8cafa5c1b44e19344037bf6706f824178ee22da030a5460154b193edaa42a91da1486731f7bce46efd009c1ffff33735aba89f7e514181245808c1f
+cksum:34561c867572b7c6b1fb21df922fe13d82f8938642cb3d810e150201f351249a9cf9a340797876cdcc2995f106cbb12f16e7fd080ae5878fefcf0971bbfc26d8
 urls{
-https://downloads.eltaninos.org/mirrors/arcan-$version.tar.gz
+https://downloads.eltaninos.org/mirrors/arcan-$version.tar.lz
 }
 hostdeps{
 cmake
