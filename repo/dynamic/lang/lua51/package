@@ -1,0 +1,15 @@
+name:lua51
+version:5.1.5
+license:mit
+description:A powerful light-weight programming language designed for extending applications.
+cksum:aa3d07cfca0b4a39b89f5673a6328cbf0a451c9b1c14b06898754baade81126cedfa09d08f6f197fb360b1ea82158c4f6b885645d45bbe49068810b91d09dd27
+src:lua-$version
+urls{
+https://www.lua.org/ftp/lua-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

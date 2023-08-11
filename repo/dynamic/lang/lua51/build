@@ -1,0 +1,24 @@
+#!/bin/execlineb -P
+if { arbor-utils-sed src/luaconf.h "/#define LUA_USE_READLINE/d" }
+if {
+	arbor-utils-sed src/Makefile
+	    -e "s;-lhistory;;"
+	    -e "s;-lncurses;;"
+	    -e  "s;-lreadline;;"
+}
+if { mv etc/lua.pc etc/lua-5.1.pc }
+importas -i PREFIX PREFIX
+if {
+	arbor-utils-sed etc/lua-5.1.pc
+	    -e "s;/usr/local;${PREFIX};"
+	    -e "s;include$;include/lua-5.1;"
+	    -e "s;-llua;-llua5.1;"
+}
+export ARBOR_MK_GMAKE_FLAGS "INSTALL=install;LUA_ROOT=\"${PREFIX}\""
+if {
+	importas -i ARBOR_HOSTOS ARBOR_HOSTOS
+	arbor-mk-gmake $ARBOR_HOSTOS
+}
+if { arbor-mk-gmake install }
+if { arbor-utils-install -m 0644 pc etc/lua-5.1.pc }
+arbor-utils-install -l -m 0644 pc lua-5.1.pc lua5.1.pc lua51.pc
