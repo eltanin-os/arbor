@@ -30,4 +30,5 @@ xcb-util-wm
 }
 rundeps{
 luajit
+xkeyboard-config
 }
