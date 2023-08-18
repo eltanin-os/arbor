@@ -1,0 +1,12 @@
+name:font-ttf-anonymous-pro
+version:1.003
+license:ofl
+description:The Anonymous Pro font.
+cksum:2b321d936850cd3c5dee7dcfd85fb448726ea8f126c5409bb6c5c24574998413a5de25802166c948bf854bc51f3056ebb6fd565a54f8ccf0276ec0164fd97c2c
+src:anonymous-pro-$version
+urls{
+https://downloads.eltaninos.org/mirrors/anonymous-pro-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
