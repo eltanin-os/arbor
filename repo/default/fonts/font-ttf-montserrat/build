@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+elglob files "*.ttf"
+arbor-utils-install font $files

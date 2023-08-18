@@ -1,0 +1,12 @@
+name:font-ttf-montserrat
+version:8.000
+license:ofl
+description:The Montserrat font.
+cksum:e0b7f8623f247b693bd7ed3a5f3a4599b3808096e5ee63235b3c33bb36d28efc468f91d4ee20097388d3c67a2adf3fc9d6e5a55806d98273192b3b5755f93782
+src:montserrat-$version
+urls{
+https://downloads.eltaninos.org/mirrors/montserrat-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
