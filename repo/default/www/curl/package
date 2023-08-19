@@ -1,8 +1,8 @@
 name:curl
-version:8.0.1
+version:8.2.1
 license:mit
 description:URL retrival utility and library.
-cksum:1cb7b8786119645c8c904ef16796970501dbde8c32202f6041df95ce23b65cd57801ada4471fe12d93d513c80e271ba37dd25c3f9eba9b78c6bc2f6dc81c7c64
+cksum:b6a75a92117542222989fd7a8f9bb87b65cd7e1236a35bf05e85757c3ba33d6264da9bb0fef46f692fe2b88f170dbf421036596bfa51115773ce16366006546c
 urls{
 https://curl.se/download/curl-$version.tar.xz
 }
@@ -10,7 +10,7 @@ hostdeps{
 stdenv
 }
 makedeps{
-bearssl
 libc
+libressl
 zlib
 }
