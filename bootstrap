@@ -70,8 +70,10 @@ backtick targets {
 }
 importas -isu targets targets
 if { rm $targets }
-# last stage
+# second stage
 if { mv config/defaults.backup config/defaults }
 if { arbor stdenv }
-# clean
+if { rm $targets }
+# third stage
+if { arbor stdenv }
 rm $targets
