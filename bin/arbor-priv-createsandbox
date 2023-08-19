@@ -15,7 +15,7 @@ multisubstitute {
 }
 backtick PKG_CONFIG {
 	case -- $LDFLAGS {
-	".*-static.*" { echo $PKG_CONFIG --static }
+		".*-static.*" { echo $PKG_CONFIG --static }
 	}
 	echo $PKG_CONFIG
 }

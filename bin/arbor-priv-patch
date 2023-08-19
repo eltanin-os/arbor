@@ -1,6 +1,6 @@
 #!/bin/execlineb -S1
 # $1: package dir
-ifelse -Xn { test -d "${1}/patches" } { exit 0 }
+ifelse -n { test -d "${1}/patches" } { exit 0 }
 elglob patches "${1}/patches/*"
 forx -E patch { $patches }
 redirfd -r 0 $patch

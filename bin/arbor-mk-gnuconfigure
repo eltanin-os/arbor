@@ -5,7 +5,7 @@ export MAKE "arbor-mk-gmake"
 foreground {
 	if {
 		case -- $LDFLAGS {
-		".*-static.*" { touch arbor.static }
+			".*-static.*" { touch arbor.static }
 		}
 		touch arbor.dynamic
 	}

@@ -16,9 +16,9 @@ if {
 	echo -n "${ARBOR}/cache/${cksum}.${name}-${version}"
 }
 case -- $urls {
-".*\.tar\.bz2|.*\.tbz2" { echo ".tar.bz2" }
-".*\.tar\.gz|.*\.tgz" { echo ".tar.gz" }
-".*\.tar\.lz|.*\.tlz" { echo ".tar.lz" }
-".*\.tar\.xz|.*\.txz" { echo ".tar.xz" }
+	".*\.tar\.bz2|.*\.tbz2" { echo ".tar.bz2" }
+	".*\.tar\.gz|.*\.tgz" { echo ".tar.gz" }
+	".*\.tar\.lz|.*\.tlz" { echo ".tar.lz" }
+	".*\.tar\.xz|.*\.txz" { echo ".tar.xz" }
 }
 exit 1

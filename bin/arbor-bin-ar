@@ -27,31 +27,31 @@ multisubstitute {
 	importas -uD "0" ELGETOPT_v ELGETOPT_v
 	importas -uD "0" ELGETOPT_x ELGETOPT_x
 }
-backtick -D "" Dflag { if -Xn { test "${ELGETOPT_D}" -eq "0" } echo D }
-backtick -D "" Nflag { if -Xn { test "${ELGETOPT_N}" -eq "0" } echo N }
-backtick -D "" Oflag { if -Xn { test "${ELGETOPT_O}" -eq "0" } echo O }
-backtick -D "" Pflag { if -Xn { test "${ELGETOPT_P}" -eq "0" } echo P }
-backtick -D "" Sflag { if -Xn { test "${ELGETOPT_S}" -eq "0" } echo S }
-backtick -D "" Tflag { if -Xn { test "${ELGETOPT_T}" -eq "0" } echo T }
-backtick -D "" Uflag { if -Xn { test "${ELGETOPT_U}" -eq "0" } echo U }
-backtick -D "" Vflag { if -Xn { test "${ELGETOPT_V}" -eq "0" } echo V }
-backtick -D "" aflag { if -Xn { test "${ELGETOPT_a}" -eq "0" } echo a }
-backtick -D "" bflag { if -Xn { test "${ELGETOPT_b}" -eq "0" } echo b }
-backtick -D "" cflag { if -Xn { test "${ELGETOPT_c}" -eq "0" } echo c }
-backtick -D "" dflag { if -Xn { test "${ELGETOPT_d}" -eq "0" } echo d }
-backtick -D "" fflag { if -Xn { test "${ELGETOPT_f}" -eq "0" } echo f }
-backtick -D "" iflag { if -Xn { test "${ELGETOPT_i}" -eq "0" } echo i }
-backtick -D "" lflag { if -Xn { test "${ELGETOPT_l}" -eq "0" } echo l }
-backtick -D "" mflag { if -Xn { test "${ELGETOPT_m}" -eq "0" } echo m }
-backtick -D "" oflag { if -Xn { test "${ELGETOPT_o}" -eq "0" } echo o }
-backtick -D "" pflag { if -Xn { test "${ELGETOPT_p}" -eq "0" } echo p }
-backtick -D "" qflag { if -Xn { test "${ELGETOPT_q}" -eq "0" } echo q }
-backtick -D "" rflag { if -Xn { test "${ELGETOPT_r}" -eq "0" } echo r }
-backtick -D "" sflag { if -Xn { test "${ELGETOPT_s}" -eq "0" } echo s }
-backtick -D "" tflag { if -Xn { test "${ELGETOPT_t}" -eq "0" } echo t }
-backtick -D "" uflag { if -Xn { test "${ELGETOPT_u}" -eq "0" } echo u }
-backtick -D "" vflag { if -Xn { test "${ELGETOPT_v}" -eq "0" } echo v }
-backtick -D "" xflag { if -Xn { test "${ELGETOPT_x}" -eq "0" } echo x }
+backtick -D "" Dflag { if -n { test "${ELGETOPT_D}" -eq "0" } echo D }
+backtick -D "" Nflag { if -n { test "${ELGETOPT_N}" -eq "0" } echo N }
+backtick -D "" Oflag { if -n { test "${ELGETOPT_O}" -eq "0" } echo O }
+backtick -D "" Pflag { if -n { test "${ELGETOPT_P}" -eq "0" } echo P }
+backtick -D "" Sflag { if -n { test "${ELGETOPT_S}" -eq "0" } echo S }
+backtick -D "" Tflag { if -n { test "${ELGETOPT_T}" -eq "0" } echo T }
+backtick -D "" Uflag { if -n { test "${ELGETOPT_U}" -eq "0" } echo U }
+backtick -D "" Vflag { if -n { test "${ELGETOPT_V}" -eq "0" } echo V }
+backtick -D "" aflag { if -n { test "${ELGETOPT_a}" -eq "0" } echo a }
+backtick -D "" bflag { if -n { test "${ELGETOPT_b}" -eq "0" } echo b }
+backtick -D "" cflag { if -n { test "${ELGETOPT_c}" -eq "0" } echo c }
+backtick -D "" dflag { if -n { test "${ELGETOPT_d}" -eq "0" } echo d }
+backtick -D "" fflag { if -n { test "${ELGETOPT_f}" -eq "0" } echo f }
+backtick -D "" iflag { if -n { test "${ELGETOPT_i}" -eq "0" } echo i }
+backtick -D "" lflag { if -n { test "${ELGETOPT_l}" -eq "0" } echo l }
+backtick -D "" mflag { if -n { test "${ELGETOPT_m}" -eq "0" } echo m }
+backtick -D "" oflag { if -n { test "${ELGETOPT_o}" -eq "0" } echo o }
+backtick -D "" pflag { if -n { test "${ELGETOPT_p}" -eq "0" } echo p }
+backtick -D "" qflag { if -n { test "${ELGETOPT_q}" -eq "0" } echo q }
+backtick -D "" rflag { if -n { test "${ELGETOPT_r}" -eq "0" } echo r }
+backtick -D "" sflag { if -n { test "${ELGETOPT_s}" -eq "0" } echo s }
+backtick -D "" tflag { if -n { test "${ELGETOPT_t}" -eq "0" } echo t }
+backtick -D "" uflag { if -n { test "${ELGETOPT_u}" -eq "0" } echo u }
+backtick -D "" vflag { if -n { test "${ELGETOPT_v}" -eq "0" } echo v }
+backtick -D "" xflag { if -n { test "${ELGETOPT_x}" -eq "0" } echo x }
 multisubstitute {
 	importas -iu Dflag Dflag
 	importas -iu Nflag Nflag

@@ -1,5 +1,5 @@
 #!/bin/execlineb -S1
-ifelse -Xn { test -e "${1}" } { exit 1 }
+ifelse -n { test -e "${1}" } { exit 1 }
 multisubstitute {
 	importas -is UNBZ2 UNBZ2
 	importas -is UNTAR UNTAR
@@ -9,10 +9,10 @@ multisubstitute {
 }
 pipeline {
 	case -- $1 {
-	".*\.tar\.bz2|.*\.tbz2" { $UNBZ2 $1 }
-	".*\.tar\.gz|.*\.tgz" { $UNGZ  $1 }
-	".*\.tar\.lz|.*\.tlz" { $UNLZ  $1 }
-	".*\.tar\.xz|.*\.txz" { $UNXZ  $1 }
+		".*\.tar\.bz2|.*\.tbz2" { $UNBZ2 $1 }
+		".*\.tar\.gz|.*\.tgz" { $UNGZ  $1 }
+		".*\.tar\.lz|.*\.tlz" { $UNLZ  $1 }
+		".*\.tar\.xz|.*\.txz" { $UNXZ  $1 }
 	}
 	arbor-utils-err "${1}: unknown format"
 }

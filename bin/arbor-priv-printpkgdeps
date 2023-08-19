@@ -28,7 +28,7 @@ pipeline {
 	export ARBOR_DEPSLIST "${curdeps}\n${ARBOR_DEPSLIST}"
 	forx -Epo 0 dep { $deps }
 	case -- "\n${ARBOR_DEPSLIST}\n" {
-	".*\n${dep}\n.*" { exit 0 }
+		".*\n${dep}\n.*" { exit 0 }
 	}
 	foreground { arbor-priv-printpkgdep $dep }
 	export ARBOR_BOOTSTRAPMODE "1"

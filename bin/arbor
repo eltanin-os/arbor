@@ -19,17 +19,17 @@ envfile "config/defaults"
 # set sandbox mode
 importas -iu ARBOR_SANDBOX ARBOR_SANDBOX
 backtick ARBOR_SANDBOX {
-	ifelse -Xn { test "${ELGETOPT_b}" -eq "0" } {
+	ifelse -n { test "${ELGETOPT_b}" -eq "0" } {
 		echo "pseudosandbox"
 	}
 	echo "${ARBOR_SANDBOX}"
 }
 export ARBOR_BOOTSTRAPMODE "${ELGETOPT_b}"
 # getopts
-ifelse -Xn { test "${ELGETOPT_a}" -eq "0" } {
+ifelse -n { test "${ELGETOPT_a}" -eq "0" } {
 	redo all
 }
-ifelse -Xn { test -z "${ELGETOPT_o}" } {
+ifelse -n { test -z "${ELGETOPT_o}" } {
 	elglob repositories "./repo/*"
 	if { mkdir -p $ELGETOPT_o }
 	cd $ELGETOPT_o
@@ -53,7 +53,7 @@ ifelse -Xn { test -z "${ELGETOPT_o}" } {
 	    cp $pkg ./${chksum}.${file}
 	    ;
 }
-ifelse -Xn { test "${ELGETOPT_p}" -eq "0" } {
+ifelse -n { test "${ELGETOPT_p}" -eq "0" } {
 	redo populate/all
 }
 forx -Eo 0 package { $@ }

@@ -4,14 +4,14 @@ foreground {
 	backtick buildtype {
 		importas -D "" CFLAGS CFLAGS
 		case -- "${CFLAGS}" {
-		".*-O[2s].*" { echo minsize }
+			".*-O[2s].*" { echo minsize }
 		}
 		echo release
 	}
 	backtick libtype {
 		importas -D "" LDFLAGS LDFLAGS
 		case -- $LDFLAGS {
-		".*-static.*" { echo static }
+			".*-static.*" { echo static }
 		}
 		echo shared
 	}

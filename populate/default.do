@@ -19,7 +19,7 @@ if {
 		if { rm arbor.conf }
 		importas -D "" LDFLAGS LDFLAGS
 		case -- $LDFLAGS {
-		".*-static.*" { echo 1 }
+			".*-static.*" { echo 1 }
 		}
 		echo 0
 	}

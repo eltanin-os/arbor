@@ -21,18 +21,18 @@ backtick dest {
 		importas -i MANDIR MANDIR
 	}
 	case -- $1 {
-	"bin" { echo "${DESTDIR}${BINDIR}" }
-	"font" { echo "${DESTDIR}${DRTDIR}/fonts" }
-	"drt" { echo "${DESTDIR}${DRTDIR}" }
-	"etc" { echo "${DESTDIR}${ETCDIR}" }
-	"inc" { echo "${DESTDIR}${INCDIR}" }
-	"lib" { echo "${DESTDIR}${LIBDIR}" }
-	"man[0-9]" {
-		backtick -Ex x { pipeline { echo "${1}" } cut -c4 }
-		echo "${DESTDIR}${MANDIR}/man${x}"
-	}
-	"pc" { echo "${DESTDIR}${DRTDIR}/pkgconfig" }
-	"root" { echo "${DESTDIR}" }
+		"bin" { echo "${DESTDIR}${BINDIR}" }
+		"font" { echo "${DESTDIR}${DRTDIR}/fonts" }
+		"drt" { echo "${DESTDIR}${DRTDIR}" }
+		"etc" { echo "${DESTDIR}${ETCDIR}" }
+		"inc" { echo "${DESTDIR}${INCDIR}" }
+		"lib" { echo "${DESTDIR}${LIBDIR}" }
+		"man[0-9]" {
+			backtick -Ex x { pipeline { echo "${1}" } cut -c4 }
+			echo "${DESTDIR}${MANDIR}/man${x}"
+		}
+		"pc" { echo "${DESTDIR}${DRTDIR}/pkgconfig" }
+		"root" { echo "${DESTDIR}" }
 	}
 	exit 1
 }
@@ -43,19 +43,19 @@ foreground {
 	install -d $dir
 }
 # delete
-ifelse -Xn { test "${ELGETOPT_d}" -eq "0" } {
+ifelse -n { test "${ELGETOPT_d}" -eq "0" } {
 	backtick -Ex flags {
-		ifelse -Xn { test "${ELGETOPT_r}" -eq "0" } { echo "-Rf" }
+		ifelse -n { test "${ELGETOPT_r}" -eq "0" } { echo "-Rf" }
 		echo "-f"
 	}
 	forx -E file { $@ } rm $flags "${dest}/${file}"
 }
 # empty file
-ifelse -Xn { test "${ELGETOPT_e}" -eq "0" } {
+ifelse -n { test "${ELGETOPT_e}" -eq "0" } {
 	forx -E file { $@ } touch "${dest}/${file}"
 }
 # symbolic links
-ifelse -Xn { test "${ELGETOPT_l}" -eq "0" } {
+ifelse -n { test "${ELGETOPT_l}" -eq "0" } {
 	backtick target { pipeline { echo $@ } cut -d" " -f1 }
 	backtick args { pipeline { echo $@ } cut -d" " -f2- }
 	multisubstitute {
@@ -65,7 +65,7 @@ ifelse -Xn { test "${ELGETOPT_l}" -eq "0" } {
 	forx -E file { $args } ln -s $target "${dest}/$file"
 }
 # recursive copy
-ifelse -Xn { test "${ELGETOPT_r}" -eq "0" } {
+ifelse -n { test "${ELGETOPT_r}" -eq "0" } {
 	cp -R $@ $dest
 }
 # copy

@@ -2,7 +2,7 @@
 backtick jobs {
 	importas -D "" nprocs nprocs
 	case -- $nprocs {
-	"[0-9]*" { echo "-j${nprocs}" }
+		"[0-9]*" { echo "-j${nprocs}" }
 	}
 }
 unexport nprocs
