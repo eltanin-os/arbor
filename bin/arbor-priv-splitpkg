@@ -21,7 +21,8 @@ foreground {
 			find ./${LIBDIR} -name "*.so*" ! -type d
 		}
 		redirfd -a 1 $devfiles
-		find ./${LIBDIR} ! -name "*.so*" ! -type d
+		find ./${LIBDIR} ! ( ( -path "./${LIBDIR}/firmware" -o -path "./${LIBDIR}/modules" ) -prune ) ! -name "*.so*" ! -type d
+
 	}
 	if {
 		importas -i INCDIR INCDIR
