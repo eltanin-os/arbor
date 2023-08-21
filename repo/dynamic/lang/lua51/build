@@ -20,5 +20,5 @@ if {
 	arbor-mk-gmake $ARBOR_HOSTOS
 }
 if { arbor-mk-gmake install }
-if { arbor-utils-install -m 0644 pc etc/lua-5.1.pc }
-arbor-utils-install -l -m 0644 pc lua-5.1.pc lua5.1.pc lua51.pc
+if { arbor-utils-install pc etc/lua-5.1.pc }
+arbor-utils-install -l pc lua-5.1.pc lua5.1.pc lua51.pc

@@ -4,7 +4,7 @@ multisubstitute {
 	importas -D "0" ELGETOPT_d ELGETOPT_d
 	importas -D "0" ELGETOPT_e ELGETOPT_e
 	importas -D "0" ELGETOPT_l ELGETOPT_l
-	importas -D "0755" ELGETOPT_m ELGETOPT_m
+	importas -D "" ELGETOPT_m ELGETOPT_m
 	importas -D "0" ELGETOPT_r ELGETOPT_r
 	importas -iu 1 1
 }
@@ -36,7 +36,17 @@ backtick dest {
 	}
 	exit 1
 }
-importas -iu dest dest
+backtick mode {
+	ifelse { test -n "${ELGETOPT_m}" } { echo $ELGETOPT_m }
+	case -- $1 {
+		"bin" { echo 0755 }
+	}
+	echo 0644
+}
+multisubstitute {
+	importas -iu dest dest
+	importas -iu mode mode
+}
 foreground {
 	forx -E path { $@ }
 	backtick -Ex dir { dirname "${dest}/${path}" }
@@ -69,4 +79,4 @@ ifelse -n { test "${ELGETOPT_r}" -eq "0" } {
 	cp -R $@ $dest
 }
 # copy
-install -m $ELGETOPT_m $@ $dest
+install -m $mode $@ $dest
