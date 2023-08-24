@@ -1,8 +1,8 @@
 name:cmake
-version:3.25.2
+version:3.27.3
 license:bsd-3
 description:Cross-platform, open-source make system.
-cksum:aedf19102929fc8528ae753270fdeceb4198256f2421a6a4f832fd2fbbdd9553838018566d08226555970e21c0f23021cd71e1d78fade9038dd1f2c77060e23e
+cksum:db92566d230e7b89d5be8752aa09cb7d627384995632f94929e6ef9992b9372e2c162679d3fc601318adeb753be5a7bfde9b1719f047458eb223251e9a0ca561
 urls{
 https://github.com/Kitware/CMake/releases/download/v$version/cmake-$version.tar.gz
 }
@@ -17,8 +17,8 @@ libarchive
 libc
 libuv
 nghttp2
-xz
 zlib
+zstd
 }
 rundeps{
 ninja

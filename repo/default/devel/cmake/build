@@ -12,9 +12,14 @@ if {
 	    --bindir=${BINDIR}
 	    --datadir=${DRTDIR}
 	    --mandir=${MANDIR}
-	    --system-libs
+	    --system-bzip2
+	    --system-curl
+	    --system-expat
+	    --system-libarchive
+	    --system-libuv
+	    --system-nghttp2
+	    --system-zlib
+	    --system-zstd
 	    --parallel=$nprocs
-	    --no-system-jsoncpp
-	    --no-system-librhash
 }
 arbor-mk-gmake install
