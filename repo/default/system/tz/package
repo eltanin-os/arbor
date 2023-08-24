@@ -1,0 +1,12 @@
+name:tz
+version:2023c
+license:public-domain
+description:Time zone and daylight-saving time data.
+cksum:29e32d3e7e1a933dd9f29e740f841daf7e39331dc6a7bc532c36a5fe4ce19f37899d4e6cd3775ecc2188afcff9b0699f64b5fe105355ff65276b5ca39dc923c3
+src:tzdb-$version
+urls{
+https://data.iana.org/time-zones/releases/tzdb-$version.tar.lz
+}
+hostdeps{
+stdenv
+}

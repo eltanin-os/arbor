@@ -1,0 +1,25 @@
+#!/bin/execlineb -P
+if {
+	importas -i CFLAGS CFLAGS
+	importas -i LDFLAGS LDFLAGS
+	export ARBOR_MK_GMAKE_FLAGS "CFLAGS=${CFLAGS};LDFLAGS=${LDFLAGS}"
+	arbor-mk-gmake
+}
+if {
+	multisubstitute {
+		importas -i DESTDIR DESTDIR
+		importas -i DRTDIR DRTDIR
+	}
+	define ZONEINFO "${DESTDIR}${DRTDIR}/zoneinfo"
+	if { mkdir -p ${ZONEINFO}/posix }
+	if { mkdir -p ${ZONEINFO}/right }
+	define -s TZ "etcetera southamerica northamerica europe africa antarctica asia australasia backward"
+	if { ./zic -b slim -L /dev/null -d $ZONEINFO $TZ }
+	if { ./zic -b slim -L /dev/null -d ${ZONEINFO}/posix $TZ }
+	if { ./zic -b slim -L leapseconds -d ${ZONEINFO}/right $TZ }
+	# POSIX requirement
+	./zic -d $ZONEINFO -p America/New_York
+}
+if { arbor-utils-install -p "zoneinfo" drt zone.tab zone1970.tab iso3166.tab }
+if { arbor-utils-install bin zic zdump }
+arbor-utils-install man8 zic.8 zdump.8
