@@ -1,0 +1,14 @@
+name:linux-headers
+version:4.19.88-2
+license:gpl-2
+description:The Linux kernel headers.
+cksum:bdb7184b53af9463755dd8b2b2cdd2e2442a3e92cc4f683d0317ce2403292d35a83f4201a03d93caea2f207479c81701ee0228e90be6f5ca963b37777232fba3
+platforms{
+linux
+}
+urls{
+https://downloads.eltaninos.org/mirrors/linux-headers-$version.tar.xz
+}
+hostdeps{
+stdenv
+}

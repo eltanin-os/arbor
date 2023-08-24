@@ -1,0 +1,14 @@
+name:linux-firmware
+version:20230804
+license:custom
+description:Firmware files for Linux.
+cksum:6ce8e2dbbb082cdae6f2e23f55f91ab07e7cc1e850b11eb610048451e926f0e577473ca38a768ca95589885aab5e11560d5a370558bf8481f13db894bbde88af
+platforms{
+linux
+}
+urls{
+https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-$version.tar.xz
+}
+hostdeps{
+stdenv
+}

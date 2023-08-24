@@ -1,0 +1,12 @@
+diff -Naur a/copy-firmware.sh b/copy-firmware.sh
+--- a/copy-firmware.sh	2023-08-04 07:33:54.000000000 -0300
++++ b/copy-firmware.sh	2023-08-16 02:56:35.306111581 -0300
+@@ -96,7 +96,7 @@
+     else
+         directory="$destdir/$(dirname "$f")"
+         install -d "$directory"
+-        target="$(cd "$directory" && realpath -m -s "$d")"
++        target="$(cd "${directory}/$(dirname "$d")" && printf '%s/%s\n' "$(pwd -P)" "$(basename "$d")")"
+         if test -d "$target"; then
+             $verbose "creating link $f -> $d"
+             ln -s "$d" "$destdir/$f"
