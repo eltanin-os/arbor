@@ -1,0 +1,14 @@
+name:durden
+version:20230811191343
+license:bsd-3
+description:Desktop Environment for Arcan.
+cksum:9c646c2c945c7d35a902c78691160968fd788212ae86cd71022877bcc0fffd006bb2cadb0bd108e11a7520553cb378dd9e8bf53cec3a705a6d167f13abb14f49
+urls{
+https://downloads.eltaninos.org/mirrors/durden-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+rundeps{
+arcan
+}

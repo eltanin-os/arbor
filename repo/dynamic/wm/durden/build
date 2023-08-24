@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+if { rm -Rf durden/fonts }
+if { arbor-utils-install -p "arcan/appl/durden" -r drt durden/. }
+arbor-utils-install bin distr/durden

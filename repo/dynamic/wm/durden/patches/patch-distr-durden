@@ -1,0 +1,251 @@
+diff --git a/distr/durden b/distr/durden
+index ab431ce..629ea93 100755
+--- a/distr/durden
++++ b/distr/durden
+@@ -1,115 +1,131 @@
+-#!/bin/sh
+-
+-arcan_base=${HOME}/.arcan
+-applname="$(basename $0)"
+-distargs=""
+-
+-if [ ! -z "${XDG_DATA_HOME}" ]; then
+-	arcan_base=${XDG_DATA_HOME}/arcan
+-	distargs="-d ${HOME}/.config/arcan.sqlite"
+-fi
+-
+-if [ ! -z "${XDG_CONFIG_HOME}" ]; then
+-	distargs="-d ${XDG_CONFIG_HOME}/arcan.sqlite"
+-fi
+-
+-arcan_applbase=$arcan_base/appl
+-arcan_applout=$arcan_base/appl-out
+-arcan_resources=$arcan_base/resources
+-arcan_logpath=$arcan_base/logs
+-
+-# a dev would've overridden this one
+-if [ ! -d "$arcan_applbase/$applname" ]; then
+-	mkdir -p "$arcan_applbase"
+-	ln -s "/usr/share/$applname/$applname" "$arcan_applbase/$applname"
+-fi
+-
+-if [ ! -d "$arcan_applout/$applname" ]; then
+-	mkdir -p "$arcan_applout/$applname"
+-fi
+-
+-# read-only resource access for browser, note that the presence
+-# of fonts and logs in this folder will define the font and logpaths
+-if [ ! -d "$arcan_resources" ]; then
+-	mkdir -p "$arcan_resources"
+-
+-# this will automatically set the ARCAN_STATEBASEPATH used for application
+-# state snapeshots (if supported)
+-	mkdir -p "$arcan_resources/savestates"
+-	ln -s "$HOME" "$arcan_resources/home"
+-fi
+-
+-# if the user expected the XDG set of folders, map those into our space
+-if [ ! -z "${XDG_DESKTOP_DIR}" ] && [ ! -d "${arcan_resources}/Desktop" ]; then
+-	ln -s "${XDG_DESKTOP_DIR}" "${arcan_resources}/Desktop"
+-fi
+-
+-if [ ! -z "${XDG_DOCUMENTS_DIR}" ] && [ ! -d "${arcan_resources}/Documents" ]; then
+-	ln -s "${XDG_DOCUMENTS_DIR}" "${arcan_resources}/Documents"
+-fi
+-
+-if [ ! -z "${XDG_DOWNLOADS_DIR}" ] && [ ! -d "${arcan_resources}/Downloadss" ]; then
+-	ln -s "${XDG_DOWNLOADS_DIR}" "${arcan_resources}/Downloads"
+-fi
+-
+-if [ ! -z "${XDG_MUSIC_DIR}" ] && [ ! -d "${arcan_resources}/Music" ]; then
+-	ln -s "${XDG_MUSIC_DIR}" "${arcan_resources}/Music"
+-fi
+-
+-if [ ! -z "${XDG_PICTURES_DIR}" ] && [ ! -d "${arcan_resources}/Pictures" ]; then
+-	ln -s "${XDG_PICTURES_DIR}" "${arcan_resources}/Pictures"
+-fi
+-
+-if [ ! -z "${XDG_PUBLICSHARE_DIR}" ] && [ ! -d "${arcan_resources}/Public" ]; then
+-	ln -s "${XDG_PUBLICSHARE_DIR}" "${arcan_resources}/Public"
+-fi
+-if [ ! -z "${XDG_TEMPLATES_DIR}" ] && [ ! -d "${arcan_resources}/Templates" ]; then
+-	ln -s "${XDG_TEMPLATES_DIR}" "${arcan_resources}/Templates"
+-fi
+-
+-if [ ! -z "${XDG_VIDEOS_DIR}" ] && [ ! -d "${arcan_resources}/Videos" ]; then
+-	ln -s "${XDG_VIDEOS_DIR}" "${arcan_resources}/Videos"
+-fi
+-
+-# this is opt-in, user must make this directory himself as it can get quite verbose
+-if [ -d "${arcan_logpath}" ]; then
+-	export ARCAN_LOGPATH=${1:-$arcan_logpath}
+-fi
+-
+-# setup namespace mapping
+-export ARCAN_APPLBASEPATH=${1:-$arcan_applbase}
+-export ARCAN_APPLSTOREPATH=${1:-$arcan_applout}
+-export ARCAN_RESOURCEPATH=${1:-$arcan_resources}
+-
+-# local writable custom / saved scripts that should shadow the builtin ones
+-overlay=$ARCAN_APPLSTOREPATH/$applname
+-if [ ! -d "$overlay/output" ]; then
+-	overrides="output ipc debug devmaps/display devmaps/keyboard devmaps/game devmaps/led devmaps/schemes devmaps/touch tools widgets"
+-	for i in $overrides; do
+-		mkdir -p "$overlay/$i"
+-	done
+-fi
+-
+-# there are more we could do to make this easier to work with, i.e. check exit code,
+-# on failure, try and unmap the RWOUT and add a message that they were discarded due
+-# to scripting errors, along with capturing and forwarding crash reasons (not full
+-# snap due to the possibility of sensitive data)
+-while true; do
+-	starttime=$(date +%s)
+-
+-	if [ -d "${arcan_logpath}" ]; then
+-		if arcan ${distargs} -b "$applname" "$applname" "$@" >"${arcan_logpath}/${applname}_${starttime}.log" 2>&1; then
+-			exit
+-		fi
+-	else
+-		if arcan ${distargs} -b "$applname" "$applname" "$@"; then
+-			exit
+-		fi
+-	fi
+-
+-	stoptime=$(date +%s)
+-	elapsed=$((stoptime - starttime))
+-	if [ $elapsed -lt 10 ]; then
+-		exit
+-	fi
+-done
++#!/bin/execlineb -P
++backtick arcan_base {
++	importas -D "" XDG_DATA_HOME XDG_DATA_HOME
++	ifelse { test -n "${XDG_DATA_HOME}" } { echo "${XDG_DATA_HOME}/arcan" }
++	importas -i HOME HOME
++	echo "${HOME}/.arcan"
++}
++backtick distargs {
++	importas -D "" XDG_CONFIG_HOME XDG_CONFIG_HOME
++	ifelse { test -n "${XDG_CONFIG_HOME}" } {
++		echo "-d ${XDG_CONFIG_HOME}/arcan.sqlite"
++	}
++	if -t {
++		importas -D "" XDG_DATA_HOME XDG_DATA_HOME
++		test -n "${XDG_DATA_HOME}"
++	}
++	importas -i HOME HOME
++	echo "-d ${HOME}/.config/arcan.sqlite"
++}
++multisubstitute {
++	importas -iu arcan_base arcan_base
++	importas -isu distargs distargs
++	define applname "durden"
++}
++multisubstitute {
++	define arcan_applbase "${arcan_base}/appl"
++	define arcan_applout "${arcan_base}/appl-out"
++	define arcan_resources "${arcan_base}/resources"
++	define arcan_logpath "${arcan_base}/logs"
++}
++if {
++	if -nt { test -d "${arcan_applbase}/${applname}" }
++	if { mkdir -p $arcan_applbase }
++	ln -s /usr/share/arcan/appl/${applname} ${arcan_applbase}/${applname}
++}
++if {
++	if -nt { test -d "${arcan_applout}/${applname}" }
++	mkdir -p ${arcan_applout}/${applname}
++}
++if {
++	if -nt { test -d "${arcan_resources}" }
++	if { mkdir -p "${arcan_resources}" }
++	if { mkdir -p "${arcan_resources}/savestates" }
++	if { cp -LR /usr/share/arcan/resources $arcan_resources }
++	importas -i HOME HOME
++	ln -s $HOME ${arcan_resources}/home
++}
++if {
++	importas -D "" XDG_DESKTOP_DIR XDG_DESKTOP_DIR
++	if -t { test -n "${XDG_DESKTOP_DIR}" }
++	if -nt { test -d "${arcan_resources}/Desktop" }
++	ln -s $XDG_DESKTOP_DIR ${arcan_resources}/Desktop
++}
++if {
++	importas -D "" XDG_DOCUMENTS_DIR XDG_DOCUMENTS_DIR
++	if -t { test -n "${XDG_DOCUMENTS_DIR}" }
++	if -nt { test -d "${arcan_resources}/Documents" }
++	ln -s $XDG_DOCUMENTS_DIR ${arcan_resources}/Documents
++}
++if {
++	importas -D "" XDG_DOWNLOADS_DIR XDG_DOWNLOADS_DIR
++	if -t { test -n "${XDG_DOWNLOADS_DIR}" }
++	if -nt { test -d "${arcan_resources}/Downloads" }
++	ln -s $XDG_DOWNLOADS_DIR ${arcan_resources}/Downloads
++}
++if {
++	importas -D "" XDG_MUSIC_DIR XDG_MUSIC_DIR
++	if -t { test -n "${XDG_MUSIC_DIR}" }
++	if -nt { test -d "${arcan_resources}/Music" }
++	ln -s $XDG_MUSIC_DIR ${arcan_resources}/Music
++}
++if {
++	importas -D "" XDG_PICTURES_DIR XDG_PICTURES_DIR
++	if -t { test -n "${XDG_PICTURES_DIR}" }
++	if -nt { test -d "${arcan_resources}/Pictures" }
++	ln -s $XDG_PICTURES_DIR ${arcan_resources}/Pictures
++}
++if {
++	importas -D "" XDG_PUBLICSHARE_DIR XDG_PUBLICSHARE_DIR
++	if -t { test -n "${XDG_PUBLICSHARE_DIR}" }
++	if -nt { test -d "${arcan_resources}/Public" }
++	ln -s $XDG_PUBLICSHARE_DIR ${arcan_resources}/Public
++}
++if {
++	importas -D "" XDG_TEMPLATES_DIR XDG_TEMPLATES_DIR
++	if -t { test -n "${XDG_TEMPLATES_DIR}" }
++	if -nt { test -d "${arcan_resources}/Templates" }
++	ln -s $XDG_TEMPLATES_DIR ${arcan_resources}/Templates
++}
++if {
++	importas -D "" XDG_VIDEOS_DIR XDG_VIDEOS_DIR
++	if -t { test -n "${XDG_VIDEOS_DIR}" }
++	if -nt { test -d "${arcan_resources}/Videos" }
++	ln -s $XDG_VIDEOS_DIR ${arcan_resources}/Videos
++}
++backtick ARCAN_LOGPATH {
++	if -t { test -d "${arcan_logpath}" }
++	echo $arcan_logpath
++}
++export ARCAN_APPLBASEPATH "${arcan_applbase}"
++export ARCAN_APPLSTOREPATH "${arcan_applout}"
++export ARCAN_RESOURCEPATH "${arcan_resources}"
++if {
++	if -nt { test -d "${arcan_applout}/${applname}/output" }
++	if { mkdir -p ${arcan_applout}/${applname} }
++	cd ${arcan_applout}/${applname}
++	mkdir -p output ipc debug devmaps/display devmaps/keyboard devmaps/game devmaps/led devmaps/schemes devmaps/touch tools widgets
++}
++loopwhilex -o 0
++backtick -Ex starttime { date "+%s" }
++ifthenelse { test -d $arcan_logpath }
++{
++	fdmove -c 1 2
++	redirfd -w 1 ${arcan_logpath}/${applname}_${starttime}.log
++	arcan $distargs -b $applname $applname
++}
++{
++	arcan $distargs -b $applname $applname
++}
++if -t {
++	importas -i status ?
++	test "${status}" -ne "0"
++}
++if {
++	backtick -Ex elapsed {
++		backtick -Ex stoptime { date "+%s" }
++		expr $stoptime - $starttime
++	}
++	test $elapsed -lt 10
++}
++exit 0

@@ -1,0 +1,75 @@
+diff --git a/durden/config.lua b/durden/config.lua
+index e9fb939..2b08cf5 100644
+--- a/durden/config.lua
++++ b/durden/config.lua
+@@ -9,8 +9,8 @@
+ return {
+ 	msg_timeout = 100,
+ 	tbar_timeout = 200,
+-	font_def = "default.ttf",
+-	font_fb = "emoji.ttf",
++	font_def = "default",
++	font_fb = "fallback",
+ 	font_sz = 18,
+ 	font_hint = 2,
+ 	font_str = "",
+@@ -251,7 +251,7 @@ return {
+ 	term_font_hint = 2,
+ 	term_blink = 0,
+ 	term_cursor = "block",
+-	term_font = "hack.ttf",
++	term_font = "mono",
+ 	term_bgcol = {0x00, 0x00, 0x00},
+ 	term_fgcol = {0xff, 0xff, 0xff},
+ 	term_opa = 1.0,
+@@ -260,7 +260,7 @@ return {
+ 	term_palette = "", -- deprecated
+ 	term_popup_height = 0.3,
+ 	term_append_arg = "", -- ci=ind,r,g,b to override individual colors
+-	tui_colorscheme = "dracula", -- takes precedence over terminal palette
++	tui_colorscheme = "kraken", -- takes precedence over terminal palette
+ 
+ -- input bar graphics
+ 	lbar_dim = 0.8,
+diff --git a/durden/devmaps/colorschemes/kraken.lua b/durden/devmaps/colorschemes/kraken.lua
+new file mode 100644
+index 0000000..5ca43fd
+--- /dev/null
++++ b/durden/devmaps/colorschemes/kraken.lua
+@@ -0,0 +1,36 @@
++-- scheme: kraken
++-- by: eadwardus
++return {
++{212, 193, 168},
++{}, -- secondary
++{31, 0, 54},
++{212, 193, 54, 31, 0, 54},
++{212, 193, 168},
++{}, -- alt-cursor
++{}, -- highlight
++{}, -- label
++{}, -- warning
++{}, -- error
++{}, -- alert
++{}, -- reference
++{}, -- inactive
++{}, -- ui
++{168, 187, 212},
++{207, 0, 87},
++{0, 207, 119},
++{255, 200, 125},
++{29, 124, 255},
++{202, 129, 255},
++{125, 255, 200},
++{108, 111, 129},
++{108, 111, 129},
++{207, 0, 87},
++{0, 207, 119},
++{255, 200, 125},
++{29, 124, 255},
++{202, 129, 255},
++{125, 255, 200},
++{212, 193, 168},
++{212, 193, 168},
++{31, 0, 54},
++}
