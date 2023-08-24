@@ -1,9 +1,2 @@
 #!/bin/execlineb -P
-multisubstitute {
-	importas -i DESTDIR DESTDIR
-	importas -i DRTDIR DRTDIR
-	elglob files "./*"
-}
-define TARGET "${DESTDIR}/${DRTDIR}/arcan/appl/installer"
-if { install -d $TARGET }
-cp -R $files $TARGET
+arbor-utils-install -p "arcan/appl/installer" -r drt .
