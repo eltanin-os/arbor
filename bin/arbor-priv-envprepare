@@ -15,22 +15,36 @@ if {
 	cd tmp/${ARBOR_PACKAGESRC}
 	arbor-priv-patch $ARBOR_PACKAGEDIR
 }
+if {
+	if -t { test -d ${ARBOR_PACKAGEDIR}/files }
+	cp -R ${ARBOR_PACKAGEDIR}/files tmp
+}
 importas -i ARBOR_SANDBOX ARBOR_SANDBOX
 if {
 	if { mkdir -p etc/arbor }
-	backtick -Ex repo {
-		pipeline {
-			pipeline { echo ${ARBOR_PACKAGEDIR} }
-			awk "{n=length(\"${ARBOR}\"); print substr($0, n+2)}"
+	backtick repoconf {
+		awk
+"
+BEGIN {
+	path=\"${ARBOR_PACKAGEDIR}\"
+	n=1
+	while (1) {
+		sub(/\\/[A-Za-z0-9_]*$/, \"\", path)
+		if (path == \"${ARBOR}/repo\") {
+			break
 		}
-		cut -d"/" -f2
+		tab[n++] = path \"/repo.conf\"
 	}
+	for (n = n - 1; n; n--) print tab[n]
+}
+"
+	}
+	importas -isu repoconf repoconf
 	arbor-priv-createconfigfile
 	    etc/arbor/config
 	    ${ARBOR}/config/defaults
 	    ${ARBOR}/config/${ARBOR_SANDBOX}
-	    ${ARBOR}/repo/${repo}/repo.conf
-	    ${ARBOR_PACKAGEDIR}/config
+	    $repconf
 }
 if { cp ${ARBOR_PACKAGEDIR}/build tmp/build.arbor }
 arbor-priv-create$ARBOR_SANDBOX tmp/build
