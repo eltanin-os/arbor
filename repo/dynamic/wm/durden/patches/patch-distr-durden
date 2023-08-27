@@ -161,7 +161,7 @@ index ab431ce..629ea93 100755
 +	if -nt { test -d "${arcan_resources}" }
 +	if { mkdir -p "${arcan_resources}" }
 +	if { mkdir -p "${arcan_resources}/savestates" }
-+	if { cp -LR /usr/share/arcan/resources $arcan_resources }
++	if { cp -LR /usr/share/arcan/resources/. $arcan_resources }
 +	importas -i HOME HOME
 +	ln -s $HOME ${arcan_resources}/home
 +}
