@@ -12,4 +12,5 @@ stdenv
 }
 makedeps{
 libc
+sndio
 }

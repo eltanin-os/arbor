@@ -1,2 +1,3 @@
 #!/bin/execlineb -P
+export ARBOR_MK_CMAKE_ARGS "-DSNDIO_SHARED=ON"
 arbor-mk-gnuconfigure install
