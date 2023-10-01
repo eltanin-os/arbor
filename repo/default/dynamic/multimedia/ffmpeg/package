@@ -12,6 +12,7 @@ yasm
 }
 makedeps{
 bzip2-dynamic
+freetype
 libc
 libopus
 libressl-dynamic
