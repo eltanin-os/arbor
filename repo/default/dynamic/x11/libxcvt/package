@@ -1,0 +1,15 @@
+name:libxcvt
+version:0.1.2
+license:mit
+description:Xorg xcvt library and cvt program.
+cksum:5e1e3e7cfb83f2f8a65a83e90ad8a339ce5b25f9c8ed907e2fe58f9c2bc1e95d9c51dbd8fc98063bbf963aa9149eb5e553da1c675dd3c0f779abc4d8b8648541
+urls{
+https://xorg.freedesktop.org/releases/individual/lib/libxcvt-$version.tar.xz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+libc
+}
