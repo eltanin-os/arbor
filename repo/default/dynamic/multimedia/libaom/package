@@ -1,0 +1,17 @@
+name:libaom
+version:3.7.0
+license:bsd-2,custom
+description:Alliance for Open Media (AOM) AV1 codec SDK.
+cksum:672f3098ae3b61e742a4cb2d05c75b4dc0c08191173cb32fb17314a555f6082a283f8eb22ebcbc11b217bf854e98bf0796e6e3204bbb24546d06979b63ecefea
+urls{
+https://storage.googleapis.com/aom-releases/libaom-$version.tar.gz
+}
+hostdeps{
+cmake
+nasm
+perl
+stdenv
+}
+makedeps{
+libc
+}
