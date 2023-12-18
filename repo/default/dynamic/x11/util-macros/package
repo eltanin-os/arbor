@@ -1,10 +1,10 @@
 name:util-macros
-version:1.19.3
+version:1.20.0
 license:mit
-description:
-cksum:008966f065cd1cbfae89d5bbabd05b9976dbd50111810b650997003cb188c67b9f4a0b46a5c39732e50d635dd36509c1059c682aeccce81f02f71fa968dd20e6
+description:X.Org Autotools macros.
+cksum:d313c19d20c70b52ac01d8df0c492c1e68694ea7bcad26a9067a4761c728d0f4fdbe7876cb479570d33dffa107c6086761806f8b2f6d56980f6660145ffd4f41
 urls{
-https://www.x.org/releases/individual/util/util-macros-$version.tar.bz2
+https://www.x.org/releases/individual/util/util-macros-$version.tar.xz
 }
 hostdeps{
 stdenv
