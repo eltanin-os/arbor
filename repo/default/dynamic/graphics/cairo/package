@@ -1,0 +1,22 @@
+name:cairo
+version:1.18.0
+license:lgpl-2.1+,mpl-1.1
+description:A vector graphics library.
+cksum:2005c2ac8d06912ad1dcef1e2657a9bbcb54b42cb13e25f7227e21a3fc9df25380671723a8c4d46c0e3b6d2a76a4f4ca7f7462e119be5ec4805b91d754d5b496
+urls{
+https://www.cairographics.org/releases/cairo-$version.tar.xz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+fontconfig
+glib2
+libc
+libpng
+libxext
+libxrender
+pixman
+xcb-util
+}
