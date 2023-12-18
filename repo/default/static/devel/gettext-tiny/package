@@ -1,0 +1,14 @@
+name:gettext-tiny
+version:0.3.2
+license:mit
+description:Stub and/or lightweight replacements of the gnu gettext suite.
+cksum:47b3116c6acbad6ea4c0758cc1ccf80d92a694836fe6ed106d3e96a40b051d585a6fa0f32d25b3060add8efd0c10ea0539e876e16621aee455bfb6f46feea1f1
+urls{
+https://ftp.barfooze.de/pub/sabotage/tarballs/gettext-tiny-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

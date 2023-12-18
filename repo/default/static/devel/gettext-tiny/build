@@ -1,0 +1,22 @@
+#!/bin/execlineb -P
+if {
+	multisubstitute {
+		importas -i DESTDIR DESTDIR
+		importas -i PREFIX PREFIX
+		importas -i CFLAGS CFLAGS
+		importas -i CPPFLAGS CPPFLAGS
+		importas -i LDFLAGS LDFLAGS
+	}
+	heredoc 0
+"
+prefix=${PREFIX}
+DESTDIR=${DESTDIR}
+CFLAGS=${CFLAGS}
+CPPFLAGS=${CPPFLAGS}
+LDFLAGS=${LDFLAGS}
+"
+	redirfd -x 1 config.mak
+	cat
+}
+if { arbor-mk-gmake all }
+arbor-mk-gmake install
