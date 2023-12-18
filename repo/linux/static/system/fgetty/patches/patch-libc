@@ -1,0 +1,129 @@
+diff -Naur a/checkpassword.c b/checkpassword.c
+--- a/checkpassword.c	2004-03-26 10:40:49.000000000 -0300
++++ b/checkpassword.c	2023-12-11 07:42:46.035182475 -0300
+@@ -3,13 +3,12 @@
+ #include <pwd.h>
+ #include <shadow.h>
+ #include <stdio.h>
+-#ifdef __dietlibc__
+-#include <write12.h>
+-#else
+-inline void __write2(const char* message) {
+-  write(2,message,strlen(message));
+-}
+-#endif
++
++#include <sys/types.h>
++#include <grp.h>
++#include <stdlib.h>
++
++#define __write2(a) write(2, (a), strlen((a)))
+ 
+ extern char** environ;
+ 
+diff -Naur a/fgetty.c b/fgetty.c
+--- a/fgetty.c	2005-10-04 08:45:21.000000000 -0300
++++ b/fgetty.c	2023-12-11 04:50:37.088528682 -0300
+@@ -6,12 +6,17 @@
+ #include <sys/param.h>
+ #include <utmp.h>
+ #include <fcntl.h>
+-#include <sys/signal.h>
++#include <signal.h>
+ #include <sys/ioctl.h>
+ #include <errno.h>
+ #include <termios.h>
+ #include <stdlib.h>
+ 
++#include <ctype.h>
++#include <sys/stat.h>
++#include <string.h>
++#include <time.h>
++
+ #include "fmt.h"
+ 
+ static struct utsname uts;
+diff -Naur a/login.c b/login.c
+--- a/login.c	2004-11-17 11:33:23.000000000 -0200
++++ b/login.c	2023-12-11 07:41:58.858774687 -0300
+@@ -35,7 +35,43 @@
+ #include <utmp.h>
+ #include <fcntl.h>
+ #include <signal.h>
+-#include <write12.h>
++
++#include <time.h>
++
++#define __write1(a) write(1, (a), strlen((a)))
++#define __write2(a) write(2, (a), strlen((a)))
++
++extern char **environ;
++
++int __ltostr(char *s, unsigned int size, unsigned long i, unsigned int base, int UpCase)
++{
++  char *tmp;
++  unsigned int j=0;
++
++  s[--size]=0;
++
++  tmp=s+size;
++
++  if ((base==0)||(base>36)) base=10;
++
++  j=0;
++  if (!i)
++  {
++    *(--tmp)='0';
++    j=1;
++  }
++
++  while((tmp>s)&&(i))
++  {
++    tmp--;
++    if ((*tmp=i%base+'0')>'9') *tmp+=(UpCase?'A':'a')-'9'-1;
++    i=i/base;
++    j++;
++  }
++  memmove(s,tmp,j+1);
++
++  return j;
++}
+ 
+ void die(const char *message) {
+   __write2(message); __write2("\n");
+@@ -58,6 +94,7 @@
+   tcsetattr(0, TCSANOW, &oldtermios);
+ }
+ 
++int
+ main(int argc,char *argv[]) {
+   int filedes[2];
+   char *username=argv[1];
+diff -Naur a/login2.c b/login2.c
+--- a/login2.c	2002-06-20 18:34:59.000000000 -0300
++++ b/login2.c	2023-12-11 07:42:36.281902663 -0300
+@@ -15,9 +15,12 @@
+ #include <fcntl.h>
+ #include <utmp.h>
+ #include <grp.h>
+-#include <write12.h>
+ 
+ #include <sys/stat.h>
++#include <time.h>
++
++#define __write1(a) write(1, (a), strlen((a)))
++#define __write2(a) write(2, (a), strlen((a)))
+ 
+ void die(const char *message) {
+   __write2(message); __write2("\n");
+@@ -54,8 +57,10 @@
+   close(4);
+   write(5,&ut,sizeof(ut));
+   close(5);
++  return 0;
+ }
+ 
++int
+ main(int argc,char *argv[]) {
+   int fd;
+   char *shell=getenv("SHELL");

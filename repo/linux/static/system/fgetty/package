@@ -1,0 +1,14 @@
+name:fgetty
+version:0.7
+license:gpl-2.0
+description:A minimal getty using djb checkpassword.
+cksum:97eb4139f385002976cb22f40bf5d0583c3bb21ad8271cf492ab73f795a37af076d410a893c84b57158f0a5d4308c341f2686f51701c5c5993ab1eb08238425e
+urls{
+https://www.fefe.de/fgetty/fgetty-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
