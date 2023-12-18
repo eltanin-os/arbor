@@ -1,0 +1,17 @@
+name:xkbcomp
+version:1.4.6
+license:mit
+description:XKBD keymap compiler.
+cksum:94c995835cd70abf9ca8e5613e431609d349ed5c09e572ee47a67d12d7e546940613aa1210fbabcda096070ac1913a3113f6eaf5652969f83f856bee9cb50622
+urls{
+https://www.x.org/releases/individual/app/xkbcomp-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libx11
+libxkbfile
+xorg-proto
+}
