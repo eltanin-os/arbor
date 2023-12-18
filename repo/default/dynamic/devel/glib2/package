@@ -1,0 +1,17 @@
+name:glib2
+version:2.78.0
+license:lgpl-2+
+description:A library providing a set of interfaces for accessibility.
+cksum:48361c85abdead5cedf9b12608ef41aa918cb012465d8f74685fbb6974dcbef09dd2f5ae1154d7bde41a1344f15b6476f072be1ed1b8f2307ce4c4fd3f9650ee
+src:glib-$version
+urls{
+https://download.gnome.org/sources/glib/2.78/glib-$version.tar.xz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+libc
+pcre2
+}
