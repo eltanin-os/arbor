@@ -1,0 +1,18 @@
+name:shared-mime-info
+version:2.3
+license:gpl-2+
+description:Freedesktop.org Shared MIME Info.
+cksum:2cd092ae4c485d6096c70c7e69efec342929fb185402f096c84b3c562e2b79dd8d4f3ff11f84e07c7544ddd1f1336e6ff304e80fb438970323c266d93bbeaf25
+urls{
+https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/$version/shared-mime-info-$version.tar.gz
+}
+hostdeps{
+gettext
+meson
+stdenv
+}
+makedeps{
+glib2
+libc
+libxml2-dynamic
+}
