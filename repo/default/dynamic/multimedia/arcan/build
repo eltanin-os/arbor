@@ -1,4 +1,4 @@
 #!/bin/execlineb -P
 cd src
-export ARBOR_MK_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=;-DVIDEO_PLATFORM=egl-dri"
+export ARBOR_MK_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=;-DVIDEO_PLATFORM=egl-dri;-DHYBRID_SDL=ON;-DHYBRID_HEADLESS=ON"
 arbor-mk-cmake install

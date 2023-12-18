@@ -1,14 +1,15 @@
 name:arcan
-version:20230723033815
+version:20231108180128
 license:bsd-3,gpl-2.0+,lgpl
 description:High-quality "Desktop Engine" [Display Server, Multimedia Framework, Game Engine].
-cksum:34561c867572b7c6b1fb21df922fe13d82f8938642cb3d810e150201f351249a9cf9a340797876cdcc2995f106cbb12f16e7fd080ae5878fefcf0971bbfc26d8
+cksum:f4ba944d9030032e386a3e20783db2da4e046a91b6ba85b544adb580c6c561fcf8ccdfaf4f382a1af0e558b455a05197c8ab94a5c569d6a623cef019d44d6ba8
 urls{
 https://downloads.eltaninos.org/mirrors/arcan-$version.tar.lz
 }
 hostdeps{
 cmake
 stdenv
+wayland-protocols
 }
 makedeps{
 bzip2-dynamic
@@ -22,9 +23,9 @@ libxkbcommon
 luajit
 mesalib
 openal-soft
+sdl2
 sqlite
 wayland
-wayland-protocols
 xcb-util
 xcb-util-wm
 }
