@@ -1,10 +1,11 @@
 #!/bin/execlineb
-elgetopt "delm:p:r"
+elgetopt "delm:np:r"
 multisubstitute {
 	importas -D "0" ELGETOPT_d ELGETOPT_d
 	importas -D "0" ELGETOPT_e ELGETOPT_e
 	importas -D "0" ELGETOPT_l ELGETOPT_l
 	importas -D "" ELGETOPT_m ELGETOPT_m
+	importas -D "0" ELGETOPT_n ELGETOPT_n
 	importas -D "" ELGETOPT_p ELGETOPT_p
 	importas -D "0" ELGETOPT_r ELGETOPT_r
 	importas -iu 1 1
@@ -60,11 +61,21 @@ ifelse -n { test "${ELGETOPT_d}" -eq "0" } {
 		ifelse -n { test "${ELGETOPT_r}" -eq "0" } { echo "-Rf" }
 		echo "-f"
 	}
-	forx -E file { $@ } rm $flags "${dest}/${file}"
+	forx -E file { $@ } rm $flags ${dest}/${file}
 }
 # empty file
 ifelse -n { test "${ELGETOPT_e}" -eq "0" } {
-	forx -E file { $@ } touch "${dest}/${file}"
+	forx -E file { $@ } touch ${dest}/${file}
+}
+# reName
+ifelse -n { test "${ELGETOPT_n}" -eq "0" } {
+	backtick target { pipeline { echo $@ } cut -d" " -f1 }
+	backtick source { pipeline { echo $@ } cut -d" " -f2 }
+	multisubstitute {
+		importas -iu target target
+		importas -iu source source
+	}
+	mv ${dest}/${source} ${dest}/${target}
 }
 # symbolic links
 ifelse -n { test "${ELGETOPT_l}" -eq "0" } {
@@ -74,7 +85,7 @@ ifelse -n { test "${ELGETOPT_l}" -eq "0" } {
 		importas -iu target target
 		importas -isu args args
 	}
-	forx -E file { $args } ln -s $target "${dest}/$file"
+	forx -E file { $args } ln -s $target ${dest}/${file}
 }
 # recursive copy
 ifelse -n { test "${ELGETOPT_r}" -eq "0" } {
