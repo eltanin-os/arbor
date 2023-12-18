@@ -1,0 +1,1473 @@
+.Dd November 11, 2023
+.Dt S6-SYSTEMD-UNIT-CONVERSION 7
+.Os
+.Sh NAME
+.Nm s6-systemd-unit-conversion
+.Nd how to convert systemd unit files to an s6 installation
+.Sh DESCRIPTION
+Converting a set of services managed by systemd[1] to a set of
+services managed by s6 is a recurring question on our support
+channels, and having an automated conversion tool parsing a set of
+.Xr systemd.unit 5
+files and outputting a set of directories
+.Po
+cf.\&
+.Xr s6-service-directory 7
+.Pc
+or s6-rc service definition directories
+.Po
+cf.\&
+.Xr s6-rc-compile 8
+.Pc
+would be useful to people who want to migrate to s6 but have an
+existing base of services running under systemd.
+.Pp
+Unfortunately, automating such a conversion is extremely difficult.
+The main reason for this is that systemd and s6 are architectured in
+very different ways: how they view a set of services, how they
+modelize a machine, what kind of solution they bring to a given
+problem, and the extent of what they're supposed to manage \(em there
+are few similarities between how systemd and s6 operate.
+As a consequence, the way systemd maps a set of services into unit
+files is not isomorphic to the way s6 does, so translating a setup
+between systemd and s6 requires intelligence.
+It is not possible to write an automated tool that converts a set of
+services accurately and idiomatically without doing a full, deep
+system analysis - and writing such a tool would be a huge undertaking.
+.Pp
+Fortunately, in practice, most unit files only use a small subset of
+all the theoretically supported directives: most services that run
+under systemd can be converted to run under s6 without too much
+trouble.
+So, depending on the exact nature of the set of services, it may be
+possible to write a reasonable converter, that is limited in what it
+supports but does not require a full understanding of systemd
+.Po
+or even s6
+.Pc .
+.Pp
+This document targets people who think about writing a tool to
+automatically convert a set of unit files to a set of s6 services and
+are trying to assess its feasability and difficulty.
+We analyze all the directives that may appear in a unit file for their
+services, and rate the difficulty of translating the directive,
+i.e. the amount of complexity that would need to go into the converter
+tool if that directive were to be supported.
+.Pp
+We rate difficulty on a scale from
+.Ql 0
+to
+.Ql 10 .
+A
+.Ql 0
+means that the directive is irrelevant to s6 and can be ignored.
+A
+.Ql 1
+means that there is a straightforward, one-for-one way of translating
+the systemd directive into s6 parlance.
+A
+.Ql 10
+means that the directive is so systemd-specific that it is impossible
+to express it on an s6 system and the unit file cannot be converted as
+is.
+A
+.Ql 9
+means that it is theoretically possible to convert, given infinite
+time and manpower to write a tool that analyzes the systemd-managed
+system holistically and outputs an equivalent system managed by s6,
+but in practice nobody's ever going to write such a tool.
+.Pp
+We only address directives that can appear in
+.Em service units ,
+which are the ones that can reasonably be expected to translate to s6
+or s6-rc services.
+We do not address directives that can only appear in other kinds of
+unit files such as slices, timers, sockets, etc.
+.Ss Difficulty by directive
+Use this section to answer the question:
+.Do
+I have this directive in my unit file, how hard would it be to write a
+converter tool that processes this file?
+.Dc
+.Bl -tag -width 2n
+.It Directives documented in Xr systemd.unit 5
+.Bl -tag -width 2n
+.It Bo Ic Unit Bc section
+.Bl -tag -width 2n
+.It Ic Description
+0.
+.It Ic Documentation
+0.
+.It Ic Wants
+3.
+Dependencies between services are implemented via s6-rc[1]; in order
+to implement
+.Ic Wants
+the converter needs to target s6-rc, which is a reasonable requirement
+for a complete set of services.
+However,
+.Ic Wants
+expresses weak dependencies, which are not supported by the current
+version of s6-rc, so the exact nature of the dependency needs to be
+checked by hand.
+.It Ic Requires
+2.
+The converter needs to target s6-rc, but
+.Ic Requires
+dependencies map well to the s6-rc dependency model.
+.It Ic Requisite
+3.
+systemd supports a lot of weird types of dependencies that the current
+version of s6-rc does not
+.Po
+by design
+.Pc .
+.It Ic BindsTo
+3.
+Same.
+.It Ic PartOf
+3.
+Same.
+.It Ic Upholds
+0.
+In s6, services are upheld by the supervisor, not by other services.
+.It Ic Conflicts
+5.
+There are no negative dependencies in the s6 world, and a converter
+tool would have to implement it on top of the existing system.
+.It Ic Before
+2.
+systemd loves to have a zillion of keywords to express slightly
+different kinds of dependencies, and only a small subset of all the
+possible combinations are useful.
+.It Ic After
+2.
+.It Ic OnFailure
+5.
+Permanent failure is a very exceptional state in s6, there are no
+hooks to do something when permanent failure occurs; so a converter
+would need to add scripting around that.
+.It Ic OnSuccess
+2.
+These are oneshot dependencies.
+.It Ic PropagatesReloadTo
+0.
+Under s6-rc you can either reload a single service or the whole
+dependency chain that starts at the service.
+Other configurations just make no sense.
+.It Ic ReloadPropagatedFrom
+0.
+Same.
+.It Ic PropagatesStopTo
+0.
+Same with stopping a single service or a dependency chain of services.
+.It Ic StopPropagatedFrom
+0.
+Same.
+.It Ic JoinsNamespaceOf
+8.
+There are no native s6 tools to manage namespaces.
+.It Ic RequiresMountsFor
+4.
+Mounts are not handled in a special way in s6, the converter would
+have to know what service mounts what filesystem.
+.It Ic OnFailureJobMode
+6.
+This is what happens when you mix layers.
+.It Ic IgnoreOnIsolate
+0.
+.It Ic StopWhenUnneeded
+0.
+.It Ic RefuseManualStart
+4.
+Would need some scripting around.
+There's no reason to ever use that directive though.
+.It Ic RefuseManualStop
+1.
+.It Ic AllowIsolate
+0.
+.It Ic DefaultDependencies
+2.
+.It Ic CollectMode
+0.
+.It Ic FailureAction
+3.
+Anything involving permanent failure need to be scripted around,
+because s6 considers that it is an extreme state that requires
+administrator attention and will stop making automatic decisions.
+.It Ic SuccessAction
+3.
+That's a oneshot dependency, but systemd doesn't realize that.
+.It Ic FailureActionExitStatus
+1.
+.It Ic SuccessActionExitStatus
+1.
+.It Ic JobTimeoutSec
+9.
+s6 has no concept of jobs.
+.It Ic JobRunningTimeoutSec
+9.
+Same.
+.It Ic JobTimeoutAction
+9.
+Same.
+.It Ic JobTimeoutRebootArgument
+9.
+Same.
+.It Ic StartLimitIntervalSec
+3.
+s6 does not limit start rate.
+It can stop a service that has a high
+.Em death
+rate: that's the configuration knob that makes sense.
+That directive can be converted to check death interval instead.
+.It Ic StartLimitBurst
+3.
+Same.
+.It Ic StartLimitAction
+3.
+Same.
+.It Ic RebootArgument
+5.
+Any
+.Dq system mode
+action such as a reboot has no place in an s6 set of services anyway;
+systemd obviously likes to mix unrelated layers.
+In the s6 world, the only place where a reboot should occur is
+s6-linux-init[2], and the related scripting in
+.Pa rc.init
+files.
+.It Ic SourcePath
+0.
+.It Conditions and Asserts
+9.
+Most of these are tied to the global machine state and absolutely not
+local to a given set of services.
+And even for those that are not, what they do is change the whole
+service manager's behaviour depending on some external dynamic state
+such as the existence of a file in the filesystem \(em and that is
+entirely contrary to the s6 philosophy of making services predictable
+and reproducible.
+.El
+.It Bo Ic Install Bc section
+Any directive under
+.Ic Install
+can be ignored, since it has no meaning on the run-time behaviour of
+the service.
+So the difficulty is 0.
+However, an automatic converter would need to analyze the whole
+installed service configuration, e.g. the links in
+.Pa /etc/systemd/system/multi-user.target.wants/ ,
+in order to understand the dependencies between services.
+systemd targets can typically be converted into s6-rc bundles.
+.El
+.El
+.Bl -tag -width 2n
+.It Directives documented in Xr systemd.service 5
+.Bl -tag -width 2n
+.It Bo Ic Service Bc section
+.Bl -tag -width 2n
+.It Ic Type
+Depending on its type, a systemd
+.Dq service
+can translate to wildly different things under s6.
+.Bl -tag -width 2n
+.It Ic simple
+1.
+.It Ic exec
+1.
+.It Ic forking
+2.
+This type is strongly discouraged.
+.It Ic oneshot
+1.
+.It Ic dbus
+5.
+This type requires implementing dbus management programs for s6.
+.It Ic notify
+7.
+This type requires an implementation of a compatibility server for
+.Xr sd_notify 3 ,
+which is heavily tied to the monolithic systemd architecture and is
+difficult to support in a modular system such as s6.
+It is much easier to modify the services themselves so
+they use the
+.Xr s6-notifywhenup 7
+s6 readiness notification mechanism instead of sd_notify.
+.It Ic idle
+0.
+This type is meaningless under s6 and should be treated like
+.Ic simple .
+.El
+.It Ic ExitType
+Again, it depends on the value.
+.Bl -tag -width 2n
+.It Ic main
+1.
+.It Ic cgroup
+3.
+This requires implementing, or having access to, command-line cgroup
+tools.
+.El
+.It Ic RemainAfterExit
+0.
+.It Ic GuessMainPid
+0.
+But don't use
+.Ic forking
+if you can avoid it.
+.It Ic PIDFile
+2.
+Same.
+.It Ic BusName
+5.
+Avoid type
+.Ic dbus
+if possible.
+.It Ic ExecStart
+2, with caveats.
+This is the bread and butter of service definitions; all your services
+will likely have such a directive, and the contents of
+.Ic ExecStart
+will typically go into a run script
+.Po
+for longruns
+.Pc
+or an up file
+.Po
+for oneshots
+.Pc .
+However, since systemd hates simplicity, there are a number of
+transformations that have to happen to the command line before it can
+be used in a script, and in particular if the command has a
+.Em special executable prefix .
+Implementing these has its own difficulty ratings:
+.Bl -tag -width 2n
+.It Ic @
+1.
+.It Ic -
+1.
+.It Ic :\&
+2.
+.It Ic +
+5.
+.It Ic !\&
+3.
+.It Ic !!
+3.
+.El
+.It Ic ExecStartPre
+2.
+In order to have a strict semantic equivalence with their systemd
+version,
+.Ic ExecStartPre
+lines must be implemented as s6-rc oneshots, and the whole unit file
+must be implemented as a bundle.
+.It Ic ExecStartPost
+2.
+Same.
+.It Ic ExecCondition
+2.
+.It Ic ExecReload
+0.
+A reloading command that does not involve restarting the service does
+not need the service manager as a third-party.
+systemd cannot help inserting itself where it does not belong.
+.It Ic ExecStop
+5.
+s6 only supports terminating services via signals, so if a service
+needs a specific command to be stopped, the converter needs to target
+an interface layer on top of s6 with a repository of stop commands;
+such a layer would likely need to be on top of s6-rc as well and a lot
+of complexity would ensue.
+Fortunately, a huge majority of services support termination via
+signals and it is often easy to avoid relying on
+.Ic ExecStop .
+.It Ic ExecStopPost
+2.
+These are the
+.Pa down
+scripts of the
+.Ic ExecStartPre
+oneshots.
+.It Ic RestartSec
+2.
+s6 has no setting for that, because it aims for maximum uptime; but
+there are still ways to implement that bad idea.
+.It Ic TimeoutStartSec
+1.
+.It Ic TimeoutStopSec
+1.
+.It Ic TimeoutAbortSec
+7.
+This would need a watchdog implementation, in the server
+implementation of
+.Xr sd_notify 3 .
+.It Ic TimeoutSec
+1.
+.It Ic TimeoutStartFailureMode
+0 for
+.Ic terminate
+and
+.Ic kill ,
+7 for
+.Ic abort .
+.It Ic TimeoutStopFailureMode
+0 for
+.Ic terminate
+and
+.Ic kill ,
+7 for
+.Ic abort .
+.It Ic RuntimeMaxSec
+4.
+This is the exact opposite of what you need a process supervisor for,
+so s6 does not implement it.
+It is best to run such a process
+.Po
+not a
+.Em service
+.Pc
+outside of any kind of supervision framework.
+.It Ic RuntimeRandomizedExtraSec
+4.
+Same.
+.It Ic WatchdogSec
+7.
+Requires a watchdog implementation in the very specific systemd way.
+.It Ic Restart
+Depends on the value.
+.Bl -tag -width 2n
+.It Ic no
+2, but why use a process supervisor in the first place?
+.It Ic on-success
+2.
+.It Ic on-failure
+2.
+.It Ic on-abnormal
+2.
+.It Ic on-watchdog
+7.
+Again, this requires a watchdog implementation.
+.It Ic on-abort
+2.
+.It Ic always
+1.
+.El
+.It Ic SuccessExitStatus
+3.
+This can be easily scripted, but supporting all the systemd formats is
+annoying.
+.It Ic RestartPreventExitStatus
+1.
+This is exactly what
+.Xr s6-permafailon 8
+is for.
+.It Ic RestartForceExitStatus
+2.
+.It Ic RootDirectoryStartOnly
+2.
+.It Ic NonBlocking
+5.
+This requires an emulation of systemd's socket activation.
+s6 provides the useful parts of it, like an
+.Xr s6-fdholder-daemon 8
+process to hold file descriptors, but the systemd-specific API around
+socket activation,
+.Xr sd_listen_fds 3 ,
+still needs to be implemented.
+.It Ic NotifyAccess
+1 if
+.Ic none ,
+7 otherwise, because it needs an implementation of
+.Xr sd_notify 3 .
+.It Ic Sockets
+5.
+Requires an implementation of systemd's socket activation.
+.It Ic FileDescriptorStoreMax
+7.
+Requires an implementation of
+.Xr sd_notify 3 ;
+the fd store itself is native to s6.
+.It Ic USBFunctionDescriptors
+9.
+This is low-level machine management, not service management.
+.It Ic USBFunctionStrings
+9.
+Same.
+.It Ic OOMPolicy
+9.
+Same.
+.El
+.El
+.It Directives documented in Xr systemd.exec 5
+.Bl -tag -width 2n
+.It Paths
+.Bl -tag -width 2n
+.It Ic ExecSearchPath
+1.
+.It Ic WorkingDirectory
+2.
+.It Ic RootDirectory
+1.
+.It Ic RootImage
+6.
+I am discovering these options in real time and shaking my head \(em
+systemd still manages to baffle me with the amount of gratuitous
+ad-hoc that went into it.
+Still, this is regular low-level programming for Linux, this is less
+difficult to implement than systemd-specific stuff, that's why it only
+gets a 6.
+.It Ic RootImageOptions
+6.
+Same.
+.It Ic RootHash
+9.
+Please.
+.It Ic RootHashSignature
+9.
+.It Ic RootVerity
+9.
+.It Ic MountAPIVFS
+6.
+.It Ic ProtectProc
+6.
+.It Ic ProcSubset
+6.
+.It Ic BindPaths
+6.
+.It Ic BindReadOnlyPaths
+6.
+.It Ic MountImages
+6.
+.It Ic ExtensionImages
+6.
+.It Ic ExtensionDirectories
+6.
+It's a full low-level userspace implementation at this point.
+It's not very
+.Em complex ,
+the 6 feels accurate, but it's a whole lot of work.
+This is how systemd maintains its hegemony: not because it does
+incredible, awe-inspiring magic, but because it substitutes its
+monolithic self to a whole ecosystem, imposes its own API, and locks
+users in \(em people who want to smoothly transition away from systemd
+need to implement
+.Em the whole shtick ,
+which is obviously a huge undertaking, as the author of uselessd[4]
+can confirm.
+.El
+.It User/group identity
+.Bl -tag -width 2n
+.It Ic User
+3.
+This looks very simple, but is treacherous, because
+.Ic User
+is a mash of two very different features: setting users
+.Em statically
+.Po
+via numeric ID, which don't change meanings between two invocations
+.Pc
+and setting users
+.Em dynamically
+.Po
+via user name, which needs to be interpreted by
+.Xr getpwnam 3
+on every invocation of the service
+.Pc .
+s6 supports both, but since these are two different things, the way to
+do them in s6 is different
+.Po
+statically setting the UID and GID variables and calling
+.Ql s6-applyuidgid -U ,
+or calling
+.Xr s6-setuidgid 8
+.Pc .
+This is the exact kind of small detail that makes writing an automatic
+converter more difficult than it should be: the systemd unit file
+syntax is rife with semantic pitfalls, and managing your way across it
+requires very close attention.
+.It Ic Group
+3.
+Same.
+.It Ic DynamicUser
+5.
+Of course this flag has an
+.Em entirely
+different meaning from setting users statically or dynamically, or
+else it would be too easy to understand.
+No, this flag is about
+.Em allocating temporary new users ,
+which is a prime example of overengineering.
+.It Ic SupplementaryGroups
+1.Same.
+.It Ic PAMName
+4.
+Requires PAM command-line utilities.
+.El
+.It Capabilities
+.Bl -tag -width 2n
+.It Ic CapabilityBoundingSet
+4.
+This requires command-line tools implementing capabilities.
+.It Ic AmbientCapabilities
+4.
+Same.
+.El
+.It Security
+.Bl -tag -width 2n
+.It Ic NoNewPrivileges
+4.
+Similar to capabilities, this requires a command-line tool controlling
+the Linux-specific
+.Xr prctl 2
+system call.
+.It Ic SecureBits
+4.
+Same.
+.El
+.It Mandatory access control
+.Bl -tag -width 2n
+.It Ic SELinuxContext
+5.
+This requires command-line tools managing SELinux.
+.It Ic AppArmorProfile
+5.
+Same, with AppArmor.
+.It Ic SmackProcessLabel
+5.
+Same, with SMACK.
+systemd needs to know and understand all the Linux security modules in
+order to interact with them.
+s6 does not \(em it expects a service's run script to perform all the
+needed process state changes and controls before executing into the
+daemon.
+.El
+.It Process properties
+.Bl -tag -width 2n
+.It Ic LimitCPU
+1.
+.It Ic LimitFSIZE
+1.
+.It Ic LimitDATA
+1.
+.It Ic LimitSTACK
+1.
+.It Ic LimitCORE
+1.
+.It Ic LimitRSS
+1.
+.It Ic LimitNOFILE
+1.
+.It Ic LimitAS
+1.
+.It Ic LimitNPROC
+1.
+.It Ic LimitMEMLOCK
+1.
+.It Ic LimitLOCKS
+2.
+This resource limit isn't natively supported by
+s6-softlimit 8 ,
+but it could appear in a future s6 version \(em and it's easy to add
+in any case.
+.It Ic LimitSIGPENDING
+2.
+Same.
+.It Ic LimitMSGQUEUE
+2. Same.
+.It Ic LimitNICE
+2.
+Same.
+.It Ic LimitRTPRIO
+2.
+Same.
+.It Ic LimitRTTIME
+2.
+Same.
+.It Ic UMask
+1.
+.It Ic CoredumpFilter
+4.
+Requires a command-line tool around
+.Xr prctl 2 .
+.It Ic KeyringMode
+5.
+Requires interaction with PAM and an understanding of keyrings.
+Fortunately, practically nothing will need that.
+.It Ic OOMScoreAdjust
+2.
+.It Ic TimerSlackNSec
+4.
+Requires a command-line tool around
+.Xr prctl 2 .
+.It Ic Personality
+3.
+Requires a command-line tool around
+.Xr personality 2 .
+.It Ic IgnoreSIGPIPE
+2.
+.El
+.It Scheduling
+.Bl -tag -width 2n
+.It Ic Nice
+1.
+.It Ic CPUSchedulingPolicy
+3.
+Requires a command-line tool around
+.Xr sched_setscheduler 2 .
+.It Ic CPUSchedulingPriority
+3.
+Same.
+.It Ic CPUSchedulingResetOnFork
+3.
+Same.
+.It Ic CPUAffinity
+3.
+Requires a command-line tool around
+.Xr sched_setaffinity 2 .
+.It Ic NUMAPolicy
+3.
+Requires a command-line tool around
+.Xr set_mempolicy 2 .
+.It Ic NUMAMask
+3.
+Same.
+.It Ic IOSchedulingClass
+3.
+Requires a command-line tool around
+.Xr ioprio_set 2 .
+.It Ic IOSchedulingPriority
+3.
+Same.
+.El
+.It Sandboxing
+systemd gracefully turns off the sandboxing options on systems that
+do not support the necessary functionality, so all these options can
+be ignored
+.Po
+difficulty 0
+.Pc
+and the services will still work.
+However, in order to actually implementing the sandboxing, it is
+necessary to pair s6 with command-line tools that perform the required
+process state changes by interfacing with namespaces, cgroups,
+seccomp, or any other relevant feature of the Linux kernel, so for all
+these directives the difficulty is somewhere between 2, if the tool
+already exists, and 8, if it requires writing a full container
+implementation from scratch.
+The following numbers are only a rough guess.
+.Bl -tag -width 2n
+.It Ic ProtectSystem
+6.
+.It Ic ProtectHome
+6.
+.It Ic RuntimeDirectory
+1.
+.It Ic StateDirectory
+1.
+.It Ic CacheDirectory
+1.
+.It Ic LogsDirectory
+1.
+.It Ic ConfigurationDirectory
+1.
+.It Ic RuntimeDirectoryMode
+1.
+.It Ic StateDirectoryMode
+1.
+.It Ic CacheDirectoryMode
+1.
+.It Ic LogsDirectoryMode
+1.
+.It Ic ConfigurationDirectoryMode
+1.
+.It Ic RuntimeDirectoryPreserve
+3.
+.It Ic TimeoutCleanSec
+3.
+.It Ic ReadWritePaths
+5.
+.It Ic ReadOnlyPaths
+5.
+.It Ic InaccessiblePaths
+5.
+.It Ic ExecPaths
+5.
+.It Ic NoExecPaths
+5.
+.It Ic TemporaryFileSystem
+5.
+.It Ic PrivateTmp
+5.
+.It Ic PrivateDevices
+5.
+.It Ic PrivateNetwork
+8.
+.It Ic NetworkNamespacePath
+8.
+.It Ic PrivateIPC
+5.
+.It Ic IPCNamespacePath
+5.
+.It Ic PrivateUsers
+5.
+.It Ic ProtectHostname
+5.
+.It Ic ProtectClock
+7.
+.It Ic ProtectKernelTunables
+7.
+.It Ic ProtectKernelModules
+7.
+.It Ic ProtectKernelLogs
+7.
+.It Ic ProtectControlGroups
+7.
+.It Ic RestrictAddressFamilies
+7.
+.It Ic RestrictFilesystems
+7.
+.It Ic RestrictNamespaces
+7.
+.It Ic LockPersonality
+7.
+.It Ic MemoryDenyWriteExecute
+7.
+.It Ic RestrictRealtime
+7.
+.It Ic RestrictSUIDSGID
+7.
+.It Ic RemoveIPC
+5.
+.It Ic PrivateMounts
+5.
+.El
+.It System call filtering
+.Bl -tag -width 2n
+.It Ic SystemCallFilter
+8.
+.It Ic SystemCallErrorNumber
+8.
+.It Ic SystemCallArchitectures
+8.
+.It Ic SystemCallLog
+8.
+.El
+.It Environment
+.Bl -tag -width 2n
+.It Ic Environment
+1.
+.It Ic EnvironmentFile
+1.
+.It Ic PassEnvironment
+1.
+.It Ic UnsetEnvironment
+1.
+.El
+.It Logging and standard input/output
+.Bl -tag -width 2n
+.It Ic StandardInput
+1.
+.It Ic StandardOutput
+1, except for
+.Ic journal
+which cannot be supported
+.Po
+10
+.Pc .
+.It Ic StandardError
+Same.
+.It Ic StandardInputText
+2.
+.It Ic StandardInputData
+2.
+.It Ic LogLevelMax
+3.
+.It Ic LogExtraFields
+10.
+.It Ic LogRateLimitIntervalSec
+10.
+.It Ic LogRateLimitBurst
+10.
+.It Ic LogFilterPatterns
+4.
+.It Ic LogNamespace
+10.
+.It Ic SyslogIdentifier
+2.
+.It Ic SyslogFacility
+2.
+.It Ic SyslogLevel
+2.
+.It Ic SyslogLevelPrefix
+4.
+.It Ic TTYPath
+1.
+.It Ic TTYReset
+3.
+.It Ic TTYVHangup
+3.
+.It Ic TTYRows
+3.
+.It Ic TTYColumns
+3.
+.It Ic TTYDisallocate
+3.
+.El
+.It Credentials
+systemd implements its own credentials store mechanism, for no obvious
+benefit.
+The whole credentials system needs to be reimplemented outside
+of systemd in order for credentials-related directives to be supported
+by s6.
+Consequently, all these directives are rated 6.
+.It System V compatibility
+The utmp directives can be made significantly easier to implement if
+the target system is using utmps[5], because the directives then
+become a single call to utmps-write[6] with the relevant options.
+If utmps cannot be used, then the utmp calls need to be reimplemented.
+.Bl -tag -width 2n
+.It Ic UtmpIdentifier
+4.
+.It Ic UtmpMode
+4.
+.El
+.El
+.It Directives documented in Xr systemd.kill 5
+.Bl -tag -width 2n
+.It Ic KillMode
+Depends on the kill mode.
+.Ic control-group
+and
+.Ic mixed
+are 3, because they require cgroup control commands
+.Po
+that can be implemented in shell
+.Pc .
+.Ic process
+is 1.
+.Ic none
+is 2.
+.It Ic KillSignal
+1.
+.It Ic RestartKillSignal
+5.
+s6 doesn't use a different signal for restarting; implementing this
+requires an outer layer.
+.Po
+This is overengineering.
+.Pc
+.It Ic SendSIGHUP
+5.
+Same.
+.It Ic SendSIGKILL
+1.
+.It Ic FinalKillSignal
+5.
+.Po
+This is
+.Em absolute
+overengineering.
+.Pc
+.It Ic WatchdogSignal
+7.
+Only meaningful with an implementation of systemd's watchdog system.
+.El
+.It Directives documented in Xr systemd.resource-control 5
+All these directives relate to cgroups, so implementing them means
+having access to at least some cgroups commands
+.Po
+difficulty at least 3
+.Pc .
+Others are even more involved, requiring tight service integration
+with the system.
+Generally, seeing these directives in your unit files is a bad sign;
+despite some of them only having 3 or 4 listed, we do not recommend
+implementing
+.Xr systemd.resource-control 5
+without having a full holistic view of the system.
+.Bl -tag -width 2n
+.It Ic CPUAccounting
+3.
+.It Ic CPUWeight
+4.
+.It Ic StartupCPUWeight
+9.
+Involves startup and shutdown.
+.It Ic CPUQuota
+4.
+.It Ic CPUQuotaPeriodSec
+4.
+.It Ic AllowedCPUs
+3.
+.It Ic StartupAllowedCPUs
+9.
+Involves startup and shutdown.
+.It Ic AllowedMemoryNodes
+3.
+.It Ic StartupAllowedMemoryNodes
+9.
+Involves startup and shutdown.
+.It Ic MemoryAccounting
+3.
+.It Ic MemoryMin
+3.
+.It Ic MemoryLow
+3.
+.It Ic MemoryHigh
+3.
+.It Ic MemoryMax
+3.
+.It Ic MemorySwapMax
+3.
+.It Ic MemoryZSwapMax
+3.
+.It Ic TasksAccounting
+3.
+.It Ic TasksMax
+3.
+.It Ic IOAccounting
+3.
+.It Ic IOWeight
+3.
+.It Ic StartupIOWeight
+9.
+Involves startup and shutdown.
+.It Ic IODeviceWeight
+5.
+.It Ic IOReadBandwidthMax
+5.
+.It Ic IOWriteBandwidthMax
+5.
+.It Ic IOReadIOPSMax
+5.
+.It Ic IOWriteIOPSMax
+5.
+.It Ic IODeviceLatencyTargetSec
+4.
+.It Ic IPAccounting
+7.
+.It Ic IPAddressAllow
+7.
+.It Ic IPAddressDeny
+7.
+.It Ic IPIngressFilterPath
+8.
+.It Ic IPEgressFilterPath
+8.
+.It Ic BPFProgram
+8.
+.It Ic SocketBindAllow
+6.
+.It Ic SocketBindDeny
+6.
+.It Ic RestrictNetworkInterfaces
+4.
+.It Ic DeviceAllow
+6.
+.It Ic DevicePolicy
+6.
+.It Ic Slice
+9.
+Slices are a systemd concept, and fully implementing them requires a
+holistic system analysis.
+.It Ic Delegate
+4.
+.It Ic DisableControllers
+3.
+.It Ic ManagedOOMSwap
+8.
+Out-of-memory management is an entire systemd subsystem; instead of
+implementing that, we recommend provisioning your machines correctly,
+and freeing up more resources for your applications by using s6.
+.It Ic ManagedOOMMemoryPressure
+8.
+.It Ic ManagedOOMMemoryPressureLimit
+8.
+.It Ic ManagedOOMPreference
+8.
+.El
+.El
+.Ss Directives rated by difficulty
+Use this section to answer the question:
+.Do
+If I were to write a converter tool from systemd to s6, what subset of
+the unit file syntax should I focus on first?
+.Dc
+.Pp
+Take this classification with a grain of salt: for instance, it does
+not make sense to implement an easy directive if it's only used in the
+context of a larger subsystem that's much harder to implement -
+typically, most cgroups-related resource control directives.
+.Bl -tag -width 2n
+.It Difficulty: 0 \(em directives that can be ignored.
+.Bl -tag -width 2n
+.It Ic Description
+.It Ic Documentation
+.It Ic Upholds
+.It Ic PropagatesReloadTo
+.It Ic PropagatesStopTo
+.It Ic StopPropagatedFrom
+.It Ic IgnoreOnIsolate
+.It Ic StopWhenUnneeded
+.It Ic AllowIsolate
+.It Ic CollectMode
+.It Ic SourcePath
+.It Ic Type=idle
+.It Ic RemainAfterExit
+.It Ic GuessMainPid
+.It Ic ExecReload
+.It Ic TimeoutStartFailureMode
+.It Ic TimeoutStopFailureMode
+.El
+.It Difficulty: 1 \(em direct functionality mapping
+.Bl -tag -width 2n
+.It Ic RefuseManualStop
+.It Ic FailureActionExitStatus
+.It Ic SuccessActionExitStatus
+.It Ic Type=simple|exec|oneshot
+.It Ic ExitType=main
+.It Ic TimeoutStartSec
+.It Ic TimeoutStopSec
+.It Ic TimeoutSec
+.It Ic Restart=always
+.It Ic RestartPreventExitStatus
+.It Ic NotifyAccess=none
+.It Ic ExecSearchPath
+.It Ic RootDirectory
+.It Ic SupplementaryGroups
+.It Ic LimitCPU
+.It Ic LimitFSIZE
+.It Ic LimitDATA
+.It Ic LimitSTACK
+.It Ic LimitCORE
+.It Ic LimitRSS
+.It Ic LimitNOFILE
+.It Ic LimitAS
+.It Ic LimitNPROC
+.It Ic LimitMEMLOCK
+.It Ic UMask
+.It Ic Nice
+.It Ic RuntimeDirectory
+.It Ic StateDirectory
+.It Ic CacheDirectory
+.It Ic LogsDirectory
+.It Ic ConfigurationDirectory
+.It Ic RuntimeDirectoryMode
+.It Ic StateDirectoryMode
+.It Ic CacheDirectoryMode
+.It Ic LogsDirectoryMode
+.It Ic ConfigurationDirectoryMode
+.It Ic Environment
+.It Ic EnvironmentFile
+.It Ic PassEnvironment
+.It Ic UnsetEnvironment
+.It Ic StandardInput
+.It Ic StandardOutput
+.Po except
+.Ic journal
+.Pc
+.It Ic StandardError
+.Po
+except
+.Ic journal
+.Pc
+.It Ic TTYPath
+.It Ic KillMode=process
+.It Ic KillSignal
+.It Ic SendSIGKILL
+.El
+.It Difficulty: 2 \(em straightforward implementation
+.Bl -tag -width 2n
+.It Ic Requires
+.It Ic Before
+.It Ic After
+.It Ic OnSuccess
+.It Ic DefaultDependencies
+.It Ic Type=forking
+.It Ic PIDFile
+.It Ic ExecStart
+.Po
+omitting some prefixes
+.Pc
+.It Ic ExecStartPre
+.It Ic ExecStartPost
+.It Ic ExecCondition
+.It Ic ExecStopPost
+.It Ic RestartSec
+.It Ic Restart
+except
+.Ic on-watchdog
+.It Ic RestartForceExitStatus
+.It Ic RootDirectoryStartOnly
+.It Ic WorkingDirectory
+.It Ic LimitLOCKS
+.It Ic LimitSIGPENDING
+.It Ic LimitMSGQUEUE
+.It Ic LimitNICE
+.It Ic LimitRTPRIO
+.It Ic LimitRTTIME
+.It Ic OOMScoreAdjust
+.It Ic IgnoreSIGPIPE
+.It Ic StandardInputText
+.It Ic StandardInputData
+.It Ic SyslogIdentifier
+.It Ic SyslogFacility
+.It Ic SyslogLevel
+.It Ic KillMode=none
+.El
+.It Difficulty: 3 \(em requires easy additional programming
+.Bl -tag -width 2n
+.It Ic Wants
+.It Ic Requisite
+.It Ic BindsTo
+.It Ic PartOf
+.It Ic FailureAction
+.It Ic SuccessAction
+.It Ic StartLimitIntervalSec
+.It Ic StartLimitBurst
+.It Ic StartLimitAction
+.It Ic ExitType=cgroup
+.It Ic SuccessExitStatus
+.It Ic User
+.It Ic Group
+.It Ic Personality
+.It Ic CPUSchedulingPolicy
+.It Ic CPUSchedulingPriority
+.It Ic CPUSchedulingResetOnFork
+.It Ic CPUAffinity
+.It Ic NUMAPolicy
+.It Ic NUMAMask
+.It Ic IOSchedulingClass
+.It Ic IOSchedulingPriority
+.It Ic RuntimeDirectoryPreserve
+.It Ic TimeoutCleanSec
+.It Ic LoglevelMax
+.It Ic TTYReset
+.It Ic TTYVHangup
+.It Ic TTYRows
+.It Ic TTYColumns
+.It Ic TTYDisallocate
+.It Ic KillMode=control-group|mixed
+.It Ic CPUAccounting
+.It Ic AllowedCPUs
+.It Ic AllowedMemoryNodes
+.It Ic MemoryAccounting
+.It Ic MemoryMin
+.It Ic MemoryLow
+.It Ic MemoryHigh
+.It Ic MemoryMax
+.It Ic MemorySwapMax
+.It Ic MemoryZSwapMax
+.It Ic TasksAccounting
+.It Ic TasksMax
+.It Ic IOAccounting
+.It Ic IOWeight
+.It Ic DisableControllers
+.El
+.It Difficulty: 4 \(em requires medium additional programming
+.Bl -tag -width 2n
+.It Ic RuntimeMaxSec
+.It Ic RuntimeRandomizedExtraSec
+.It Ic RequiresMountsFor
+.It Ic RefuseManualStart
+.It Ic PAMName
+.It Ic CapabilityBoundingSet
+.It Ic AmbientCapabilities
+.It Ic NoNewPrivileges
+.It Ic SecureBits
+.It Ic CoredumpFilter
+.It Ic TimerSlackNSec
+.It Ic LogFilterPatterns
+.It Ic SyslogLevelPrefix
+.It Ic UtmpIdentifier
+.It Ic UtmpMode
+.It Ic CPUWeight
+.It Ic CPUQuota
+.It Ic CPUQuotaPeriodSec
+.It Ic IODeviceLatencyTargetSec
+.It Ic RestrictNetworkInterfaces
+.It Ic Delegate
+.El
+.It Difficulty: 5 \(em requires complex additional programming
+.Bl -tag -width 2n
+.It Ic Conflicts
+.It Ic OnFailure
+.It Ic RebootArgument
+.It Ic Type=dbus
+.It Ic BusName
+.It Ic ExecStop
+.It Ic NonBlocking
+.It Ic Sockets
+.It Ic DynamicUser
+.It Ic SELinuxContext
+.It Ic AppArmorProfile
+.It Ic SmackProcessLabel
+.It Ic KeyringMode
+.It Ic ReadWritePaths
+.It Ic ReadOnlyPaths
+.It Ic InaccessiblePaths
+.It Ic ExecPaths
+.It Ic NoExecPaths
+.It Ic TemporaryFilesystem
+.It Ic PrivateTmp
+.It Ic PrivateDevices
+.It Ic PrivateIPC
+.It Ic IPCNamespacePath
+.It Ic PrivateUsers
+.It Ic ProtectHostname
+.It Ic RemoveIPC
+.It Ic PrivateMounts
+.It Ic RestartKillSignal
+.It Ic SendSIGHUP
+.It Ic FinalKillSignal
+.It Ic IODeviceWeight
+.It Ic IOReadBandwidthMax
+.It Ic IOWriteBandwidthMax
+.It Ic IOReadIOPSMax
+.It Ic IOWriteIOPSMax
+.El
+.It Difficulty: 6 \(em requires a full independent implementation of a Linux subsystem and/or a part of the systemd architecture
+.Bl -tag -width 2n
+.It Ic OnFailureJobMode
+.It Ic RootImage
+.It Ic RootImageOptions
+.It Ic MountAPIVFS
+.It Ic ProtectProc
+.It Ic ProcSubset
+.It Ic BindPaths
+.It Ic BindReadOnlyPaths
+.It Ic MountImages
+.It Ic ExtensionImages
+.It Ic ExtensionDirectories
+.It Ic ProtectSystem
+.It Ic ProtectHome
+.It All credentials-related[7] directives
+.It Ic SocketBindAllow
+.It Ic SocketBindDeny
+.It Ic DeviceAllow
+.It Ic DevicePolicy
+.El
+.It Difficulty: 7 \(em requires a full independent implementation of a complex Linux subsystem and/or a significant part of the
+systemd architecture
+.Bl -tag -width 2n
+.It Ic Type=notify
+.It Ic TimeoutAbortSec
+.It Ic TimeoutStartFailureMode=abort
+.It Ic TimeoutStopFailureMode=abort
+.It Ic WatchdogSec
+.It Ic Restart=on-watchdog
+.It Ic NotifyAccess
+.It Ic FileDescriptorStoreMax
+.It Ic ProtectClock
+.It Ic ProtectKernelTunables
+.It Ic ProtectKernelModules
+.It Ic ProtectKernelLogs
+.It Ic ProtectControlGroups
+.It Ic RestrictAddressFamilies
+.It Ic RestrictFilesystems
+.It Ic RestrictNamespaces
+.It Ic LockPersonality
+.It Ic MemoryDenyWriteExecute
+.It Ic RestrictRealtime
+.It Ic RestrictSUIDSGID
+.It Ic WatchdogSignal
+.It Ic IPAccounting
+.It Ic IPAddressAllow
+.It Ic IPAddressDeny
+.El
+.It Difficulty: 8 \(em requires a complete implementation of complex Linux-specific tooling
+.Bl -tag -width 2n
+.It Ic JoinsNamespaceOf
+.It Ic PrivateNetwork
+.It Ic NetworkNamespacePath
+.It Ic SystemCallFilter
+.It Ic SystemCallErrorNumber
+.It Ic SystemCallArchitectures
+.It Ic SystemCallLog
+.It Ic IPIngressFilterPath
+.It Ic IPEgressFilterPath
+.It Ic BPFProgram
+.It Ic ManagedOOMSwap
+.It Ic ManagedOOMMemoryPressure
+.It Ic ManagedOOMMemoryPressureLimit
+.It Ic ManagedOOMPreference
+.El
+.It Difficulty: 9 \(em requires a full system analysis and remodelization
+.Bl -tag -width 2n
+.It Ic JobTimeoutSec
+.It Ic JobRunningTimeoutSec
+.It Ic JobTimeoutAction
+.It Ic JobTimeoutRebootArgument
+.It Conditions and Asserts
+.It Ic USBFunctionDescriptors
+.It Ic USBFunctionStrings
+.It Ic OOMPolicy
+.It Ic RootHash
+.It Ic RootHashSignature
+.It Ic RootVerity
+.It Ic StartupCPUWeight
+.It Ic StartupAllowedCPUs
+.It Ic StartupAllowedMemoryNodes
+.It Ic StartupIOWeight
+.It Ic Slice
+.El
+.It Difficulty: 10 \(em implementing this basically means reimplementing systemd
+.Bl -tag -width 2n
+.It Ic StandardOutput=journal
+.It Ic StandardError=journal
+.It Ic LogExtraFields
+.It Ic LogRateLimitIntervalSec
+.It Ic LogRateLimitBurst
+.It Ic LogNamespace
+.El
+.El
+.Sh SEE ALSO
+.Xr ioprio_set 2 ,
+.Xr personality 2 ,
+.Xr prctl 2 ,
+.Xr sched_setaffinity 2 ,
+.Xr sched_setscheduler 2 ,
+.Xr set_mempolicy 2 ,
+.Xr getpwnam 3 ,
+.Xr sd_listen_fds 3 ,
+.Xr sd_notify 3 ,
+.Xr systemd.exec 5 ,
+.Xr systemd.kill 5 ,
+.Xr systemd.resource-control 5 ,
+.Xr systemd.service 5 ,
+.Xr systemd.unit 5 ,
+.Xr s6-notifywhenup 7 ,
+.Xr s6-service-directory 7 ,
+.Xr s6-fdholder-daemon 8 ,
+.Xr s6-permafailon 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-setuidgid 8
+.Pp
+[1]
+.Lk https://systemd.io/
+.Pp
+[2]
+.Lk https://skarnet.org/software/s6-rc/
+.Pp
+[3]
+.Lk https://skarnet.org/software/s6-linux-init/
+.Pp
+[4]
+.Lk https://web.archive.org/web/20150516113530/http://uselessd.darknedgy.net/
+.Pp
+[5]
+.Lk https://skarnet.org/software/utmps/
+.Pp
+[6]
+.Lk https://skarnet.org/software/utmps/utmps-write.html
+.Pp
+[7]
+.Lk https://man7.org/linux/man-pages/man5/systemd.exec.5.html#CREDENTIALS
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6/unit-conversion.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
