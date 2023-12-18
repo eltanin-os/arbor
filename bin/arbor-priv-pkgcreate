@@ -1,11 +1,14 @@
 #!/bin/execlineb -S2
 # $1: output
 # $2: directory
-multisubstitute {
-	importas -isu DEFLATE DEFLATE
-	importas -isu ARCHIVE ARCHIVE
-}
 cd $2
-pipeline { $ARCHIVE . }
+pipeline {
+	multisubstitute {
+		importas -isu ARCHIVE ARCHIVE
+		importas -ius DOAS DOAS
+	}
+	$DOAS $ARCHIVE .
+}
 redirfd -w 1 $1
+importas -isu DEFLATE DEFLATE
 $DEFLATE
