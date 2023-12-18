@@ -1,0 +1,14 @@
+name:pcre2
+version:10.42
+license:bsd-3
+description:Perl-compatible regular expression library.
+cksum:964c48362674466a95f968ad661a730fdeaaffe76e88bdce8ff7a2fe039bf179eee73d9cd1e1b08f79e015b04cab1384683fb5d1b8857d8ff237f4bebb386f36
+urls{
+https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$version/pcre2-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
