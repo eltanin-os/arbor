@@ -1,0 +1,15 @@
+name:font-util
+version:1.4.1
+license:custom
+description:X.org font utilities.
+cksum:dfb83aa6ac8293031b9582baed8eef4796cb94c6a929b49c84a23ac85ed799f7a61a4fbb26357f22d83da379d7517ae9f0f8d4be3b69b31db454e2e80a191186
+urls{
+https://www.x.org/releases/individual/font/font-util-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+util-macros
+}
