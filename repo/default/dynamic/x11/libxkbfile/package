@@ -1,0 +1,15 @@
+name:libxkbfile
+version:1.1.2
+license:mit
+description:X11 keyboard file manipulation library.
+cksum:b7f635301d9f05513770df26b0eabe2af17d5bd15547e7740d4ed8822d6b471f5cfec5031548fa3f1cb66d0c908a64716744e432955a537c08797fcc4129698b
+urls{
+https://www.x.org/releases/individual/lib/libxkbfile-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libx11
+}
