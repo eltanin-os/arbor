@@ -1,0 +1,17 @@
+name:atk
+version:2.38.0
+license:lgpl-2
+description:Interface definitions of accessibility infrastructure.
+cksum:917ceaaae0097902b75ab43d8603130aefd5abc2ab16cff0d0c87511350e3321ebc4dd90f0b386a1580bffece4e6a394b60345888d2b530e682e3c6185c75842
+urls{
+https://download.gnome.org/sources/atk/2.38/atk-$version.tar.xz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+glib2
+libc
+python
+}
