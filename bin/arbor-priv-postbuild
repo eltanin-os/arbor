@@ -23,8 +23,9 @@ foreground {
 }
 if {
 	if -t { test -d ".${LIBDIR}/pkgconfig" }
-	if { mkdir -p .${DRTDIR} }
-	mv .${LIBDIR}/pkgconfig .${DRTDIR}
+	if { mkdir -p .${DRTDIR}/pkgconfig }
+	if { cp -R .${LIBDIR}/pkgconfig/. .${DRTDIR}/pkgconfig }
+	rm -Rf .${LIBDIR}/pkgconfig
 }
 # compress manpages
 if -t { test -d ".${MANDIR}" }
