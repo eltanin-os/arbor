@@ -1,0 +1,150 @@
+.Dd April 7, 2023
+.Dt S6-LINUX-INIT-TELINIT 8
+.Os
+.Sh NAME
+.Nm s6-linux-init-telinit
+.Nd change runlevels
+.Sh SYNOPSIS
+.Nm
+.Ar rl
+.Sh DESCRIPTION
+.Nm
+changes runlevels, i.e. changes the system state.
+It is normally invoked as
+.Pa /sbin/telinit
+or just
+.Pa init
+with an argument.
+.Pp
+.Nm
+may be called with the same options as
+.Xr s6-linux-init 8 ,
+but it ignores them all.
+.Pp
+It calls the
+.Ql runleveld
+.Xr s6-local-service 7
+with the
+.Ar rl
+argument.
+This local service executes the user-provided
+.Pa runlevel
+script, which changes the system state to the state described by
+.Ar rl .
+.Pp
+As a special case, if
+.Ar rl
+is
+.Ql 0
+or
+.Ql 6 ,
+.Nm
+then executes into
+.Xr s6-linux-init-hpr 8
+with the
+.Fl p
+or
+.Fl r
+option respectively, for compatibility with sysvinit's
+.Em 0
+and
+.Em 6
+runlevels that respectively halt and reboot the machine.
+.Pp
+Traditional sysvinit only allows integer runlevels, from 0 to 6.
+More advanced service managers, like OpenRC or s6-rc, allow the admin
+to define alphanumerical runlevels, or
+.Em states .
+.Nm
+does not implement policy; it only makes sure the user-provided
+.Pa runlevel
+script is called with the
+.Ar rl
+argument, under a safe and reproducible environment.
+The
+.Pa runlevel
+script can then change the machine state as chosen by the user \(em
+typically by invoking the service manager.
+.Pp
+The 0 and 6 special case has been added because some legacy programs
+may assume that calling
+.Ql init 0
+and
+.Ql init 6
+respectively halt and reboot the system.
+.Pp
+The
+.Nm
+binary is not meant to be called directly by administrators.
+Instead, after an
+.Xr s6-linux-init-maker 8
+invocation, the
+.Pa bin/
+subdirectory of the target will contain a
+.Pa telinit
+symlink to
+.Pa s6-linux-init-telinit .
+The
+.Pa bin/
+subdirectory should be copied by the administrator into
+.Pa /sbin
+for full interface compatibility with sysvinit.
+.Pp
+When the system is running inside a container
+.Po
+and the
+.Fl C
+option has been given to
+.Xr s6-linux-init-maker 8
+.Pc ,
+the
+.Ql runleveld
+service is not running, so
+.Nm
+is not functional and the
+.Pa runlevel
+script is never invoked.
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.El
+.Pp
+Else,
+.Nm
+exits with the same exit code as the
+.Pa runlevel
+script called with the
+.Ar rl
+argument.
+.Pp
+If
+.Ar rl
+is
+.Ql 0
+or
+.Ql 6 ,
+in case of success
+.Nm
+exits 0, but the system shuts down immediately as it returns.
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-telinit.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

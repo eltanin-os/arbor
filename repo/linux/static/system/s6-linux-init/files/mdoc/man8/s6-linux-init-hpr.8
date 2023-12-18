@@ -1,0 +1,154 @@
+.Dd April 6, 2023
+.Dt S6-LINUX-INIT-HPR 8
+.Os
+.Sh NAME
+.Nm s6-linux-init-hpr
+.Nd trigger the software shutdown procedure or perform an immediate hardware shutdown
+.Sh SYNOPSIS
+.Nm
+.Op Fl f
+.Op Fl h | Fl p | Fl r
+.Op Fl n
+.Op Fl d | Fl w
+.Op Fl W
+.Op Fl i
+.Sh DESCRIPTION
+.Nm
+triggers the software shutdown procedure, or, with the
+.Fl f
+option, performs an immediate hardware shutdown.
+It is normally invoked through
+.Pa halt ,
+.Pa poweroff
+or
+.Pa reboot
+wrappers created by
+.Xr s6-linux-init-maker 8 .
+.Pp
+If the
+.Fl f
+option is present, the system is stopped or rebooted immediately.
+.Pp
+Else, the machine's shutdown procedure is started.
+.Pp
+The command exits 0; the shutdown procedure happens asynchronously.
+.Pp
+This interface is the traditional sysvinit interface for the
+.Pa halt ,
+.Pa poweroff
+and
+.Pa reboot
+programs.
+.Nm
+must always be called with one of the
+.Fl h ,
+.Fl p
+or
+.Fl r
+options.
+.Pp
+When an administrator runs
+.Xr s6-linux-init-maker 8 ,
+the resulting directory has a
+.Pa bin/
+subdirectory that contains
+.Pa halt ,
+.Pa poweroff
+and
+.Pa reboot
+scripts that call
+.Nm
+with the relevant option.
+The contents of this
+.Pa bin/
+subdirectory should then be copied by the administrator into
+.Pa /sbin
+for full interface compatibility with sysvinit.
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl f
+Force.
+The command will not trigger a clean shutdown procedure; it will just
+sync the filesystems then tell the kernel to immediately halt,
+poweroff or reboot.
+This should be the last step in the lifetime of the machine.
+.It Fl h
+Halt.
+The system will be shut down, but the power will remain up.
+.It Fl p
+Poweroff.
+The system will be shut down and the power turned off.
+.It Fl r
+Reboot.
+The system will reboot.
+.It Fl n
+Do not call
+.Xr sync 2
+before the hardware shutdown.
+The default is to sync, just in case.
+This option is only relevant when combined with
+.Fl f ;
+without it, it has no effect.
+.It Fl d
+Do not write a wtmp shutdown entry.
+.It Fl w
+Only write a wtmp shutdown entry; do not actually shut down the
+system.
+.It Fl W
+Do not send a
+.Xr wall 1
+message to users before shutting down the system.
+Some other implementations of the
+.Pa halt ,
+.Pa poweroff
+and
+.Pa reboot
+commands use the
+.Ql --no-wall
+long option to achieve this.
+.It Fl i
+Interactive confirmation request.
+The command needs to be launched in a terminal, and will prompt the
+user to type the
+.Po
+short
+.Pc
+hostname of the machine to be shut down.
+On mismatch, the command will abort.
+The point is to avoid inadvertently rebooting a remote machine in an
+ssh session.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 100
+Permanent error
+.Po
+such as a misuse
+.Pc .
+.It 111
+Temporary error
+.Po
+such as a system call failure
+.Pc .
+.El
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-hpr.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

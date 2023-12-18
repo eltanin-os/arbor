@@ -1,0 +1,90 @@
+.Dd April 8, 2023
+.Dt S6-LINUX-INIT-UMOUNTALL 8
+.Os
+.Sh NAME
+.Nm s6-linux-init-umountall
+.Nd unmount all filesystems
+.Sh SYNOPSIS
+.Nm
+.Sh DESCRIPTION
+.Nm
+unmounts all filesystems.
+.Pp
+.Nm
+unmounts all filesystems according to
+.Pa /proc/mounts .
+It processes
+.Pa /proc/mounts
+in the reverse order, starting with the most recently mounted
+partition and ending with the root filesystem
+.Po
+.Dq unmounting
+the root filesystem means remounting it read-only
+.Pc .
+.Pp
+It makes an exception for the first instances of devtmpfs, proc and
+sysfs filesystem types, but not for later instances.
+In other words: it does not attempt to unmount
+.Pa /dev ,
+.Pa /proc
+and
+.Pa /sys ,
+but it will attempt to unmount duplicates of those pseudo-filesystems.
+.Pp
+.Nm
+does not touch
+.Pa /etc/mtab .
+.Pp
+If a filesystem fails to unmount, a warning is printed to stderr, but
+.Nm
+still attempts to unmount all the other ones.
+.Pp
+.Nm
+is automatically called at the very end of the shutdown procedure, in
+.Dq stage 4 ,
+i.e. after a
+.Dv SIGKILL
+has been sent to all the processes on the system, and right before the
+system reboots
+.Po
+or halts, or is powered off
+.Pc .
+By that point, there is no possible process that could prevent real
+file systems from being unmounted.
+.Pp
+It is likely that some filesystems will still fail to unmount,
+typically cgroups or tmpfses.
+That's okay: those are pseudo-filesystems, and will not cause data
+loss or a fsck if the system shuts down while they are still mounted.
+.Pp
+Distributions usually provide a
+.Xr umount 8
+command with a
+.Fl a
+option to unmount all filesystems.
+That command is usually bloated with historical artifacts and relies
+on unsafe interfaces, so it was decided not to use it.
+.Sh EXIT STATUS
+.Nm
+returns the number of errors it encountered when attempting to unmount
+the filesystems listed in
+.Pa /proc/mounts .
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-umountall.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

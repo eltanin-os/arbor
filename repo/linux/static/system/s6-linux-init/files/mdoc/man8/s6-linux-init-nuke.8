@@ -1,0 +1,63 @@
+.Dd April 6, 2023
+.Dt S6-LINUX-INIT-NUKE 8
+.Os
+.Sh NAME
+.Nm s6-linux-init-nuke
+.Nd kill all processes immediately
+.Sh SYNOPSIS
+.Nm
+.Sh DESCRIPTION
+.Nm
+kills all processes immediately.
+.Pp
+.Nm
+sends a
+.Dv SIGKILL
+to every process on the system.
+.Po
+Process 1 will be unaffected.
+.Pc
+.Pp
+Do not try this at home.
+.Pp
+This program only exists so the s6-linux-init package can be
+self-contained and avoid relying on the existence of an external
+.Pa kill
+program.
+It is only run in the very improbable case that
+.Xr s6-svscan 8
+crashes, in a container situation.
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 100
+Permanent error
+.Po
+such as a misuse
+.Pc .
+.It 111
+Temporary error
+.Po
+such as a system call failure
+.Pc .
+.El
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-nuke.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

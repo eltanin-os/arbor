@@ -1,0 +1,230 @@
+.Dd April 7, 2023
+.Dt S6-LINUX-INIT-SHUTDOWN 8
+.Os
+.Sh NAME
+.Nm s6-linux-init-shutdown
+.Nd trigger the system shutdown procedure
+.Sh SYNOPSIS
+.Nm
+.Op Fl h Oo Fl H | Fl P Oc | Fl p | Fl r | Fl k
+.Op Fl a
+.Op Fl t
+.Ar sec
+.Op Fl i
+.Op Fl f | Fl F
+.Ar time
+.Op Ar message
+.Nm
+.Fl c
+.Op Ar message
+.Sh DESCRIPTION
+.Nm
+triggers the system shutdown procedure.
+It is normally invoked as
+.Pa /sbin/shutdown .
+.Pp
+If the
+.Fl c
+option is present, a pending shutdown is cancelled.
+.Pp
+Else, it plans the shutdown procedure at time
+.Ar time .
+.Pp
+If a
+.Ar message
+argument has been given,
+.Ar message
+is broadcast to all logged in users
+.Po
+as tracked by utmp
+.Pc .
+.Pp
+.Pa shutdown
+exits 0.
+The shutdown procedure happens asynchronously.
+.Pp
+The
+.Nm
+program conforms to the LSB-3.0.0 shutdown interface[1].
+.Pp
+.Ar time
+must follow the following format:
+.Op now | Oo + Oc Ns Ar mins | Ar hh : Ns Ar mm
+.Bl -bullet
+.It
+.Ql now
+means: trigger the shutdown sequence immediately.
+.It
+.Pf "" Ar hh : Ns Ar mm
+means: absolute time.
+Trigger the shutdown sequence when the time
+.Pf "" Ar hh : Ns Ar mm
+occurs.
+If that time has passed for the day, it will wait for the next day.
+.Ar hh
+must have 1 or 2 digits;
+.Ar mm
+must have 2 digits.
+.It
+.Ar mins
+or
+.Pf + Ns Ar mins
+means: relative time.
+Trigger the shutdown sequence after
+.Ar mins
+minutes.
+.El
+.Pp
+The
+.Nm
+binary is not meant to be called directly by administrators.
+Instead, after an
+.Xr s6-linux-init-maker 8
+invocation, the
+.Pa bin/
+subdirectory of the target will contain a
+.Pa shutdown
+symlink to
+.Pa s6-linux-init-shutdown .
+The
+.Pa bin/
+subdirectory should be copied by the administrator into
+.Pa /sbin
+for full interface compatibility with sysvinit.
+.Pp
+The
+.Fl f
+and
+.Fl F
+options are only accepted for compatibility.
+LSB says they are used to advise the system to skip or enforce a
+.Xr fsck 8
+after rebooting.
+But they are only advisory, and for decades now systems have used
+other methods of evaluating whether they should perform filesystem
+checks, so these options are largely obsolete nowadays.
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl a
+Access control.
+The shutdown sequence will only be launched if one of the users listed in
+.Pa /etc/shutdown.allow
+is currently logged in
+.Po
+as tracked by utmp
+.Pc .
+.Pa /etc/shutdown.allow
+is a text file, one user per line, lines starting with
+.Ql #
+are comments.
+.It Fl t Ar sec
+At the end of the shutdown sequence, when it's time to kill all
+processes, have a
+.Dq grace time
+period of
+.Ar sec
+seconds between the
+.Dv SIGTERM
+and the
+.Dv SIGKILL
+.Po
+to allow processes receiving SIGTERM to exit cleanly
+.Pc .
+Default is 3 seconds.
+.It Fl k
+Warning only.
+.Ar message
+will be sent to all logged in users, but the shutdown sequence will
+not be triggered.
+.It Fl h
+At the end of the shutdown sequence, halt the system.
+The behaviour of this option may be altered with
+.Fl H
+or
+.Fl P .
+.It Fl p
+At the end of the shutdown sequence, power off the system.
+.Po
+This option is provided as an extension, it is not required by the LSB
+interface.
+.Pc
+.It Fl r
+At the end of the shutdown sequence, reboot the system.
+.It Fl f
+Ignored.
+.It Fl F
+Ignored.
+.It Fl c
+Cancel a planned shutdown
+.Po
+i.e. cancel the effect of a previous call to
+.Pa shutdown
+with a
+.Ar time
+argument that was not
+.Ql now
+.Pc .
+This cannot be used to interrupt a shutdown sequence that has already started.
+.It Fl H
+This option can only be used in conjunction with
+.Fl h .
+Ensures the system is halted, not powered off, at the end of the
+shutdown sequence.
+.Fl Hh
+is equivalent to
+.Fl h .
+.It Fl P
+This option can only be used in conjunction with
+.Fl h .
+Ensures the system is powered off at the end of the shutdown sequence.
+.Fl Ph
+is equivalent to
+.Fl p .
+.It Fl i
+Interactive confirmation request.
+The command needs to be launched in a terminal, and will prompt the
+user to type the
+.Po
+short
+.Pc hostname of the machine to be shut down.
+On mismatch, the command will abort.
+The point is to avoid inadvertently rebooting a remote machine in an
+ssh session.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 100
+Permanent error
+.Po
+such as a misuse
+.Pc .
+.It 111
+Temporary error
+.Po
+such as a system call failure
+.Pc .
+.El
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+[1]
+.Lk https://refspecs.linuxbase.org/LSB_3.0.0/LSB-PDA/LSB-PDA/shutdown.html
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-shutdown.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

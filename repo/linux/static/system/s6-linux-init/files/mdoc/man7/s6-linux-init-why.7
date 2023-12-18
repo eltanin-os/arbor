@@ -1,0 +1,165 @@
+.Dd April 6, 2023
+.Dt S6-LINUX-INIT-WHY 7
+.Os
+.Sh NAME
+.Nm s6-linux-init-why
+.Nd why s6-linux-init
+.Sh DESCRIPTION
+.Ss The s6 software stack
+The s6 ecosystem is made of several parts, which are mainly the
+following:
+.Bl -tag -width x
+.It skalibs[1]
+A C system programming library that is used in all skarnet.org
+software.
+.It execline[2]
+A small scripting language that is mainly used in various parts of the
+s6 ecosystem because:
+.Bl -bullet
+.It
+It is very quick to launch, and efficient with small scripts, so it is
+a good choice for s6 run scripts.
+.It
+It is much easier to programmatically generate execline scripts than
+shell scripts. execline allows programs such as
+.Xr s6-linux-init-maker 8
+to generate scripts quite easily, whereas using the shell syntax would
+require them to understand the full subtleties of shell quoting.
+.El
+.It s6, the main dish[3]
+A process supervision suite.
+.It s6-rc[4]
+A service manager for s6.
+.It s6-linux-init
+This package.
+.El
+.Ss Providing a complete init system
+As explained in the presentation at [5], an init system is made of
+four parts:
+.Bl -enum
+.It
+.Pa /sbin/init .
+The first userspace program that is run by the kernel at boot time
+.Po
+not counting an initramfs
+.Pc .
+.It
+pid 1.
+The program that will run as process 1 for most of the lifetime of the
+machine.
+This is not necessarily the same executable as
+.Pa /sbin/init ,
+because
+.Pa /sbin/init
+can exec into something else.
+.It
+A process supervisor.
+.It
+A service manager.
+.El
+.Pp
+The s6 package obviously provides part 3. It also provides part 2,
+because
+.Xr s6-svscan 8
+is suitable as being pid 1 after some small setup is performed.
+.Pp
+Part 4, service management, can be provided in a variety of ways.
+The s6-rc service manager is the natural complement to the s6 process
+supervisor, but it is not the only possibility.
+The anopa[6] package also provides a service manager designed to work
+with s6.
+And, at the expense of tight integration with the supervisor, it is
+possible to run a
+.Dq traditional
+service manager, such as sysv-rc or OpenRC, with an s6-based init
+system.
+This flexibility is possible because service management is one layer
+above the mechanisms of init and process supervision.
+.Pp
+Remains part 1.
+And that's where s6-linux-init enters the picture.
+.Pp
+.Sy Portability
+.Pp
+Part 1 of an init system, the
+.Pa /sbin/init
+program, has been purposefully omitted from the main s6 package, for a
+simple reason: s6 aims to be portable to any flavor of Unix, and
+.Em it is impossible to implement Pa /sbin/init in a portable way .
+.Pp
+For instance, to do its job,
+.Xr s6-svscan 8
+needs a writable directory.
+Such a directory may not be available at boot time, before mounting
+filesystems, because the root filesystem may be read-only.
+So, at least one writable filesystem
+.Po
+typically a RAM-backed one
+.Pc
+must be mounted before
+.Xr s6-svscan 8
+can be executed and be pid 1.
+And mounting a filesystem is a non-portable operation.
+.Pp
+.Sy Complexity
+.Pp
+Moreover, the sequence of operations that an
+.Pa /sbin/init
+program needs to perform before executing into
+.Xr s6-svscan 8
+is a bit tricky.
+It can be scripted, but it's not easy, and since it's so early in the
+lifetime of the machine, there's no safety net at all
+.Po
+the supervision tree itself, and the early getty, are supposed to be
+the safety net, and they're not there yet
+.Pc .
+So it's better to automate these operations.
+.Ss Conclusion
+.Xr s6-linux-init 8
+aims to provide a fully functional
+.Pa /sbin/init
+program that executes into an s6 supervision tree with all the
+necessary support services already in place, as well as the
+corresponding shutdown commands.
+It also aims to be flexible enough to accommodate various needs and be
+compatible with any user-chosen service manager.
+.Pp
+As usual, it is about mechanism, not policy.
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+[1]
+.Lk https://skarnet.org/software/skalibs/
+.Pp
+[2]
+.Lk https://skarnet.org/software/execline/
+.Pp
+[3]
+.Lk https://skarnet.org/software/s6/
+.Pp
+[4]
+.Lk https://skarnet.org/software/s6-rc/
+.Pp
+[5]
+.Lk https://archive.fosdem.org/2017/schedule/event/s6_supervision/
+.Pp
+[6]
+.Lk https://jjacky.com/anopa/
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/why.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

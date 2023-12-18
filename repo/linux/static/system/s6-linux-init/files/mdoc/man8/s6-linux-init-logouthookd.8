@@ -1,0 +1,127 @@
+.Dd April 8, 2023
+.Dt S6-LINUX-INIT-LOGOUTHOOKD 8
+.Os
+.Sh NAME
+.Nm s6-linux-init-logouthookd
+.Nd clean up client's utmp record when it dies
+.Sh SYNOPSIS
+.Pf s6-ipcserver\  Ar socket Nm
+.Sh DESCRIPTION
+.Nm
+cleans up its client's utmp record when it dies.
+.Pp
+.Nm
+implements an
+.Xr s6-local-service 7
+for getty programs that add a utmp record when a user logs in.
+.Pp
+In the sysvinit model,
+.Sm off
+.Pa getty
+/
+.Pa login
+.Sm on
+and similar programs add a utmp record for every user that logs in,
+then
+.Xr exec 3
+into the user's shell.
+At logout time, the shell dies; sysvinit is supervising the
+.Pa getty
+program, so it's watching the pid, and respawns the
+.Pa getty
+when the shell dies.
+But before respawning the
+.Pa getty ,
+it cleans up the utmp record, to correctly report that the user isn't
+logged in on this terminal anymore.
+.Pp
+utmp is an old, clunky, insecure system
+.Po
+unless you're using utmps[1]
+.Pc
+and it is definitely not pid 1's job to have any knowledge of utmp and
+play janitor after
+.Pa getty .
+.Xr s6-svscan 8
+will definitely not do it.
+.Pp
+Some distributions use versions of
+.Xr login 1
+that fork the user's shell instead of
+.Xr exec 3 Ns
+ing it.
+When the user logs out, the
+.Xr login 1
+program cleans up after itself.
+This is a better model, but it's not always easy to patch
+.Xr login 1
+to go from an
+.Dq exec the shell
+model to a
+.Dq fork the shell as a child
+model.
+.Pp
+s6-linux-init comes with a small library which makes it easy for a
+distribution to fully support utmp cleanup with an s6 init system if
+they so choose.
+Before
+.Xr exec 3 Ns
+ing into the user's shell, the
+.Xr login 1
+program should just make a call to
+.Fn s6_linux_init_logouthook ,
+and that's it.
+That function will call the
+.Ql s6-linux-init-logouthookd
+.Xr s6-local-service 7 ,
+which will do nothing but wait until the user's shell dies; and when
+it happens, the user's utmp record will automatically be cleaned up.
+.Pp
+The
+.Xr s6-local-service 7
+implementing logouthook support is automatically created at boot time when the
+.Fl L
+option has been given to
+.Xr s6-linux-init-maker 8 .
+Client-side, though, the various login programs must be patched at the
+source level.
+.Sh EXIT STATUS
+.Nm Ap
+s exit code does not matter, because no program uses it.
+However, here's the list for completeness:
+.Bl -tag -width x
+.It 0
+Success, whether or not there was a utmp record to clean up.
+.It 1
+Connection attempt from a non-root user.
+.It 2
+Write attempt from a
+.Po
+misprogrammed
+.Pc
+client.
+.It 111
+System call failed.
+.El
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+[1]
+.Lk https://skarnet.org/software/utmps/
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-logouthookd.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

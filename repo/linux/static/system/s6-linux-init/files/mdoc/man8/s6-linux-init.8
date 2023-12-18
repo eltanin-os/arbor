@@ -1,0 +1,322 @@
+.Dd April 6, 2023
+.Dt S6-LINUX-INIT 8
+.Os
+.Sh NAME
+.Nm s6-linux-init
+.Nd a stage 1 init
+.Sh SYNOPSIS
+.Nm
+.Op Fl c Ar basedir
+.Op Fl p Ar initial_path
+.Op Fl s Ar env_store
+.Op Fl m Ar umask
+.Op Fl d Ar slashdev
+.Op Fl D Ar initdefault
+.Op Fl n | Fl N
+.Op Fl C
+.Op Fl B
+.Ar args...
+.Sh DESCRIPTION
+.Nm
+is a program that is meant to run as pid 1, as a
+.Em stage 1 init :
+it performs the necessary early system preparation and
+.Xr exec 3 Ns
+s into
+.Xr s6-svscan 8 .
+.Pp
+If
+.Nm
+isn't pid 1, it
+.Xr exec 3 Ns
+s into
+.Xr s6-linux-init-telinit 8
+with the same arguments.
+.Pp
+Else, it performs some early preparation, spawns a process that will
+run the
+.Pa rc.init
+script, then
+.Xr exec 3 Ns
+s into
+.Xr s6-svscan 8 .
+.Ss Early preparation
+When booting a system,
+.Nm
+performs the following operations:
+.Bl -bullet
+.It
+It prints a banner to
+.Pa /dev/console .
+.It
+It
+.Xr chdir 2 Ns
+s to
+.Pa / .
+.It
+It sets the umask to
+.Ar initial_umask .
+.It
+It becomes a session leader.
+.It
+It mounts a devtmpfs on
+.Ar slashdev ,
+if requested.
+.It
+It uses
+.Pa /dev/null
+as its stdin
+.Po
+instead of
+.Pa /dev/console
+.Pc .
+.Pa /dev/console
+is still used, for now, as stdout and stderr.
+.It
+It unmounts
+.Pa /run
+.Po
+or the directory you have given to the
+.Ql --tmpfsdir
+configure option at package build time
+.Pc ,
+just in case; then it creates a tmpfs on it.
+Alternatively, it remounts
+.Pa /run ,
+or does not touch it at all.
+.It
+It copies the whole
+.Pa "" Ns Ar basedir Ns /run-image
+hierarchy to
+.Pa /run
+.Po
+or your chosen tmpfsdir
+.Pc .
+.It
+It reads the initial environment from
+.Pa "" Ns Ar basedir Ns /env .
+.It
+If required, it stores the kernel environment into
+.Ar env_store .
+.It
+It performs
+.Dq the fifo trick ,
+i.e. it redirects its stdout to the catch-all logger's fifo, without
+blocking, before the catch-all logger is even up
+.Po
+because it's a service that will be spawned a bit later, when
+.Xr s6-svscan 8
+is executed
+.Pc .
+.It
+It forks a child.
+.Bl -bullet
+.It
+The child scans the kernel command line to find a suitable runlevel
+.Po
+.Ql default ,
+.Ql 2 ,
+.Ql 3 ,
+.Ql 4 ,
+or
+.Ql 5
+.Pc .
+If it doesn't find any kernel command line argument that defines a
+runlevel, it uses
+.Ar initdefault .
+.It
+The child becomes a session leader.
+.It
+The child blocks until the catch-all logger runs.
+.El
+.It
+It also makes the catch-all logger's fifo its stderr.
+.It
+It traps the ctrl-alt-del keyboard combination.
+.It
+It
+.Xr exec 3 Ns
+s into
+.Xr s6-svscan 8
+with
+.Pa /run/service
+as its
+.Xr s6-scan-directory 7
+.Po
+or
+.Pa "" Ns Ar tmpfsdir Ns /service
+.Pc .
+.Bl -bullet
+.It
+.Xr s6-svscan 8
+spawns the early services that are defined in
+.Pa "" Ns Ar basedir Ns /run-image/service ,
+and have been copied into
+.Pa /run/service
+.Po
+or
+.Pa "" Ns Ar tmpfsdir Ns /service
+.Pc .
+.It
+One of those early services is
+.Ql s6-svscan-log ,
+which is the catch-all logger.
+When this service is up,
+.Nm Ap
+s child unblocks.
+.It
+The child
+.Xr exec 3 Ns
+s into
+.Pa "" Ns Ar basedir Ns /scripts/rc.init .
+The first argument to
+.Pa rc.init
+is the chosen runlevel.
+The kernel command line, as given by the kernel to
+.Nm
+.Po
+i.e. without the
+.Ql key=value
+arguments, which were passed into
+.Nm Ap
+s environment and were stored into
+.Ar env_store
+.Pc ,
+makes for the rest of the arguments given to
+.Pa rc.init .
+.El
+.El
+.Pp
+By the time
+.Pa rc.init
+runs,
+.Xr s6-svscan 8
+is running as pid 1 and has spawned its early services \(em at least
+the catch-all logger, and the other services, including the early
+getty if it has been defined, are started in parallel and will be
+ready instantly.
+.Pa rc.init
+can then perform
+.Em stage 2
+of the initialization process, i.e. the handoff to the service
+manager.
+.Pp
+The
+.Nm
+binary is not meant to be called directly, or be linked to
+.Pa /sbin/init
+directly, because it takes command-line options.
+Instead, after an
+.Xr s6-linux-init-maker 8
+invocation, the
+.Ar bin/
+subdirectory of the target will contain a script called
+.Pa init ,
+which
+.Xr exec 3 Ns
+s into
+.Nm
+with the appropriate command-line options, and is suitable as an
+.Pa /sbin/init
+program.
+The
+.Ar bin/
+subdirectory should be copied by the administrator into
+.Ar /sbin
+for full interface compatibility with sysvinit.
+.Sh OPTIONS
+These options should exactly mirror the options with the same name
+that have been given to
+.Xr s6-linux-init-maker 8 .
+If there is a discrepancy, the system might not boot.
+.Bl -tag -width x
+.It Fl c Ar basedir
+Read all its initialization data from
+.Ar basedir .
+If the data has not indeed been copied to
+.Ar basedir ,
+the system will not boot.
+.It Fl p Ar initial_path
+The initial value for the
+.Ev PATH
+environment variable.
+.It Fl s Ar env_store
+The place where to dump kernel environment variables.
+.It Fl m Ar initial_umask
+The initial file umask.
+.It Fl Ar slashdev
+Mount a devtmpfs on
+.Ar slashdev .
+By default, no such mount is performed \(em it is assumed that a
+devtmpfs is automounted on
+.Pa /dev
+at boot time by the kernel.
+.It Fl D Ar initdefault
+The initial runlevel to boot to, if it isn't overridden by the kernel
+command line.
+This is only given as a first argument to
+.Pa rc.init .
+Default is
+.Ql default .
+.It Fl n
+Instead of unmounting
+.Pa /run
+and mounting a tmpfs on it, just remount
+.Pa /run .
+.It Fl N
+Do not touch
+.Pa /run
+at all.
+.It Fl C
+Run in a container.
+This option modifies a few of the operations described in
+.Sx Early preparation ,
+to accommodate running in a container instead of on real hardware.
+For instance: it does not scan the command line for a specific
+runlevel, it does not trap ctrl-alt-del, and before anything else it
+waits for its descriptor 3, if present, to close.
+.Po
+Docker uses this fd 3 mechanism as synchronization between the Docker
+daemon and the container's
+.Pa init
+.Pc .
+.It Fl B
+Do not run the catch-all logger.
+This option removes the catch-all-logger-related operations from the list in
+.Sx Early preparation ;
+.Nm
+will not redirect output descriptors, and will use a different
+synchronization mechanism to ensure
+.Pa rc.init
+only runs when
+.Xr s6-svscan 8
+is ready.
+.El
+.Sh EXIT STATUS
+.Nm
+never exits.
+It spawns the
+.Pa rc.init
+script and
+.Xr exec 3 Ns
+s into
+.Xr s6-svscan 8 ,
+which runs forever until the machine stops or reboots.
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

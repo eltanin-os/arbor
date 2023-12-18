@@ -1,0 +1,274 @@
+.Dd November 10, 2023
+.Dt S6-LINUX-INIT-QUICKSTART 7
+.Os
+.Sh NAME
+.Nm s6-linux-init-quickstart
+.Nd quickstart and FAQ for s6-linux-init
+.Sh DESCRIPTION
+.Ss Quickstart
+.Bl -enum
+.It
+Install all the s6-linux-init dependencies:
+.Bl -bullet
+.It
+skalibs[1]
+.It
+execline[2]
+.It
+s6[3]
+.El
+.It
+Save and remove your old
+.Pa /etc/s6-linux-init
+directory, if you have one.
+.It
+Install the s6-linux-init package itself.
+.It
+Save your old
+.Pa /sbin/init ,
+.Pa /sbin/telinit ,
+.Pa /sbin/shutdown ,
+.Pa /sbin/halt ,
+.Pa /sbin/poweroff ,
+and
+.Pa /sbin/reboot
+binaries.
+.It
+Make sure you have a
+.Pa /run
+directory.
+.It
+Edit the scripts in
+.Pa /etc/s6-linux-init/skel .
+.It
+Check that your devtmpfs is automounted by your kernel at boot time.
+If it is not, add the
+.Ql -d /dev
+option to the
+.Xr s6-linux-init-maker 8
+command line below.
+.It
+As root, run:
+.Bd -literal
+rm -rf /tmp/blah
+s6-linux-init-maker -1 -G "/sbin/getty 38400 tty1" /tmp/blah
+rm -rf /etc/s6-linux-init/current
+mv /tmp/blah /etc/s6-linux-init/current
+cp -a /etc/s6-linux-init/current/bin/* /sbin/
+.Ed
+.It
+Reboot.
+Warning: use your
+.Em old
+reboot command, that you saved, not the new one that has just been
+created by
+.Xr s6-linux-init-maker 8 ,
+because you're still running on your old init system and need to use a
+reboot command that matches it.
+.It
+After the reboot: congratulations! your machine is now running an
+s6-based init system.
+.It
+To shut the machine down, use
+.Pa /sbin/shutdown ,
+.Pa /sbin/halt ,
+.Pa /sbin/poweroff
+or
+.Pa /sbin/reboot
+as usual.
+.El
+.Ss FAQ
+.Bl -bullet
+.It
+How do I convert a runit setup to an s6 one ?
+.Pp
+A runit[4] and an s6 setup are very similar.
+There are just three things you need to pay attention to:
+.Bl -bullet
+.It
+.Ql runsv
+supports customized controls, whereas
+.Xr s6-supervise 8
+does not.
+Fortunately, very few services use the customized control feature of
+runit; and s6 supports customizing the termination signal to a process
+via the down-signal file
+.Po
+cf.
+.Xr s6-service-directory 7
+.Pc ,
+which can replace 99% of the legit uses of customized control.
+So, you should check your service directories for
+.Pa control/
+subdirectories, and adapt them depending on how your service handles
+controls.
+If a service does not use customized controls, you don't need to make
+any change and the service will run under
+.Xr s6-supervise 8
+as is.
+.It
+The interface of
+.Ql svlogd ,
+runit's logger, is different from the interface of
+.Xr s6-log 8 ,
+s6's logger.
+Namely,
+.Ql svlogd
+reads a config file in its log directory, while
+.Xr s6-log 8
+reads its configuration on its command line.
+If you have logging services that use
+.Ql svlogd ,
+you should read their configuration in their logdir, and translate it
+to the proper
+.Xr s6-log 8
+invocation.
+.It
+And, finally, the init process.
+Understanding how s6-linux-init works may seem daunting, but using it
+really is a lot simpler than it looks.
+.El
+.Pp
+In a runit setup, you have the
+.Xr runit 8
+program running as pid 1, and sequentially spawning
+.Pa /etc/runit/1 ,
+then
+.Pa /etc/runit/2
+which contains the invocation of
+.Xr runsvdir 8 ,
+and finally
+.Pa /etc/runit/3
+at shutdown time when
+.Xr runsvdir 8
+is dead.
+.Pp
+In an s6 setup that you have booted via s6-linux-init, the scanner,
+.Xr s6-svscan 8
+.Po
+the equivalent of
+.Xr runsvdir 8
+.Pc ,
+runs as pid 1, very early, and remains there for the whole lifetime of
+the machine.
+At boot time, the
+.Pa /etc/s6-linux-init/current/scripts/rc.init
+script is run, with the supervision tree already in place; when it
+exits, the system is supposed to be in a fully-booted, stable state.
+At shutdown time
+.Po
+on receipt of a shutdown command
+.Pc ,
+the
+.Pa /etc/s6-linux-init/current/scripts/rc.shutdown
+script is run, with the supervision tree still in place; when it
+exits, the filesystems will be unmounted and the machine will be
+rebooted and/or stopped.
+.Pp
+So, the quickest way to port a runit setup to an s6-linux-init one is
+to:
+.Bl -enum
+.It
+Copy your
+.Pa /etc/runit/1
+to
+.Pa /etc/s6-linux-init/current/scripts/rc.init .
+The only thing you should remove here is the creation of
+.Pa /run ,
+because
+.Xr s6-linux-init 8
+has already mounted a tmpfs on
+.Pa /run .
+But basically all the rest should stay.
+.It
+Also copy the parts of
+.Pa /etc/runit/2 ,
+if any, that come before the
+.Xr runsvdir 8
+invocation, to
+.Pa /etc/s6-linux-init/current/scripts/rc.init .
+.It
+At the end of
+.Pa /etc/s6-linux-init/current/scripts/rc.init ,
+symlink all your runit service directories to
+.Pa /run/service ,
+and call
+.Ql s6-svscanctl -a /run/service .
+This will start and supervise all the services that you have
+symlinked, the way the original
+.Xr runsvdir 8
+invocation would have.
+.It
+Copy your
+.Pa /etc/runit/3
+to
+.Pa /etc/s6-linux-init/current/scripts/rc.shutdown ,
+removing the parts that unmount the filesystems and reboot the
+machine.
+.El
+.Pp
+Once you have done that, you have a literal translation of your runit
+system into an s6 system, and it should boot, and work, albeit in a
+non-idiomatic, unoptimized way.
+If you don't want to overwrite your
+.Pa /sbin/init
+binary, you can boot with
+.Ql init=/etc/s6-linux-init/current/bin/init
+as a kernel command line argument to reach the
+.Xr s6-linux-init 8
+entry point.
+.Pp
+Further work to make the setup prettier can include:
+.Bl -bullet
+.It
+Identifying daemons you run in
+.Pa /etc/s6-linux-init/current/scripts/rc.init
+and making them early services instead.
+.It
+Or, more idiomatically, analyze your whole boot sequence in
+.Pa /etc/s6-linux-init/current/scripts/rc.init
+and the daemons in your runit service directories, and convert the
+boot sequence so it can be handled by a service manager, for instance
+s6-rc.
+.El
+.Pp
+Colin Booth has a series of posts on Reddit[5] that go into more
+detail on how to use a Void Linux distribution, which natively uses
+runit, with the s6 ecosystem instead; there are step-by-step tutorials
+as well as turnkey solutions, and it is recommended reading even if
+you do not use Void.
+.El
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-maker 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+[1]
+.Lk https://skarnet.org/software/skalibs/
+.Pp
+[2]
+.Lk https://skarnet.org/software/execline/
+.Pp
+[3]
+.Lk https://skarnet.org/software/s6/
+.Pp
+[4]
+.Lk http://smarden.org/runit/index.html
+.Pp
+[5]
+.Lk https://www.reddit.com/r/voidlinux/comments/khn1jy/adventures_in_booting_void_on_s6/
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/quickstart.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

@@ -1,0 +1,938 @@
+.Dd November 10, 2023
+.Dt S6-LINUX-INIT-MAKER 8
+.Os
+.Sh NAME
+.Nm s6-linux-init-maker
+.Nd create a directory containing a script that is suitable as an
+.Pa /sbin/init
+program, together with the necessary support files
+.Sh SYNOPSIS
+.Nm
+.Op Fl V Ar boot_verbosity
+.Op Fl c Ar basedir
+.Op Fl u Ar log_user
+.Op Fl G Ar early_getty
+.Op Fl 1
+.Op Fl L
+.Op Fl p Ar initial_path
+.Op Fl m Ar initial_umask
+.Op Fl t Ar timestamp_style
+.Op Fl d Ar slashdev
+.Op Fl s Ar env_store
+.Op Fl e Ar initial_envvar ...
+.Op Fl q Ar finalsleeptime
+.Op Fl D Ar initdefault
+.Op Fl n | Fl N
+.Op Fl f Ar skeldir
+.Op Fl R Ar resource_limit_list
+.Op Fl C
+.Op Fl B
+.Op Fl S
+.Ar dir
+.Sh DESCRIPTION
+.Nm
+reads configuration options on the command line, and outputs a
+directory to place in the root filesystem.
+That directory contains a script that is suitable as an
+.Pa /sbin/init
+program as well as all the necessary files that this script needs to
+properly boot and bring up a full s6[1] infrastructure.
+.Pp
+.Nm
+only writes scripts.
+At boot time, these scripts will call commands provided by other
+skarnet.org packages such as execline[2] and s6.
+It is the responsibility of the administrator to make sure that all
+the dependencies are properly installed at boot time, and that the
+correct options have been given to
+.Nm
+so that the programs are found on the root filesystem of the machine.
+If it is not the case, the system will fail to boot.
+.Pp
+.Nm
+must be run on the machine that will boot an s6-based system.
+.Pp
+It normally should be
+.Em run as root .
+It supports not running as root for a small amount of very specific
+cases; but you should run it as root unless you know exactly what you
+are doing.
+.Pp
+.Nm
+parses options on its command line.
+.Pp
+It writes data into a directory
+.Ar dir ,
+which must not exist beforehand.
+.Pp
+Once the command has been run and
+.Ar dir
+has been created, there are a few manual steps to take:
+.Bl -enum
+.It
+.Nm
+has copied some scripts from the
+.Pa /etc/s6-linux-init/skel
+directory
+.Po
+or the directory you gave as an argument to the
+.Ql --skeldir
+configure option at build time
+.Pc
+to the
+.Pa "" Ns Ar dir Ns /scripts
+directory.
+You should
+.Em edit these scripts
+and adapt them to your use case.
+.Po
+Or you could edit the skeleton scripts before running
+.Nm .
+.Pc
+The scripts are:
+.Bl -tag -width x
+.It Pa rc.init
+This script will be run as
+.Em stage 2 initialization ,
+i.e. the initialization that happens once
+.Xr s6-svscan 8
+is running as process 1, and should contain all your normal system
+bootup tasks.
+Typically, it should initialize the service manager and then order it
+to bring the machine state to its fully operational state.
+.Pa rc.init
+is given the default
+.Em runlevel
+as a first argument
+.Po
+i.e. the name of the state the machine should be brought to, traditionally
+.Ql default
+for OpenRC and
+.Ql 2
+or
+.Ql 5
+for sysv-rc
+.Pc ,
+and the rest of the command line is made of the kernel's command line
+except for the kernel arguments of the
+.Ql key=value
+form, which have been stored into
+.Ar env_store .
+If the
+.Fl C
+option has been given to
+.Nm
+and the system is indeed running in a container, the rest of the
+command line is just the command line that has been given to the
+container's
+.Pa init
+.Po
+e.g. for Docker: the CMD
+.Pc .
+Note that the
+.Pa runlevel
+script should not be invoked in a container, which does not have a
+notion of runlevels.
+.It Pa rc.shutdown
+This script will be run as the
+.Em shutdown sequence ,
+when the administrator runs the
+.Pa shutdown ,
+.Pa halt ,
+.Pa poweroff
+or
+.Pa reboot
+command.
+.Po
+As well, for non-containerized systems, as
+.Ql init 0 ,
+.Ql init 6 ,
+.Ql telinit 0
+and
+.Ql telinit 6
+for sysvinit compatibility reasons.
+.Pc
+It should ask the service manager to bring all the services down, and
+exit when it's done
+.Po
+in other words: it should not try to perform a hard
+halt/poweroff/reboot itself.
+.Pc
+No arguments are given to this script.
+.It Pa runlevel
+This script will be invoked for every
+.Em runlevel change ,
+i.e. change of machine states.
+It is given one argument: the name of the runlevel to change to.
+Typically, the
+.Pa runlevel
+script should just invoke the service manager, asking it to bring the
+machine state to the wanted runlevel.
+In a containerized system, this script should not be used at all.
+.El
+.It
+Copy the
+.Ar dir
+directory to the place declared as
+.Ar basedir
+.Po
+.Pa /etc/s6-linux-init/current
+by default
+.Pc .
+Be careful: it contains fifos, files with precise uid/gid permissions,
+and files with non-standard access rights, so be sure to copy it
+verbatim.
+The
+.Xr s6-hiercopy 1
+tool can do it, as well as the GNU or busybox
+.Ql cp -a
+or
+.Xr mv 1
+commands.
+.It
+Back up your
+.Pa /sbin .
+Then copy, link or symlink all the scripts and symlinks in the
+.Pa "" Ns Ar basedir Ns /bin
+directory into
+.Pa /sbin .
+In particular, the
+.Pa "" Ns Ar basedir Ns /bin/init
+script should be accessible as
+.Pa /sbin/init .
+.El
+.Ss Boot sequence
+When the kernel boots, it may run an initramfs first, but in any case
+it then runs the
+.Pa /sbin/init
+script, also known as
+.Em stage 1 .
+This script is just an execution of the
+.Xr s6-linux-init 8
+program with some command-line options that are directly transferred
+from the
+.Nm
+invocation.
+Refer to the
+.Xr s6-linux-init 8
+man page to know exactly what it does.
+.Ss Organization of the created directory
+If
+.Nm
+returns successfully,
+.Ar dir
+contains data that will be used at boot time.
+.Po
+Actually,
+.Ar basedir
+will be used at boot time, not
+.Ar dir .
+Do not forget to copy
+.Ar dir
+to
+.Ar basedir
+once you have checked you are happy with what
+.Nm
+has created.
+.Pc
+.Pp
+This boot-time data is made of several subdirectories:
+.Bl -tag -width x
+.It Pa bin
+This subdirectory contains scripts and symlinks that should be copied to
+.Pa /sbin
+or
+.Pa /bin .
+There is an
+.Pa init
+program performing stage 1 init, a
+.Pa telinit
+program to change runlevels, and utilities to order a machine
+shutdown.
+.It Pa env
+This subdirectory is the envdir that is used to store the global
+environment.
+It will be read at boot time by stage 1 init, and transmitted to all
+spawned processes.
+.It Pa scripts
+This subdirectory contains a copy of the skeleton scripts that have
+been installed in
+.Pa /etc/s6-linux-init/skel
+.Po
+or the argument to the
+.Ql --skeldir
+configure option at build time
+.Pc .
+These scripts should be edited before booting.
+They are described above.
+.It Pa run-image
+This is a file hierarchy that will be copied verbatim at boot time to
+the newly made and mounted
+.Pa /run
+tmpfs
+.Po
+or whatever your tmpfsdir is
+.Pc .
+The subdirectories it contains are the following:
+.Bl -tag -width x
+.It Pa uncaught-logs
+This is the directory where the catch-all logger will store and rotate
+the error messages produced by the s6 supervision tree and the
+services that do not redirect their own logs.
+Not present if the
+.Fl B
+option has been given.
+.It Pa service
+.Pa /run/service
+will be the
+.Xr s6-scan-directory 7 .
+It initially contains a
+.Pa .s6-svscan
+subdirectory that tells
+.Xr s6-svscan 8
+what to do if it receives a signal
+.Po
+typically via the ctrlaltdel combination
+.Pc
+and ensures a hard reboot if
+.Xr s6-svscan 8
+ever fails.
+It also contains a list of early services, i.e. s6
+services that will be run at boot time as soon as
+.Xr s6-svscan 8
+is executed.
+These services are:
+.Bl -tag -width x
+.It Ql s6-svscan-log
+The catch-all logger.
+Not present if the
+.Fl B
+option has been given.
+.It Ql s6-linux-init-shutdownd
+A service that listens to shutdown commands such as
+.Pa reboot
+and triggers the software shutdown procedure.
+.It Ql s6-linux-init-runleveld
+A service that listens to runlevel change commands such as
+.Pa telinit
+and calls the
+.Pa runlevel
+script in a reproducible environment to bring the machine to the
+wanted state.
+Not present if the
+.Fl C
+option has been given.
+.It Ql s6-linux-init-logouthookd
+The
+.Dq clean up user utmp records at logout time
+service.
+See the
+.Xr s6-linux-init-logouthookd 8
+page for details.
+Not present if the
+.Fl L
+option has not been given.
+.It Ql s6-linux-init-early-getty
+The early getty service, that will allow a user to log in even if
+.Pa rc.init
+fails to bring the machine to a state where logins are possible.
+Not present if the
+.Fl G
+option has not been given.
+.El
+.El
+.El
+.Pp
+A directory created by
+.Nm
+is only valid on the machine it has been created on.
+Pre-creating init directories for other machines is not supported.
+Of course, the scripts are editable, so advanced users can run
+.Nm
+to create a basic template, and then make their own modifications.
+.Pp
+After booting,
+.Ar basedir
+should remain untouched during the lifetime of the machine, because
+the machine state change and shutdown procedures will look for data in
+.Ar basedir .
+New invocations of
+.Nm
+should use a different
+.Ar basedir .
+.Pp
+The difficult parts of running
+.Xr s6-svscan 8
+as process 1 are:
+.Bl -bullet
+.It
+The fact that the supervision tree requires writable directories, so
+in order to accommodate read-only root filesystems, there needs to be
+a tmpfs mounted before
+.Xr s6-svscan 8
+is run.
+.It
+The catch-22 coming from the need to redirect the supervision tree's
+output away from
+.Pa /dev/console
+.Po
+which is fine for a first process invocation but impractical for log
+management of a whole process tree
+.Pc
+and into a logger that is itself managed by the supervision tree it's
+reading data from.
+.It
+Keeping appearances of compatibility with another init system is
+difficult: in particular, the mechanisms around the shutdown procedure
+are fundamentally different from about any other init system, so even
+a simple command such as
+.Pa reboot
+needs an ad-hoc implementation.
+.It
+Even for simple systems such as containerized ones, making sure that
+the wanted commands only run when
+.Xr s6-svscan 8
+is ready requires a bit of manipulation.
+.Pp
+The main benefit of
+.Nm
+is that it offers transparent compatibility while automating the
+tricky technical parts.
+Whether it is used for real hardware or for containers,
+.Nm
+gives you a turnkey init system that frees your mind from the details
+of getting a s6 supervision tree running prior to everything else.
+.El
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl V Ar boot_verbosity
+How verbose the boot will be.
+Default is
+.Ql 1 ,
+which means that only important warnings will be printed.
+Increasing this value may yield more, but usually harmless, warning
+messages.
+.It Fl c Ar basedir
+At boot time,
+.Em stage 1 ,
+which should be accessible as
+.Pa "" Ns Ar basedir Ns /init ,
+will read its read-only data from
+.Ar basedir .
+After running
+.Nm ,
+you should make sure to copy the created directory
+.Ar dir
+to
+.Ar basedir .
+.Ar basedir
+must be absolute.
+Default is
+.Pa /etc/s6-linux-init/current .
+.It Fl u Ar log_user
+The catch-all logger will run as the
+.Ar log_user
+user.
+Default is
+.Ql root .
+.It Fl G Ar early_getty
+If this option is set,
+.Nm
+will define an additional s6 service that will be named
+.Ql s6-linux-init-early-getty
+and started at the same time
+.Pa rc.init
+is executed.
+This early service should be a getty, or equivalent, to allow logins
+even if
+.Em stage2
+fails.
+.Ar early_getty
+should be a simple command line: for instance,
+.Ql /sbin/getty 38400 tty1 .
+By default, no early service is defined.
+.It Fl 1
+Make it so that all the messages that are sent to the catch-all logger
+.Po
+i.e. all the error messages that are not caught by a dedicated logger,
+as well as the output from
+.Pa rc.init ,
+.Pa runlevel
+and
+.Pa rc.shutdown
+.Pc
+are also copied to
+.Pa /dev/console .
+.Po
+Timestamps are not copied to
+.Pa /dev/console .
+.Pc
+This is generally useful to debug a system at a glance, but if a
+failing program keeps sending error messages, it may interfere with
+comfortable usage of an early getty.
+A common workaround is to make the early getty start on
+.Pa tty2
+and leave
+.Pa tty1
+for
+.Pa /dev/console
+to print on.
+.It Fl L
+Add an early
+.Ql s6-linux-init-logouthookd
+service to clean up utmp records at user logout time.
+Check the
+.Xr s6-linux-init-logouthookd 8
+page for details.
+.It Fl p Ar initial_path
+The initial value for the
+.Ev PATH
+environment variable, that will be transmitted to all the starting
+process unless it's overridden by a
+.Ev PATH
+declaration via the
+.Fl e
+option.
+It is absolutely necessary for execline and s6 binaries to be accessible via
+.Ar initial_path ,
+else the machine will not boot.
+Default is
+.Ql /usr/bin:/bin .
+.It Fl m Ar initial_umask
+The value of the initial file umask for all the starting processes, in
+octal.
+Default is
+.Ql 022 .
+.It Fl t Ar timestamp_style
+How logs are timestamped by the catch-all logger.
+.Ql 0
+means no timestamp,
+.Ql 1
+means external TAI64N format[3],
+.Ql 2
+means ISO 8601 format[4], and
+.Ql 3
+means both.
+Default is
+.Ql 1 .
+.It Fl d Ar slashdev
+Mount a devtmpfs.
+If this option is given,
+.Xr s6-linux-init 8
+will mount a devtmpfs pseudo-filesystem on
+.Ar slashdev .
+This is useful if the kernel has not been configured to mount the
+devtmpfs at boot time and there is no static
+.Ar /dev .
+By default, it is assumed that there is a suitable
+.Ar /dev
+at boot time, and no additional devtmpfs is mounted.
+.It Fl s Ar env_store
+Stage 1 init sometimes inherits a few environment variables from the
+kernel.
+.Po
+These variables correspond to the arguments on the kernel command line
+that are of the form
+.Ql key=value .
+.Pc
+It empties its environment before spawning
+.Pa rc.init
+and executing into
+.Xr s6-svscan 8 ,
+in order to prevent those
+.Dq kernel
+environment variables from leaking into the whole process tree.
+However, sometimes those variables are needed at a later time; in that
+case, giving the
+.Fl s
+option to
+.Nm
+makes stage 1 init dump the
+.Dq kernel
+environment variables into the
+.Ar env_store
+directory
+.Po
+under a format that is later readable with
+.Ql s6-envdir -fn
+.Pc
+before erasing them.
+.Ar env_store
+should obviously be a writable directory, so it should be located under
+.Pa /run
+.Po
+or your chosen tmpfsdir
+.Pc !
+If this option is not given, the environment inherited from the kernel
+isn't saved anywhere \(em which is the default.
+.It Fl e Ar initial_envvar
+This option can be repeated.
+For every
+.Ar initial_envvar ,
+.Nm
+will adjust the global environment directory in
+.Pa "" Ns Ar dir Ns /env .
+.Ar initial_envvar
+must either be of the form
+.Ar VAR ,
+to make sure that
+.Ar VAR
+does not appear in the global environment, or of the form
+.Ql Ar VAR Ns = Ns Ar VALUE ,
+to add an environment variable
+.Ar VAR
+with the value
+.Ar VALUE .
+The global environment is the environment that every supervised process
+.Po
+as well as the
+.Pa rc.init
+script
+.Pc
+will run with, so it will be inherited by default by every process
+running on the system.
+The
+.Ev TZ
+variable, for instance, is a good candidate to be set in the global
+environment.
+.It Fl q Ar finalsleeptime
+When the machine shuts down, all processes that have not already been
+killed during
+.Pa shutdownscript
+will receive a
+.Dv SIGTERM
+or a
+.Dv SIGHUP
+to allow them to exit gracefully; then, after
+.Ar finalsleeptime
+milliseconds, they will receive a
+.Dv SIGKILL
+and the shutdown sequence will go on.
+This option configures the amount of time that will elapse between the
+.Sm off
+.Dv SIGTERM
+/
+.Dv SIGHUP
+.Sm on
+and the
+.Dv SIGKILL .
+Default is
+.Ql 3000 ,
+meaning a grace period of 3 seconds.
+.It Fl D Ar initdefault
+Boot the system with a runlevel set to
+.Ar initdefault ,
+which can be an arbitrary string, but is usually
+.Ql 2 ,
+.Ql 3 ,
+.Ql 5
+.Po
+traditional sysvinit behaviour
+.Pc
+or
+.Ql default
+.Po
+OpenRC behaviour
+.Pc .
+Default is
+.Ql default .
+Note that if a
+.Ql 2 ,
+.Ql 3 ,
+.Ql 4 ,
+.Ql 5 ,
+or
+.Ql default
+argument is encountered in the kernel command line, it will be
+interpreted as the runlevel to boot the system on, and will override
+the default given here.
+.It Fl n
+At boot time, assume that a tmpfs is already present on
+.Pa /run
+.Po
+or the argument that was given to the
+.Ql --tmpfsdir
+configure option at build time
+.Pc
+and that its contents are essential.
+Instead of unmounting
+.Pa /run
+then mounting a tmpfs on it,
+.Xr s6-linux-init 8
+will simply remount
+.Pa /run .
+This option is useful when
+.Xr s6-linux-init 8
+is used on a distribution that imposes its initramfs and said
+initramfs writes data to
+.Pa /run
+that is then used by the distribution's initialization scripts.
+.Po
+An initramfs should normally be transparent and leave no trace in the
+filesystem; unfortunately, a lot of distributions do not care.
+.Pc
+By default,
+.Pa /run
+will be unmounted at boot time
+.Po
+just in case
+.Pc ,
+and then a tmpfs will be mounted on it.
+.Em \&Do not
+use this option if you are not sure: failure to remount
+.Pa /run
+will cause init to die and the kernel to panic.
+This option is incompatible with the
+.Fl N
+option.
+.It Fl N
+At boot time, do not perform mounting/unmounting/remounting on
+.Pa /run
+.Po
+or the tmpfsdir declared at build time
+.Pc
+.Em at all .
+By default, a tmpfs is mounted on
+.Pa /run
+at boot time.
+This option is useful when
+.Xr s6-linux-init 8
+is used to boot on an initramfs that will remain the de facto rootfs
+of the system
+.Po
+which is the case for instance in certain live CDs or certain embedded
+devices
+.Pc ,
+in which case the rootfs is already read-write and in RAM and mounting
+an additional tmpfs is unnecessary.
+.Em \&Do not
+use this option if your rootfs is read-only: failure to write to
+.Pa /run
+will cause init to die and the kernel to panic.
+This option is incompatible with the
+.Fl n
+option.
+.It Fl f Ar skeldir
+Copy the skeleton scripts from directory
+.Ar skeldir .
+By default,
+.Ar skeldir
+is
+.Pa /etc/s6-linux-init/skel ,
+or the directory that has been given as an argument to the
+.Ql --skeldir
+configure option at build time.
+This option is typically useful when distributions run
+.Nm
+in packaging scripts, when preparing files in a staging directory.
+.It Fl R Ar resource_limit_list
+Declare global resource limits
+.Po
+a.k.a.
+.Dq hard limits
+.Pc
+for the system to be booted.
+.Ar resource_limit_list
+is a comma-separated list of instructions such as
+.Ql o2000 ,
+.Ql d=
+or
+.Ql c0 :
+a letter followed by either the character
+.Ql = ,
+which means unlimited, or a number, which is the value of the resource
+limit.
+The letter specifies the resource being addressed, as defined by the
+option letters used by
+.Xr s6-softlimit 8 :
+for instance,
+.Ql c
+means core file size limit, and
+.Ql o
+means open fds limit.
+Note that unlike
+.Xr s6-softlimit 8 ,
+which only sets soft limits, i.e. process hierarchy-wide limits, the
+values given here declare hard limits that will be enforced for the
+whole system to be booted: it will be impossible to raise soft limits
+above these values.
+.Em Warning :
+misuse of this option is likely to make your system unbootable; make
+sure you don't prevent process 1 and the whole process hierarchy from
+allocating enough resources.
+.It Fl C
+Create a set of scripts that is suitable for running
+.Em in a container .
+This modifies some behaviours:
+.Bl -bullet
+.It
+.Dv SIGTERM
+will be caught by
+.Xr s6-svscan 8 ,
+and cause an orderly shutdown of the container, as if the
+.Pa poweroff
+script had been invoked.
+.It
+No early
+.Ql runleveld
+service is created.
+Changing runlevels via
+.Xr s6-linux-init-telinit 8
+will be unsupported in a container.
+.It
+Consequently, the first argument to the
+.Pa rc.init
+script will always be
+.Ql default
+.Po
+or
+.Ar initdefault
+if the
+.Fl D
+option has been given to
+.Nm
+.Pc .
+The rest of the arguments to the
+.Pa rc.init
+script will be the arguments given to the
+.Pa init
+program when running the container.
+.It
+If the
+.Fl s
+option has been given,
+.Ar env_store
+will contain the initial environment given to the container.
+.It
+The ultimate output fallback
+.Po
+i.e. the place where error messages go when nothing catches them,
+e.g. the error messages from the catch-all logger and the
+.Xr s6-supervise 8
+process managing the catch-all logger
+.Pc
+is not
+.Pa /dev/console ,
+but the descriptor that was
+.Pa init Ap
+s standard error.
+.It
+Stopping the container with
+.Pa reboot
+will make the container's init program report being killed by a
+.Dv SIGHUP .
+Stopping it with
+.Pa poweroff
+will make it report being killed by a
+.Dv SIGINT .
+This is according to the
+.Xr reboot 2
+specification.
+.It
+Stopping the container with
+.Pa halt ,
+however, is different.
+It will make the container's pid 1 read a number in the
+.Pa /run/s6-linux-init-container-results/exitcode
+file
+.Po
+the
+.Pa /run
+prefix can be changed at build time via the
+.Ql --tmpfsdir
+configure option
+.Pc ,
+and exit with the code it has read.
+.Po
+Default is 0.
+.Pc
+This means that in order to run a command in a container managed by
+.Xr s6-linux-init 8
+and exit the container when the command dies while reporting the exit
+code to its parent, you should:
+.Bl -bullet
+.It
+Run that command via
+.Pa rc.init .
+.It
+Store its exit code in the
+.Pa /run/s6-linux-init-container-results/exitcode
+file.
+.It
+Call
+.Pa halt .
+.El
+.Pp
+All the running services will be killed, all the zombies will be
+reaped, and the container will exit with the required exit code.
+.El
+.It Fl B
+Run the system without a catch-all logger.
+On a non-containerized system, that means that all the logs from the
+s6 supervision tree will go to
+.Pa /dev/console ,
+and that
+.Pa /dev/console
+will also be the default stdout and stderr for services running under
+the supervision tree: use of this option is discouraged.
+On a containerized system
+.Po
+when paired with the
+.Fl C
+option
+.Pc ,
+it simply means that these outputs go to the default stdout and stderr
+given to the container's
+.Pa init
+\(em this should generally not be the default, but might be useful in
+some cases.
+.It Fl S
+When used with the
+.Fl C
+option, set up the container so the disks are synced on container halt.
+By default, no sync is performed.
+This option has no effect when the
+.Fl C
+option is not present: on real machines, a sync is always performed
+just before a system halt.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 100
+User error.
+.It 111
+Problem occurred during the creation of the directory or its contents.
+.El
+.Sh SEE ALSO
+.Xr s6-linux-init-echo 1 ,
+.Xr s6-linux-init-overview 7 ,
+.Xr s6-linux-init-quickstart 7 ,
+.Xr s6-linux-init-why 7 ,
+.Xr s6-linux-init 8 ,
+.Xr s6-linux-init-hpr 8 ,
+.Xr s6-linux-init-logouthookd 8 ,
+.Xr s6-linux-init-nuke 8 ,
+.Xr s6-linux-init-shutdown 8 ,
+.Xr s6-linux-init-shutdownd 8 ,
+.Xr s6-linux-init-telinit 8 ,
+.Xr s6-linux-init-umountall 8
+.Pp
+[1]
+.Lk https://skarnet.org/software/s6/
+.Pp
+[2]
+.Lk https://skarnet.org/software/execline/
+.Pp
+[3]
+.Lk https://cr.yp.to/libtai/tai64.html
+.Pp
+[4]
+.Lk https://www.iso.org/iso/home/standards/iso8601.htm
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-linux-init/s6-linux-init-maker.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
