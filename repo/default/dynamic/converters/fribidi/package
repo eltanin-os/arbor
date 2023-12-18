@@ -1,0 +1,15 @@
+name:fribidi
+version:1.0.13
+license:lgpl-2.1+
+description:Free Implementation of the Unicode Bidirectional Algorithm.
+cksum:b603a1cc7458c5beb57306c22e8eb6d1612ffa1ac10895eca02423be2d243c54141ebf7699b691ea61988d8315e1d56099185e033e1b728bb73cfd72f8a8754c
+urls{
+https://github.com/fribidi/fribidi/releases/download/v$version/fribidi-$version.tar.xz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+libc
+}
