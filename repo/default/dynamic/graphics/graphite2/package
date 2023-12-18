@@ -1,0 +1,15 @@
+name:graphite2
+version:1.3.14
+license:lgpl-2.1+,mpl-1.1
+description:Reimplementation of the SIL Graphite text processing engine;
+cksum:49a6722e5c2f307be7e27ebd706ad374ecc3eafa76ed0ffeff3ed90dfb28d6752cfefcbe78818dfd5d0e2c6d7c0f1207c3aff602cdf133faafcbd03ce2d46520
+urls{
+https://github.com/silnrsi/graphite/releases/download/$version/graphite2-$version.tgz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
