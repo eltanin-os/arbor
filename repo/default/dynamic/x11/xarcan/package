@@ -1,0 +1,27 @@
+name:xarcan
+version:20231103082845
+license:mit
+description:Patched Xserver that bridge connections to Arcan.
+cksum:b543fc4ce82f33a80277bb972142061e07346ca5a6475edc1d396c15c86853379c8f4c4e1db6c5f1782693686df731ad00a2f0d9669b1bcfb817679287a2f040
+urls{
+https://downloads.eltaninos.org/mirrors/xarcan-$version.tar.lz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+arcan
+font-util
+libc
+libdrm
+libepoxy
+libressl
+libtirpc
+libxfont2
+libxkbfile
+libxshmfence
+pixman
+xorg-proto
+xtrans
+}
