@@ -1,0 +1,17 @@
+name:fontconfig
+version:2.14.2
+license:mit
+description:Library for configuring and customizing font access.
+cksum:7097b3e6addacd905c283fb055f1b6719444b5812eabd9117e7ec6fe122ccea6c2a9c8091673d36f14143be07ab80cf318a5f288e8d0d48f5ade605eafcd532a
+urls{
+https://www.freedesktop.org/software/fontconfig/release/fontconfig-$version.tar.xz
+}
+hostdeps{
+gperf
+stdenv
+}
+makedeps{
+freetype
+libc
+python
+}
