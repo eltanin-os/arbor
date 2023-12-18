@@ -1,11 +1,11 @@
 name:xorg-proto
-version:2022.1
+version:2023.2
 license:mit
 description:Combined X.Org X11 protocol headers.
-cksum:94766e8e5464f51b817aeccd7a05d03c0c9718580d204e7280ddc79abc82b338b78bb0e492423ff09a9f486fd5adc5d2d01745714924ea09e06ee6df5b331cf5
+cksum:bbb76e3552b4343fd1e26850e3fcd5f5fa99579864af7b06e20c7431caad399caad2269eed21e50e838fe75466625768da7d4ddb51a861311d4531746e65179f
 src:xorgproto-$version
 urls{
-https://www.x.org/releases/individual/proto/xorgproto-$version.tar.bz2
+https://www.x.org/releases/individual/proto/xorgproto-$version.tar.xz
 }
 hostdeps{
 stdenv
