@@ -1,0 +1,38 @@
+diff -Naur a/alsactl/Makefile.am b/alsactl/Makefile.am
+--- a/alsactl/Makefile.am	2023-09-01 12:36:26.000000000 -0300
++++ b/alsactl/Makefile.am	2023-10-09 05:22:32.245655298 -0300
+@@ -43,10 +43,11 @@
+ endif
+ 
+ edit = \
+-	$(SED) -r -e 's,@sbindir\@,$(sbindir),g' \
+-		  -e 's,@mydatadir\@,$(mydatadir),g' \
+-		  -e 's,@daemonswitch\@,$(ALSACTL_DAEMONSWITCH),g' \
+-		  -e 's,@asoundrcfile\@,$(ASOUND_STATE_DIR)/asound.state,g' \
++	$(SED) \
++		  -e 's,@sbindir@,$(sbindir),g' \
++		  -e 's,@mydatadir@,$(mydatadir),g' \
++		  -e 's,@daemonswitch@,$(ALSACTL_DAEMONSWITCH),g' \
++		  -e 's,@asoundrcfile@,$(ASOUND_STATE_DIR)/asound.state,g' \
+ 							< $< > $@ || rm $@
+ 
+ alsa-state.service: alsa-state.service.in
+diff -Naur a/alsactl/Makefile.in b/alsactl/Makefile.in
+--- a/alsactl/Makefile.in	2023-09-01 13:02:19.000000000 -0300
++++ b/alsactl/Makefile.in	2023-10-09 05:23:29.095653327 -0300
+@@ -468,10 +468,11 @@
+ @HAVE_SYSTEMD_TRUE@	alsa-restore.service
+ 
+ edit = \
+-	$(SED) -r -e 's,@sbindir\@,$(sbindir),g' \
+-		  -e 's,@mydatadir\@,$(mydatadir),g' \
+-		  -e 's,@daemonswitch\@,$(ALSACTL_DAEMONSWITCH),g' \
+-		  -e 's,@asoundrcfile\@,$(ASOUND_STATE_DIR)/asound.state,g' \
++	$(SED) \
++		  -e 's,@sbindir@,$(sbindir),g' \
++		  -e 's,@mydatadir@,$(mydatadir),g' \
++		  -e 's,@daemonswitch@,$(ALSACTL_DAEMONSWITCH),g' \
++		  -e 's,@asoundrcfile@,$(ASOUND_STATE_DIR)/asound.state,g' \
+ 							< $< > $@ || rm $@
+ 
+ CLEANFILES = \

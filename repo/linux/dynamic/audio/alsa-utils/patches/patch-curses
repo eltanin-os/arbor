@@ -1,0 +1,93 @@
+diff -Naur a/alsamixer/bindings.c b/alsamixer/bindings.c
+--- a/alsamixer/bindings.c	2023-09-01 12:36:26.000000000 -0300
++++ b/alsamixer/bindings.c	2023-10-09 05:42:25.002280571 -0300
+@@ -3,7 +3,7 @@
+ 
+ #define CNTRL(C) (C%32)
+ 
+-uint8_t textbox_bindings[KEY_MAX] = {
++uint16_t textbox_bindings[KEY_MAX] = {
+ 	['\n'] =          CMD_TEXTBOX_CLOSE,
+ 	['\r'] =          CMD_TEXTBOX_CLOSE,
+ 	[27] =            CMD_TEXTBOX_CLOSE,
+diff -Naur a/alsamixer/bindings.h b/alsamixer/bindings.h
+--- a/alsamixer/bindings.h	2023-09-01 12:36:26.000000000 -0300
++++ b/alsamixer/bindings.h	2023-10-09 05:42:18.432280799 -0300
+@@ -14,7 +14,7 @@
+ typedef uint16_t command_enum;
+ extern command_enum mixer_bindings[KEY_MAX];
+ /* No need for a 16bit type, since textbox commands don't take arguments */
+-extern uint8_t textbox_bindings[KEY_MAX];
++extern uint16_t textbox_bindings[KEY_MAX];
+ 
+ #define CMD_WITH_ARG(CMD, ARG) \
+ 	((CMD) + ((ARG) << 9))
+@@ -59,6 +59,14 @@
+ 	CMD_MIXER_MOUSE_CLICK_CONTROL_ENUM,
+ };
+ 
++#ifndef MAX_MENU_COMMAND
++#define MAX_MENU_COMMAND (MAX_COMMAND)
++#endif
++
++#ifndef MIN_MENU_COMMAND
++#define MIN_MENU_COMMAND (KEY_MAX + REQ_BASE_NUM)
++#endif
++
+ enum textbox_command {
+ 	/* Since these commands are also used by the menu widget we make use of
+ 	 * the menu_driver() request constants.
+diff -Naur a/alsamixer/configparser.c b/alsamixer/configparser.c
+--- a/alsamixer/configparser.c	2023-09-01 12:36:26.000000000 -0300
++++ b/alsamixer/configparser.c	2023-10-09 05:51:06.702262478 -0300
+@@ -316,7 +316,7 @@
+ 	int keys[3] = { -1, -1, -1 };
+ 	union {
+ 		command_enum *mixer_bindings;
+-		uint8_t *textbox_bindings;
++		uint16_t *textbox_bindings;
+ 	} bind_to = {
+ 		.mixer_bindings = mixer_bindings
+ 	};
+diff -Naur a/alsamixer/proc_files.c b/alsamixer/proc_files.c
+--- a/alsamixer/proc_files.c	2023-09-01 12:36:26.000000000 -0300
++++ b/alsamixer/proc_files.c	2023-10-09 05:51:26.155595134 -0300
+@@ -70,7 +70,7 @@
+ static void add_item(const char *file_name)
+ {
+ 	if (access(file_name, F_OK) == 0) {
+-		items[items_count] = new_item(file_name, NULL);
++		items[items_count] = new_item((char *)file_name, NULL);
+ 		if (!items[items_count])
+ 			fatal_error("cannot create menu item");
+ 		++items_count;
+diff -Naur a/alsamixer/widget.c b/alsamixer/widget.c
+--- a/alsamixer/widget.c	2023-09-01 12:36:26.000000000 -0300
++++ b/alsamixer/widget.c	2023-10-09 05:54:46.652254854 -0300
+@@ -80,7 +80,7 @@
+ 		widget->panel = new_panel(widget->window);
+ 		if (!widget->panel)
+ 			fatal_error("cannot create panel");
+-		set_panel_userptr(widget->panel, widget);
++		set_panel_userptr(widget->panel, (void *)widget);
+ 	}
+ 
+ 	if (old_window)
+@@ -113,7 +113,7 @@
+ 
+ 	active_panel = panel_below(NULL);
+ 	if (active_panel)
+-		return panel_userptr(active_panel);
++		return (void *)panel_userptr(active_panel);
+ 	else
+ 		return NULL;
+ }
+@@ -133,7 +133,7 @@
+ 
+ 	for (panel = panel_below(NULL); panel; panel = below) {
+ 		below = panel_below(panel);
+-		widget = panel_userptr(panel);
++		widget = (void *)panel_userptr(panel);
+ 		widget->window_size_changed();
+ 	}
+ }
