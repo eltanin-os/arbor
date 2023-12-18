@@ -1,0 +1,173 @@
+.Dd April 6, 2023
+.Dt S6-RC-BUNDLE 8
+.Os
+.Sh NAME
+.Nm s6-rc-bundle
+.Nd add or delete bundles from a compiled service database without having to recompile it from source
+.Sh SYNOPSIS
+.Nm
+help
+.Nm
+.Op Fl f
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+add
+.Ar bundlename
+.Ar contents...
+.Nm
+.Op Fl f
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+delete
+.Ar bundlenames...
+.Nm
+.Op Fl f
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+multiple
+.Ar args...
+.Sh DESCRIPTION
+.Nm
+expects to find a
+.Em compiled service database
+in
+.Ar compiled ;
+by default it uses the service database used by the live state in
+.Ar live .
+.Pp
+Depending on the arguments, it adds a bundle definition to this
+database, or deletes a bundle definition from it, or performs multiple
+additions/deletions.
+.Pp
+.Nm
+is an
+.Em offline
+tool, i.e. you can run it on any compiled service database without
+actually having a live set of services managed by
+.Xr s6-rc 8 .
+However, if you do have a live set, you can still run
+.Nm
+on the current database (and it is the default); it won't interfere
+with your normal service operation.
+.Ss Subcommands
+.Bl -tag -width x
+.It Ql s6-rc-bundle help
+Prints a help message on stdout.
+.It Ql s6-rc-bundle add Ar bundlename Ar contents...
+Adds a bundle named
+.Ar bundlename
+to the database, representing the services listed in
+.Ar contents .
+The arguments in
+.Ar contents...
+are resolved before the database is modified by the
+.Nm
+invocation.
+.It Ql s6-rc-bundle delete Ar bundlenames...
+Deletes bundles listed in
+.Ar bundlenames....
+.It Ql s6-rc-bundle multiple Ar args...
+Performs multiple bundle deletions and additions.
+This subcommand is best used in an execline script, because it uses
+.Xr execline-block 7 Ns
+s.
+.Pp
+.Ar args...
+is composed of:
+.Bl -bullet
+.It
+One block listing bundle names that will be deleted from the database.
+.It
+Zero or more addition definitions, each of them composed of:
+.Bl -bullet
+.It
+One argument that is the name of the bundle to add.
+.It
+One block listing the services contained in the new bundle.
+The names in the block are resolved before any addition or deletion is
+made to the database.
+.El
+.El
+.El
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl c Ar compiled
+Operate on a compiled service database in
+.Ar compiled
+instead of the current live one.
+.It Fl l Ar live
+Assume the live state is in
+.Ar live .
+This option is ignored if the
+.Fl c
+option has been given.
+Default is
+.Pa /run/s6-rc .
+The default can be changed at package compilation time, by giving the
+.Ql --livedir=live
+option to
+.Pa ./configure .
+.It Fl f
+Force.
+.Nm
+will not complain when given a nonexisting name to delete
+.Po
+it will do nothing
+.Pc ,
+or when given an existing name to add
+.Po
+it will replace the definition
+.Pc .
+By default,
+.Nm
+will complain and exit when asked to delete a nonexistent name or to
+add an existing name.
+.It Fl b
+Blocking lock.
+If the database is currently being used by another program,
+.Nm
+will wait until that other program has released its lock on the
+database, then proceed.
+By default,
+.Nm
+fails with an error message if the database is currently in use.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 1
+Identifier already exists in service database.
+.It 3
+Identifier not found in service database.
+.It 4
+Invalid or corrupted service database.
+.It 5
+Wrong identifier type for the given command.
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.El
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-bundle.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

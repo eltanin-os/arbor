@@ -1,0 +1,302 @@
+.Dd April 6, 2023
+.Dt S6-RC-DB 8
+.Os
+.Sh NAME
+.Nm s6-rc-db
+.Nd analyze a compiled service database and extract information from it
+.Sh SYNOPSIS
+.Nm
+help
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+check
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+list all|services|oneshots|longruns|bundles
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+type
+.Ar servicename
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+.Op Fl u | Fl d
+timeout
+.Ar atomicname
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+contents
+.Ar bundlename
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+.Op Fl u | Fl d
+dependencies
+.Ar servicename
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+pipeline
+.Ar longrunname
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+.Op Fl u | Fl d
+script
+.Ar oneshotname
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+flags
+.Ar atomicname
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+atomics
+.Ar servicename...
+.Nm
+.Op Fl l Ar live
+.Op Fl c Ar compiled
+.Op Fl b
+.Op Fl u | Fl d
+all-dependencies
+.Ar servicename...
+.Sh DESCRIPTION
+.Nm
+is a tool to analyze a compiled service database and extract
+information from it, and print it in a user-friendly format.
+.Pp
+It is an offline tool, i.e. you can run it on any compiled service
+database without actually having a live set of services managed by
+.Xr s6-rc 8 .
+However, if you do have a live set, you can still run
+.Nm
+on the current database (and it is the default); it won't interfere
+with your normal service operation.
+.Pp
+.Nm
+expects to find a compiled service database in
+.Ar compiled ;
+by default it uses the service database used by the live state in
+.Ar live .
+It reads and parses the compiled database it finds; depending on its
+arguments, it prints the requested information to stdout, then exits
+0.
+.Ss Subcommands
+.Bl -tag -width x
+.It Ql s6-rc-db help
+Prints a help message on stdout.
+.It Ql s6-rc-db check
+Checks the database consistency.
+Exits 4 with an error message if it finds a problem, such as a
+mismatch in the direct and reverse dependency tables, or a dependency
+cycle.
+.It Ql s6-rc-db list
+Lists all services of a given type.
+This subcommand takes a second subcommand:
+.Bl -tag -width x
+.It Ql s6-rc-db list all
+Lists everything \(em atomic services and bundles \(em contained in
+the database.
+.It Ql s6-rc-db list services
+Lists all atomic services.
+.It Ql s6-rc-db list oneshots
+Lists oneshots.
+.It Ql s6-rc-db list longruns
+Lists longruns.
+.It Ql s6-rc-db list bundles
+Lists all bundles.
+.El
+.It Ql s6-rc-db type Ar servicename
+Prints the type of
+.Ar servicename :
+oneshot, longrun or bundle.
+.It Ql s6-rc-db timeout Ar atomicname
+Prints the timeout value, in milliseconds, after which bringing
+.Ar atomicname
+up or down is considered a failure if the called script still has not
+succeeded.
+By default, or if the
+.Fl u
+option has been given to
+.Nm ,
+the timeout for
+.Em up
+is printed; the timeout for
+.Em down
+is printed instead if the
+.Fl d
+option has been given.
+.It Ql s6-rc-db contents Ar bundlename
+Lists the atomic services represented by bundle
+.Ar bundlename .
+.It Ql s6-rc-db dependencies Ar servicename
+Prints the list of direct dependencies for
+.Ar servicename .
+If
+.Ar servicename
+is a bundle, its set of direct dependencies is the union of the direct
+dependencies of all the atomic services contained in the bundle.
+.Pp
+If the
+.Fl d
+option has been given to
+.Nm ,
+the reverse dependencies are given instead: services that directly
+depend on
+.Ar servicename ,
+or on one of its components if it is a bundle.
+.It Ql s6-rc-db pipeline Ar longrunname
+Prints the longrun service pipeline
+.Ar longrunname
+is a part of, one service per line, producers before consumers.
+If
+.Ar longrunname
+isn't part of a pipeline, only
+.Ar longrunname
+is printed.
+.It Ql s6-rc-db script Ar oneshotname
+Prints the
+.Pa up
+script for
+.Ar oneshotname ,
+which is an argv, i.e. a Unix command line.
+Each component of this command line is terminated by a null character,
+so to print it in a human-readable format, pipe the output into
+something like
+.Ql xargs -0 echo .
+.Pp
+If the
+.Fl d
+option has been given to
+.Nm ,
+the
+.Pa down
+script is printed instead.
+.It Ql s6-rc-db flags Ar atomicname
+Prints a hexadecimal number that is the list of all binary flags for
+atomic service
+.Ar atomicname .
+Those binary flags are currently unused, but this may change in a
+future version of s6-rc.
+.It Ql  s6-rc-db atomics Ar servicename...
+Prints the fully resolved list of services represented by the
+.Ar servicename...
+arguments, i.e. the union of all atomic services contained in
+.Ar servicename .
+Each argument in
+.Ar servicename...
+can be an atomic service or a bundle.
+.It QL s6-rc-db all-dependencies Ar servicename...
+Prints the list of all atomic services needed to bring up all of the
+.Ar servicename...
+arguments, with all their dependencies, recursively.
+In other words: for
+.Ar servicename...
+to be up, every single service listed in the output will need to be up.
+The output includes the atomic services represented by the
+.Ar servicename...
+arguments themselves.
+.Pp
+The list is not topologically sorted.
+.Pp
+If the
+.Fl d
+option has been given to
+.Nm ,
+the recursive list of reverse dependencies is printed: for
+.Ar servicename...
+to be down, every single service listed in the output will need to be
+down.
+.El
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl c Ar compiled
+Examine a compiled service database in
+.Ar compiled
+instead of the current live one.
+.It Fl l Ar live
+Assume the live state is in
+.Ar live .
+This option is ignored if the
+.Fl c
+option has been given.
+Default is
+.Pa /run/s6-rc .
+The default can be changed at package compilation time, by giving the
+.Ql --livedir=live
+option to
+.Pa ./configure .
+.It Fl u
+For commands that use different data depending on whether it's about
+bringing the service up or down, select the
+.Dq up
+data
+.Po
+this is the default
+.Pc .
+This option is ignored when it is irrelevant.
+.It Fl d
+For commands that use different data depending on whether it's about
+bringing the service up or down, select the
+.Dq down
+data.
+This option is ignored when it is irrelevant.
+.It Fl b
+Blocking lock.
+If the database is currently being used by another program,
+.Nm
+will wait until that other program has released its lock on the
+database, then proceed.
+By default,
+.Nm
+fails with an error message if the database is currently in use.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 3
+Identifier not found in service database.
+.It 4
+Invalid or corrupted service database.
+.It 5
+Wrong identifier type for the given command.
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.El
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-db.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

@@ -1,0 +1,661 @@
+.Dd April 7, 2023
+.Dt S6-RC-COMPILE 8
+.Os
+.Sh NAME
+.Nm s6-rc-compile
+.Nd service database compiler
+.Sh SYNOPSIS
+.Nm
+.Op Fl v Ar verbosity
+.Op Fl h Ar fdhuser
+.Op Fl b
+.Ar compiled
+.Ar source...
+.Sh DESCRIPTION
+.Nm
+is a service database compiler.
+It takes a series of service definitions in the source format, and
+compiles them into a directory, which is the compiled format.
+The administrator can then examine that compiled database via
+.Xr s6-rc-db 8 ,
+put it into a place where it will be registered at boot time as the
+current compiled database by
+.Xr s6-rc-init 8 ,
+or even live update the current service database via
+.Xr s6-rc-update 8 .
+.Pp
+.Nm
+analyzes every directory
+.Ar source
+in its arguments.
+For every subdirectory
+.Ar service
+in
+.Ar source ,
+it expects to find a valid service definition in
+.Ar service .
+.Nm
+outputs a compiled version of the service database into
+.Ar compiled .
+This database contains information for all the services declared in
+every
+.Ar source
+argument.
+.Ss Source format
+.Nm
+scans every
+.Ar source
+directory to find
+.Em service definition directories
+in it.
+It ignores every file that is not a directory, or that starts with a
+dot.
+For every service definition directory that it finds, it creates a
+service with the same name as the directory.
+Names cannot be duplicated and cannot contain a slash or a newline;
+they can contain spaces and tabs, but using anything else than
+alphanumerical characters, underscores and dashes is discouraged \(em
+the s6-rc programs will handle weird names just fine, but other tools,
+especially shell scripts, may not.
+Names are also forbidden to use the reserved
+.Ql s6rc-
+and
+.Ql s6-rc-
+prefixes.
+Every service definition directory
+.Ar service
+is expected to contain the following files:
+.Pp
+.Sy For every service
+.Bl -bullet
+.It
+A regular file named
+.Pa type ,
+that contains only the text
+.Ql oneshot ,
+.Ql longrun
+or
+.Ql bundle ,
+and a terminating newline.
+This file declares the type of service defined by the directory.
+.It
+An optional regular file named
+.Pa flag-essential .
+The contents of this file are irrelevant, only its presence is tested.
+If this file exists, the service will be marked as essential, which
+means that an
+.Ql s6-rc -d change Ar foo
+command will not stop the service.
+Only an
+.Ql s6-rc -D change Ar foo
+command will.
+If the service is a bundle, the flag will be propagated to all its
+contents, i.e. all the services it represents will be marked as
+essential.
+.El
+.Pp
+.Sy For bundles
+.Bl -bullet
+.It
+A directory named
+.Pa contents.d .
+This directory must contain files, no matter their type, no matter
+their contents, named after services.
+.Po
+Typically, empty regular files are used.
+.Pc
+All the services named in this directory will be represented by the
+bundle named
+.Ar service .
+.It
+If
+.Pa contents.d
+does not exist, the bundle contents can be read from a regular file named
+.Pa contents .
+This file must be a list of service names, one per line.
+Whitespace at the beginning of a line is ignored, but trailing
+whitespace is not.
+Lines starting with a
+.Ql #
+character are ignored.
+The file defines the services that will be represented by the bundle
+named
+.Ar service .
+Note that this format is deprecated.
+.El
+.Pp
+It is possible to use bundle names in a
+.Pa contents.d
+directory or a
+.Pa contents
+file.
+However, if
+.Nm
+detects a cycle in bundle definitions, it will complain and exit 1.
+.Pp
+.Sy For atomic services
+.Bl -bullet
+.It
+An optional regular file named
+.Pa timeout-up .
+This file, if it exists, must contain an integer, which is the maximum
+number of milliseconds
+.Xr s6-rc 8
+will wait for successful completion of the service start; if starting
+the service takes longer than this value,
+.Xr s6-rc 8
+will declare the transition a failure.
+If the file does not exist, or contains
+.Ql 0 ,
+no timeout is defined and
+.Xr s6-rc 8
+will wait indefinitely for the service to start.
+.It
+An optional regular file named
+.Pa timeout-down .
+This file, if it exists, must contain an integer, which is the maximum
+number of milliseconds
+.Xr s6-rc 8
+will wait for successful completion of the service stop; if stopping
+the service takes longer than this value,
+.Xr s6-rc 8
+will declare the transition a failure.
+If the file does not exist, or contains
+.Ql 0 ,
+no timeout is defined and
+.Xr s6-rc 8
+will wait indefinitely for the service to stop.
+.It
+An optional directory named
+.Pa dependencies.d .
+This directory must contain files, no matter their type, no matter
+their contents, named after services.
+.Po
+Typically, empty regular files are used.
+.Pc
+All the services named in this directory will be
+.Em direct dependencies
+of
+.Ar service ,
+i.e. the services that must be up in order for
+.Ar service
+to work properly.
+.It
+If
+.Pa dependencies.d
+does not exist: an optional regular file named
+.Pa dependencies .
+This file must be a list of service names, one per line.
+Whitespace at the beginning of a line is ignored, but trailing
+whitespace is not.
+Lines starting with a
+.Ql #
+character are ignored.
+The file defines the
+.Em direct dependencies
+of
+.Ar service .
+Note that this format is deprecated.
+.El
+.Pp
+It is unnecessary to manually define complete sets of dependencies in
+the
+.Pa dependencies.d
+directory or the
+.Pa dependencies
+file, because
+.Xr s6-rc 8
+will properly handle dependency chains.
+If
+.Ar A
+depends on
+.Ar B ,
+no matter the underlying implementation of
+.Ar B ,
+and the current implementation of
+.Ar B
+depends on
+.Ar C ,
+then you should just put
+.Ar B
+in
+.Pa "" Ns Ar A Ns /dependencies.d ;
+when starting the set,
+.Xr s6-rc 8
+will start
+.Ar C
+first, then
+.Ar B ,
+then
+.Ar A .
+If the underlying implementation of
+.Ar B
+changes and does not depend on
+.Ar C ,
+then you will just have to modify the dependencies for
+.Ar B ,
+and the definition of
+.Ar A
+will still be correct.
+.Pp
+Of course, if
+.Ar A
+depends on
+.Ar C
+anyway, you should add both
+.Ar B
+and
+.Ar C
+to
+.Pa "" Ns Ar A Ns /dependencies.d .
+.Pp
+If
+.Nm
+detects a cycle in dependencies across services, it will complain and
+exit 1.
+.Pp
+.Em For oneshots
+.Bl -bullet
+.It
+Two regular files named
+.Pa up
+and
+.Pa down ,
+which must each contain a single Unix command line.
+The files will be interpreted by the
+.Xr execlineb 1
+lexer at compile time and the results will be stored into the compiled
+database in an internal form.
+.Pa up
+will be run when the service is started, and
+.Pa down
+will be executed when the service is stopped.
+.Pa up
+is mandatory, but
+.Pa down
+is optional; if no
+.Pa down
+file is provided in the source definition directory, then it is
+treated as the empty script.
+If a script is empty, then
+.Xr s6-rc 8
+will consider that the corresponding transition for this service does
+nothing and always succeeds.
+.El
+.Pp
+.Pa up
+and
+.Pa down
+are interpreted by
+.Xr execlineb 1 ,
+but that does not mean they have to be entirely written in the
+execline language.
+The
+.Xr execlineb 1
+lexer is only used because it can compile a Unix command line from a
+text file and store the compiled result, whereas a shell would have to
+be invoked everytime the script is run.
+There are many ways to write
+.Pa up
+and
+.Pa down
+scripts:
+.Bl -bullet
+.It
+They can be written as standard execline scripts, without the initial
+shebang line or positional parameter management.
+.It
+They can be written in any scripting language by invoking the
+interpreter directly: for instance
+.Ql /bin/sh -c Do Ar script Dc ,
+where
+.Ar script
+is a shell script.
+.It
+They can also just call a script that will actually be stored
+somewhere else: for instance,
+.Pa up
+can contain
+.Ql /etc/init.d/service start
+while
+.Pa down
+contains
+.Ql /etc/init.d/service stop ,
+and
+.Pa /etc/init.d/service
+is a System V-style init script.
+.El
+.Pp
+Don't think you have to learn all the intricacies of the execline
+language just because the up and down scripts get lexed by it.
+You don't.
+.Pp
+.Em For longruns
+.Pp
+The s6-rc service definition directory for a longrun service is similar to an
+.Xr s6-service-directory 7 ,
+but there are a few differences:
+.Bl -bullet
+.It
+.Nm
+crafts the servicedir itself, based on what it finds in the service
+definition directory.
+It does not copy everything directly from the definition directory to
+the servicedir; only two subdirectories will be copied verbatim,
+.Pa data
+and
+.Pa env .
+So if you want to store service configuration data, to be used by the
+run script, in the service directory, make sure it is in a
+.Pa data/
+or
+.Pa env/
+subdirectory.
+.It
+Definition directories cannot have a
+.Pa log
+subdirectory \(em or if they do, it will be ignored.
+From
+.Nm Ap s
+point of view, logged s6 services must actually be defined as two
+separate s6-rc services, one defined as a producer and one defined as
+a consumer, making a pipeline of just two services; see below for more
+information about pipelines.
+.El
+.Pp
+The following files must or may appear in a longrun definition directory:
+.Bl -bullet
+.It
+A mandatory regular file named
+.Pa run ,
+as well as optional files named
+.Pa finish ,
+.Pa notification-fd ,
+.Pa lock-fd ,
+.Pa timeout-kill ,
+.Pa timeout-finish ,
+.Pa max-death-tally ,
+and
+.Pa down-signal .
+These files will be copied, or recreated, in the generated
+.Xr s6-service-directory 7 :
+they are meant to be used by the
+.Xr s6-supervise 8
+process that will manage the longrun service.
+.It
+Optional directories named
+.Pa instance
+and
+.Pa instances .
+These will be copied verbatim into the generated service
+directory.
+They are used internally by some s6 tools; using them for your own
+purposes is not recommended \(em you should ignore them and use the
+.Pa data
+directory instead.
+.It
+Optional directories named
+.Pa data
+and
+.Pa env .
+These will be copied verbatim into the generated service directory.
+.It
+An optional file named
+.Pa producer-for .
+If this file exists, then it must contain the name of another longrun
+service
+.Ar servicelog ;
+.Ar service
+is then declared as a producer for
+.Ar servicelog .
+.Ar servicelog
+must also, in its own definition directory, be declared as a consumer
+for at least
+.Ar service .
+.It
+An optional file named
+.Pa consumer-for .
+If this file exists, then it must contain a list of longrun services
+.Ar serviceprod... :
+.Ar service
+is then declared as a consumer for all the services in
+.Ar serviceprod .
+Each of those services must also, in its own definition directory, be
+declared as a producer for
+.Ar service .
+.It
+An optional file named
+.Pa pipeline-name .
+If this file exists along with a
+.Pa consumer-for
+file, and there is no
+.Pa producer-for
+file, then a bundle will automatically be created, named with the
+content of the
+.Pa pipeline-name
+file, and containing all the services in the pipeline that ends at
+.Ar service .
+See below for more about pipelining.
+The
+.Pa pipeline-name
+file is ignored if
+.Ar service
+is not a last consumer.
+.El
+.Pp
+Be aware that service directories will be relocated, and copied at
+boot time, so if your run or finish scripts refer to files in the
+service directory
+.Po
+probably in the
+.Pa data
+or
+.Pa env
+subdirectories!
+.Pc ,
+they should use relative paths, not absolute ones.
+.Pp
+Note that you cannot create a
+.Pa ./down
+file for
+.Xr s6-supervise 8
+in a generated service directory.
+Even if such a file exists in the definition directory, it will be
+ignored \(em it will not be replicated in the service directory.
+This is intentional:
+.Xr s6-rc 8
+internally uses
+.Pa /down
+files in the service directories it manages, to mark longrun services
+that are down.
+.Pp
+The
+.Pa producer-for ,
+.Pa consumer-for
+and
+.Pa pipeline-name
+files are used to set up automatic longrun pipelining.
+.Pp
+.Sy Longrun pipelining
+.Pp
+Users of supervision suites know about logged services: a service acts
+as a producer, and is coupled with another service, its logger; the
+supervision system automatically maintains an open pipe between the
+producer's stdout and the logger's stdin.
+.Pp
+.Xr s6-rc 8
+comes with an extension of this mechanism.
+Rather than only allowing two longrun services to be pipelined, it can
+set up an indefinite number of longrun services this way.
+.Bl -bullet
+.It
+A producer declares its direct consumer in a
+.Pa producer-for
+file.
+.It
+Intermediate services declare both their direct producers in their
+.Pa consumer-for
+file, and their direct consumer in their
+.Pa producer-for
+file.
+.It
+The last consumer only declares its direct producers in a
+.Pa consumer-for
+file.
+.It
+The last consumer may also declare a name for the whole pipeline, in
+its
+.Pa pipeline-name
+file.
+If it does so, then a bundle is automatically created with the given
+name, and it contains all the services in the pipeline.
+.El
+.Pp
+.Nm
+will detect pipelines, and set up the service directories so that
+every producer's stdout is connected to its consumer's stdin, and that
+the pipes are not broken whenever one element in the chain dies.
+.Pp
+A service can only be declared as a producer for
+.Em one
+other service, but it can be declared as a consumer for several other
+services: the
+.Pa consumer-for
+can have several lines.
+This means that one service can only send its output to one consumer,
+but it can read its input from several producers.
+If there are several producers to a service, they will all write to
+the same Unix pipe that the service reads.
+.Pp
+This means that what s6-rc calls
+.Em pipelines
+are really
+.Em funnels :
+you can collapse multiple data streams into a single data stream, at
+every step of your processing chain.
+The
+.Em pipeline
+terminology remains for history reasons: previous versions of
+.Xr s6-rc 8
+could not handle multiple producers.
+.Pp
+.Nm
+checks for pipeline consistency.
+It must see a
+.Pa producer-for
+file in the producers' definition that is consistent with the
+.Pa consumer-for
+file in the consumer's definition.
+It will detect and reject cycles as well as collisions.
+.Pp
+The pipe linking a set of producers with a consumer is created and
+stored at run-time in an
+.Xr s6-fdholder-daemon 8
+instance managed by an automatically generated longrun service named
+.Pa s6rc-fdholder .
+.Ss Compiled database usage
+Once it has been built with
+.Nm ,
+a compiled database cannot be modified.
+It
+.Po
+i.e. the directory containing the
+.Pa n ,
+.Pa db
+and
+.Pa resolve.cdb
+files as well as the
+.Ar servicedirs
+subdirectory
+.Pc can be moved around in the filesystem, provided the insides remain untouched.
+.Pp
+Once a compiled database is live
+.Po
+i.e. it has services running on it, following an invocation of
+.Xr s6-rc-init 8
+or
+.Xr s6-rc-update 8
+.Pc ,
+it must not move anymore, and it must not be deleted.
+The only way to
+.Dq free
+such a compiled database for displacement or deletion is to replace it
+as the live one via another call to
+.Xr s6-rc-update 8 .
+.Pp
+No matter what user compiles the database, only root and the user
+owning the supervision tree at run-time will be able to operate the
+compiled database with the
+.Xr s6-rc 8
+command.
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl v Ar verbosity
+Be more or less verbose.
+Default is 1: warning and error messages will be printed to stderr.
+0 silences warnings.
+2 adds a bit more information about what
+.Nm
+is doing.
+3 or more is heavy debug output.
+.It Fl h Ar fdhuser
+Arrange for the
+.Xr s6-fdholder-daemon 8
+program, which maintains the pipes for the longrun pipelines, to run
+as user
+.Ar fdhuser .
+By default, it runs as the user owning the supervision tree, i.e. most
+likely root.
+.It Fl b
+Make
+.Xr s6-rc-oneshot-run 8
+invocations wait instead of fail on lock contention.
+This should not change anything in practice, and you can ignore that
+option.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 1
+Error in a source directory.
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.El
+.Sh EXAMPLES
+The
+.Pa examples/source
+subdirectory of the s6-rc package contains a set of service definition
+directories, which is actually a working, valid set for a Linux system
+running busybox and the skarnet.org packages; of course, only the
+service definition set has been kept, and private information has been
+removed, so it won't work out-of-the-box without the proper specific
+files, notably configuration in
+.Pa /etc
+\(em but nevertheless, you can browse the source and understand what it
+does, and adapt it to your own needs.
+It will compile as is with
+.Nm ,
+and you can examine the resulting compiled database with
+.Xr s6-rc-db 8 .
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-compile.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

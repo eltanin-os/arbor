@@ -1,0 +1,132 @@
+.Dd April 6, 2023
+.Dt S6-RC-FDHOLDER-FILLER 8
+.Os
+.Sh NAME
+.Nm s6-rc-fdholder-filler
+.Nd create anonymous pipes and store them into an
+.Xr s6-fdholderd 8
+.Dq fd-holding
+daemon
+.Sh SYNOPSIS
+.Nm
+.Op Fl 1
+.Op Fl t Ar timeout
+<
+.Ar longrunnamesfile
+.Sh DESCRIPTION
+.Nm
+creates anonymous pipes and stores them into an
+.Xr s6-fdholderd 8
+.Dq fd-holding
+daemon.
+.Pp
+.Nm
+is not meant to be used directly; it is used in internal scripts
+created by
+.Xr s6-rc-compile 8 ,
+which are invoked during an
+.Xr s6-rc 8
+execution.
+.Pp
+.Nm
+expects file descriptor 6 to be open and connected to the
+.Xr s6-fdholderd 8
+daemon instance managed by
+.Xr s6-rc 8
+as the internal s6rc-fdholder service.
+.Pp
+It reads a list of longrun names from its stdin, one per line.
+Empty lines are ignored; comments starting with
+.Ql #
+are ignored; leading whitespace is ignored, but trailing whitespace is
+not.
+.Pp
+For every name longrun that it finds, it creates an anonymous pipe,
+and stores both ends of that pipe into the
+.Xr s6-fdholderd 8
+instance, with the
+.Pa "" Ns pipe:s6-rc-r- Ns Ar longrun
+.Po
+for the reading end
+.Pc
+and
+.Pa "" Ns pipe:s6-rc-w- Ns Ar longrun
+.Po
+for the writing end
+.Pc
+identifiers, and an infinite timeout.
+.Pp
+It then exits 0.
+.Pp
+.Nm
+is never meant to be used manually; this page should only be used to
+understand s6-rc internals.
+.Pp
+.Nm
+is used in the
+.Ql s6rc-fdholder
+internal service's run script, right after the
+.Xr s6-fdholderd 8
+daemon is started; its arguments are the names of all the consumer
+longrun services declared in the service database.
+.Pp
+The point is to create all the pipes for the longrun pipelines in
+advance, every time the
+.Ql s6rc-fdholder
+service is started, and make them available in the fd holder.
+This way, pipelined services can simply retrieve their stdin
+.Po
+for consumers
+.Pc
+or stdout
+.Po
+for producers
+.Pc
+from the fd holder, at any time: even if a pipeline service dies and
+is restarted, the pipe will remain valid.
+.Pp
+If the fd holder itself dies, it will be refilled with a new set of
+pipes as soon as it is restarted.
+Pipelined services will not be impacted until one of them restarts;
+then all the pipeline will restart.
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl 1
+Write a newline to stdout before exiting after successful operation.
+This is used as a notification mechanism.
+.It Fl t Ar timeout
+If the operation cannot be achieved in
+.Ar timeout
+milliseconds, abort and report failure.
+By default,
+.Ar timeout
+is 0, meaning infinite.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.El
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-fdholder-filler.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

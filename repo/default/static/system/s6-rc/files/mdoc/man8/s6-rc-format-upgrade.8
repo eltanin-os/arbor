@@ -1,0 +1,165 @@
+.Dd April 6, 2023
+.Dt S6-RC-FORMAT-UPGRADE 8
+.Os
+.Sh NAME
+.Nm s6-rc-format-upgrade
+.Nd transitions a live directory using a database with the old s6-rc format so that it uses a database with the new s6-rc format
+.Sh SYNOPSIS
+.Nm
+.Op Fl v Ar verbosity
+.Op Fl l Ar live
+.Op Fl t Ar timeout
+.Op Fl b
+.Ar newcompiled
+.Sh DESCRIPTION
+.Nm
+is a program that is normally used very rarely: when the s6-rc package
+is upgraded, some services are currently managed with
+.Xr s6-rc 8 ,
+and the database format has changed.
+This program transitions a live directory using a database with the
+old s6-rc format (the one being replaced) so that it uses a database
+with the new s6-rc format.
+.Pp
+The point is to ensure a smooth transition between different versions
+of s6-rc without needing a reboot.
+.Pp
+.Nm
+is very different from
+.Xr s6-rc-update 8
+and does not duplicate its functionality:
+.Bl -bullet
+.It
+.Xr s6-rc-update 8
+updates a live directory to use a
+.Em different compiled database ,
+compiled from a different source, where services may have changed, be
+renamed, etc.
+But it can only handle databases with the format that it knows \(em
+the format created by the
+.Xr s6-rc-compile 8
+binary that comes in the same package as
+.Xr s6-rc-update 8 .
+.It
+.Nm
+is the opposite: it cannot handle service changes, it can only update
+a live directory to use a compiled database corresponding to the
+.Em same source
+as the compiled database the live directory is currently using.
+But it will replace an obsolete compiled database with a compiled
+database that uses the new format
+.Po
+provided both compiled databases come from the same source, and have
+just been produced by invocation of different versions of
+.Xr s6-rc-compile 8
+.Pc ,
+ensuring the s6-rc installation can live through database format
+changes.
+.El
+.Pp
+.Ar newcompiled
+must be an absolute path.
+.Pp
+.Nm
+expects to find a compiled service database with the
+.Em new format
+in
+.Ar compiled .
+.Pp
+.Ar newcompiled
+.Em must
+be compiled from the same source database as the current compiled
+database currently being used by
+.Ar live .
+.Nm
+then updates the live directory in
+.Ar live
+so it uses
+.Ar newcompiled
+as its compiled database.
+.Pp
+On success, it exits 0.
+.Ss Typical usage
+.Nm
+is only necessary when the database format changes, which only happens
+when s6-rc's major version number
+.Po
+the third number from the right
+.Pc
+changes.
+The correct order of operations is then the following:
+.Bl -enum
+.It
+Make sure your current compiled database is up-to-date with your
+source database.
+If it's not, update it, by invoking the
+.Xr s6-rc-compile 8
+and
+.Xr s6-rc-update 8
+binaries from your
+.Em old
+s6-rc installation, the ones that understand
+the old format.
+.It
+From the same source, compile a new database with the new format,
+using the
+.Xr s6-rc-compile 8
+binary from the
+.Em new
+s6-rc package.
+.It
+Update your live directories with this new database, using
+.Nm .
+.It
+You can now remove the old databases, and delete the old s6-rc package.
+.El
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl v Ar verbosity
+Be more or less verbose.
+Default is 1.
+.It Fl t Ar timeout
+If all operations have not completed after
+.Ar timeout
+milliseconds, complain and exit 1.
+.It Fl l Ar live
+Work with the live state in the
+.Ar live
+directory.
+Default is
+.Pa /run/s6-rc .
+The default can be changed at compile time by giving the
+.Ql --livedir=live
+option to
+.Pa ./configure .
+.It Fl b
+Blocking lock.
+If
+.Ar live
+is currently being used by another program,
+.Nm
+will wait until that other program has released its lock on the
+directory, then proceed.
+By default,
+.Nm
+fails with an error message if the live directory is currently in use.
+.El
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-format-upgrade.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

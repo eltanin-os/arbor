@@ -1,0 +1,610 @@
+.Dd April 6, 2023
+.Dt S6-RC 8
+.Os
+.Sh NAME
+.Nm s6-rc
+.Nd manage the live state of a machine - what services are currently up and what services are currently down
+.Sh SYNOPSIS
+.Nm
+help
+.Nm
+.Op Fl l Ar live
+.Op Fl b
+.Op Fl a
+.Op Fl u | Fl d
+list
+.Ar servicenames...
+.Nm
+.Op Fl l Ar live
+.Op Fl b
+.Op Fl a
+.Op Fl u | Fl d
+listall
+.Ar servicenames...
+.Nm
+.Op Fl l Ar live
+.Op Fl b
+diff
+.Nm
+.Op Fl l Ar live
+.Op Fl b
+.Op Fl a
+.Op Fl u | Fl d | Fl D
+.Op Fl p
+.Op Fl v Ar verbosity
+.Op Fl n Ar dryrunthrottle
+.Op Fl t Ar timeout
+change
+.Ar servicenames...
+.Sh DESCRIPTION
+.Nm
+is a
+.Em service manager ,
+a.k.a
+.Em machine state manager :
+a program to manage the live state of a machine \(em what services are
+currently up and what services are currently down.
+It can list active services, or change the live state.
+.Pp
+.Nm
+is meant to be the one-stop shop of service management: once service
+definitions have been made into a compiled service database via
+.Xr s6-rc-compile 8 ,
+and the machine state has been initialized via
+.Xr s6-rc-init 8 ,
+any state change \(em be it initial startup, shutdown, or anything
+else \(em should be achieved by a single
+.Nm
+change invocation.
+.Pp
+.Nm
+should only be run by the user owning the underlying s6 supervision
+tree.
+It can also be run by root even if the supervision tree is not owned
+by root, but in this case the services will always be started and
+stopped by the user owning the supervision tree \(em they will not
+have root privileges.
+.Nm
+expects to find a functional
+.Em live state
+in
+.Ar live .
+The live state is normally created at boot time by
+.Xr s6-rc-init 8 .
+If the live state is invalid,
+.Nm
+complains and exits 4.
+.Pp
+Depending on the arguments given, it prints the requested information
+to stdout, then exits 0; or it performs a machine state change.
+.Ss Service selection
+The arguments
+.Ar servicenames...
+may be atomic services or bundles; they are resolved into a set of
+atomic services, which is called the
+.Em selection .
+If the
+.Fl a
+option is present, the current set of active services (i.e. services
+that are up) is added to the selection.
+The
+.Nm
+command always operates on the selection.
+.Ss Longrun transitions
+Transitions for longrun services are simple:
+.Nm
+removes or creates a
+.Pa ./down
+file in the live service directory for the longrun service, then sends
+a command to the supervision tree to start or stop the service.
+.Po
+A service that is considered down by
+.Nm
+will have a
+.Pa ./down
+file in its live service directory; a service that is considered up by
+.Nm
+will not.
+.Pc
+The transition is considered successful as soon as the daemon dies
+.Po
+for down transitions
+.Pc ,
+or becomes up and ready
+.Po for up transitions
+.Pc \(em
+refer to
+.Xr s6-notifywhenup 7 .
+If a longrun service does not support readiness notification, the
+.Xr s6-svc 8
+command that is invoked by
+.Nm
+will print a warning message, and the transition will be considered
+successful as soon as the daemon is up, i.e. as soon as the
+.Pa ./run
+script is executed by
+.Xr s6-supervise 8 .
+.Pp
+When a longrun service supports readiness notification, unless a
+nonzero timeout has been declared in the
+.Pa timeout-up
+file in the service definition directory,
+.Nm
+will wait forever on an
+.Em up
+transition for the notification to arrive.
+The transition will fail if a timeout occurs.
+.Pp
+If a
+.Em down
+transition fails,
+.Nm
+does nothing with it.
+The service has already received a
+.Dv SIGTERM ,
+and may be stuck in the process of exiting; or it may already have
+died but is stuck in a bad
+.Pa finish
+script that is not timing out.
+In any case, it is not a situation that
+.Nm
+can recover from; the service is most likely down, but the
+administrator should manually check their process list.
+And fix their scripts, or timeout values, because a
+.Em down
+transition failure is always a programmer or sysadmin error.
+.Pp
+If an
+.Em up
+transition fails,
+.Nm
+sends an explicit
+.Ql s6-svc -d
+command to the longrun.
+This ensures the service is in a known
+.Em down
+state when failing to go up, instead of (for instance) being stuck in
+a not-ready limbo state.
+.Pp
+Note that proper usage of the
+.Pa timeout-kill
+and
+.Pa timeout-finish
+values in the longrun's definition directory can considerably reduce
+the number of cases where the service is left in an unknown state.
+.Pp
+Transitions are supposed to be idempotent, but it is a general rule of
+supervision that
+.Pa run
+and
+.Pa finish
+scripts must be idempotent, so a properly designed service directory
+should work with
+.Nm
+with no additional effort.
+.Ss Oneshot transitions
+Transitions for oneshot services amount to running
+.Pa up
+or
+.Pa down
+script for the service; those scripts are stored in the compiled
+service database that is linked from the live state.
+The transition is considered successful if the script exits zero, and
+unsuccessful otherwise.
+.Pp
+.Nm
+performs some black magic so that
+.Pa up
+and
+.Pa down
+scripts are always run in a reproducible way, no matter when or how
+.Ql s6-rc change
+is invoked.
+That black magic involves a special longrun service,
+.Ql s6rc-oneshot-runner ,
+that every oneshot service automatically depends on, and that is
+actually used to fork the
+.Pa up
+or
+.Pa down
+scripts as scions of the s6 supervision tree, instead of children of the
+.Nm
+process.
+.Pp
+Transitions should be ideally transactional, or at the very least
+idempotent.
+If a transition fails, it should leave the machine in the same state
+as before the transition was attempted; at the very least, it should
+not prevent a subsequent run of the same transition from completing
+successfully.
+If an
+.Ql s6-rc change
+invocation fails because some transition experienced a temporary
+failure, it should be possible to run the exact same
+.Ql s6-rc change
+invocation later, and be met with success.
+.Pp
+This is important: it means that oneshot scripts should be treated as
+atoms, and that some care should be taken when writing them.
+.Ss Dry runs
+For any manual change, is it recommended to perform a dry run before
+the state change itself: add the
+.Fl n Ar dryrunthrottle
+option to the
+.Nm s6-rc
+command line.
+.Nm
+will then simulate all the transitions, but not actually perform them
+or change the real live state.
+The command lines that
+.Nm
+would have run will be printed to stdout instead, and each simulated
+transition will take
+.Ar dryrunthrottle
+milliseconds to complete successfully.
+.Ss Subcommands
+.Bl -tag -width x
+.It Ql s6-rc help
+Prints a short help message.
+.It Ql s6-rc list Ar servicenames...
+Prints the selection.
+If the
+.Fl d
+option has been given, the selection is inverted before it is printed,
+i.e. all the services but
+.Ar servicenames...
+will be printed.
+.Pp
+This is mostly useful as
+.Ql s6-rc -a list ,
+which simply prints the list of currently active services.
+.Ql s6-rc -da list
+will print the list of currently down services.
+.It Ql s6-rc listall Ar servicenames...
+.Nm
+computes the complete dependency tree of the selection: the selection,
+plus the dependencies of every service in the selection, and
+recursively down.
+With the
+.Fl d
+option, it computes the reverse dependency tree: the selection, plus
+what depends on it, and recursively up.
+The result is called the
+.Em closed selection .
+.Pp
+It prints the closed selection to its standard output.
+Note that the closed selection may be a very long list of services,
+including the most basic ones.
+.It Ql s6-rc diff
+Checks the consistency between
+.Nm Ap
+s view of the state of the longruns it's managing, and s6's view.
+.Nm
+will print one line per service whose s6 state fails to match what
+.Nm
+believes: a
+.Ql +
+character
+.Po
+if s6 is maintaining the service as up when
+.Nm
+thinks it's down
+.Pc
+or a
+.Ql -
+character
+.Po
+if s6 is not trying to maintain the service when
+.Nm
+thinks it's up
+.Pc ,
+followed by the service name.
+If
+.Nm
+finds at least one mismatch, it exits 1; else it exits 0.
+.Ql s6-rc diff
+normally reports nothing.
+Currently, the only case where
+.Nm Ap
+s view can diverge from s6's view is when a service has been brought
+up via an
+.Ql s6-rc change
+command, then has failed at some point with a permanent failure \(em
+which means its supervisor has stopped trying to bring it back up.
+.It Ql s6-rc start
+.Ql s6-rc start
+is equivalent to
+.Ql s6-rc -u change ,
+see below.
+It will run the engine to start a set of services.
+.It Ql s6-rc stop
+.Ql s6-rc stop
+is equivalent to
+.Ql s6-rc -d change ,
+see below.
+It will run the engine to stop a set of services.
+.It Ql s6-rc change
+.Ql s6-rc change
+is the service state engine.
+It will bring the machine to a state where:
+.Bl -tag -width x
+.It Fl u
+(Default) All the services in the selection are up.
+.It Fl d
+All the services in the selection are down.
+.It Fl pu
+All the services in the selection, and only them, are up.
+.It Fl pd
+All the services in the selection, and only them, are down.
+.El
+.Pp
+.Po
+Note that the
+.Fl p
+option is inoperant when using the
+.Ql start
+or
+.Ql stop
+subcommands.
+.Pc
+.Pp
+To change the machine state,
+.Nm
+does the following:
+.Bl -enum
+.It
+From the selection,
+.Nm
+computes the closed selection.
+.It
+It then computes the necessary transitions so that all the services in
+the closed selection can match the desired state.
+.It
+It then performs the transitions \(em or simulates them if the
+.Fl n
+option has been given.
+.It
+.Nm
+processes services as soon as they can be processed: as soon as a
+service that needs to change state has all its dependencies fulfilled,
+it undergoes its transition.
+Independent services are processed in parallel:
+.Nm
+parallelizes the transitions as much as it can, and there is no
+useless waiting time.
+.It
+.Nm
+updates the live state in
+.Ar live
+after every successful transition.
+.It
+If every transition completes successfully, the live state eventually
+matches the desired state, and
+.Nm
+exits 0.
+.It
+If a transition fails,
+.Nm
+will not perform the transitions that depend on it.
+It will keep processing all the other independent transitions, though,
+until there is no more work it can complete; then it will exit 1.
+.El
+.Pp
+.Ql s6-rc change
+reacts to the following signals:
+.Bl -tag -width x
+.It Dv SIGTERM
+.Nm
+immediately aborts all its longrun transitions with a failure, and the
+impacted longruns will most likely be in a
+.Em down
+state.
+Oneshot transitions are untouched, because killing the oneshot
+subprocess would make it impossible to determine what state the
+oneshot service is in.
+.It Dv SIGINT
+Same as
+.Dv SIGTERM .
+.El
+.El
+.Sh OPTIONS
+.Ss General options
+.Bl -tag -width x
+.It Fl l Ar live
+Look for the live state in
+.Ar live .
+Default is
+.Pa /run/s6-rc .
+The default can be changed at compile-time by giving the
+.Ql --livedir=live
+option to
+.Pa ./configure .
+.It Fl a
+Add the current set of active services to the selection.
+This is useful for instance at shutdown time:
+.Ql s6-rc -da change
+will stop all services.
+.It Fl b
+Blocking lock.
+If the service database is currently being used by another program,
+.Nm
+will wait until that other program has released its lock on the
+database, then proceed.
+By default,
+.Nm
+fails with an error message if the service database is currently in
+use.
+The default is the safe behaviour: for instance, it will correctly
+detect and fail nested
+.Nm s6-rc
+invocations (which are an admin error), whereas
+.Ql s6-rc -b
+would deadlock in such a case.
+.El
+.Ss Up or down
+These options control what is to be done: bring selected services up or down
+.Po
+for
+.Ql s6-rc change
+.Pc
+or whether to use the forward or reverse dependency graph
+.Po
+for
+.Ql s6-rc listall
+.Pc .
+Default is up.
+.Bl -tag -width x
+.It Fl u
+Up.
+.It Fl d
+Down.
+.It Fl D
+Force down.
+.El
+.Pp
+The
+.Fl d
+option is what should normally be used to down a set of services.
+If a service is marked as
+.Em essential
+.Po
+there is a
+.Pa flag-essential
+file in its service definition directory
+.Pc ,
+then
+.Nm
+will refuse to stop that service.
+The
+.Fl D
+option will still force that service to shut down; that option should
+only be used when the machine is going to be stopped.
+.Ss So s6-rc change Sc control
+.Bl -tag -width x
+.It Fl v Ar verbosity
+Be more or less verbose.
+Default is 1: warning and error messages will be printed to stderr.
+0 silences warnings.
+2 writes information messages whenever
+.Nm
+performs a transition.
+3 or more is debug info.
+.It Fl n Ar dryruntimeout
+Dry run.
+.Nm
+will pretend to perform transitions, but will replace all its program
+invocations by a call to
+.Xr s6-rc-dryrun 8 ,
+which will do nothing but print the command line
+.Nm
+would have executed, then sleep for
+.Ar dryruntimeout
+milliseconds before reporting success.
+.It Fl t Ar timeout
+Timeout.
+If
+.Nm
+isn't done after
+.Ar timeout
+milliseconds, it will exit, leaving the live state as it is at exit
+time.
+It does not kill its children, so a child may successfully complete
+afterwards and the live state will not be updated; in that case,
+subsequent
+.Ql s6-rc change
+invocations will notice and correctly update it.
+.It Fl p
+Prune.
+The state will be brought to exactly the set of selected services,
+plus their dependencies, and the other services will be brought down.
+With the
+.Fl d
+option, the meaning is reversed: the state will be brought to the
+maximum possible set that does not include selected services.
+The change, however, is always performed in the same manner: first the
+unwanted services are all brought down, then the wanted services are
+all brought up.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 1
+Some of the state transitions could not be performed by
+.Ql s6-rc change ;
+or a mismatch was found by
+.Ql s6-rc diff .
+.It 2
+Timed out during state change.
+.It 3
+Unknown service name in the arguments.
+.It 4
+Invalid service database.
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.El
+.Sh EXAMPLES
+.Dl s6-rc start myservicebundle
+.Pp
+Brings up all the services represented by
+.Ql myservicebundle ,
+bringing up all its dependencies first (recursively).
+.Pp
+.Dl s6-rc -ba down
+.Pp
+Waits for any pending program of the
+.Nm
+family to stop using the live database and current compiled service
+database, then brings down all the currently running services in an
+orderly manner.
+This is typically run at shutdown time.
+.Po
+And it's not necessarily a bad change!
+.Pc
+.Pp
+.Dl s6-rc -l /zork -ua listall myservicebundle
+.Pp
+Prints the names of all atomic services represented by
+.Ql myservicebundle
+plus the current live services, as well as everything they depend on,
+recursively.
+Assumes the live state is stored in the
+.Ql /zork
+directory instead of
+.Ql /run/s6-rc .
+.Pp
+.Dl s6-rc -d listall myservicebundle
+.Pp
+Prints the names of all atomic services represented by
+.Ql myservicebundle ,
+as well as everything that depends on them.
+.Pp
+.Dl s6-rc -pun0 change myservicebundle
+.Pp
+Prints what
+.Nm
+would do to bring the state to exactly the contents of
+.Ql myservicebundle
+as well as its recursive dependencies, and pruning all the rest.
+Does not wait any extra time between simulated transitions.
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

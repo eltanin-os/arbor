@@ -1,0 +1,79 @@
+.Dd April 6, 2023
+.Dt S6-RC-DRYRUN 8
+.Os
+.Sh NAME
+.Nm s6-rc-dryrun
+.Nd command wrapper and nullifier
+.Sh SYNOPSIS
+.Nm
+.Op Fl v Ar verbosity
+.Op Fl t Ar timeout
+.Ar cmd...
+.Sh DESCRIPTION
+.Nm
+is a command wrapper and nullifier, roughly equivalent to the Unix
+echo command.
+When run, it simply prints its arguments to stdout.
+.Pp
+.Nm
+is not meant to be used directly; it is internally called by
+.Xr s6-rc 8
+when given the
+.Fl n
+option.
+When a dry-running
+.Xr s6-rc 8
+instance wants to change the system state by spawning a command
+.Ar cmd ,
+it spawns
+.Ql s6-rc-dryrun Ar cmd
+instead, which allows the user to see what would have been done
+without actually running the command.
+.Pp
+.Nm
+prints its name, a colon, a space, and the space-separated list of its
+arguments to stdout.
+.Pp
+It then waits for
+.Ar timeout
+milliseconds, then exits 0.
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl v Ar verbosity
+If verbosity is 0,
+.Nm
+will not print anything to stdout.
+Default is 1.
+.It Fl t Ar timeout
+Sleep for
+.Ar timeout
+milliseconds before exiting.
+Default is 1000, but when invoked by
+.Xr s6-rc 8 ,
+it will be the value of the
+.Ar dryruntimeout
+argument to the
+.Fl n
+option.
+This is used to simulate a start or stop script that does not complete
+immediately.
+.El
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-dryrun.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

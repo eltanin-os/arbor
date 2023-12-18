@@ -1,0 +1,311 @@
+.Dd April 7, 2023
+.Dt S6-RC-OVERVIEW 7
+.Os
+.Sh NAME
+.Nm s6-rc-overview
+.Nd overview of s6-rc
+.Sh DESCRIPTION
+.Ss A manager for services
+s6-rc is a service manager, or, in other words, a
+.Em machine state manager :
+given a database of services, with dependencies between them, it can
+safely bring the
+.Em global machine state ,
+or
+.Em live state ,
+to the desired point, making sure dependencies are never broken.
+.Pp
+.Sy The live state
+.Pp
+The
+.Em live state ,
+by definition, is the tuple of all service states on the machine.
+Changing the live state means bringing services up, or bringing
+services down.
+.Pp
+.Sy Two and a half kinds of services
+.Pp
+Supervision suites manage
+.Em long-lived processes ,
+a.k.a
+.Em daemons ,
+and sometimes call them
+.Em services .
+With s6-rc, things are a little different: a long-lived process is
+also called a
+.Em longrun
+and is a service, but a service does not have to be a longrun.
+There is a second kind of service, which is called a
+.Em oneshot ,
+and which represents a change of system state that is not embodied by
+the presence of a long-lived process.
+For instance,
+.Dq mounting a filesystem
+is a system state change, but in most cases there is no process
+hanging around while the filesystem is mounted.
+.Pp
+s6-rc handles both oneshots and longruns.
+.Bl -bullet
+.It
+A
+.Em longrun
+is the exact equivalent of a
+.Em service
+in the supervision sense.
+It is defined by an
+.Xr s6-service-directory 7 ,
+with a run script and optional other data.
+The service is considered
+.Em up
+as long as the long-lived process is alive and, for daemons that
+support it, has notified its readiness
+.Po
+cf.\&
+.Xr s6-notifywhenup 7
+.Pc .
+It is considered
+.Em down
+otherwise.
+.It
+A
+.Em oneshot ,
+on the other hand, is totally unknown from supervision suites, because
+there is no daemon to manage.
+A oneshot is represented by two short-lived scripts,
+.Pa up
+and
+.Pa down ,
+used to bring the service respectively up and down.
+The service is considered up when the
+.Pa up
+program has exited successfully, and until the
+.Pa down
+program has exited successfully.
+.El
+.Pp
+Services can depend on one another.
+If service
+.Ar A
+has been declared as depending on service
+.Ar B ,
+then s6-rc will make sure to never start
+.Ar A
+until it knows that
+.Ar B
+is up, and will make sure to never stop
+.Ar B
+until it knows that
+.Ar A
+is down.
+This works whether
+.Ar A
+and
+.Ar B
+are both oneshots, both longruns, or a oneshot and a longrun.
+.Pp
+Oneshots and longruns are called
+.Em atomic services .
+By opposition to atomic services, s6-rc also handles an additional
+kind of service that it calls a
+.Em bundle .
+A bundle is just a collection of atomic services, described under a
+single name.
+A bundle definition can even contain other bundles, but ultimately a
+bundle will always represent a set of one or more atomic services.
+Bundle names can be used anywhere with the s6-rc user interface, and
+they will internally be converted to a set of atomic services.
+An atomic service can depend on a bundle: it will simply depend on all
+the atomic services represented by the bundle.
+A bundle, however, cannot have dependencies.
+.Ss A two-part operation
+Unlike other service managers such as anopa[1], s6-rc separates the
+work of analyzing a set of service definitions, resolving
+dependencies, and so on, from the work of actually applying the
+dependency graph to perform live state changes.
+The former is the
+.Em compilation phase ,
+and is done offline; the latter is the
+.Em live
+phase, and is of course done online \(em it impacts the actual state
+of the machine.
+.Pp
+.Sy The compilation phase
+.Bl -bullet
+.It
+Users are expected to write their service definitions \(em be it
+oneshots, longruns or bundles \(em in one or more
+.Em source directories ,
+in the s6-rc source format
+.Po
+cf.\&
+.Xr s6-rc-compile 8
+.Pc .
+The source format is simple to parse automatically \(em which is one
+of the main reasons why it has been designed that way \(em and it is
+also simple to generate automatically: it is easy to write converters
+from a given service definition format to the s6-rc source format.
+.It
+Users then run the
+.Xr s6-rc-compile 8
+program, that takes a set of service definitions in one or more source
+directories and makes a
+.Em compiled service database ,
+abbreviated as
+.Em compiled .
+This
+.Em compiled
+should be stored by the administrator on the root filesystem.
+.It
+The
+.Xr s6-rc-db 8
+tool can be used to examine compiled service databases and extract
+information from them in a human-friendly format.
+.El
+.Pp
+.Sy The live phase
+.Pp
+When the machine boots up:
+.Bl -enum
+.It
+First, the chosen init should make sure that an s6 supervision tree is
+up and running.
+.Xr s6-rc 8
+will only work if there is an active
+.Xr s6-svscan 8
+process monitoring an
+.Xr s6-scan-directory 7 .
+On Linux, for instance, it is possible to achieve such a state by
+using an init created by the
+.Xr s6-linux-init-maker 8
+tool: when control reaches stage 2,
+.Xr s6-svscan 8
+is guaranteed to run, so using
+.Xr s6-rc 8 in the stage 2 script is the way to go.
+.It
+The boot process, let's name it
+.Em stage2 ,
+should then call the
+.Xr s6-rc-init 8
+program.
+This program will set up an area for
+.Xr s6-rc 8
+in a writable directory
+.Po
+which can be on a RAM filesystem such as tmpfs
+.Pc
+to host its live information such as the machine state, a working copy
+of all service directories for longruns, and a link to the current
+compiled state database.
+.Xr s6-rc-init 8
+initializes the machine state as
+.Dq every declared service is down .
+.It
+.Em stage2
+should then invoke the
+.Xr s6-rc 8
+program
+.Ql s6-rc change
+with, as arguments, the names of the services that should be brought
+up.
+Of course, bundles can be used for shortcuts.
+.It
+That's it, the services are up and the initialization should be over.
+If the service database has been properly written, a
+.Em stage2
+script can actually be really short: an invocation of
+.Xr s6-rc-init 8
+and an invocation of
+.Xr s6-rc 8 .
+.El
+.Pp
+.Sy Other state changes and shutdown
+.Pp
+The administrator can make changes to the live state of the machine by
+manually calling
+.Xr s6-rc 8
+again with the proper arguments.
+This is more powerful than the old runlevels[2]: it is possible to
+change the live state to
+.Em any
+set of services, not only predefined ones.
+The only thing that
+.Xr s6-rc 8
+will not allow is a state that would break service dependencies; it
+will always respect the dependency graph.
+.Pp
+The
+.Xr s6-rc 8
+command is the engine for machine state changes, and it is also true
+for shutdown.
+When shutting a machine down, all the services managed by
+.Xr s6-rc 8
+should be brought down in the proper order
+.Po
+via the
+.Ql s6-rc -da change
+command
+.Pc .
+Once all those services have been brought down successfully, the final
+shutdown procedure can take place; for instance, if
+.Xr s6-svscan 8
+is running as process 1 with the
+.Xr s6-linux-init 8
+defaults,
+.Ql s6-svscanctl -6 /run/service
+will kill the supervision tree and call
+.Ql /etc/rc.shutdown reboot ,
+which should reboot the machine.
+.Ss Live updates to the service database
+The
+.Xr s6-rc 8
+command is a one-stop shop for service management as long as the
+compiled database doesn't change.
+If an administrator wishes to make a new compiled database the current
+live one, without rebooting the machine, a bit more work is needed,
+and that's the job of the
+.Xr s6-rc-update 8
+command.
+This command has been specifically written with Unix distributions in
+mind: when new packages ship, they come with new service definitions,
+or upgraded ones, and it is necessary to compile a new service
+database and update the live state so it matches; if source
+definitions for
+.Xr s6-rc 8
+are provided in the packages, an invocation of
+.Xr s6-rc-compile 8
+followed by an invocation of
+.Xr s6-rc-update 8
+should be all it takes to keep the live state up to date.
+.Ss Live bundle modifications
+It is possible to change bundle definitions in a compiled service
+database, including the live one, without recompiling everything by
+calling
+.Xr s6-rc-compile 8 .
+The
+.Xr s6-rc-bundle 8
+tool can edit compiled databases to add bundles to them, or delete
+bundles from them.
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+[1]
+.Lk https://jjacky.com/anopa/
+.Pp
+[2]
+.Lk https://www.tldp.org/LDP/sag/html/run-levels-intro.html
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/overview.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

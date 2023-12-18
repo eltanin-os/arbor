@@ -1,0 +1,246 @@
+.Dd April 6, 2023
+.Dt S6-RC-INIT 8
+.Os
+.Sh NAME
+.Nm s6-rc-init
+.Nd initialization tool for the s6-rc system
+.Sh SYNOPSIS
+.Nm
+.Op Fl c Ar compiled
+.Op Fl l Ar live
+.Op Fl p Ar prefix
+.Op Fl t Ar timeout
+.Op Fl b
+.Op Fl d
+.Ar scandir
+.Sh DESCRIPTION
+.Nm
+is an initialization tool for the s6-rc system.
+It must be run as root, at boot time, prior to any invocation of the
+.Xr s6-rc 8
+binary.
+.Pp
+.Ar compiled
+.Po
+if the
+.Fl d
+option hasn't been given
+.Pc ,
+.Ar live
+and
+.Ar scandir
+must be absolute paths.
+.Pp
+.Nm
+expects to find a compiled service database in
+.Ar compiled .
+It expects to be able to create a directory named
+.Ar live .
+It also expects that an instance of
+.Xr s6-svscan 8
+is running on
+.Ar scandir .
+.Pp
+.Nm
+initializes the live state in
+.Ar live .
+It declares
+.Ar compiled
+as the current service database and sets the state as
+.Dq all services down .
+.Pp
+It then copies verbatim all the service directories declared by
+.Ar compiled
+into a subdirectory of
+.Ar live ,
+adds
+.Pa ./down
+files to the live copies and links those live copies into
+.Ar scandir .
+It then triggers
+.Xr s6-svscan 8 ,
+which will pick up the new service directories and start
+.Xr s6-supervise 8
+processes on them \(em but the service themselves will not be started
+right away, because of the
+.Pa ./down
+files.
+.Pp
+.Nm
+waits for all
+.Xr s6-supervise 8
+processes to be operational, then exits 0.
+.Ss Typical usage
+Administrators should invoke
+.Nm
+once, in their early boot scripts, after
+.Xr s6-svscan 8
+is functional and ready to supervise longrun services
+.Po
+and after its catch-all logger, if any, has started
+.Pc ,
+but before any other initialization.
+.Po
+The rest of the initialization can be written as a set of s6-rc
+services, and performed by just one invocation of the
+.Ql s6-rc change
+command.
+.Pc
+.Pp
+For instance, when using an init created by s6-linux-init,
+.Nm
+should be the first command in the stage2
+.Po
+by default
+.Pa /etc/rc.init
+.Pc
+script.
+.Ss Notes
+.Bl -bullet
+.It
+The directory created by
+.Nm
+will actually be called
+.Pa "" Ns Ar live Ns :initial ,
+and
+.Ar live
+will be a symbolic link to that directory.
+Users should ignore this, and always refer to the live directory as
+.Ar live
+in their future
+.Xr s6-rc 8
+or
+.Xr s6-rc-update 8
+invocations.
+The reason for this behaviour is that
+.Xr s6-rc-update 8
+creates another, similarly named, directory
+.Po
+.Pa "" Ns Ar live : Ns Ar suffix
+.Pc
+and updates the live state by atomically changing the target of the
+.Ar live
+symlink \(em
+so
+.Ar live
+will not change names, whereas the real directory may.
+.It
+Similarly, it is recommended that administrators store their compiled
+service databases into some versioned directory, and that
+.Ar compiled
+be a symbolic link to the database currently in use.
+This will make it easier to create new compiled databases and switch
+them with
+.Xr s6-rc-update 8
+without having to change the
+.Nm
+invocation in boot scripts.
+.It
+After
+.Nm
+runs,
+.Ar compiled
+has become the
+.Dq live compiled database ,
+and must not be tampered with or deleted.
+The only way to free it for deletion is to replace it with another
+database, via a call to
+.Xr s6-rc-update 8 .
+.El
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl t Ar timeout
+If all
+.Xr s6-supervise 8
+processes are not up and running after
+.Ar timeout
+milliseconds,
+.Nm
+will complain and exit 111.
+This is a safety feature so
+.Nm
+doesn't hang indefinitely on a nonworking installation; normally this
+initialization should not take more than a few milliseconds.
+.It Fl c Ar compiled
+Declare
+.Ar compiled
+as the current compiled service database for the upcoming live state.
+Default is
+.Pa /etc/s6-rc/compiled .
+.It Fl l Ar live
+Store the live state into the
+.Ar live
+directory, which should not exist prior to running
+.Nm ,
+but should be under a writable filesystem \(em likely a RAM
+filesystem.
+Default is
+.Pa /run/s6-rc .
+The default can be changed at compile time by giving the
+.Ql --livedir=live option
+to
+.Pa ./configure .
+.It Fl p Ar prefix
+When linking all the service directory into
+.Ar scandir ,
+prepend the symbolic link names with prefix, i.e. a longrun named
+.Ql A
+will have its service directory accessible via
+.Pa "" Ns Ar scandir Ns / Ns Ar prefix Ns A .
+This allows several live directories to be used with a unique scandir
+without risking conflicts between longruns with the same name from
+different service databases.
+This option is only useful if you intend to have several sets of
+services independently managed by
+.Xr s6-rc 8 ,
+with different live directories, all using the same scandir to
+supervise their longruns.
+The default is no prefix at all, which is good when you only have one
+live directory.
+.It Fl b
+Blocking lock.
+If the database is currently being used by another program,
+.Nm
+will wait until that other program has released its lock on the
+database, then proceed.
+By default,
+.Nm
+fails with an error message if the database is currently in use.
+.It Fl d
+Dereference
+.Ar compiled .
+Fully resolve the
+.Ar compiled
+path before declaring it as the current compiled service database for
+the upcoming live state.
+This allows
+.Ar compiled
+to be a symlink that can be updated later without impacting the
+current live state.
+Using this flag in your init scripts'
+.Nm
+invocation means that it's possible to boot on a compiled service
+database whose validity has not previously been guaranteed by a
+successful
+.Xr s6-rc-update 8
+invocation: you should know what you are doing.
+.El
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-oneshot-run 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-init.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

@@ -1,0 +1,420 @@
+.Dd April 6, 2023
+.Dt S6-RC-UPDATE 8
+.Os
+.Sh NAME
+.Nm s6-rc-update
+.Nd online service database switcher
+.Sh SYNOPSIS
+.Nm
+.Op Fl n
+.Op Fl v Ar verbosity
+.Op Fl t Ar timeout
+.Op Fl l Ar live
+.Op Fl f Ar convfile
+.Op Fl b
+.Ar newdb
+.Sh DESCRIPTION
+.Nm
+is an online
+.Em service database switcher :
+it will replace your compiled service database with another one, and
+adjust the live state accordingly.
+This allows you to change your set of services without having to
+reboot.
+.Pp
+Live upgrading a service database is not easy, and no fully automated
+system can get it right in all cases.
+.Nm
+will do its best on its own, but it lets the user give it instructions
+to handle difficult cases; and rather than implement doubtful
+heuristics, it will fail with an error message in situations it cannot
+solve.
+.Pp
+.Nm
+analyzes the current live state, the current compiled service
+database, and the compiled service database contained at
+.Ar newdb
+.Po which must be an absolute path
+.Pc .
+.Pp
+Additionally, it can process an optional
+.Em conversion file
+containing instructions.
+.Pp
+It computes the necessary service transitions to safely update the
+live database.
+.Pp
+It shuts down the necessary services.
+.Pp
+It updates the live directory so that
+.Ar newdb
+becomes the live compiled service database.
+.Pp
+It starts up the necessary services.
+.Ss Transition details
+.Nm Ap
+s job is to ensure consistency of the live state across a change of
+compiled service databases.
+To do so, it must make sure that the services that are up at the time
+of its invocation are still up after its invocation; but service
+definitions in the new compiled may be different from those in the old
+one \(em in particular, dependencies may change, or a service can
+change types: a oneshot can become a longrun and vice-versa, and an
+atomic service can even become a bundle.
+.Pp
+.Sy Service identity
+.Pp
+.Nm
+examines atomic services, as defined in the old compiled, that are up
+at invocation time, and computes what is necessary for the
+.Dq same
+services, as defined in the new compiled, to be up.
+Barring instructions from the conversion file, the service is
+.Dq the same
+if it has the same name in the new compiled, no matter its type.
+.Pp
+So, if there is an up oneshot named
+.Ql sshd
+in the old compiled, and there is a longrun named
+.Ql sshd
+in the new compiled, then
+.Nm
+will decide that the new
+.Ql sshd
+longrun will replace the old
+.Ql sshd
+oneshot.
+If the new compiled defines a
+.Ql sshd
+bundle instead, then
+.Nm
+will decide that the old
+.Ql sshd
+oneshot will be replaced with the contents of the
+.Ql sshd
+bundle.
+.Pp
+.Sy Restarts
+.Pp
+.Nm
+tries to avoid needlessly restarting services.
+For instance, running it with a new compiled that is an exact copy of
+the old compiled should not cause any restarts.
+.Nm
+will flag a service to be restarted in the following cases:
+.Bl -bullet
+.It
+The service has disappeared in the new compiled.
+In this case, the old service will simply be stopped.
+.It
+The service has changed types: a oneshot becomes a longrun, a longrun
+becomes a oneshot, or an atomic service becomes a bundle.
+In this case, the old service will be stopped, then the new service
+will be started.
+.It
+The service has a dependency to a service that must restart, or to an
+old service that must stop, or to a new service that did not
+previously exist or that was previously down.
+.It
+There is an instruction to restart the service in the conversion file.
+.El
+.Pp
+.Sy Steps
+.Pp
+After it has decided what services it should restart,
+.Nm
+will:
+.Bl -bullet
+.It
+Invoke
+.Xr s6-rc 8
+to stop old services.
+.It
+Update the live directory with the data from the new compiled.
+This is the critical part;
+.Nm
+should not be interrupted at this point.
+It does its best to avoid risking leaving behind an inconsistent
+state, but a 100% atomicity guarantee is impossible to achieve.
+.It
+Adjust pipe names for the existing pipelines, if needed.
+.It
+Exec into
+.Xr s6-rc 8
+to start new services.
+.El
+.Ss The conversion file
+The conversion file is used to give
+.Nm
+instructions when the change of databases is not entirely
+straightforward.
+Currently, it supports the following features:
+.Bl -bullet
+.It
+Changing the name of a service.
+.It
+Forcing a restart on a service.
+.El
+.Pp
+.Sy Format
+.Pp
+The conversion file is a sequence of lines; each line is parsed
+independently, there's no carrying of information from one line to the
+next.
+.Pp
+A line is lexed into words by the
+.Xr execlineb 1
+lexer, which means that words are normally separated by whitespace,
+but can be quoted, that
+.Ql #
+comments are recognized, etc.
+.Pp
+The first word in a line must be the name of an
+.Dq old
+atomic service, i.e. an atomic service contained in the current live
+database.
+The remaining words in the line are instructions telling
+.Nm
+how to convert that service.
+.Pp
+.Sy Renaming
+.Pp
+If the second word in the line is
+.Ql -> ,
+then the third word in the line must be the new name of the service in
+the new database:
+.Nm
+will then rename it.
+It is possible to rename an atomic service to another atomic service
+or a bundle, but no matter whether a service is renamed or not,
+changing its type will force a restart.
+.Pp
+.Sy Restarting
+.Pp
+If the word following either the old name, or a renaming instruction,
+is the word
+.Ql restart ,
+then the service will forced to restart.
+.Ss Safely managing and updating compiled databases
+The sequence of operations needed to update a database from source to
+live can be a little tricky.
+It involves:
+.Bl -bullet
+.It
+Compiling the new database without overwriting the live one.
+.It
+Calling
+.Nm
+to safely replace the live database.
+.It
+Making sure the new database will be correctly used at boot time.
+.El
+.Pp
+The FAQ entry at [1] gives a step-by-step explanation on how to proceed.
+.Ss Notes
+The
+.Ar live
+argument to the
+.Fl l
+option, if present, should be the same argument that was given to the
+.Xr s6-rc-init 8
+invocation when the system was booted.
+In other words: it should be the name of the symbolic link pointing to
+the real directory containing the live information, not the name of
+the real directory.
+.Pp
+If a longrun service is renamed from
+.Ar oldname
+to
+.Ar newname ,
+but not restarted, the
+.Xr s6-supervise 8
+process in charge of it will still show up in the process list as
+.Ql s6-supervise Ar oldname .
+This is purely cosmetic and will have no impact on the service;
+nevertheless, if you wish to avoid that, simply force a restart on
+every longrun you rename.
+.Pp
+After an
+.Nm
+invocation, the old compiled service database is left unchanged where
+it was, and the new compiled service database is used in-place.
+If the machine is rebooted, the
+.Xr s6-rc-init 8
+invocation will still boot on the old compiled unless more work is
+performed.
+It is recommended to keep a
+.Pa current
+symbolic link to the current compiled, to always
+.Xr s6-rc-init 8
+on
+.Pa current ,
+and to make
+.Pa current
+a link to the new compiled right after an
+.Nm
+invocation.
+.Pp
+.Nm
+is the only way to
+.Dq free
+the old compiled database for displacement or deletion.
+A live compiled database must not be tampered with.
+After an
+.Nm
+invocation, the old database isn't live anymore and can be moved or
+deleted; instead,
+.Ar newdb
+is live.
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl n
+Dry run.
+.Nm
+will compute the service transitions, and print the
+.Xr s6-rc 8
+command lines it would execute to perform those transitions.
+It will not actually run them or modify the live database.
+.It Fl v Ar verbosity
+Be more or less verbose.
+Default is 1: warning and error messages will be printed to stderr.
+0 silences warnings.
+2 adds a bit more information about what
+.Nm
+is doing.
+3 or more is heavy debug output.
+.It Fl t Ar timeout
+If
+.Nm
+cannot perform its job within
+.Ar timeout
+milliseconds, it will exit.
+The default is 0, meaning infinite
+.Po no timeout
+.Pc .
+Be aware that timing out and exiting may leave the live database in an
+inconsistent state, so use of this option is not recommended.
+.It Fl l Ar live
+Look for the live state in
+.Ar live .
+It must be an absolute path.
+Default is
+.Pa /run/s6-rc .
+The default can be changed at compile-time by giving the
+.Ql --livedir=live
+option to
+.Pa ./configure .
+.It Fl f Ar convfile
+Use the conversion file located at
+.Ar convfile .
+Default is
+.Pa /dev/null ,
+meaning no special instructions.
+.It Fl b
+Blocking lock.
+If the database is currently being used by another program,
+.Nm
+will wait until that other program has released its lock on the
+database, then proceed.
+By default,
+.Nm
+fails with an error message if the database is currently in use.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 0
+Success.
+.It 1
+Failure to perform some state transitions, but the database was
+switched to
+.Ar newdb .
+.It 2
+Timed out, but the database was switched to
+.Ar newdb .
+.It 3
+Unknown service name in the conversion file.
+.It 4
+Invalid service database.
+.It 5
+Wrong service type in the conversion file.
+.It 6
+Duplicate service in the conversion file.
+.It 9
+Failure to perform some state transitions, and the database was not
+switched.
+.It 10
+Timed out, and the database was not switched.
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.It 126
+Cannot exec into
+.Xr s6-rc 8
+for the final
+.Dq up
+transition
+.Po
+error other than
+.Dv ENOENT
+.Pc .
+.It 127
+Cannot exec into
+.Xr s6-rc 8
+for the final
+.Dq up
+transition
+.Po
+executable not found
+.Pc .
+.El
+.Sh EXAMPLES
+Consider the following conversion file:
+.Bd -literal
+# Simple conversion file
+mount-var -> mount-rwfs
+httpd restart
+sqld -> mysqld restart
+.Ed
+.Pp
+It will rename
+.Ql mount-var
+to
+.Ql mount-rwfs ,
+not restarting it if
+.Ql mount-var
+in the old database and
+.Ql mount-rwfs
+in the new database have the same type and do not depend on services
+that would force a restart.
+.Pp
+It will restart
+.Ql httpd .
+.Pp
+It will rename
+.Ql sqld
+to
+.Ql mysqld
+and make it restart.
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-oneshot-run 8
+.Pp
+[1]
+.Lk https://skarnet.org/software/s6-rc/faq.html#compiledmanagement
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-update.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

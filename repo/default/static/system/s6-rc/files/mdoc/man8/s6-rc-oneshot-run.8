@@ -1,0 +1,99 @@
+.Dd April 6, 2023
+.Dt S6-RC-ONESHOT-RUN 8
+.Os
+.Sh NAME
+.Nm s6-rc-oneshot-run
+.Nd executes a oneshot service's
+.Pa up
+or
+.Pa down
+script
+.Sh SYNOPSIS
+.Nm
+.Op Fl l Ar live
+.Op Fl b
+up|down
+.Ar n
+.Sh DESCRIPTION
+.Nm
+executes a oneshot service's
+.Pa up
+or
+.Pa down
+script taken from the current live compiled database.
+.Pp
+.Nm
+is not meant to be used directly; it is used in internal scripts created by
+.Xr s6-rc-compile 8 ,
+which are invoked during an
+.Xr s6-rc 8
+execution.
+.Nm
+executes into the
+.Pa up
+or
+.Pa down
+script of the
+.Ar n Ns
+th oneshot service defined in the current compiled service database
+(i.e. the compiled linked from the live directory).
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl l Ar live
+Use the live directory in
+.Ar live .
+Default is
+.Pa /run/s6-rc ,
+or what was given to the
+.Ql --livedir
+configure option at compile time.
+.It Fl b
+Blocking lock.
+If the service database is currently being used by another program,
+.Nm
+will wait until that other program has released its lock on the
+database, then proceed.
+By default,
+.Nm
+fails with an error message if the database is currently in use.
+.El
+.Sh EXIT STATUS
+.Bl -tag -width x
+.It 3
+Invalid service number.
+.It 4
+Invalid service database.
+.It 100
+Wrong usage.
+.It 111
+System call failed.
+.It 126
+Cannot exec script.
+.It 127
+Cannot exec script: executable not found.
+.It other exit codes
+Returned from the executed
+.Pa up
+or
+.Pa down
+script.
+.El
+.Sh SEE ALSO
+.Xr s6-rc-faq 7 ,
+.Xr s6-rc-overview 7 ,
+.Xr s6-rc-why 7 ,
+.Xr s6-rc 8 ,
+.Xr s6-rc-bundle 8 ,
+.Xr s6-rc-compile 8 ,
+.Xr s6-rc-db 8 ,
+.Xr s6-rc-dryrun 8 ,
+.Xr s6-rc-fdholder-filler 8 ,
+.Xr s6-rc-format-upgrade 8 ,
+.Xr s6-rc-init 8 ,
+.Xr s6-rc-update 8
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/s6-rc/s6-rc-oneshot-run.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
