@@ -1,8 +1,8 @@
 name:libdrm
-version:2.4.114
+version:2.4.116
 license:mit
 description:Userspace interface to kernel DRM services.
-cksum:14fd271c4cce97d67a7d437d74df959c580f526270fcd242b61541b6d2879fe3394653b85d16c6e9cab0b8e3148135cfa4f7fca6d8bda533501c63eb033f0f9b
+cksum:62841548690264ac286d3bb92915e99e98692d42394d362f0da1f5a0ec119c60de0d407350739ebfce860acf227b3693705865cc88386597145630dec047952b
 urls{
 https://dri.freedesktop.org/libdrm/libdrm-$version.tar.xz
 }
