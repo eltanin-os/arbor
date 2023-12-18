@@ -1,0 +1,23 @@
+#!/bin/execlineb -P
+cd llvm
+if {
+	importas -i PREFIX PREFIX
+	cmake
+	    -B build
+	    -GNinja
+	    -DCMAKE_INSTALL_PREFIX=${PREFIX}
+	    -DCMAKE_BUILD_TYPE=Release
+	    -DLLVM_ENABLE_TERMINFO=OFF
+	    -DLLVM_ENABLE_LIBXML2=OFF
+	    -DLLVM_ENABLE_LIBEDIT=OFF
+	    -DLLVM_ENABLE_RTTI=ON
+	    -DLLVM_ENABLE_ZLIB=ON
+	    -DLLVM_LINK_LLVM_DYLIB=ON
+	    -DLLVM_INCLUDE_BENCHMARKS=OFF
+	    -DLLVM_INCLUDE_EXAMPLES=OFF
+	    -DLLVM_INCLUDE_DOCS=OFF
+	    -DLLVM_INCLUDE_TESTS=OFF
+	    -DLLVM_USE_LINKER=gold
+}
+importas nprocs nprocs
+ninja -C build -j$nprocs install

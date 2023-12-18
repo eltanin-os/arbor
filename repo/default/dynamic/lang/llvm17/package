@@ -1,0 +1,19 @@
+name:llvm17
+version:17.0.5
+license:apache-2.0
+description:Low Level Virtual Machine compiler infrastructure.
+cksum:40a5df9c35ab7f52e5aae8a22508f88f383face8c741853380736ccbbdab49107b1091dca073e41683b0888f5944490872c43a213b51a1ed30b2ec732169887c
+src:llvm-project-$version.src
+urls{
+https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/llvm-project-$version.src.tar.xz
+}
+hostdeps{
+cmake
+python
+stdenv
+}
+makedeps{
+libc
+libffi
+zlib-dynamic
+}
