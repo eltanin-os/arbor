@@ -1,0 +1,15 @@
+Index: Modules/pyexpat.c
+--- a/Modules/pyexpat.c.orig
++++ b/Modules/pyexpat.c
+@@ -437,6 +437,11 @@ call_character_handler(xmlparseobject *self, const XML
+                                     noop_character_data_handler);
+         return -1;
+     }
++    if (!have_handler(self, CharacterData)) {
++        Py_DECREF(args);
++        flag_error(self);
++        return -1;
++    }
+     PyTuple_SET_ITEM(args, 0, temp);
+     /* temp is now a borrowed reference; consider it unused. */
+     self->in_callback = 1;

@@ -1,0 +1,22 @@
+name:python2
+version:2.7.18
+license:psf-2.0
+description:A high-level scripting language.
+cksum:b0c7c7566148b006bc79632b6f64ce12007439869025f40e9385a4a8240f70b529c3acd63d8404058e371cf7b2a9a41f36df5041f386c1ba854e8c237e38894e
+src:Python-$version
+urls{
+https://www.python.org/ftp/python/$version/Python-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+bzip2-dynamic
+expat-dynamic
+gdbm
+libc
+libffi
+libressl-dynamic
+sqlite
+zlib-dynamic
+}

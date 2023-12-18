@@ -1,0 +1,16 @@
+#!/bin/execlineb -P
+# Ensure usage of system libraries
+if { rm -Rf Modules/expat Modules/zlib Modules/_ctypes/darwin Modules/_ctypes/libffi* }
+# XXX
+if { rm -Rf Lib/test }
+if {
+	export ARBOR_MK_CONFIGURE_ARGS "--with-threads;--enable-optimizations;--enable-ipv6;--enable-unicode=ucs4;--with-system-expat;--with-system-ffi;--with-dbmliborder=gdbm:ndbm;--without-ensurepip"
+	arbor-mk-gnuconfigure
+}
+if { arbor-mk-gmake }
+if { arbor-utils-sed Makefile "s;^all:.*$;all: build_all;" }
+if { arbor-mk-gmake altinstall maninstall }
+# Fix conflicts with python
+if { arbor-utils-install -n bin idle2 idle }
+if { arbor-utils-install -n bin pydoc2 pydoc }
+arbor-utils-install -n bin 2to3-2.8 2to3
