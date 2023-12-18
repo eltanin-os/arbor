@@ -1,0 +1,53 @@
+diff -Naur a/configure b/configure
+--- a/configure	1999-01-05 11:28:57.000000000 -0200
++++ b/configure	2023-10-19 15:08:36.821821764 -0300
+@@ -1,7 +1,7 @@
+ #! /bin/sh
+ 
+ # Guess values for system-dependent variables and create Makefiles.
+-# Generated automatically using autoconf version 2.13 
++# Generated automatically using autoconf version 2.13
+ # Copyright (C) 1992, 93, 94, 95, 96 Free Software Foundation, Inc.
+ #
+ # This configure script is free software; the Free Software Foundation
+@@ -376,7 +376,7 @@
+   | --x-librar=* | --x-libra=* | --x-libr=* | --x-lib=* | --x-li=* | --x-l=*)
+     x_libraries="$ac_optarg" ;;
+ 
+-  -*) { echo "configure: error: $ac_option: invalid option; use --help to show usage" 1>&2; exit 1; }
++  -*) #{ echo "configure: error: $ac_option: invalid option; use --help to show usage" 1>&2; exit 1; }
+     ;;
+ 
+   *)
+@@ -555,13 +555,13 @@
+   /*)
+   ac_cv_path_M4="$M4" # Let the user override the test with a path.
+   ;;
+-  ?:/*)			 
++  ?:/*)
+   ac_cv_path_M4="$M4" # Let the user override the test with a dos path.
+   ;;
+   *)
+   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
+   ac_dummy="$PATH"
+-  for ac_dir in $ac_dummy; do 
++  for ac_dir in $ac_dummy; do
+     test -z "$ac_dir" && ac_dir=.
+     if test -f $ac_dir/$ac_word; then
+       ac_cv_path_M4="$ac_dir/$ac_word"
+@@ -629,13 +629,13 @@
+   /*)
+   ac_cv_path_PERL="$PERL" # Let the user override the test with a path.
+   ;;
+-  ?:/*)			 
++  ?:/*)
+   ac_cv_path_PERL="$PERL" # Let the user override the test with a dos path.
+   ;;
+   *)
+   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
+   ac_dummy="$PATH"
+-  for ac_dir in $ac_dummy; do 
++  for ac_dir in $ac_dummy; do
+     test -z "$ac_dir" && ac_dir=.
+     if test -f $ac_dir/$ac_word; then
+       ac_cv_path_PERL="$ac_dir/$ac_word"

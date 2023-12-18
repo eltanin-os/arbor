@@ -1,0 +1,6 @@
+#!/bin/execlineb -P
+if { mv autoconf.texi autoconf213.texi }
+if { rm autoconf.info }
+export ARBOR_MK_CONFIGURE_ARGS "--program-suffix=2.13"
+export M4 "gm4"
+arbor-mk-gnuconfigure install

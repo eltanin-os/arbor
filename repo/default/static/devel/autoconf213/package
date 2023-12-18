@@ -1,0 +1,17 @@
+name:autoconf213
+version:2.13
+license:gpl-2+
+description:GNU tool for automatically configuring source code.
+cksum:21a62a6e9d0de0220208b71a96927d5c7739551b12007583aedcc5480be9831a1c9d1284731c395249a369af7fe166a9ced2ea0f7348ee2f39fff257b736a4f0
+src:autoconf-$version
+urls{
+https://ftp.gnu.org/gnu/autoconf/autoconf-$version.tar.gz
+}
+hostdeps{
+gm4
+stdenv
+texinfo
+}
+makedeps{
+libc
+}
