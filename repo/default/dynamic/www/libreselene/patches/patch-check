@@ -1,0 +1,16 @@
+diff -Naur a/toolkit/moz.configure b/toolkit/moz.configure
+--- a/platform/toolkit/moz.configure	2023-09-28 11:18:01.000000000 -0300
++++ b/platform/toolkit/moz.configure	2023-10-25 09:40:11.834251767 -0300
+@@ -357,9 +357,9 @@
+ # Miscellaneous programs
+ # ==============================================================
+ 
+-check_prog('TAR', ('gnutar', 'gtar', 'tar'))
+-check_prog('UNZIP', ('unzip',))
+-check_prog('ZIP', ('zip',))
++#check_prog('TAR', ('gnutar', 'gtar', 'tar'))
++#check_prog('UNZIP', ('unzip',))
++#check_prog('ZIP', ('zip',))
+ 
+ # Key files
+ # ==============================================================

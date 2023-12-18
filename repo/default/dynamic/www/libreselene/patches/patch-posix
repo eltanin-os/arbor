@@ -1,0 +1,46 @@
+diff -Naur a/platform/build/unix/build-binutils/build-binutils.sh b/platform/build/unix/build-binutils/build-binutils.sh
+--- a/platform/build/unix/build-binutils/build-binutils.sh	2023-10-29 00:33:30.842835684 -0300
++++ b/platform/build/unix/build-binutils/build-binutils.sh	2023-10-31 01:45:30.790136398 -0300
+@@ -29,4 +29,4 @@
+ 
+ # Make a package of the built binutils
+ cd $root_dir/tools
+-tar caf $root_dir/binutils.tar.xz binutils/
++tar -c binutils/ | xz > $root_dir/binutils.tar.xz
+diff -Naur a/platform/build/unix/build-gcc/build-gcc.sh b/platform/build/unix/build-gcc/build-gcc.sh
+--- a/platform/build/unix/build-gcc/build-gcc.sh	2023-10-29 00:33:30.842835684 -0300
++++ b/platform/build/unix/build-gcc/build-gcc.sh	2023-10-31 01:44:55.031585944 -0300
+@@ -49,4 +49,4 @@
+ make $make_flags install DESTDIR=$root_dir || exit 1
+ 
+ cd $root_dir/tools
+-tar caf $root_dir/gcc.tar.xz gcc/
++tar -c gcc/ | xz > $root_dir/gcc.tar.xz
+diff -Naur a/platform/modules/freetype2/builds/toplevel.mk b/platform/modules/freetype2/builds/toplevel.mk
+--- a/platform/modules/freetype2/builds/toplevel.mk	2023-10-29 00:33:40.435715086 -0300
++++ b/platform/modules/freetype2/builds/toplevel.mk	2023-10-31 01:40:51.855643079 -0300
+@@ -265,9 +265,9 @@
+ 
+ 	mv tmp freetype-$(version)
+ 
+-	tar -H ustar -chf - freetype-$(version) \
++	pax -x ustar -Lcf - freetype-$(version) \
+ 	| gzip -9 -c > freetype-$(version).tar.gz
+-	tar -H ustar -chf - freetype-$(version) \
++	pax -x ustar -Lcf - freetype-$(version) \
+ 	| xz -c > freetype-$(version).tar.xz
+ 
+ 	@# Use CR/LF for zip files.
+diff -Naur a/platform/toolkit/mozapps/installer/packager.mk b/platform/toolkit/mozapps/installer/packager.mk
+--- a/platform/toolkit/mozapps/installer/packager.mk	2023-10-29 00:33:42.915683908 -0300
++++ b/platform/toolkit/mozapps/installer/packager.mk	2023-10-31 13:01:38.429132108 -0300
+@@ -115,8 +115,7 @@
+ 	$(error "make install" is not supported on this platform. Use "make package" instead.)
+ endif
+ 	$(NSINSTALL) -D $(DESTDIR)$(installdir)
+-	(cd $(DIST)/$(MOZ_PKG_DIR) && $(TAR) --exclude=precomplete $(TAR_CREATE_FLAGS) - .) | \
+-	  (cd $(DESTDIR)$(installdir) && tar -xf -)
++	(find $(DIST)/$(MOZ_PKG_DIR) | grep -v "precomplete") | pax -rw $(DESTDIR)$(installdir)/
+ 	$(NSINSTALL) -D $(DESTDIR)$(bindir)
+ 	$(RM) -f $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
+ 	ln -s $(installdir)/$(MOZ_APP_NAME) $(DESTDIR)$(bindir)

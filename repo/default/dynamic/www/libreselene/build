@@ -1,0 +1,39 @@
+#!/bin/execlineb -P
+importas -i ARBOR_ROOTDIR ARBOR_ROOTDIR
+# branding
+if {
+	if { mv ${ARBOR_ROOTDIR}/tmp/files/mozconfig .mozconfig }
+	if { rm -Rf palemoon/branding/unofficial }
+	mv ${ARBOR_ROOTDIR}/tmp/files/libreselene palemoon/branding/unofficial
+}
+# env
+importas -i SOURCE_DATE_EPOCH SOURCE_DATE_EPOCH
+export MOZ_BUILD_DATE "${SOURCE_DATE_EPOCH}"
+# build/install
+export M4 "gm4"
+if { arbor-mk-gmake -f client.mk build }
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	importas -i PREFIX PREFIX
+}
+define DEST "${DESTDIR}/${PREFIX}/opt"
+if { arbor-mk-gmake -f client.mk DESTDIR=$DEST INSTALL_SDK= STRIP=strip install }
+# fix path
+if {
+	cd $DEST
+	if { mv dist/libreselene libreselene }
+	rm -Rf bin lib dist
+}
+# add binary
+if {
+	importas -i PREFIX PREFIX
+	redirfd -w 1 ${ARBOR_ROOTDIR}/tmp/libreselene
+	heredoc 0
+"#!/bin/execlineb -s0
+export LD_LIBRARY_PATH "${PREFIX}/opt/libreselene"
+${PREFIX}/opt/libreselene/libreselene $@
+"
+	cat
+}
+if { chmod +x ${ARBOR_ROOTDIR}/tmp/libreselene }
+arbor-utils-install bin ${ARBOR_ROOTDIR}/tmp/libreselene

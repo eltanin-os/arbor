@@ -1,0 +1,11 @@
+diff -Naur a/platform/python/psutil/psutil/_psutil_linux.c b/platform/python/psutil/psutil/_psutil_linux.c
+--- a/platform/python/psutil/psutil/_psutil_linux.c	2023-10-29 00:33:38.926734056 -0300
++++ b/platform/python/psutil/psutil/_psutil_linux.c	2023-10-29 13:36:11.959454497 -0300
+@@ -19,6 +19,7 @@
+ #include <linux/version.h>
+ #include <sys/syscall.h>
+ #include <sys/sysinfo.h>
++#include <sys/types.h>
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
+ #include <linux/sockios.h>

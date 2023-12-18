@@ -1,0 +1,901 @@
+diff -Naur a/palemoon/app/Makefile.in b/palemoon/app/Makefile.in
+--- a/palemoon/app/Makefile.in	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/app/Makefile.in	2023-12-04 10:47:33.118191258 -0300
+@@ -54,11 +54,11 @@
+ ifneq (,$(filter-out WINNT,$(OS_ARCH)))
+ 
+ ifdef COMPILE_ENVIRONMENT
+-libs:: 
++libs::
+ 	cp -p $(MOZ_APP_NAME)$(BIN_SUFFIX) $(DIST)/bin/$(MOZ_APP_NAME)-bin$(BIN_SUFFIX)
+ endif
+ 
+-GARBAGE += $(addprefix $(FINAL_TARGET)/defaults/pref/, palemoon.js)
++GARBAGE += $(addprefix $(FINAL_TARGET)/defaults/pref/, palemoon.js vendor.js)
+ 
+ endif
+ 
+diff -Naur a/palemoon/app/application.ini b/palemoon/app/application.ini
+--- a/palemoon/app/application.ini	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/app/application.ini	2023-11-29 10:28:46.506460075 -0300
+@@ -20,9 +20,9 @@
+ 
+ [App]
+ # Vendor=@MOZ_APP_VENDOR@
+-Vendor=Moonchild Productions
++Vendor=EltaninOS
+ # Name=@MOZ_APP_BASENAME@
+-Name=Pale Moon
++Name=LibreSelene
+ RemotingName=@MOZ_APP_REMOTINGNAME@
+ #ifdef MOZ_APP_DISPLAYNAME
+ CodeName=@MOZ_APP_DISPLAYNAME@
+@@ -47,4 +47,4 @@
+ [XRE]
+ #ifdef MOZ_PROFILE_MIGRATOR
+ EnableProfileMigrator=1
+-#endif
+\ No newline at end of file
++#endif
+diff -Naur a/palemoon/app/moz.build b/palemoon/app/moz.build
+--- a/palemoon/app/moz.build	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/app/moz.build	2023-12-04 10:46:56.654191262 -0300
+@@ -9,6 +9,7 @@
+ 
+ JS_PREFERENCE_PP_FILES += [
+     'profile/palemoon.js',
++    'profile/vendor.js',
+ ]
+ 
+ if CONFIG['LIBXUL_SDK']:
+diff -Naur a/palemoon/app/profile/palemoon.js b/palemoon/app/profile/palemoon.js
+--- a/palemoon/app/profile/palemoon.js	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/app/profile/palemoon.js	2023-12-03 17:08:37.220198817 -0300
+@@ -40,6 +40,7 @@
+ pref("extensions.guid.appCompatVersion", "56.9");
+ pref("extensions.guid.appCompatId", "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}");
+ 
++/*
+ #define AM_DOMAIN addons.palemoon.org
+ #define AM_AUS_ARGS reqVersion=%REQ_VERSION%&id=%ITEM_ID%&version=%ITEM_VERSION%&maxAppVersion=%ITEM_MAXAPPVERSION%&status=%ITEM_STATUS%&appID=%APP_ID%&appVersion=%APP_VERSION%&appOS=%APP_OS%&appABI=%APP_ABI%&locale=%APP_LOCALE%&currentAppVersion=%CURRENT_APP_VERSION%&updateType=%UPDATE_TYPE%&compatMode=%COMPATIBILITY_MODE%
+ 
+@@ -54,6 +55,7 @@
+ pref("extensions.getAddons.recommended.url", "https://@AM_DOMAIN@/?component=integration&type=internal&request=recommended&locale=%LOCALE%&os=%OS%");
+ pref("extensions.getAddons.browseAddons", "http://@AM_DOMAIN@/");
+ pref("extensions.getAddons.recommended.browseURL", "https://@AM_DOMAIN@/?component=integration&type=external&request=recommended");
++*/
+ 
+ // Blocklist preferences
+ pref("extensions.blocklist.enabled", true);
+@@ -62,9 +64,9 @@
+ // Controls what level the blocklist switches from warning about items to forcibly
+ // blocking them.
+ pref("extensions.blocklist.level", 2);
+-pref("extensions.blocklist.url", "https://blocklist.palemoon.org/?version=%VERSION%");
++/*pref("extensions.blocklist.url", "https://blocklist.palemoon.org/?version=%VERSION%");
+ pref("extensions.blocklist.detailsURL", "https://blocklist.palemoon.org/about.shtml");
+-pref("extensions.blocklist.itemURL", "https://blocklist.palemoon.org/info/?id=%blockID%");
++pref("extensions.blocklist.itemURL", "https://blocklist.palemoon.org/info/?id=%blockID%");*/
+ 
+ pref("extensions.update.autoUpdateDefault", true);
+ 
+@@ -73,16 +75,16 @@
+ pref("extensions.autoDisableScopes", 15);
+ 
+ // Dictionary download preference
+-pref("browser.dictionaries.download.url", "https://@AM_DOMAIN@/dictionaries/");
++//pref("browser.dictionaries.download.url", "https://@AM_DOMAIN@/dictionaries/");
+ 
+ // Get More Tools link URL
+-pref("browser.getdevtools.url","https://@AM_DOMAIN@/?component=integration&type=external&request=devtools");
++//pref("browser.getdevtools.url","https://@AM_DOMAIN@/?component=integration&type=external&request=devtools");
+ 
+ // Feedback URL
+-pref("browser.feedback.url", "https://forum.palemoon.org");
++pref("browser.feedback.url", "https://eltaninos.org/en/community");
+ 
+ // Help button in slow startup dialog
+-pref("browser.slowstartup.help.url", "http://www.palemoon.org/support/slowstartup.shtml");
++//pref("browser.slowstartup.help.url", "http://www.palemoon.org/support/slowstartup.shtml");
+ 
+ // Whether to escape to a content-less page if a user presses "Get me out of here"
+ // on a network error page (e.g. cert error)
+@@ -168,7 +170,7 @@
+ pref("app.update.staging.enabled", true);
+ 
+ // Update service URL:
+-pref("app.update.url", "https://aus.palemoon.org/?application=%PRODUCT%&version=%VERSION%&arch=%BUILD_TARGET%&flavor=%BUILD_SPECIAL%&toolkit=%WIDGET_TOOLKIT%&buildid=%BUILD_ID%&channel=%CHANNEL%");
++//pref("app.update.url", "https://aus.palemoon.org/?application=%PRODUCT%&version=%VERSION%&arch=%BUILD_TARGET%&flavor=%BUILD_SPECIAL%&toolkit=%WIDGET_TOOLKIT%&buildid=%BUILD_ID%&channel=%CHANNEL%");
+ // app.update.url.manual is in branding section
+ // app.update.url.details is in branding section
+ 
+@@ -182,7 +184,7 @@
+ pref("app.update.idletime", 180);
+ 
+ // Whether or not we show a dialog box informing the user that the update was
+-// successfully applied. This is off in Firefox by default since we show a 
++// successfully applied. This is off in Firefox by default since we show a
+ // upgrade start page instead! Other apps may wish to show this UI, and supply
+ // a whatsNewURL field in their brand.properties that contains a link to a page
+ // which tells users what's new in this new update.
+@@ -202,11 +204,11 @@
+ //  .. etc ..
+ //
+ pref("extensions.update.enabled", true);
+-pref("extensions.update.url", "https://@AM_DOMAIN@/?component=aus&@AM_AUS_ARGS@");
+-pref("extensions.update.interval", 86400);  // Check for updates to Extensions and 
++//pref("extensions.update.url", "https://@AM_DOMAIN@/?component=aus&@AM_AUS_ARGS@");
++pref("extensions.update.interval", 86400);  // Check for updates to Extensions and
+                                             // Themes every day
+ // Non-symmetric (not shared by extensions) extension-specific [update] preferences
+-pref("extensions.dss.enabled", false);          // Dynamic Skin Switching                                               
++pref("extensions.dss.enabled", false);          // Dynamic Skin Switching
+ pref("extensions.dss.switchPending", false);    // Non-dynamic switch pending after next
+                                                 // restart.
+ 
+@@ -341,7 +343,7 @@
+ pref("browser.download.debug", false);
+ 
+ // Number of milliseconds to wait for the http headers (and thus
+-// the Content-Disposition filename) before giving up and falling back to 
++// the Content-Disposition filename) before giving up and falling back to
+ // picking a filename without that info in hand so that the user sees some
+ // feedback from their action.
+ pref("browser.download.saveLinkAsFilenameTimeout", 4000);
+@@ -370,7 +372,7 @@
+ pref("browser.download.panel.firstSessionCompleted", false);
+ 
+ // search engines URL
+-pref("browser.search.searchEnginesURL",      "https://@AM_DOMAIN@/?component=integration&type=external&request=searchplugins");
++//pref("browser.search.searchEnginesURL",      "https://@AM_DOMAIN@/?component=integration&type=external&request=searchplugins");
+ 
+ // pointer to the default engine name
+ pref("browser.search.defaultenginename",      "chrome://browser-region/locale/region.properties");
+@@ -378,7 +380,7 @@
+ // disable logging for the search service by default
+ pref("browser.search.log", false);
+ 
+-// Ordering of Search Engines in the Engine list. 
++// Ordering of Search Engines in the Engine list.
+ pref("browser.search.order.1",                "chrome://browser-region/locale/region.properties");
+ pref("browser.search.order.2",                "chrome://browser-region/locale/region.properties");
+ pref("browser.search.order.3",                "chrome://browser-region/locale/region.properties");
+@@ -468,7 +470,7 @@
+ // 3  at the end of the tabstrip
+ pref("browser.tabs.closeButtons", 1);
+ 
+-// When tabs opened by links in other tabs via a combination of 
++// When tabs opened by links in other tabs via a combination of
+ // browser.link.open_newwindow being set to 3 and target="_blank" etc are
+ // closed:
+ // true   return to the tab that opened this tab (its owner)
+@@ -498,7 +500,7 @@
+ // be exported as HTML to the bookmarks.html file.
+ pref("browser.bookmarks.autoExportHTML",          false);
+ 
+-// The maximum number of daily bookmark backups to 
++// The maximum number of daily bookmark backups to
+ // keep in {PROFILEDIR}/bookmarkbackups. Special values:
+ // -1: unlimited
+ //  0: no backups created (and deletes all existing backups)
+@@ -511,7 +513,7 @@
+ pref("general.warnOnAboutConfig",                 false);
+ #endif
+ 
+-// This is the pref to control the location bar, change this to true to 
++// This is the pref to control the location bar, change this to true to
+ // force this - this makes the origin of popup windows more obvious to avoid
+ // spoofing. We would rather not do it by default because it affects UE for web
+ // applications, but without it there isn't a really good way to prevent chrome
+@@ -778,7 +780,7 @@
+ // At startup, if the handler service notices that the version number in the
+ // region.properties file is newer than the version number in the handler
+ // service datastore, it will add any new handlers it finds in the prefs (as
+-// seeded by this file) to its datastore.  
++// seeded by this file) to its datastore.
+ pref("gecko.handlerService.defaultHandlersVersion", "chrome://browser-region/locale/region.properties");
+ 
+ // The default set of web-based protocol handlers shown in the application
+@@ -829,9 +831,9 @@
+ // By default, we don't want protocol/content handlers to be registered from a different host, see bug 402287
+ pref("gecko.handlerService.allowRegisterFromDifferentHost", false);
+ 
+-pref("browser.geolocation.warning.infoURL", "http://www.palemoon.org/info-url/geolocation.shtml");
+-pref("browser.mixedcontent.warning.infoURL", "http://www.palemoon.org/info-url/mixedcontent.shtml");
+-pref("browser.push.warning.infoURL", "https://www.palemoon.org/info-url/push.shtml");
++//pref("browser.geolocation.warning.infoURL", "http://www.palemoon.org/info-url/geolocation.shtml");
++//pref("browser.mixedcontent.warning.infoURL", "http://www.palemoon.org/info-url/mixedcontent.shtml");
++//pref("browser.push.warning.infoURL", "https://www.palemoon.org/info-url/push.shtml");
+ 
+ pref("browser.EULA.version", 3);
+ pref("browser.rights.version", 3);
+@@ -870,7 +872,7 @@
+ // restore_on_demand overrides browser.sessionstore.max_concurrent_tabs
+ // and restore_hidden_tabs. When true, tabs will not be restored until they are
+ // focused (also applies to tabs that aren't visible). When false, the values
+-// for browser.sessionstore.max_concurrent_tabs and restore_hidden_tabs are 
++// for browser.sessionstore.max_concurrent_tabs and restore_hidden_tabs are
+ // respected. Selected tabs are always restored regardless of this pref.
+ pref("browser.sessionstore.restore_on_demand", true);
+ // The number of tabs that can restore concurrently.
+@@ -957,7 +959,7 @@
+ pref("browser.zoom.updateBackgroundTabs", true);
+ 
+ // base URL for web-based support pages
+-pref("app.support.baseURL", "http://www.palemoon.org/support/");
++pref("app.support.baseURL", "https://eltaninos.org/en/community");
+ 
+ // Name of alternate about: page for certificate errors (when undefined, defaults to about:neterror)
+ pref("security.alternate_certificate_error_page", "certerror");
+@@ -1015,7 +1017,7 @@
+ 
+ #ifdef MOZ_SERVICES_SYNC
+ // Info when outdated sync detected
+-pref("services.sync.outdated.url", "http://www.palemoon.org/sync/update/");
++//pref("services.sync.outdated.url", "http://www.palemoon.org/sync/update/");
+ // The sync engines to use.
+ pref("services.sync.registerEngines", "Bookmarks,Form,History,Password,Prefs,Tab,Addons");
+ // Preferences to be synced by default
+@@ -1176,7 +1178,7 @@
+    2 = inside identity button, left side
+    3 = urlbar, right side (next to bookmark star)
+    4 = statusbar
+-   5 = tabs bar, right side 
++   5 = tabs bar, right side
+    6-10 = same locations, classic style padlock */
+ pref("browser.padlock.style", 1);
+ // address bar border, 0 = no border, 1 = border, 2 = border only on secure sites
+diff -Naur a/palemoon/app/profile/vendor.js b/palemoon/app/profile/vendor.js
+--- a/palemoon/app/profile/vendor.js	1969-12-31 21:00:00.000000000 -0300
++++ b/palemoon/app/profile/vendor.js	2023-12-04 10:46:29.198191266 -0300
+@@ -0,0 +1,270 @@
++/* ICEWEASEL-UXP VENDOR.JS */
++// Use LANG environment variable to choose locale
++pref("intl.locale.matchOS", true);
++
++// Disable default browser checking.
++pref("browser.shell.checkDefaultBrowser", false);
++
++// Don't disable our bundled extensions in the application directory
++pref("extensions.autoDisableScopes", 11);
++pref("extensions.shownSelectionUI", true);
++
++// Opt all of us into e10s, instead of just 50% (Disabled) https://bugzilla.mozilla.org/show_bug.cgi?id=1371886
++// pref("browser.tabs.remote.autostart", true);
++
++// Disable "alt" as a shortcut key to open full menu bar. Conflicts with "alt" as a modifier
++pref("ui.key.menuAccessKeyFocuses", false);
++
++// Disable the GeoLocation API for content
++pref("geo.enabled", false);
++
++// Make sure that the request URL of the GeoLocation backend is empty
++pref("geo.wifi.uri", "");
++
++// Disable Freedom Violating DRM Feature
++pref("browser.eme.ui.enabled", false);
++// EME
++pref("media.eme.enabled", false);
++pref("media.eme.apiVisible", false);
++
++// Google Widevine DRM
++// https://blog.mozilla.org/futurereleases/2016/04/08/mozilla-to-test-widevine-cdm-in-firefox-nightly/
++// https://wiki.mozilla.org/QA/Widevine_CDM
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1288580
++pref("media.gmp-widevinecdm.visible", false);
++pref("media.gmp-widevinecdm.enabled", false);
++pref("media.gmp-widevinecdm.autoupdate", false);
++
++// Default to classic view for about:newtab
++pref("browser.newtabpage.enhanced", false);
++
++// Poodle attack
++pref("security.tls.version.min", 1);
++
++// Don't call home for blacklisting
++pref("extensions.blocklist.enabled", false);
++
++// Disable plugin installer
++pref("plugins.hide_infobar_for_missing_plugin", true);
++pref("plugins.hide_infobar_for_outdated_plugin", true);
++pref("plugins.notifyMissingFlash", false);
++
++//https://developer.mozilla.org/en-US/docs/Web/API/MediaSource
++//pref("media.mediasource.enabled",true);
++
++// Speeding it up
++pref("network.http.pipelining", true);
++pref("network.http.proxy.pipelining", true);
++pref("network.http.pipelining.maxrequests", 10);
++pref("nglayout.initialpaint.delay", 0);
++
++// Disable third party cookies
++pref("network.cookie.cookieBehavior", 1);
++
++// Prevent EULA dialog to popup on first run
++pref("browser.EULA.override", true);
++
++// Spoof the useragent to a generic one
++//pref("general.useragent.compatMode.firefox", false);
++// Spoof the useragent to a generic one for user experience and privacy
++pref("general.useragent.override", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0");
++pref("general.appname.override", "Netscape");
++pref("general.appversion.override", "5.0 (Windows)");
++pref("general.buildID.override", "Gecko/20100101");
++pref("general.oscpu.override", "Windows NT 10.0");
++pref("general.platform.override", "Win64");
++
++// Privacy & Freedom Issues
++// https://webdevelopmentaid.wordpress.com/2013/10/21/customize-privacy-settings-in-mozilla-firefox-part-1-aboutconfig/
++// https://panopticlick.eff.org
++// http://ip-check.info
++// http://browserspy.dk
++// https://wiki.mozilla.org/Fingerprinting
++// http://www.browserleaks.com
++// http://fingerprint.pet-portal.eu
++pref("privacy.donottrackheader.enabled", true);
++pref("privacy.donottrackheader.value", 1);
++pref("dom.ipc.plugins.flash.subprocess.crashreporter.enabled", false);
++// Disable navigator.sendBeacon() tracking
++// https://matomo.org/faq/how-to/faq_33087/
++pref("beacon.enabled", false);
++
++// CIS 2.1.1 Disable Auto Update / Balrog
++pref("app.update.auto", false);
++pref("app.update.checkInstallTime", false);
++pref("app.update.enabled", false);
++pref("app.update.staging.enabled", false);
++pref("app.update.url", "about:blank");
++pref("media.gmp-manager.certs.1.commonName", "");
++pref("media.gmp-manager.certs.2.commonName", "");
++// Disable Gecko media plugins: https://wiki.mozilla.org/GeckoMediaPlugins
++pref("media.gmp-manager.url", "http://127.0.0.1/");
++pref("media.gmp-manager.url.override", "data:text/plain,");
++pref("media.gmp-provider.enabled", false);
++// Don't install openh264 codec
++pref("media.gmp-gmpopenh264.enabled", false);
++pref("media.gmp-eme-adobe.enabled", false);
++pref("media.peerconnection.video.h264_enabled", false);
++
++// CIS 2.3.4 Block Reported Web Forgeries
++// http://kb.mozillazine.org/Browser.safebrowsing.enabled
++// http://kb.mozillazine.org/Safe_browsing
++// https://support.mozilla.org/en-US/kb/how-does-phishing-and-malware-protection-work
++// http://forums.mozillazine.org/viewtopic.php?f=39&t=2711237&p=12896849#p12896849
++pref("browser.safebrowsing.enabled", false);
++
++// CIS 2.3.5 Block Reported Attack Sites
++// http://kb.mozillazine.org/Browser.safebrowsing.malware.enabled
++pref("browser.safebrowsing.malware.enabled", false);
++
++// Disable safe browsing remote lookups for downloaded files.
++// This leaks information to google.
++// https://www.mozilla.org/en-US/firefox/39.0/releasenotes/
++// https://wiki.mozilla.org/Security/Application_Reputation
++pref("browser.safebrowsing.downloads.remote.enabled", false);
++pref("browser.safebrowsing.appRepURL", "about:blank");
++pref("browser.safebrowsing.provider.mozilla.gethashURL", "about:blank");
++pref("browser.safebrowsing.provider.mozilla.updateURL", "about:blank");
++pref("browser.safebrowsing.downloads.remote.block_dangerous", false);
++pref("browser.safebrowsing.downloads.remote.block_dangerous_host", false);
++pref("browser.safebrowsing.downloads.remote.block_potentially_unwanted", false);
++pref("browser.safebrowsing.downloads.remote.block_uncommon", false);
++pref("browser.safebrowsing.downloads.remote.enabled", false);
++pref("browser.safebrowsing.downloads.remote.url", "about:blank");
++pref("browser.safebrowsing.provider.google.pver", "about:blank");
++pref("browser.safebrowsing.provider.google.reportURL", "about:blank");
++pref("browser.safebrowsing.provider.google.gethashURL", "about:blank");
++pref("browser.safebrowsing.provider.google.updateURL", "about:blank");
++pref("browser.safebrowsing.provider.google.lists", "about:blank");
++
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1025965
++pref("browser.safebrowsing.phishing.enabled", false);
++pref("browser.safebrowsing.provider.google4.lists", "about:blank");
++pref("browser.safebrowsing.provider.google4.updateURL", "about:blank");
++pref("browser.safebrowsing.provider.google4.gethashURL", "about:blank");
++pref("browser.safebrowsing.provider.google4.pver", "about:blank");
++pref("browser.safebrowsing.provider.google4.reportURL", "about:blank");
++pref("browser.safebrowsing.provider.mozilla.lists", "about:blank");
++
++// Disable Microsoft Family Safety MiTM support
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1239166
++// https://wiki.mozilla.org/SecurityEngineering/Untrusted_Certificates_in_Windows_Child_Mode
++// https://hg.mozilla.org/releases/mozilla-release/file/ddb37c386bb2ffa180117b4d30ca3b41a8af233c/security/manager/ssl/nsNSSComponent.cpp#l782
++pref("security.family_safety.mode", 0);
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1265113
++// https://hg.mozilla.org/releases/mozilla-release/rev/d9659c22b3c5
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1298883
++pref("security.enterprise_roots.enabled", false);
++
++pref("social.enabled", false);
++pref("social.remote-install.enabled", false);
++pref("datareporting.healthreport.uploadEnabled", false);
++pref("datareporting.healthreport.about.reportUrl", "127.0.0.1");
++pref("datareporting.healthreport.documentServerURI", "127.0.0.1");
++pref("healthreport.uploadEnabled", false);
++pref("social.toast-notifications.enabled", false);
++pref("datareporting.policy.dataSubmissionEnabled", false);
++pref("datareporting.healthreport.service.enabled", false);
++pref("browser.slowStartup.notificationDisabled", true);
++pref("network.http.sendRefererHeader", 2);
++//pref("network.http.referer.spoofSource", true);
++//http://grack.com/blog/2010/01/06/3rd-party-cookies-dom-storage-and-privacy/
++//pref("dom.storage.enabled", false);
++pref("dom.event.clipboardevents.enabled",false);
++pref("network.prefetch-next", false);
++pref("network.dns.disablePrefetch", true);
++pref("network.http.sendSecureXSiteReferrer", false);
++pref("toolkit.telemetry.enabled", false);
++pref("toolkit.telemetry.unified", false);
++// Do not tell what plugins do we have enabled: https://mail.mozilla.org/pipermail/firefox-dev/2013-November/001186.html
++pref("plugins.enumerable_names", "");
++pref("plugin.state.flash", 0);
++// Do not autoupdate search engines
++pref("browser.search.update", false);
++// Warn when the page tries to redirect or refresh
++//pref("accessibility.blockautorefresh", true);
++pref("dom.battery.enabled", false);
++pref("device.sensors.enabled", false);
++pref("camera.control.face_detection.enabled", false);
++pref("camera.control.autofocus_moving_callback.enabled", false);
++pref("network.http.speculative-parallel-limit", 0);
++// No search suggestions
++pref("browser.urlbar.userMadeSearchSuggestionsChoice", true);
++pref("browser.search.suggest.enabled", false);
++
++
++// WebRTC
++pref("media.peerconnection.enabled", false);
++pref("media.peerconnection.ice.default_address_only", true);
++
++pref("font.default.x-western", "sans-serif");
++
++// Mobile
++pref("privacy.announcements.enabled", false);
++pref("browser.snippets.enabled", false);
++pref("browser.snippets.syncPromo.enabled", false);
++pref("browser.snippets.geoUrl", "http://127.0.0.1/");
++pref("browser.snippets.updateUrl", "http://127.0.0.1/");
++pref("browser.snippets.statsUrl", "http://127.0.0.1/");
++pref("datareporting.policy.firstRunTime", 0);
++pref("datareporting.policy.dataSubmissionPolicyVersion", 2);
++pref("browser.webapps.checkForUpdates", 0);
++pref("browser.webapps.updateCheckUrl", "http://127.0.0.1/");
++
++// Geolocation depends on third party services
++pref("geo.enabled", false);
++pref("geo.wifi.uri", "");
++
++// Disable heartbeat
++pref("browser.selfsupport.url", "");
++
++// Disable Link to FireFox Marketplace, currently loaded with non-free "apps"
++pref("browser.apps.URL", "");
++
++// Use old style preferences, that allow javascript to be disabled
++pref("browser.preferences.inContent",false);
++
++// Don't download ads for the newtab page
++pref("browser.newtabpage.directory.source", "");
++pref("browser.newtabpage.directory.ping", "");
++pref("browser.newtabpage.introShown", true);
++
++// Disable home snippets
++pref("browser.aboutHomeSnippets.updateUrl", "data:text/html");
++
++// Disable hardware acceleration and WebGL
++//pref("layers.acceleration.disabled", false);
++pref("webgl.disabled", false);
++
++// Disable SSDP
++pref("browser.casting.enabled", false);
++
++// Do not require xpi extensions to be signed by Mozilla
++pref("xpinstall.signatures.required", false);
++
++// Disable File and Directory Entries API (Imported from Edge/Chromium)
++// https://developer.mozilla.org/en-US/Firefox/Releases/50#Files_and_directories
++// https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API
++// https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API/Introduction
++// https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API/Firefox_support
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1265767
++pref("dom.webkitBlink.filesystem.enabled", false);
++// https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1258489
++// https://hg.mozilla.org/releases/mozilla-release/rev/133af19777be
++pref("dom.webkitBlink.dirPicker.enabled", false);
++
++// Directory Upload API, webkitdirectory
++// https://bugzilla.mozilla.org/show_bug.cgi?id=1188880
++// https://bugzilla.mozilla.org/show_bug.cgi?id=907707
++// https://wicg.github.io/directory-upload/proposal.html
++pref("dom.input.dirpicker", false);
++
++// Disable Captive Portal
++pref("network.captive-portal-service.enabled", false);
++
++// Disable Media Capture and Streams API (Media Streams)
++pref("media.navigator.enabled", false);
++
++// Enable sndio audio backend
++pref("media.cubeb.backend", "sndio");
+diff -Naur a/palemoon/base/content/aboutDialog.xul b/palemoon/base/content/aboutDialog.xul
+--- a/palemoon/base/content/aboutDialog.xul	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/base/content/aboutDialog.xul	2023-11-30 05:17:52.552917244 -0300
+@@ -1,4 +1,4 @@
+-<?xml version="1.0"?> <!-- -*- Mode: HTML -*- --> 
++<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+ 
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+@@ -49,27 +49,11 @@
+     </vbox>
+     <vbox id="aboutTextBox" flex="1">
+         <description class="text-credits text-center">
+-#if defined(MOZ_OFFICIAL_BRANDING) || defined(MC_OFFICIAL)
+-#ifdef MC_PRIVATE_BUILD
+-          This is a private build of Pale Moon. If you did not manually build this copy from source yourself, then please download an official version from the <label class="text-link" href="http://www.palemoon.org/">Pale Moon website</label>.
+-#else
+-          <label class="text-link" href="http://www.palemoon.org">Pale Moon</label> is released by Moonchild Productions.
+-        </description>
+-        <description class="text-credits text-center">
+-          Special thanks to all our supporters and donors for making this browser possible!
+-        </description>
+-        <description class="text-credits">
+-          If you wish to contribute, please consider helping out by providing support to other users on the <label class="text-link" href="https://forum.palemoon.org/">Pale Moon forum</label>
+-          or getting involved in our development by tackling some of the issues found in the issue trackers for <label class="text-link" href="https://repo.palemoon.org/MoonchildProductions/Pale-Moon/issues">Pale Moon</label>
+-          and <label class="text-link" href="https://repo.palemoon.org/MoonchildProductions/UXP/issues">UXP</label>.
+-#endif
+-#else
+           &brandFullName; is released by &vendorShortName;.
+         </description>
+         <description class="text-credits">
+-          This is an unofficial build of Pale Moon. For official builds, please go to <label class="text-link" href="http://www.palemoon.org/">the Pale Moon website</label>.
+-#endif
+-        </description>    
++          If you would like to contribute and participate, please join the <label class="text-link" href="http://eltaninos.org/en/community">communities</label>.
++        </description>
+     </vbox>
+     <vbox id="aboutLinkBox">
+       <hbox pack="center">
+@@ -80,7 +64,7 @@
+       <description id="aboutPMtrademark">&trademarkInfo.part1;</description>
+     </vbox>
+   </vbox>
+-  
++
+   <keyset>
+     <key keycode="VK_ESCAPE" oncommand="window.close();"/>
+   </keyset>
+diff -Naur a/palemoon/branding/shared/pref/preferences.inc b/palemoon/branding/shared/pref/preferences.inc
+--- a/palemoon/branding/shared/pref/preferences.inc	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/branding/shared/pref/preferences.inc	2023-12-03 03:46:11.846204545 -0300
+@@ -1,8 +1,8 @@
+ // ===| General |==============================================================
+ 
+-pref("startup.homepage_welcome_url","https://www.palemoon.org/firstrun.shtml");
++//pref("startup.homepage_welcome_url","https://www.palemoon.org/firstrun.shtml");
+ 
+-pref("app.vendorURL", "https://www.palemoon.org/");
++//pref("app.vendorURL", "https://www.palemoon.org/");
+ 
+ 
+ // User Interface
+@@ -24,7 +24,7 @@
+ // ===| Add-ons Manager |======================================================
+ 
+ // Add-on window fixes
+-pref("extensions.getMoreThemesURL", "https://addons.palemoon.org/themes/");
++//pref("extensions.getMoreThemesURL", "https://addons.palemoon.org/themes/");
+ 
+ pref("extensions.update.autoUpdateDefault", true); // Automatically update extensions by default
+ pref("extensions.getAddons.maxResults", 10);
+@@ -63,7 +63,7 @@
+ 
+ // ===| Sync |=================================================================
+ 
+-// Pale Moon Sync server URLs
++/* Pale Moon Sync server URLs
+ pref("services.sync.serverURL","https://pmsync.palemoon.org/sync/index.php/");
+ pref("services.sync.jpake.serverURL","https://keyserver.palemoon.org/");
+ pref("services.sync.termsURL", "https://www.palemoon.org/sync/terms.shtml");
+@@ -72,6 +72,7 @@
+ pref("services.sync.syncKeyHelpURL", "https://www.palemoon.org/sync/help/recoverykey.shtml");
+ 
+ pref("services.sync.APILevel", 1); // FSyncMS doesn't support 'info/configuration' requests
++*/
+ 
+ // ============================================================================
+ 
+diff -Naur a/palemoon/confvars.sh b/palemoon/confvars.sh
+--- a/palemoon/confvars.sh	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/confvars.sh	2023-11-29 10:28:51.594459959 -0300
+@@ -8,8 +8,8 @@
+ # These values where appropriate are hardcoded in application.ini
+ # to "Pale Moon" and "Moonchild Productions" respectively for
+ # Pale Moon
+-MOZ_APP_BASENAME=Palemoon 
+-MOZ_APP_VENDOR=Moonchild
++MOZ_APP_BASENAME=LibreSelene
++MOZ_APP_VENDOR=EltaninOS
+ 
+ # Application Version
+ # MOZ_APP_VERSION is read from ./config/version.txt
+@@ -93,7 +93,7 @@
+ # Currently, only omni and flat are supported
+ MOZ_CHROME_FILE_FORMAT=omni
+ JAR_COMPRESSION=brotli
+-OMNIJAR_NAME=palemoon.res
++OMNIJAR_NAME=libreselene.res
+ 
+ # Set the default top-level extensions
+ MOZ_EXTENSIONS_DEFAULT=" gio"
+diff -Naur a/palemoon/installer/package-manifest.in b/palemoon/installer/package-manifest.in
+--- a/palemoon/installer/package-manifest.in	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/installer/package-manifest.in	2023-12-04 10:57:53.119191184 -0300
+@@ -238,6 +238,7 @@
+ @RESPATH@/browser/defaults/permissions
+ @RESPATH@/browser/@PREF_DIR@/palemoon.js
+ @RESPATH@/browser/@PREF_DIR@/palemoon-branding.js
++@RESPATH@/browser/@PREF_DIR@/vendor.js
+ @RESPATH@/goanna.js
+ @RESPATH@/defaults/autoconfig/prefcalls.js
+ 
+diff -Naur a/palemoon/locales/en-US/chrome/browser/syncBrand.dtd b/palemoon/locales/en-US/chrome/browser/syncBrand.dtd
+--- a/palemoon/locales/en-US/chrome/browser/syncBrand.dtd	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/chrome/browser/syncBrand.dtd	2023-12-03 03:45:05.934204553 -0300
+@@ -3,4 +3,4 @@
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+ 
+ <!ENTITY syncBrand.shortName.label  "Sync">
+-<!ENTITY syncBrand.fullName.label   "Pale Moon Sync">
++<!ENTITY syncBrand.fullName.label   "Libre Selene Sync">
+diff -Naur a/palemoon/locales/en-US/searchplugins/amazondotcom.xml b/palemoon/locales/en-US/searchplugins/amazondotcom.xml
+--- a/palemoon/locales/en-US/searchplugins/amazondotcom.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/amazondotcom.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,15 +0,0 @@
+-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+-   - License, v. 2.0. If a copy of the MPL was not distributed with this
+-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+-
+-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+-<ShortName>Amazon.com</ShortName>
+-<Description>Amazon.com Search</Description>
+-<InputEncoding>ISO-8859-1</InputEncoding>
+-<Image width="16" height="16">data:image/x-icon;base64,AAABAAIAEBAAAAAAAAC0AQAAJgAAACAgAAAAAAAA6QIAANoBAACJUE5HDQoaCgAAAA1JSERSAAAAEAAAABAIBgAAAB/z/2EAAAF7SURBVDjLlZPLasJAFIaFRF+iVV+h6hO0GF+gVB9AaHwDt64qCG03tQgtdCFIuyhUelmGli66MXThSt24kNiFBUlAYi6ezjnNxSuawB/ITP7v/HNmJgQAEaZzpgHs/gwcTyTEXuXl2U6nA8ViEbK5HKler28CVRAwnB9ptVrAh8MrQuCaZ4iA8fzIqSgCxwzpTIaSuN/RWGwdYLwCUBQFZFkGSZLgqdmEE7YEN8VOAKyaSKUW4nNBAFmnYiKZpDRX1WqwBBzP089n5f/NEQsFL4WqqtsBWJlzDAJr5PwSMM1awEzzdxIbGI3Hvc6jCZeVFgRQRwpY7Qcw3ktgfpR8wLRxCPaot/X4GS95MppfF6DX9n2A3f+kAZycaT8bAZjU6r6B/duD6d3BYg9wQq/tkYzHY1blEiz5lmQyGc95mrO6r2CxgpjCBXgNsJVviolpXJiraeOIjJRE10juUa4sR8V+mO17VvmGqtuOcdNlwut8zTQJcJ0njifyB2bgTdKh6w4BAAAAAElFTkSuQmCCiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACsElEQVRYw71XQWsTURBe2LQgeNKLB+tVemt6txcteNSD/QGC6VEIGDx5s+eKPQqFgJhLNdFLBWMP7cU0oSAWjB70koC9WHbVQ5SO8+XtS14mr7svyaYDH9m87Jv55puZt1nPi4yIzjMeMj7T9OwjI88455nGC1cZX+nsDESumJmPFDwIAqrX6z00Gg1qt9vjkJgFgUeuO16Vy3RjeZkyMzM9+MY1fsM9I9h9zyV7ZAznZrA4FAoFVwJ1z+WuOysrg1lnMolkHJX4k0igzI5sARYWF7vEZEk0rvO6iyUSuJfLJUqM7zYSqRDIra4OOUZPmNZsNrsl8UVTpkJAjh1GzmaSpJ8mAWmYeZB5urHRhW5SNOfUCCDo47W1bvPZsp2qAhipy3Nz1kaLG8dUCEBqM5AvpgElqFar01NgIZsdco7Zb7VasU2YigIYL5tjqCL7Q5YkFQXKlcqQ7DbHthIALk/IWAKor82xPIhshxWABCYioDMz51sexcVi0XoG4DPLIyvJjkTArK3scDQnRvO0MdTrUHGiKZCP4tNgO6BAEI08EQH9Z2Qow0hyPypJGIa9p6JWKCn4SA8jSKmJIDgyRvPJkcRxjfUwNGr/i8+Mo32iHzWiThBD4NM60bet9P77/ubA728RlTjMiwiH6zEEfvIrwdZFtQmMJ7W/ofIDBZD5m3mVZGwJcOP2kmILIlCkE45HoPWurwCSg0+UQRD4ZyXxId+T7gQb9+4q9sioY5ltrOG3L5vqXiiJffDx/aUi83ZJ7jr2ohcEu8Hh6/m+I7OWGiVxbWKHsz+O3vSOakqFQdsFgQeJUiKD7Wv9YKXBgCeSUC3v2kM5EJhlHDh3NcgcPlG1BXZu98sDmTuBa4fsMnz9fniJUaGzs+eMC540XuR0aDO2L8Y3qPyMcdOM+R/8XcqRA3qp9gAAAABJRU5ErkJggg==</Image>
+-<Url type="text/html" method="GET" template="http://www.amazon.com/exec/obidos/external-search/">
+-  <Param name="field-keywords" value="{searchTerms}"/>
+-  <Param name="mode" value="blended"/>
+-</Url>
+-<SearchForm>http://www.amazon.com/</SearchForm>
+-</SearchPlugin>
+diff -Naur a/palemoon/locales/en-US/searchplugins/answers.xml b/palemoon/locales/en-US/searchplugins/answers.xml
+--- a/palemoon/locales/en-US/searchplugins/answers.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/answers.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,16 +0,0 @@
+-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+-   - License, v. 2.0. If a copy of the MPL was not distributed with this
+-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+-
+-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+-<ShortName>Answers.com</ShortName>
+-<Description>Dictionary Search on Answers.com</Description>
+-<InputEncoding>UTF-8</InputEncoding>
+-<Image width="16" height="16">data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAABMLAAATCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////K////4f////E////5f///+n////P////mv///0EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8E////fv///+//////////////////////7NnP/+LFtv/////+////of///xYAAAAAAAAAAAAAAAD///8D////lf////////////j0//bi1v/OlXf/tGU9/6FCEv/OmH3////////////////D////FgAAAAAAAAAA////avPm4P/evaz/8NbI//7r3//23M3/xYRi/5kzAP/Df1z//u/l//749P/v4dn/+PPw/////6j///8B////GP///+W/f1//smM7//bczf/+69///uvf/9ytlP+ZMwD/5se3/+/f1//AgmP/nj0N/927qv/////+////QP///2z/////8NvQ/8WCYP/+69///uvf//7r3/+7ckz/pUkb/9m1ov+ePQ3/okUW/8+fh//38O3//////////5r///+t//////7y6v/Cflv/58Cr//DRwP/mwKv/okQU/8ODYv/cuqj/yZN4//Tq5f/+9e///vDn///////////Q////yf/////+7+b/05yA/65ZLv+9dVD/sF40/5kzAP/kvKb//vTu//Tr5v/7+Pb//vfz//707f//////////6f///8X//////vDm/+K4ov/KjGz//ure/8uNbf+jRBX/+OTX/+3b0v+jSBr/pk0h/717Wv/Wrpr//Pn4/////+b///+i//////7z7f/02Mj/wn5b//vl2P+uWS7/vXhU//v49//48u//1q6a/717Wv+oUSb/tWxH//jz8P/////K////V///////+/j//ure/8aFZP/fs5v/oEAQ/9q1o/+zaEL/1ayX//718P/+9/P/+PHu//jz8P//////////h////wr////O///////38v/YpYr/tGQ7/6ZLHf/06eX/s2dB/549Df/x49z//vDn//7x6f//////////8////yoAAAAA////R/////v/////7dXI/5kzAP+7cUv//vHp/+vYzv+bNwX/vHlY//38/P///////////////30AAAAAAAAAAAAAAAD///9n////+/z5+P++e1n/3LGc//7w5//++PT/0KKL/8OIa//9/Pv//////////5X///8GAAAAAAAAAAAAAAAAAAAAAP///0n////K///////////////////////////+/v7/////5v///2z///8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Cv///1f///+g////xP///8n///+r////bP///xoAAAAAAAAAAAAAAAAAAAAA+B////AH///AA///wAH//4AB//+AAP//AAD//wAA//8AAP//AAD//4AA//+AAf//wAP//+AD///wD////D///w==</Image>
+-<Url type="text/html" method="GET" template="http://www.answers.com/main/ntquery">
+-  <Param name="s" value="{searchTerms}"/>
+-</Url>
+-<Url type="application/x-suggestions+json" method="GET"
+-     template="http://www.answers.com/main/startswith?output=json&amp;client=firefox&amp;s={searchTerms}"/>
+-<SearchForm>http://www.answers.com/</SearchForm>
+-</SearchPlugin>
+diff -Naur a/palemoon/locales/en-US/searchplugins/bing.xml b/palemoon/locales/en-US/searchplugins/bing.xml
+--- a/palemoon/locales/en-US/searchplugins/bing.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/bing.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,18 +0,0 @@
+-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+-   - License, v. 2.0. If a copy of the MPL was not distributed with this
+-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+-
+-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+-    <ShortName>Bing</ShortName>
+-    <Description>Bing. Search by Microsoft.</Description>
+-    <InputEncoding>UTF-8</InputEncoding>
+-    <Image width="16" height="16">data:image/x-icon;base64,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</Image>
+-    <Url type="application/x-suggestions+json" template="https://www.bing.com/osjson.aspx">
+-        <Param name="query" value="{searchTerms}"/>
+-        <Param name="form" value="OSDJAS"/>
+-    </Url>
+-    <Url type="text/html" method="GET" template="https://www.bing.com/search">
+-        <Param name="q" value="{searchTerms}"/>
+-    </Url>
+-    <SearchForm>https://www.bing.com/search</SearchForm>
+-</SearchPlugin>
+diff -Naur a/palemoon/locales/en-US/searchplugins/creativecommons.xml b/palemoon/locales/en-US/searchplugins/creativecommons.xml
+--- a/palemoon/locales/en-US/searchplugins/creativecommons.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/creativecommons.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,14 +0,0 @@
+-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+-   - License, v. 2.0. If a copy of the MPL was not distributed with this
+-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+-
+-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+-<ShortName>Creative Commons</ShortName>
+-<Description>Find photos, movies, music, and text to rip, sample, mash, and share.</Description>
+-<InputEncoding>utf-8</InputEncoding>
+-<Image width="16" height="16">data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAJUSURBVDiNjZO9S1thGMXPvTfJFbnkipNkLLS0ksFg0M0lf4CboNCEgIIg/RiKtEOn0qGWTtbVoBYcIji10I9J0ApWCjp0kRaXdhHjTW4+uGnur4NJ8GOwZ3nf4TnnfZ5z3scAdBGGYdyVdN+yrGHTNNOtVqsVhuG+pO+S3gE/LtV3BIxzPDJNc8FxHGN0dNRKpVIGoJ2dndr+/r5Vr9cl6bmkN0AoSQIEyHXdj5KYnZ3F932uolKpkM/nK5KQ9FmSCZwLOI7zQBLr6+vXiFdRLBaDtsiTTve3YrFYkM/nbyR3MDU1dSKpLumO+vr6Xruui+d5AFSrVVZWVtjY2KDRaABwdHTE4uIie3t7AJTLZaLRaFXSCyUSid1MJgOA53n09/eTTqdJJpPMzc2xurqKbduMj48Tj8fZ3d0FYHBw8FjSezmOU56fnwdgeXkZ27ap1WpUKhWazSZjY2Nks1kASqVSd4zp6eljSX/MtiHdRDpnEATyfb+bkiSVSqXu3TCM8xgHBga+dkY4OzvDdV2GhoZIJBLMzMxQKBSIRqNkMhlisRhbW1sAJJPJn5I+KB6Pv7poou/7rK2tsbm5SRAEXROXlpY4ODgAoFarYdu2J+llN8ZcLvffMeZyud+SGpLuCVBPT89jSRQKhRvJxWKxISmU9JTOT5Rk9Pb2fpHE5OQkJycn14inp6dMTEx4bdM/SbKAy8sk6WEkElmwLCuSSqUYGRmxgHB7e7t+eHgYazabgaRnkt7SeZnr63xbUtYwjGHTNNNhGP4F9iR9a6/zr4v1/wDE1D9XlC4rrAAAAABJRU5ErkJggg==</Image>
+-<Url type="text/html" method="GET" template="http://search.creativecommons.org/">
+-  <Param name="q" value="{searchTerms}"/>
+-</Url>
+-<SearchForm>http://search.creativecommons.org/</SearchForm>
+-</SearchPlugin>
+diff -Naur a/palemoon/locales/en-US/searchplugins/disroot.xml b/palemoon/locales/en-US/searchplugins/disroot.xml
+--- a/palemoon/locales/en-US/searchplugins/disroot.xml	1969-12-31 21:00:00.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/disroot.xml	2023-11-30 02:19:06.839161508 -0300
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
++  <ShortName>Disroot</ShortName>
++  <Description>Search Disroot</Description>
++  <InputEncoding>UTF-8</InputEncoding>
++  <LongName>Search Plugin for Disroot</LongName>
++  <Image width="16" height="16">data:image/x-icon;base64,AAABAAEAAAAAAAEAIABQKwAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAEAAAABAAgGAAAAXHKoZgAAKxdJREFUeNrt3XmcXGWZ9//Pt7o7JCQk1QmLrKnqChBBdlyodgNSxaKoCKOOMvqMPq4zikiVy+/5Dc+MDqNYBSgqI+O4b+NLRFEEU4Uji1RkAFkk7F1VBNkJKSAJ2bq+zx/VgSRk7e1Udd/v1yuEVFedc53T51x1n/vc57ohCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCCYWRR3ARJLvO0E0JWwXHlzoqOMJgm0JCWAL8slsDCxws1C72i++vkBGMaEezBygD3wA0Gdpd5lpQMOiLvyUYZngGZvnECuEnre9BrEGaw2wuglrL6iXRjVhnJ3IdAko1suDUe/LoH2FBAD8eNcv6LZdru8BzwYdZJwWzAN2NiwDPQjuFpoFnmmYBZolMxfYG3k6aDP70gYGgTU2qxBrhNZgP2+xUtZKwzOI+4G7sO9FLBF6ymZFsV5q7ui25BKZWaB+8GlCPcBliIWFWun5qPdz0H4mbAI4e96x0mB3DBMTdCH1YHos9wimYE0FT0ckQYcBh4EPBPYzTNcGu2b9V/NLd5a3axduz7sMxl6JeEpoie17kO7Gvhvpr8LPgp4HrzKsohkbLD64sAlwdjITk9lX0snG75D1KsTOrcC9Auk/bT5frJeejvr3ErSXjk0A+b5MDGu67T2AJGgeoldmumFG61uZ6ZjpgmlIUzHTkKcB07B2QuwEnknrm3J7z+dx0zp/WY14Rngl6DnwM8AyW0sRS8FLZe1u+SSheUDXS5ZjmsB3EJ8p1kISCF7URof7luWTWYF3AfYAJYH5wCuA+bYToN0QU7d7g9rsRB8PhkHhK0DnFGqlO6KOJ2gPbX8a5JPZWbbfK/FOIAHMAU2NOq5OZbgf+/NClyHWbuFtg4Xajvc/BJ2nbRNAfu4JMcuvlPg/hhMFPVHHNCG0OhuWS7oJWLGZNwjzK4nvfrkW7iBMdN1RrfhTfcerqxnrMpraukZnuvEsQS9oNvhwzN8D+7RtlupEAqEZwLFbfAN+TdM0gEujDjcYW2N+bp3OMUokZ0wTmgu8HJzAzLHYTbCbrdmCOCJuvLNgZ9BObKYzKxgfrbsergm9u1Ar/SnqeIKxM2YtgFwy0wOaj30SZgHiYGB3oBu9eJNtw7vnat8rkkml9VtQ0vhQICSACWzUE8CZc49TT6z7YMzHkN+GtOfGp3U4yTuBzVrQo8P9fD6RjbUu64h5yuCz59/7+zA0ug2NagLI9WW7aHI65lyJVDjZO1oPcDjwmw1fzCUWxJB6mrHmmgsGNj6p88kFu4COBI4ADgIOBm7V6q6zYIt3HIIIxUZzYbKPRf6KIBX1hgUjI4Hkk/OJzOxNfvJKzBdiza5Zm/mUMd3AOw0fBNLg6YzSN0E+mZ2ST2ZntsaFBKNhVBOAzb2Y/wv80iaMOOt01qHAK9f/M5fI7g9cKOks4Xdv+vZCrby8UC//3uZM2QPAn4S+UKyX1ow0lHwiMw9zCfA9w65R75qJYlR72iuN6rOVRvWW/njqMuBB4FiJaVFvZDBMco/Rskpj4KpcMrMn0sVCxwExi/np3tQ1lUb18U0/VmlUH+7vTd0J+lWhVlo80jDO3P94xaxzhD6CPFPwX5VGNXzBjIIxudVWaQw00/HUXYhBweuJcLxBMBICmNUfTz0u6f+AD5NYhFgrlBLM6e9N/a7SqL7kG77SqNYqjYFHRiOK183cfyZSXmI/0E2gb1caAyNuVQSjfAmwoWK9NChzMeby0P3buSQOQPwIfKDgHYa3Ahngb42WGh015jHAatl3Y/+3zb8WaqXnot4vE8WYd6bkEpmTgZ9L2jnqjQ2GxwbB5wr10pc2fD2XyPRImtLV073yS/ddOaZ5PpfMxGXWFerl5VHvj4lkTBJALpHdHfxhtY6dlRKfBO0b9cYGw7YKeGehVvp11IEEo2vUE0A+kZ1q8UXgTGHxQj0NhVs3nasJLAbuAO60XS7Wy7eM5QrzycxMUBxYYbNsONWRgm0b1kmZT2R7DLMFTxY2+MXk9j1JdA1+FCiG3v+Jy2Yx8G7wEolXAkfZLBP6XaFeenCky88lMimJb4BeDizFvtHiGqFbgIeQ19qagj0NWFWslzcqd5ZPZIR4GejlmG7EAOavhXppddT7rt0MKwHkEtkZgosQtwHfWl9vLpfInAD6nsTLot6wYGwZbsVeI/EK0HTAmDvAReCyQr28crjLziUyrwKukLTbi8VbvA7rYcTt4OdAu9neFbhF8M+FevkRgHwq2+WmTxN8rvUsCgIeBd9puBnxZ1l3Gz/SNZXnz7unbIBzkhk9T6t00vkbFIGd6IZ1G7B/VqqJOAPxCfC6/t7Uzel4Ko24ECkV2voTn2BPSfuAprzwUivxn+zWrcPK5m4Pbo9j4n2PilgTeKO0/hhVDBEHDgQdCqQk7SnpKOCQdDz1x0qj2uiPp94m9E2jPkE3ohsRRzoA6Y2g0wSnIzIM8kylUb03l8hOX4vOAP4xpthe/b2pgUpjYNXWYswnst3peIpKY6Cjk8WwEsAxsw4w8gKJo0Gvwnqd4B+Q+sLJP8lJ3YKjgEb/nNSfKsuqL3lLru/E2DHxFIsaA5tdxKJG1el43x3AgRIHb7ahajA8IlgMmglano73PYD4utCBmzsO1frThZgl1Ac6qL839Tvgb4GvSjoacwLy/P7e1G2VRnXp5uLL75+RzceEjuqPp+6sNAbWRb3bh2tY4wDUNbgL4oChf05HHI+0Rzj5AwCkHqSz3eSNm/4on8h24+bbRHPO5j76mf1OUD6Z7UZqAou95e/XG2i1Nk4AFgA/A83BW7vb9JKFHYr5DPidEq2WjOgGTjX6fi6ZPWSzi1lHn+ATwIWWP5FLHj9m42nG2rBG6MkcinxYeNov2Io9Zb6QS2b+tlgrP/TCq6JP+LOGGvDU+pfziUw/8O4mngbEgT2BA7dSI2JhsV66fcMXconsSolfGU6V2XV9odgX6eGhZU+HF9JBXLBs40qxQvBq44vyycx7CxvG3/r5qcD+CGTOhtifgXLUO3w4hnsX4F+Ac8L5H2yDDSVatxBjtG4n7g2cAry3WCv9Ip/MvBZ0H+Y8xP+y/Seh6yyOA44Q7trCjAwX0uzKFR+8aqPbg/lkdqrNXogDBIcZHyk4BPSkISfzQeQPDi3zLuAdxstl3mDxGuAo0Hy1ysVj+Dr47GKtvAYgl8juClwh+dXr47KpCD6EWGezp2AusBeiVKiVxvR26Ujt8CmcT2R7wb9FOibq4IMOZbD4A3A/5mTgF8ApEn2YTxfqpUI+md3d5lTBBxFHssmxaliKOUfiP2lNqrKb4YlivbzR9XgumemW2RXkQr30eC6ZfQ/wA+H7QB8v1EpXr3/v2ckFMaFdhE7GfB0xG/w06ORCrXQjQC6RPQ74jcTOGwTTBB5CTLE9S2garWbEPcBZg00WXvDg6E79Nlq2qxMwn8h0p+OpKZVGdV1/PHUM6JOsv2YKgh0lECQFR0meiXSkxGxAhgfe0Exeed7j5RWvmZ34c8zqRTqeTRKA8M6S3ohZQ2v6ts9KuqnSGNjoOYFKo9qsNKrLK42BFQDp3tQ6zHyhTxTqpes3fO+iRtWVRnV1f3ze3UOTy7xeFohLK42B2tDn5yPepQ0vn4WG7lDsIqln6N8Au9ocrxhL++OpxZXGQNsNZtquBNAfT70dKKTj844F3oI4MLT+g9GhVs/80AkuvGdzWmxVOp66X9YbEF8Umrm5zxmmSOwO/Af4VsTT6fg80vFUbEsnWzqeeg64XnhxpVHd7LdypTHgdDx1J2I14g9YV6bjqT3S8b6VEk8K3Yq5G7HUMFMwky2Q2EXmOKDZH0/dWmkMtFVlpG2ex7lkphe4TOiNUQcbTBJmrfEiWmMN9t/6e90wnFyslxcB5JLZE7FnF+vln4w0jLMPPlbnL/6Dc8nMVEwGuL1YLy9Z//NcMtsFzgI/FJqzjcWtNv4W8C/FWvkp2sQLCSCXzIihjppirewXX8++R/BtYKeogw2CTbX67n1+jOanz6v9vplLZj+JfbbgJ0gr2ehLzoOgG0DXFmoLd2jSk1wiEwN1z2n0rv1c42cbTBefmQ26Enj1tmN1E7gMky/Wy/Wo9x0b7pyzk5luwT/KegZ5IdbjhtcBF0u8POpAg2DL/JjN3wA3Ad9C+rvNN20N6FGbM4r10n/vyBpyiWwP8FFgiuA64F7BcuOPIb68Q9PV2dcZPlmsl2/NJTPdgIq1ciSXBi8mgES2W3Cp4K3IdxhuxzpWYp8oAguC7dWaRdnXCm5DfHhbJ6PhFzJnFOqlVdu3hpZ8MvMPmK+BngEWg6ugk9CO1yi0uQv8e1rn1wOgzxdrpXGvdfBCT6awgVVIYB0qcWi4zx90gqGJTN5Aq/zcNo9a4dcOjWTdwVmSNYBYR2swUT+of9gxi4NABwEY1gCPfiaZ/cp5tfG9XdidS2amInUZmmryxAZ7NAg6hzb47zYY7QEcw44mAHsvRNdonyCCKeDPNNFiWgOnxo1yycx3QClgEJgr6BvPAIJgvA19xf6U1mjEbT7Ic/bcEyT5dcKXIM0fq5gE9wNfBS4t1EqPj3CR26UbOE5mLtAahhG+/oMJToDto5H2ApbkE5kpht2RnizWNi4akktkDxF+r+FdlsZspuqhQcX7g74CXgdcMh77olvoXcgfsPVOoV3GY6VBEDVJCZs355KZb2PeD/qkYHE+kS0bXy9xv2EO5hLEMePztSiAdaAqQC5xQkytKdoA1hbqC0d9JKEAcsnMTpi3Aue3ijwEwSRgL2uVGuP1DA3ksTH4ccRNMmuQ3sb4TlXfxPwDcDPwLuAQIGb8k2K9/N3RXtlGiS2fzHwQ81WkUM8vCCJi89hQNaNd1/dY2NwHemuxXrpnNNe1UWbr703djdgTdHTUO2GkhkaI2bBC8DioB9wT+jiCdicxgxeeNmzVMZJaLZT+eF+50qiO2qXARgmg0qiuS/em7gBeozav47/+Zqk2fmk58BDmJvBvBN+VuAi4CHR9q36d9wKmhkQQdBrheYibKo1qbfSWuRn5ZGaB4adC7TMLa+srvWm8QrAc9Dz280ZLJO6mVdzhHlqTki7VIKu+vGTjQRX5ZHaK8d8BF+vFYpZB0CGM4beY9xTr5WdGY4mbLQlmdB2t8c5vj3h7By2eAO4U3Ab8BajSKiW1AlgDfrbJlNXn1367zRFUhVppTT6Z/QPwCCYRGgFBZxGYDOLtwKh0CG42ARRrpTX5RHYgihPEgMwy5EWgX2IqiLoGu5//8kOjMf+cHwXdAyTGf+uCYGQkphifmUtm7sF6VHIDeLZQKw+rX2DLRUHlZ8btOrlVImotcC9wBXA51h2FemnYk0tsSaFWfj6XzN4iceL4bFwQjLpDgd/QagU/jqnkE9lioV76644uaIsJwOZu8H1AUlIPeI2tuyWuwsw3fptGMt2fWYtYadMAbsL8AnGdzGOFMZ4HTvg60JnAjLFcTxCMBSFh5iDmgPYDHwW+GfjRji5ryy0AczniptYTTz4Cc5PkPxZq5cdyicy+wC7A8VtbuGEQ/BitCRyeAD0Cfnjo70dATwqeNDxSHM9520wFfA3Sm8dtnUEwmjaukBhDHMYwEsB2fYWf/Ka9BXDlbx/esBLKoZjvIR2x6fttnpJ8I+jXxtcCjwtWotjaQnVhW1RHzSczpxj9RKEVsHkGy8YaUUMvGCf2QuDUwiYTpW7LiH61+WTmFcD/tnW08E6gJ4CKYSF4cXEHgxlPuWR2muA7tIZbTno2a4XvAW5Guh/zlPFq0O6S93fridF9sfeUmBGme28fQ4/wDWCOK9RLS3bksyP+JeaT2ZjNdOFu0MpYs3vNeUtGo7d+7OWS2VdhXyZp76hjiZy50PAl4acK9Y17lHN9GWFNw/SC5woOaTU59QrjFGY3RI/CfdXI2KwAv7lYL1+zI5+b1L+xs/Y5Tl3dXZ8WOheN6wMfbcWwCvuUYr189fZ+Jp/MCphhvLfgQMNhoMMx8yX2olUqe1IfX+Op9QwTX0Q6t1grrdjez036X1AukZ0D/ABx8uTdGW4CHynUyt8ayVJyiWwPYo5aYywOsX0EcLTEfMKj5mPOZpVEGXwRcH2hVt5mx/rkPeY3kEtmjxT8DDNvsu4Rwx+BU4u10qjVrM8nMzGbuMQrQMcCx9o+pDUL0CTd0WOtNZKuAfqF8Q8Ft63ztGcvrP96s5flk7bZu6FKY+DR/t5U1eIVMntMxmNTZi/B/ZXGwK2jtcxKa6qt5yuN6oOvmzXvOotf0BpHcq9gnWEm0nSFbDBCGzwaJ8CaijhScBqwQKzrTcdTd1Qa1ZeUHg87fgO5ZDYJ/qTg/aBJd3vQsAjz1mK99ORYryufyEw17I+UAb9Z6CiGZuQNdozt5cBdSEdqc2N77PuAYwv18iOb/ii0ADZQaQw00r2p3wvFgXTU8Yw7sydQrTQGxnxK60qjuq7SqD5RaQws6u9NXQa6xvCkYKZRr8KxuQP0JOh/A7Nb5cZf4nrgR5VG9SUFUEO63YxcInOQ0BWIZNSxjDfD/wi/pVArj0tV2g3lkpmYYA/Qa22fBpwkaeaIFzyRta75Bwyvk7Ur8BvLcze5JfuZQq305c19PBZ1/O2oqZ67Lf/4xWuryUP4KEf0GHixVm4WauVHC7XSz4H3Ic4A3zB0lyLYnNacys8JrSnUS3+x/F8v+VZvtew2KySAzbigdqUFP8R6IOpYxp+6BB/IJzN7jnxZw1esl1cXa+XfAKfZ/JPNw5MwH2+vLsMcAMGltOplvMDw8lwiu9np0sJ11hZUGtWl6XiqF3Hs5LtO0sswj1Ya1UVRR1JpVFccMyt1g6Rrh57b2Be5Y0u6GQZl/miYrhfq/o1wmfauoAXpeKpX0p+A14Lmrl+jJCQuqzQGXlJFKCSArejv7furIEs7lUYbBwZJSvbHU1dXGgORz2W/6JmqK42BR/p7U1eCr7FYibWHxCxMB41ANrJ+ZXg/eDri1a3zc2QbICkmsZvEMYaFmL0kHTn0U4BZhns37NzNJTJz0vF5u4YEsBWVRnVZf++8GbQee+6Yw2ykhjZ0jqEnHU+VK42BwahjAqg0BtZVGtWHjomnSkJXgh9Bmg3eVajtj2XDMlrTgi/u7533Z8ytkp4yvEytodOj4VmhuYj9N3gtBvSme1OXffvQnjXTdEQG9A3grZPmoB6ufDK7F/BL4FVRxzLuzHPABwr10s+jDmVzztrvRHV1NXcDspj3CPqRd2nfXO3fGU4v1sovjNXP950g22nMdyQOGJoF4FnQztpavY4trWGoHv5mBlfdBiwAvxb4d6w9EWvaPmtGrdIYeC7dm3pecDLD+IV0NLET+OX9valrK43qmA8O2lF/euYBKo2BFZXGwB3peOpywR8N6yTtAezSfjNdqktoero3tSIdT63s7+0bLNRKg/29fTMEZyDigquAHwP9w6lcLb0wHnBT9wErQP8G2q/1Dg+21/5pU/lEdhdaDwy9LepYomD8a9CHiuM0Y+1I5BKZHknzMacjn2Y0v90GFdk8BdTAD4IuFbwB+LDl8wXnYv094sJRXCPAcqwYG3U8+qG22jHtqtIYWNPfm3rc5pTR6rntLDoAvHt/b+qGSqM66oVaR1OlUW1WGgNPpGf1XSvxa6z7JKZjdke0xVwQEjtL7C3pIMSbgCOAHqFbgCtBJwKvH3nzxRitAf1J8C1QqjXd2Pqf6oaQALZTOp76K7CX4NVt1q4cc2q1LA8FHdAfTy2uNAaeiDqmbak8U6XSqD5baQzc0h/v+xVoEaLL9t5qo7kvBT0S3a0bAT4c8RTocmDBhifrMKwG/iD4F9AXZF2LOB44EMCtKci/ERLAdqo0Bpr98b4HEMeCdo86nvEnGeZLZPrjfcvTvfPuqzQG1o58uWOv0qiurjQGHkjH+65AXC+rB0gg79ROvQSGbrV67P/T6BngRGmY/U7mHqR3FmrlGyqNgecrjYFmf29fGnj10HyDddAXQgLYAZVG9el0b+pp4MTJOLVY61TxHNCJErF07wHXVhoPdMz4vEqjOlhpVJf0x1NXtspoaw9gLop8ROwqm1sFXwcuEjxmdB+4AcwU2mcYox3WAT+uNAaWrn8h3ZuaJziJ1sKuAL4X9YZ3HvMr0PeiDiM6Gro7wOGi2ZFfIIV6aXWhXv6dWwVhP435a3RZzID/IvEDxELg/i/Xy81ivbRc6BfA0h05+f3ihsTBh26yqkardhjrwFcVa6W17dP+6SC5ZGau0M+BV0YdS4QWgU8p1MpLR76o6HwmkY0Ntvp1zgXeGE1xEjeBJrDM1tcF3wd6gQtal5zbZR32j4xul/wMpmGxM2gV5tfFemltPpl9C/BLTNWwoFgvPRhaAMNQrJUfBH/e9rKoY4mOXwWclU9kO/pS6Lx6qVmslxZhzpD9bcy6kS91RykG6gbtBpyD/N/AL906+W14xJs84LMZXaAbivXSVwq18ndnNcu/ErwefK7k2a23+BnwKvAVsh+C8DTgsNn8DnHJRo2uSUVdoDNbj+x2vmK99AjobMQXgWejevJQogvUh0gI1gLnqzUU/UOYLbe2jJDPyiezhwI0Yv1DnYp6CPT80FuWg64AnV94sFX6PSSAYSrWy+uArwLXTuLHVGcAn88ls8dFHchoKNRLz4K/YPtDlmtRx2O403B+oVa6B7sK3nK571YtwD0xQ9WXp0qwxPCvhVrp2aElDhg+veEkoh3ZidMuKo3q8nRvaklrpuHJV0MQwHim0AH9vanfVBoD212Pvl21BhJVF6d7UzfLHIEUXV0E+5JivfzbXDLzMuBrko7e6tvFlcA3Ko2BdeneeQKqmLsqjWpzaNtWbfpIcGgBjFBXjGtBFwFt8cTceBMCcyBmn6hjGU3FWvkG0PuBm6Np4fkxwa+H/rEv4sitvtuswvykWC+tGoq/WayVlwy1VLcoJIAROm+g3AS+abNwsl4KGKZbTLjBUYV66TbbH7W8eFxWaK8CLwL/wOiLlu4aev0W4LsvLVG3wb/FXxDX7ugqwyXAKKg0Bp5Px1MDghMQs6KOZ7xJdGN3p+Pz7uzvTTUqjYEJkworjeoj6d7UA5gF0tjObuRWh90ZxXr5kkpj4Mb1dRgqjarT8dQK0Fskpg9N3bwGtNSwk0RMcHVM+tkNy3Zs34cEMEoqjYGH+3tTg+AFdEBxitGnVwBvRt4zHU/dXmlUO74/YL3XxXetmqnPg44f9tDc7dMrQX9v6veVxsBGTfd077xHUWsCQMHPjC4Evo5ICeZhvlGolXa4nPskPFDHTn9v3122DgQOnmyTZ6v1xFBcJi1pr3Rv6tpKY6Btp4ffETc0HiYdTy0GEpIOH6v1DB0zB2Me74+nbq80Bl6ohlxpDLi/t+9mwc/c7VKxWr630hh4PN2bWiKzDvmSSqO6fIfXGcH+nNByieyhwKXauCTTpGJoylwA/P+FemmbE1R2ilwyc5DQL4EDxnRFpoH8c8M3jW8/v3b1FjuYc8lMF6inWGt1/u2o0AIYZZXGwOPpeN9yICupJ+p4ojA0nPYwy0sqjertUcczWiqN6pPp3lQMk9UYPkBkMbU1VRqnCO2ejqeWpOOpZZVG9SXX9635FweGPXoxJIAxkI7Pu1fSfrQKPUxOYgrWQel46ppOqB+wvdLx1ADilWLsZo3SC39rF6F+WjMkzUj39j34quRBz/7psftGbV0hAYyBSmNgXX88dTfwRos9JvF11hxgj/5439WVRnVC9AdUGgMr0719TwJvEpo64gVuB0mzDccC2a5VzYcrjYF7R2vZIQGMkUpj4On+eOop4RORdoo6nigMFaicD+pOx1PXj6Sp2k7S8dQSiXmgcWvhtfpYtbvxYLo39avNXQ4MRxgINKZ8OfDdqKOIlIhZ/APyB3KJ7IQ43or18hqj/zBEUClZydGcqCa0AMZQpVEdTMdTd4HSgn0m6z0XQQ/maEn3jmbzNUrpeN/jwMGSDhvP9creQ9Jr0vHUc+l46oENbxUOR0gAY6zSqD7TH089gnwStE8xyvEmaTpwZKuy8MBjUcczUpVGtdnfm1oHnNp6ln+cSF1AAjgJPDUdT91UaVTXDHdxE6JJ1u4sFhp9k8k43/jGDgT+OZ/IxqMOZDQYbrR1TxTrlpip1tReIxqeHBLAOCjWSoOCizDXRB1L5MzJwIfyqeM6/oJoaiz2pEREMygbi6sK9fKjI1lKSADjpFArPW7xeaDjm78jIrqRP0mz63VRhzJS/zqw0Iabx7tZZ7tp+C1w8UiXFRLAuPJ14K+CJ2XtgBd3g/Y0OieXyE6ER4gHgHF78MmwFDgX8/et2pQjExLAOCrWyk2bS2xdFXUskRJgjgN/PJfIdHRHtPBT2lqprtF1I/C3Fp8v1sujcgsyJIBxVqyXl0n+v+C7o44lShKS+KhENupYRrglq0HjMcCpCVxUrJXK59fKo7a+kAAiUKiV/wz6RGt22EltDuicfDK7b9SBDJftXttjPmGsccx4zmgvNySAiBRqpattzrLd9lNujx0BvAb8qXwy06lPTs5lhLfits3IrMSMaNDP5oQEEKEmzV8hPmPTiDqWaOm9hg69K6DU0OCcsWGaoGuQ3gF8b7QX39EdMJ1uUaNGOj7vTsQK4PWiPeavj8A0zKz++LzfVhoDwx7VNt4+nTyhC/iAxOFjsXzj1ZIuxpxZqJduqzSqoz4bc2gBRKxYLw0C3xRcMBZNvE4hdCJwStRx7AjjfRH9YzEOwGYd5kLj/69QL41ZPYWQANpAsVZaA3wLMSEelBkWMRXx8Xwyu0fUoWw/p8B7j82QRt+BuLBYK68cyy0ICaBNFGqlh8C/jTqOiL0aeE/UQWwvmzmGMar1oBvXDnaP+ePGIQG0l1+Cl03iJ4Zihg/lEtmxLbo5WsR8jdY55A3/chNR+eqSq8b8UAgJoL3cBtzQ8U/JjMyBiA/lktm27qDOJbO7Am8ajcLahibiCeAu4RuNrsLcOB7bERJAGynUyitt/cKenPMMwgun0xnAK6OOZetxOg0cOtLluPWf74GPA44DTgDeSesZgzE3foUMgu1Vkrgdtj4Z5EQmvAfWh/OJE24p1BeO+q2vkcols3MMfy8YcVHQ1qze3Feolcdn/sFNhBZAmynWS49gLjBMiCq6wyMQxyGPWent4colMinMvwveMmoLdXTzSYYWQBuy+CVwEh3UIz4G9rF5HTB6RfBHIJfI7oQ4CTgH+4gRXvsbU0MWVlJiZlTbNcn7m9pXPpE9nFYiSEQdSxSGro1/Aby7WC9FNjown8h2WX4F1scR7xhpCa6hrVsL/C+smwwXIz8m/L5C7epxHwgWLgHaVKFeug342mTtEBSA/GrkVBTrzyUXdOUSmYPB/ya4AvGB0Tn5AeixmV+ol+4HPgx8/4WpQcdZuARoYzbfF7wZc+zkbKtpb+ANwLjVTsglM9OwDge/S62Kv/vCaDeVBfj1uURml2K9VAWq47V9m4skaGO5ROZUwQ9pldWedIwvx3pXsT682W+3Ry6ZjWHviXQc+HTQa7Fnawy/lA1PAycUa6Wbx2wl2yG0ANqcYCHiSsPfTMpsbSWAGcCoJ4BcMrsz9uHCb7V4M3CA1tf4H8sWuXlUotwOl3chAbS5Qr28MpfMfA187GhOCdU5/CSjWHQzl8zEgL2BBYLTDGlQ7zgm1yZwbqFW+sb4rXLLQgLoADKLLH5q/HFNtqs28SAxj/jbP5/MTsU+CutUy28C5gHdY9nM34IYcNSnE9mdvlwvrR7vlW8qJIAOUKiX1+WSmQuEjgYfM3m6bgxQKw5cPeyHYnKJ7AzwG8DvA2XA8TZIom9vwn8BpagDCbcBO0SxVq6DPws8FHUs48UGzLCeh88nsrPzyey7gJ8DPzP8DSIe0d22jbdLzAJOjDoOmDxfJRNGPpn5gOEioTGvRNsObG4BTi/WS/VtvffsQ96k2HNr90A+BfNepFcyZs/rj9jPbN4zVBEqMuESoMPY/Ah4OfhTRHABG4GjhE8BvralN5ydzEiwL8vXnI50BugQ1KbHdqvs242Ib0Z98kNIAB2nWC+vziWy5wHzgTdFHc9Yk6gC12/6ej6R7QJmgucDbzG8DTgAHGvDhq1tHgXuEPwGfFmhVm6LOSLbbk8F2yefyB5h+LlEJENlx4VZDZxVqJf+ff1LuWRmttAbMaci5mPmAfF2PZINa4Fvy3zNUCvWS231lGeb7rZge+STmQ8AXweN+Ln0NnUHJms1nwYlBCdj3ok4ooO2+SeGjxRrpeeiDmRzwiVABzP6KZAWvD/qWMbIPoicUMLwKsM+kjrpztVazM+K9fY8+SHcBuxoxVppJfBF49ujjmWMzAZyoNOF9hMddfJjiBm39WQvHbVDg5cq1koPYD5v/GzUsQQbE3RJmh11HFsTEsBEIK5gDOaNC0amNY5p9Gf0HU0hAUwAxVp5jaCIX3q7LIjOUA/7qD3INBZCApggCrXyQ4ac4Z5JPLFIezFVWQujDmNrQgKYQIr10v8AH8W+P+pYJq0XZvixge953ZS2KGq6JeE2YIfLJ7I7WwwWa61HS4VvQtwP7B91bJOGvdbSnWrN7PSgzTJEA7iy+Ncr2rpBFgYCdbBcIjsF+DeJeZhrEYuAY4BzgWlRxzdZ2FwOfBjxZLFW6qgp3kMLoLPtC5wGJBBvBZ4Beggn/5gzQ6U9oYH4erFWejzqmIYjJIDONl+w1wb/jmyGmUnDfgLxtOBloDj25aCOvfsSEkAnE/sZpoTruNHgtTaXIwaFTmMz54ZNA/Qh4UWgFJBBumJ9/0snCgmggwnPWP9/wYj9GPGPQjOBg7FfsWn1IOGFRgsLtfIq4Il8MvunTt/zIQF0tnAbdzTYg8Dvi/Xyilwiu7Oguf7kt/008KDEE4h/L9ZenJ+gUCu1dQ//9ggJIJjsnkJ8B/M7AETKMFf2SsR3gB8AVcwKxWKRzVE4VkICCCYpDwJXg74E/LFQL69rvezDEE3EZzGXFOvlCXfSbygkgGDyMSDdD/5IofZisdHc3OMl2A34FPDDQr0cec2+sRYSQAdbfy862EEyWE+Blm78elcX8APMI4U2KNg5HkIC6FD5RGYnQyokge3wkq46QWvQ1Ea37w6ZkRgEHnrfnf/R8Z172yskgA6UT2a6MR+TOaMdJrpoW7YtFiM9ycZ5sgtYJLNuw7dPphN/vXD0dJhPzT1esVjX+wRfIYz82yqb+8CnOcbAS8qJmbXFWmlCd/Btj9AC6DBdsdjbbJ9naVbI3ltlif8s1Mp3Rh1IOwsJoIPkk5njgQsl7R51LG3P/IXWBJzBVoQE0CFyyeyewHmYueHCbcsMyCwDFwr18qSZSHW4wlDSzrGLYS806fqptmmDPbJW+H+AD4LCt/92CC2AoA1s9mZm03ZTUnPoDc31f9yaYHMteJWkhsyjxnch/VHoukK99ETUW9QpQgLoFB46QyZY89/QBD0qqAJ3AnVgqeE5YCWw1tCUGUQMAuuG/jwPLAeWI55Ts2tVof670DzaQSEBtLmz98vo/CVlC440xCdYBlgJvhjr24iHkZYXqgvDSTyOJtTRNNHkk9mdjaeDXqZWj/ZBUcc0igz+EuifC+F+fGRCJ2CbyiUz04wPBO0C/icm0MnfmjGHK42+Ek7+aIUE0IY+t88CyUyVdb/sv8E6NeqYRlED80PMx4u10FkXtZAA2tCgoVAvL0P0I86WOrmvxgY/aVwyfBY4UeIjxXqpFnVkQegDaFv5ZCYF/Bfo6KhjGT7XgIuAawz3FWvllVFHFGysg79ZJq58IhM3nKsOPvkNTaGvFmqlr0YdS7Bl4RKgzeQSC3oMOVmnRx3LSLRG5DmMxmtzoQXQZoTOAM5EdEUdy3DZfhK4oFgvd+RsOZNJaAG0kXwi0w0cgJgadSw7rjV+x/YtwN8ZLos6omDbQidgm8knMzNAZwHvw94ZsRPWFMQU7B7UNiWAjGm6NTx3OfAQcBXmP0IPf+dol4Mp2EA+ke2xvDtmF8TOsqYDOxufgPiY0E7bXsr6EbWj/Cs2Tct3Az+SucfSSuAp4CHw0mKt3FGz4052IQG0qZPffrAArrxs8Qtj489OZHYW+ieJT4GnbPLre8z2vZLqwD3YgN6P2H9r69neNGHcBN2L/X3ET9d0rXnoogeuDeP2O1xIAG1qNq8WwNPcuNFJlk9mZ2B/zugTEjMwWDwkeL9NRTFWFaql5qf2PUVdXasPNXxAYlc2ro1rQ0wwHdgb6AN6Wz/wUJ1Rrf/Ic6AbjS8FXYVjDxXDU3cTRkgAHSiXyO6EOAV8DnAA5lPFevnizb03nzwpBn7J79kYuRlD2gWYBz7JcJRQLxC3HQOuk7gU9D+FWum5qLc7GH0hAXSwXDJzANCPubRYL4/oBD07sUAxxbqBqcA0bBmWFtdPmRUEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQdDO/h8hxc2sO687KAAAAABJRU5ErkJggg==</Image>
++  <Url type="text/html" method="get" template="http://search.disroot.org/">
++    <Param name="q" value="{searchTerms}"/>
++  </Url>
++</OpenSearchDescription>
+diff -Naur a/palemoon/locales/en-US/searchplugins/duckduckgo-palemoon.xml b/palemoon/locales/en-US/searchplugins/duckduckgo-palemoon.xml
+--- a/palemoon/locales/en-US/searchplugins/duckduckgo-palemoon.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/duckduckgo-palemoon.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,16 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"> 
+-  <ShortName>DuckDuckGo</ShortName> 
+-  <Description>Search DuckDuckGo</Description> 
+-  <InputEncoding>UTF-8</InputEncoding> 
+-  <LongName>Search Plugin for DuckDuckGo (HTTPS version)</LongName> 
+-  <Image width="16" height="16">data:image/x-icon;base64,AAABAAIAEBAAAAEAIABoBAAAJgAAACAgAAABACAAqBAAAI4EAAAoAAAAEAAAACAAAAABACAAAAAAAAAEAAATCwAAEwsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA11RgALs6oACbQ9wAj0v8AI9L/ACfQ9wAu0agANdUYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzzN4CNdL/oK/z//////////////////////+jsPv/BDXX/wAz0t4AAAAAAAAAAAAAAAAAAAAAAAAAAAAyzvNSduD//////8jK/v+P+Lf/IbQL/17RPP+J3Y//wOKX//////9YeuX/ADLO8wAAAAAAAAAAAAAAAAAw091piOX/8/X9/1Fx5P9xhu//WOWZ/0W9Lv9Lwjn/J8BB/xyDAP9bdfL/9fP//2mI5v8AMNPdAAAAAAc610YRQ9f//////0Zr4P8AGdD/sb32////////////wrv//wAh1/8MPab/ACPc/05r4///////EkPX/wc610YANtWkrr/y/6S48P8AJ9L/AB3R/+/w/v///////////3+D7f8AQeL/AYTw/wFr5/8AMNb/p7Tv/6698v8AM9WkADLW//////8yXt//AC3V/wAw1/////////////z///8A0P7/AKb1/wWI7P8AuPf/AJ3w/zZW3P//////ADHV/wAx2P//////AzrZ/wAu1/84ZOL////////////e////AND//wC1+f8Atff/AZbv/wY62f8ELNf//////wAw1/8AMtn//////wAw2f8ALNn/kKrz////+//cwbH////////////R////Rcb8/wDO/f8A/P//AHzo//////8AMNj/ADXa//////8vXuL/ACna/4yq9///79T/jUkg/9i+r///////r2Q0/7Cozv8BKdr/AirY/zdZ4P//////ADTa/wI72tOuv/T/prr0/wAl2v+JqPb//7yW/+bUxv/9+/n////u//W+n/+Op/L/ADPd/wAv2v+ru/T/r7/0/wI72tMLQd1DEEjg//////9Cbef/ADng///////////////////////R3///AC3g/wAy3v9SeOn//////xFI4P8LQd1DAAAAAAM64PNmiuz/9/j//2mN7f/m7P3///////////9Cb+n/ACXd/wAt3v9rju3//////2iL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/P8J0vz/ELDz/xt85v8mSdj/JknY/yZJ2P8lStowJUjXYCZJ2P8nSdhwJErZryZK2f8oSNcgJUnajyZK2f8mStn/JkrZ/yZK2f8mStn/iJPA////////////////////////////0ff+/xjV/P8J0vz/Drn1/xiO6/8Yjuv/GI7r/xCw8/8Lyvr/CdL8/xmF6P8mStn/JkrZ/yVJ2o8oSNcgJkrZ/yRK2a8jStrfI0rZ3wAAAAAlSdq/Jkra/yZK2v8mStr/Jkra/yZK2v+xtsf///////////////////////////8o2Pz/CdL8/wvK+v8mStr/Jkra/yZK2v8mStr/Jkra/yZK2v8iW97/Jkra/yZK2v8mStr/JUnavwAAAAAjStnfI0ra3yZK2v8lSdq/AAAAACZH2O8mStr/Jkra/yZK2v8mStr/L1HY/9HR0f///////////////////////////yjY/P8J0vz/CdL8/xCw9P8QsPT/ELD0/xSf7/8ddeX/Jkra/yZK2v8mStr/Jkra/yZK2v8mR9jvAAAAACVJ2r8mStr/Jkvb/yVJ2r8AAAAAJkvb/yZL2/8mS9v/Jkvb/yZL2/9KZtL/4+Pj////////////////////////////4Pn//0fd/f8J0vz/CdL8/wnS/P8J0vz/CdL8/wnS/P8Lyvr/Fpfu/yJc3/8mS9v/Jkvb/yZL2/8AAAAAJUnavyZL2/8mS9z/JUncvwAAAAAmS9z/Jkvc/yZL3P8mS9z/Jkvc/26AyP/x8fH//////////////////////////////////////9H3/v/C9P7/o+7+/2fa+/8Oufb/CdL8/wnS/P8J0vz/CdL8/xiP7P8mS9z/Jkvc/wAAAAAlSdy/Jkvc/yZM3P8lTNy/AAAAACZJ2e8mTNz/Jkzc/yZM3P8mTNz/iJTB////////////qnth/5VaOf/x6eX///////////////////////Hp5f/x6eX/ydL2/yZM3P8kVN7/G37o/xKo8v8QsfT/HXbm/yZM3P8mSdnvAAAAACVM3L8mTNz/I0vc3yZJ2u8AAAAAJUzevyZM3f8mTN3/Jkzd/yZM3f+fqc3///////////+VWjn/v5yI/+re1///////////////////////jk8s/7iRe//J0vb/Jkzd/yZM3f8mTN3/Jkzd/yZM3f8mTN3/Jkzd/yVM3r8AAAAAI0vc3yNL3N8kTd2vJk3d/yhQ3yAlTd2PJk3d/yZN3f8mTd3/Jk3d/6St0v////////////Hp5f/q3tf///////////////////////////+xhm7/49PK/6Cx8P8mTd3/Jk3d/yZN3f8mTd3/Jk3d/yZN3f8mTd3/JU3djyhQ3yAmTd3/JE3drydN33AmTd7/J03fcCVK3zAmTd7/Jk3e/yZN3v8mTd7/pK7S///////Sp5r/////////////////////////////////////////////////T27k/yZN3v8mTd7/Jk3e/yZN3v8mTd7/Jk3e/yZN3v8lSt8wJ03fcCZN3v8nTd9wKFDfICZO3/8mTt3PAAAAACVN3r8mTt//Jk7f/yZO3/+EltX//////+fRyv/SqaD/59LO///////////////////////at63/vIBy/7Glxf8mTt//Jk7f/yZO3/8mTt//Jk7f/yZO3/8mTt//JU3evwAAAAAmTt3PJk7f/yhQ3yAAAAAAJE/dryZO3/8oUN9AKFDfQCZO3/8mTt//Jk7f/zhb2v/o6/T/////////////////////////////////////////////////XHrn/yZO3/8mTt//Jk7f/yZO3/8mTt//Jk7f/yZO3/8oUN9AKFDfQCZO3/8kT92vAAAAAAAAAAAoUN9AJk7g/yZO4M8AAAAAJk/hnyZO4P8mTuD/Jk7g/05v5v/k6fv//////////////////////////////////////3eR7P8mTuD/Jk7g/yZO4P8mTuD/Jk7g/yZO4P8mTuD/Jk/hnwAAAAAmTuDPJk7g/yhQ30AAAAAAAAAAAAAAAAAjT+GfJU/h/yVO4Y8gUN8QIk7gzyVP4f8lT+H/SWnW/0lp1v+bq+H/8fHx/////////////////6Cy8v9OcOb/JU/h/yVP4f8lT+H/JU/h/yVP4f8lT+H/JU/h/yJO4M8gUN8QJU7hjyVP4f8jT+GfAAAAAAAAAAAAAAAAAAAAACBQ3xAlTOHvJU/h/yVQ4mAgUN8QIk7hzyVP4f+ktOv///////////////////////H0/f9phur/JU/h/yVP4f8lT+H/JU/h/yVP4f8lT+H/JU/h/yVP4f8iTuHPIFDfECVQ4mAlT+H/JUzh7yBQ3xAAAAAAAAAAAAAAAAAAAAAAAAAAACVQ3zAlUOLvJVDi/yVQ4mAgUN8QI1Din4mb2//J0/j/ydP4/6299P93ku3/M1vk/yVQ4v8lUOL/JVDi/yVQ4v8lUOL/JVDi/yVQ4v8lUOL/I1DinyBQ3xAlUOJgJVDi/yVQ4u8lUN8wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACVQ5DAlUOLvJVDi/yVQ4o8AAAAAJFDjQCVQ4r8lUOL/JVDi/yVQ4v8lUOL/JVDi/yVQ4v8lUOL/JVDi/yVQ4v8lUOL/JVDivyRQ40AAAAAAJVDijyVQ4v8lUOLvJVDkMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACVQ5DAjUeTfJVHj/yNR5N8kUONAAAAAACVQ5DAmUuOAJVHivyNR5N8lUeP/JVHj/yNR5N8lUeK/JlLjgCVQ5DAAAAAAJFDjQCNR5N8lUeP/I1Hk3yVQ5DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBQ3xAjUuSfJVHk/yVR5P8jUeTfJFLkcChQ5yAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoUOcgJFLkcCNR5N8lUeT/JVHk/yNS5J8gUN8QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkUONAI1LknyVS5P8lUuT/JVLk/yVS5O8lUeS/JVHkvyVR5L8lUeS/JVLk7yVS5P8lUuT/JVLk/yRS468kUONAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIFDfECVS5GAjUuWfIlPlzyVS5f8lUuX/JVLl/yVS5f8iU+XPI1LlnyVS5GAgUN8QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/AA///AAD//AAAP/ggBB/wgAEP4AAAB8AAAAPAAAADiAAAEYAAAAEQAAAIAAAAAAAAAAAgAAAEIAAABCAAAAQgAAAEIAAABCAAAAQAAAAAAAAAABAAAAiAAAABiAAAEcAAAAPAAAAD4AAAB/CAAQ/4IAQf/AfgP/8AAP//wAP/</Image>
+-  <Url type="text/html" method="get" template="https://duckduckgo.com/">
+-    <Param name="t" value="palemoon"/>  
+-    <Param name="q" value="{searchTerms}"/>  
+-  </Url>
+-  <Url type="application/x-suggestions+json" method="GET" template="https://duckduckgo.com/ac/">
+-    <Param name="type" value="list"/>
+-    <Param name="q" value="{searchTerms}"/>
+-  </Url>
+-</OpenSearchDescription>
+diff -Naur a/palemoon/locales/en-US/searchplugins/eBay.xml b/palemoon/locales/en-US/searchplugins/eBay.xml
+--- a/palemoon/locales/en-US/searchplugins/eBay.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/eBay.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,19 +0,0 @@
+-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+-   - License, v. 2.0. If a copy of the MPL was not distributed with this
+-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+-
+-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+-<ShortName>eBay</ShortName>
+-<Description>eBay - Online auctions</Description>
+-<InputEncoding>ISO-8859-1</InputEncoding>
+-<Image width="16" height="16">data:image/x-icon;base64,AAABAAIAEBAAAAAAAAB6AQAAJgAAACAgAAAAAAAAQgMAAKABAACJUE5HDQoaCgAAAA1JSERSAAAAEAAAABAIBgAAAB/z/2EAAAFBSURBVDjLtZPdK0MBGIf3J5Babhx3rinFBWuipaUskX9DYvkopqgV90q5UJpyp0OKrUWM2VrRsS9D0zZKHGaOnW1nj4vtypVtPPe/533r9746QAAOAJXfo5Yzgg44pHrcugon/6Sgo0b+XuAOZ2iZiVQmyPoDpIwmUkYTzqM7GsdDdC7F6Lbf8pzOkfWOouzqeZem2b+2AqAV8zjD8yVBqqcf2b7C66yNiMGMfixIQSvi8Mp0LEbR5ADq1QSKWM+Gx0RC9nOZ2GLzwlIWdPWiuNzk4w/EpThNkyEAXKEP2ud8KGId2sspilhPMrmNwzfCuqePr/xbSfC5I/I0MMSj2YJ3z49gDdO2cEOrLUowJpE9G0QRG1ClKbR0EIdvmOPYcnUtnN+vsnZiQC1k/qnGagQ1n3LNzySUJZVskitnmr8BlQG7T2hvgxsAAAAASUVORK5CYIKJUE5HDQoaCgAAAA1JSERSAAAAIAAAACAIBgAAAHN6evQAAAMJSURBVFjD7ZddSFNhGMeHXXQTZFFCWfR1pRhUECQlBdWVToo+6KYu1KigtDASG5qUfZgFZvahEDosECPDktKZS1FL+1DRnEvdUptjug91X2dnZzv/3vO6OZbWnR4v9sADL+fs7P97/s/znu2VAJD4UkpSSdKG+QubTyPBr+sXz8XCR64fIAHihVTis0SsUAoAVhEBrBKIHCGAEMB/ARi3F5LkbpS2WMRzYEEBXC2tsD6T03R9agsCGLNyqPw6CXmrBT06JvhbPHZwmkdwtR0B138PPKOHgzXD5jLAy3tmibo4K9weZwDAazJj/FQKRnfugfHMeRiTz0K3Ixam1HQKcPC+Fisu9NK1P08Uj4DleHgMdXC+WQ7nu3UEOhFMfTQcVUvQ1H4IN2sj8H2k7K+2TqCc3GseyA8AmDOzMBq7D9bS8sAr6nEJdNt3UbHVF1XQGtmZew8bTPT6tWoD3KpsUvlR8NxUoEICMvl6KQo+xqCwcRs4T8Ax5c8bFExjbAgAjO7aS8VsLypgq3g5nWStjztAhWRVhqAqeB6IuKTClkw1eNYEbrCQQBwD8yGGOsAooogLYejQPKBi7UPF9DkH+ezd+o141ZkUPAOC+L9SAMivNc7q46YMNSLTe4n1kaQF4XD3ZIDTPgU3XEYciKcAHrsGJS1xKFBGgyVzouiT4VbdGhjt/cEA5isyKsaz7jl3we7bg7Rqf6j0LoSldON4wWcqJDgQNGTN++l13vELA+MK6kKd6iryFOvxtidt9i5gO7owdjKJQliflNAU1pas6xQgnAzg1ux+lJEdILixNr0Pq9JUUA8NwVG9DM73G0jlcnh+V4BpjIWzJmIGQIjnXw5TiDuKSEwxurm3ITc8DNO51BnrLbIcsrW0dNA6RxgUKU1UdGVqLy5X6qGzTLvlnewiBZyGs3Yz6X8UeaYI3olvZDhzwLumZ+eHvooCCC0Q5VUsb4unwycM4YIDqA01tPqmgbzQr2EIYPECiPm33LYoDiZSsY9moh9O/Znoa4d9HkXtPg2pX/cPKCoRQ+ocZa4AAAAASUVORK5CYII=</Image>
+-<Url type="application/x-suggestions+json" method="GET" template="http://anywhere.ebay.com/services/suggest/">
+-  <Param name="s" value="0"/>
+-  <Param name="q" value="{searchTerms}"/>
+-</Url>
+-<Url type="text/html" method="GET" template="http://rover.ebay.com/rover/1/711-47294-18009-3/4">
+-  <Param name="mpre" value="http://shop.ebay.com/?_nkw={searchTerms}"/>
+-</Url>
+-<SearchForm>http://search.ebay.com/</SearchForm>
+-</SearchPlugin>
+-
+diff -Naur a/palemoon/locales/en-US/searchplugins/ecosia.xml b/palemoon/locales/en-US/searchplugins/ecosia.xml
+--- a/palemoon/locales/en-US/searchplugins/ecosia.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/ecosia.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,12 +0,0 @@
+-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+-    <ShortName>Ecosia</ShortName>
+-    <Description>Search Ecosia</Description>
+-    <InputEncoding>UTF-8</InputEncoding>
+-    <Contact>info@ecosia.org</Contact>
+-    <LongName>Ecosia Search</LongName>
+-    <Image width="16" height="16">
+-        data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAACMuAAAjLgAAAAAAAAAAAAAAAAAAAAAAAAAAAAC8qzQBuaw3UrmsN6u5rDfruaw37bmsN+25rDfSuaw3fLmsNyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC2rTokrLFGurqsNv+5rDf/uaw3/7msN/+5rDf/uaw3/7urNP/AqS7suqw2aAAAAAAAAAAAAAAAAAAAAAC/qjApkbpn4mvJlf/EqCr/uaw3/7msN/+5rDf/uaw3/7urNP+rsUj/ib5x/7qsNv+9qzKBAAAAAAAAAAC5rDcLwKkvzom9cf813Nb/lrlh/8KoLP+5rDf/uaw3/7msN//BqS3/eMSF/yXj6v+BwHv/lbli/7atO1IAAAAAuaw3bsCqL/+Rumb/K+Di/z3ZzP+dtln/vqox/7msN/+5rDf/waku/23Ikv8s4OH/ONvS/5m4Xv+7qzXZuaw3CbmsN9DBqS7/hL93/zDe3f8v393/RdbD/7OuPv+7qzX/uqw2/8WoKf99wn//Lt/e/y/e3f99wn//v6ow/7msN0+7qzT7s64+/0bWwf8y3tn/L97d/03TuP+usET/vKoz/7isOP+vr0P/XM6n/zDe3P813Nb/L97d/5O6Zf/EpymOu6s0/7OuPv8+2cv/J+Hn/1HStP+0rjz/vasy/76qMP9zxYr/NtzV/zTd1/823NX/NtzV/zLd2f9I1b//mbheqsGpLf+gtVX/bseR/3fEhv+wr0L/vaoy/7msN/+/qjD/Wc+q/yvg4/813Nb/Md7b/zfc1P833NT/Mt7a/zbc1aqHvnT6bMiT/522WP+wr0L/vqox/7msN/+5rDf/vaoy/6C1VP8/2cr/N9zT/2vJlf9hzKD/NtzU/zbc1f813NaONdzWz3HGjv9ky53/prNN/8SoKv+8qzT/uaw3/7msOP/EqCr/ecOE/0HYx/9V0K//N9vT/zXc1v823NX/NtzVTjXc120w3tz/Lt/e/0zUu/+Fv3X/rrBF/7msN/+7qzX/vaoy/6qxSf9G1sH/L9/d/zPd2P8x3tv/L9/e2C/f3Qk23NUKNtzVzDbc1v823NX/OdvQ/0nVvv+xr0H/ta07/7+qL/+7qzT/r69D/2LMoP823NX/VNGx/2TLnVEAAAAAAAAAADbc1Sc03dfgQNnJ/2bKm/862tD/pLRP/1vOqf9S0rP/ib1x/8CpL/+4rDj/qLJM/7qsNn4AAAAAAAAAAAAAAAAAAAAAM93YI0vUvLtux5H/VdGw/3DHj/9Zz6r/Xc2m/3rDgv+5rDf/u6s1672rM2gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyaYjUburNaytsUbZuK056cGpLuS/qjDGuaw3gLmsNx4AAAAAAAAAAAAAAAAAAAAA+D8AAOAPAADAAwAAgAMAAIABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAACAAQAAgAMAAMAHAADgDwAA+B8AAA==
+-    </Image>
+-    <Url type="text/html" method="get" template="https://www.ecosia.org/search?q={searchTerms}&amp;addon=opensearch"/>
+-    <Url type="application/x-suggestions+json" template="https://ac.ecosia.org/autocomplete/?q={searchTerms}&amp;type=list"/>
+-</OpenSearchDescription>
+diff -Naur a/palemoon/locales/en-US/searchplugins/ekoru.xml b/palemoon/locales/en-US/searchplugins/ekoru.xml
+--- a/palemoon/locales/en-US/searchplugins/ekoru.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/ekoru.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+-    <ShortName>Ekoru</ShortName>
+-    <Description>Ekoru - fight climate change with every search</Description>
+-    <InputEncoding>UTF-8</InputEncoding>
+-    <LongName>Ekoru Search</LongName>
+-    <Image height="16" width="16" type="image/x-icon">data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABMLAAATCwAAAAAAAAAAAAAAAAAAxKIkAKyyPgLUmhFN2JkKwtKfEObJoxrvyaQb8NCgEenTmQvTzJQRe8CUHg/FlBYAkpLMAAAAAAAAAAAAxaEoABa5/wDUng9Z1aAJ562pI/96skP+Y7RQ9mS1Uvh3tEX/qaoi/82eB/rOmQycyJQaEsqWFQAAAAAAAAAAANagBwDSnxA606EJ45OuNP9Qt1neQbVYdDyyWDs/s1dDQrdcgFC6ZN2Psjj/zKQF/s2fCoqunzsIt54sDv9tAADQnSQN158IsJ+tKv9Ot1XiRq9QPuShCg63qiY9uqsnPt2fEA1Cs2MyTLtt0JyyLP/OpQTrvKUcR6enKnnMnhce2J4NUMalEfJht1T+Q7RTc7yqIjaKt07BZsBv+GnAbveAu1q6q687Jz65cE9hu2D1vakO/8ilCoiRqjKNw6AaddyhCKOprCX/Sblf2oesM0CTtkTMT8SC6z7Fj347xpRrSMiQ2nLAcKpxrUsYS71wx6KxK//Opge2gqs2d7ykGb7dpAjdkK82/0S1WqqxrCNzar9q/z3EioS3aWABMtSuADrKoHBVypPToLBFFUW9d6OLtkP/zKgKx3+uNW26phfk2aUG+YaxO/9Es1mHq64sj1jDfP8+wYJmQ9G0J0DOqmNBzqOrWMmRkp+WKwZCvnuniLZI/8enCrt8rz1xv6YW99mlBfuJsTr/RLRbd7KtJ4JiwnT/QMODlVLHmgtMzaNRWcmTXIC+chFEum0kRMN/2pqzO//FqA+Sd68/iMWjE/jcpgbilq80/0K4Yoi/qRxQhrlS+kLGi+ZDvHxMZpdOBGWRPAJGu3YnPcSEql/CcP+1rh/wqakiUISuNrzQogzc3KQHpLarH/9Rt1vCg6gzIK6vJ7Z1vmH/RsWK7UHDi7o9xYm0QMeM4VfEfP+hszT9w6gWilOzU1GfrCbz1qEKldajD0vTpgrweLNE+EK0WF3Cqhsota8jupi2QPt/u1r/eb1c/4u5TP+rsSruwKwXh2axRjJ4sTzHxaUQ59ifEDnMoSkJ2qIJobioGf9gtE/hQbRUTbKoJxW+qx1YuasdkbusGZ7CrBh8vaocOk+xUDR2sDu7vacT/tagCoOvmU8C1qAQANSfFifXnwjMtKgd/2qzRe5Os1CaQbNTTT2yUjRBsFI3QLJST1aySI2GrjDhwqUQ/9afCLDTnBwU1J0XALqZOwDhowAA0p4VLdafCazGpA/zpaoi/4yuLvt7rzTyfK408o2sLfuwqBn/0aMH8digCZbRnBgb1Z0OAK2OZwAAAAAAqIddAMqeEADHmyAM1Z4OUdegB6bUoQbe0aIH+NGiB/vWoAjj1Z8IqdafD0zQoyEI06MYAAAAAAAAAAAAwA8AAIAHAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAADAAwAA4AcAAA==</Image>
+-    <Url type="text/html" method="get" template="https://www.ekoru.org/?ext=palemoon&amp;q={searchTerms}"/>
+-    <Url type="application/x-suggestions+json" template="https://ac.ekoru.org/?ext=palemoon&amp;q={searchTerms}"/>
+-</OpenSearchDescription>
+diff -Naur a/palemoon/locales/en-US/searchplugins/list.txt b/palemoon/locales/en-US/searchplugins/list.txt
+--- a/palemoon/locales/en-US/searchplugins/list.txt	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/list.txt	2023-11-30 01:57:30.190191038 -0300
+@@ -1,8 +1,2 @@
+-duckduckgo-palemoon
+-mojeek
+-bing
+-ecosia
+-ekoru
+-twitter
++disroot
+ wikipedia
+-yahoo
+diff -Naur a/palemoon/locales/en-US/searchplugins/mojeek.xml b/palemoon/locales/en-US/searchplugins/mojeek.xml
+--- a/palemoon/locales/en-US/searchplugins/mojeek.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/mojeek.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,11 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+-  <ShortName>Mojeek</ShortName>
+-  <Description>Search Mojeek</Description>
+-  <InputEncoding>UTF-8</InputEncoding>
+-  <Image width="16" height="16">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAAAoCAYAAAChDJfXAAAABHNCSVQICAgIfAhkiAAABORJREFUaEPNWk12E0cQrhqCbdjEnCDiBBE7SxvkheWXFeYEFidAXkVig9jEYoU5AeIEkVd5lheYjeQdygkwJ4iyIU7AU1SNNEIW/VMz04+o3+OZN91dXf11/XzdJQRDezKolq+A7kcENULYRMCaDCOiC0Dgf3gGn+PX3V/OL0zz02+/nlYfIMEezywBQQkRS7O+CQGNkai3vnZ53NkeT1xy0r7Om/Lmv/9tPADAvZlem9xXnvWPCWDM3/vPd4bHGnnpGEz/0/pjqwQ/RPsQU2NBWbcsoqPD3dHB8qD2ydY+YHTE30VJX2NA4oNu/bxnG9g63aphjI8ZfAbU3+SweGMHrFvfP5ohTTZ/I3rKkxqaCYYx48P68J58n8rCV6nlZJHHp9jr1oePFufIyV9+uv0ir24xUPN5ffTSpwe2TqpjRPjZN9DVTwTPIjZD3sgb5ekbxYmc7u6wI53ikkXlJYsgHRzujMQqrQ1bg60GQvSqCAizueLXGvN3L0X0kJA4DkUvgsgTHADu/VYfjm0L49TkbrEP4Y8BgAghIgyYC5pwED7r1kfbVhASXx5UjhiExyF2sKoy6Cq+a8tmSXaQgIY3ovfLG2Af/ZN9qrRCVpIb48V4syxkniLbJ5Uep6B9zukf2Hw6Gzcv+2n+/tqn14Fl/M0cQVJUnyKacIqTeLE3XSNnI3qdXx69PayPaqaVv/IEzsVCaEz5OiEpn27/pVU9saA43jOZX55ALPI4+zRMwS2DvAmn8jtOEHwbbA+qnLH8TRTeWPtYc7HALJalkaeNaQzC/NAXd2L8aNqqBgRxAbiiso9OJwyQIuEU3uYKaOlkW0xbFl4IBO0iDMJLTkVN38607qWVJ+tpDqkYCMqT05xaCpBG6bDy6AMHxlLumMA+LFH9d9cJi+8y5U1vdE5j0FhCFnk6S1BkB5fWfL/o8P3iqQeEOe/3uYMqJnA65FtgwydL+jWg8juAVZ4qMKpAwHi7u3N+plFaA4KL3CyvUVSeFoQ+WwI/ZthbJv89rTSBUC5I1kYZQFW5K8SPbG8WKhDagwqfMN53KW2LvKY5wS1L464OUFUgtE4q792vTfbIawJBQ5ZCg7p+8+MdG4FTgeBPZ/bIawQhsGUVtVQvCJrIy0HsmNOj6v1vls7e8V9rOs2eHt3u6pPnBaFo5DVbgu8ektWyqnK5c7xqueWtJAhZ6LKGKPnkeUFoB05noS1Lc6/xcQ4vCMHTmeIewnUIa07PQ5SYLT501SC8IGjSmSv9LCv9v1iWh3j5QQiczjSW5XsiXwRWI8/HPgOAkI0osdJeCh6aKPnkKUAInc5Wj4J/dxAUFNz6KpyXfZoCrZDAlEY7QZjVA4Xd2W97C/VDzTU6OAWflwqcq0+A4iY/DF0Q8s8MpPIO8DZ9r3CCEDqnqyi48p0y3bImMJrgkfJ9d3d0V/rcIGiKtZ4cfC2SazhCRsvKUHf4Bos0C7lBKHhPz0VsFKX0a8BaSoga10zL9sVBcBQ6vwEhMKipfM1V2gzK9GLlBEEj3JeDQxMb02Y0AdxmGcJ2vysIoUG9BrAmfi0jwS/Q62v/NH3uwOyOrPd0+bWYpuI0j+TJ7yDsjykyzlY51vj4NJthj+P9T7bx8sCCEfXoM/XTcqGXLGkWX7Ux4h4xxGWgqJToFsVn8sdWEvgCOMM4VKvnGdcAAAAASUVORK5CYII=</Image>
+-  <Url type="text/html" method="get" template="https://www.mojeek.com/search">
+-    <Param name="rs" value="palemoon"/>
+-    <Param name="q" value="{searchTerms}"/>
+-  </Url>
+-</OpenSearchDescription>
+diff -Naur a/palemoon/locales/en-US/searchplugins/twitter.xml b/palemoon/locales/en-US/searchplugins/twitter.xml
+--- a/palemoon/locales/en-US/searchplugins/twitter.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/twitter.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,15 +0,0 @@
+-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+-   - License, v. 2.0. If a copy of the MPL was not distributed with this
+-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+-
+-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+-<ShortName>Twitter</ShortName>
+-<Description>Realtime Twitter Search</Description>
+-<InputEncoding>UTF-8</InputEncoding>
+-<Image width="16" height="16">data:image/x-icon;base64,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</Image>
+-<SearchForm>https://twitter.com/search/</SearchForm>
+-<Url type="text/html" method="GET" template="https://twitter.com/search">
+-  <Param name="q" value="{searchTerms}"/>
+-  <Param name="source" value="desktop-search"/>
+-</Url>
+-</SearchPlugin>
+diff -Naur a/palemoon/locales/en-US/searchplugins/yahoo.xml b/palemoon/locales/en-US/searchplugins/yahoo.xml
+--- a/palemoon/locales/en-US/searchplugins/yahoo.xml	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/en-US/searchplugins/yahoo.xml	1969-12-31 21:00:00.000000000 -0300
+@@ -1,17 +0,0 @@
+-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+-   - License, v. 2.0. If a copy of the MPL was not distributed with this
+-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+-
+-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+-<ShortName>Yahoo</ShortName>
+-<Description>Yahoo Search</Description>
+-<InputEncoding>UTF-8</InputEncoding>
+-<Image width="16" height="16">data:image/x-icon;base64,AAABAAIAEBAAAAEACAA8DQAAJgAAACAgAAABAAgAowsAAGINAACJUE5HDQoaCgAAAA1JSERSAAAAEAAAABAIBgAAAB/z/2EAAAAJcEhZcwAACxMAAAsTAQCanBgAAApPaUNDUFBob3Rvc2hvcCBJQ0MgcHJvZmlsZQAAeNqdU2dUU+kWPffe9EJLiICUS29SFQggUkKLgBSRJiohCRBKiCGh2RVRwRFFRQQbyKCIA46OgIwVUSwMigrYB+Qhoo6Do4iKyvvhe6Nr1rz35s3+tdc+56zznbPPB8AIDJZIM1E1gAypQh4R4IPHxMbh5C5AgQokcAAQCLNkIXP9IwEA+H48PCsiwAe+AAF40wsIAMBNm8AwHIf/D+pCmVwBgIQBwHSROEsIgBQAQHqOQqYAQEYBgJ2YJlMAoAQAYMtjYuMAUC0AYCd/5tMAgJ34mXsBAFuUIRUBoJEAIBNliEQAaDsArM9WikUAWDAAFGZLxDkA2C0AMElXZkgAsLcAwM4QC7IACAwAMFGIhSkABHsAYMgjI3gAhJkAFEbyVzzxK64Q5yoAAHiZsjy5JDlFgVsILXEHV1cuHijOSRcrFDZhAmGaQC7CeZkZMoE0D+DzzAAAoJEVEeCD8/14zg6uzs42jrYOXy3qvwb/ImJi4/7lz6twQAAA4XR+0f4sL7MagDsGgG3+oiXuBGheC6B194tmsg9AtQCg6dpX83D4fjw8RaGQudnZ5eTk2ErEQlthyld9/mfCX8BX/Wz5fjz89/XgvuIkgTJdgUcE+ODCzPRMpRzPkgmEYtzmj0f8twv//B3TIsRJYrlYKhTjURJxjkSajPMypSKJQpIpxSXS/2Ti3yz7Az7fNQCwaj4Be5EtqF1jA/ZLJxBYdMDi9wAA8rtvwdQoCAOAaIPhz3f/7z/9R6AlAIBmSZJxAABeRCQuVMqzP8cIAABEoIEqsEEb9MEYLMAGHMEF3MEL/GA2hEIkxMJCEEIKZIAccmAprIJCKIbNsB0qYC/UQB00wFFohpNwDi7CVbgOPXAP+mEInsEovIEJBEHICBNhIdqIAWKKWCOOCBeZhfghwUgEEoskIMmIFFEiS5E1SDFSilQgVUgd8j1yAjmHXEa6kTvIADKC/Ia8RzGUgbJRPdQMtUO5qDcahEaiC9BkdDGajxagm9BytBo9jDah59CraA/ajz5DxzDA6BgHM8RsMC7Gw0KxOCwJk2PLsSKsDKvGGrBWrAO7ifVjz7F3BBKBRcAJNgR3QiBhHkFIWExYTthIqCAcJDQR2gk3CQOEUcInIpOoS7QmuhH5xBhiMjGHWEgsI9YSjxMvEHuIQ8Q3JBKJQzInuZACSbGkVNIS0kbSblIj6SypmzRIGiOTydpka7IHOZQsICvIheSd5MPkM+Qb5CHyWwqdYkBxpPhT4ihSympKGeUQ5TTlBmWYMkFVo5pS3aihVBE1j1pCraG2Uq9Rh6gTNHWaOc2DFklLpa2ildMaaBdo92mv6HS6Ed2VHk6X0FfSy+lH6JfoA/R3DA2GFYPHiGcoGZsYBxhnGXcYr5hMphnTixnHVDA3MeuY55kPmW9VWCq2KnwVkcoKlUqVJpUbKi9Uqaqmqt6qC1XzVctUj6leU32uRlUzU+OpCdSWq1WqnVDrUxtTZ6k7qIeqZ6hvVD+kfln9iQZZw0zDT0OkUaCxX+O8xiALYxmzeCwhaw2rhnWBNcQmsc3ZfHYqu5j9HbuLPaqpoTlDM0ozV7NS85RmPwfjmHH4nHROCecop5fzforeFO8p4ikbpjRMuTFlXGuqlpeWWKtIq1GrR+u9Nq7tp52mvUW7WfuBDkHHSidcJ0dnj84FnedT2VPdpwqnFk09OvWuLqprpRuhu0R3v26n7pievl6Ankxvp955vef6HH0v/VT9bfqn9UcMWAazDCQG2wzOGDzFNXFvPB0vx9vxUUNdw0BDpWGVYZfhhJG50Tyj1UaNRg+MacZc4yTjbcZtxqMmBiYhJktN6k3umlJNuaYppjtMO0zHzczNos3WmTWbPTHXMueb55vXm9+3YFp4Wiy2qLa4ZUmy5FqmWe62vG6FWjlZpVhVWl2zRq2drSXWu627pxGnuU6TTque1mfDsPG2ybaptxmw5dgG2662bbZ9YWdiF2e3xa7D7pO9k326fY39PQcNh9kOqx1aHX5ztHIUOlY63prOnO4/fcX0lukvZ1jPEM/YM+O2E8spxGmdU5vTR2cXZ7lzg/OIi4lLgssulz4umxvG3ci95Ep09XFd4XrS9Z2bs5vC7ajbr+427mnuh9yfzDSfKZ5ZM3PQw8hD4FHl0T8Ln5Uwa9+sfk9DT4FntecjL2MvkVet17C3pXeq92HvFz72PnKf4z7jPDfeMt5ZX8w3wLfIt8tPw2+eX4XfQ38j/2T/ev/RAKeAJQFnA4mBQYFbAvv4enwhv44/Ottl9rLZ7UGMoLlBFUGPgq2C5cGtIWjI7JCtIffnmM6RzmkOhVB+6NbQB2HmYYvDfgwnhYeFV4Y/jnCIWBrRMZc1d9HcQ3PfRPpElkTem2cxTzmvLUo1Kj6qLmo82je6NLo/xi5mWczVWJ1YSWxLHDkuKq42bmy+3/zt84fineIL43sXmC/IXXB5oc7C9IWnFqkuEiw6lkBMiE44lPBBECqoFowl8hN3JY4KecIdwmciL9E20YjYQ1wqHk7ySCpNepLskbw1eSTFM6Us5bmEJ6mQvEwNTN2bOp4WmnYgbTI9Or0xg5KRkHFCqiFNk7Zn6mfmZnbLrGWFsv7Fbou3Lx6VB8lrs5CsBVktCrZCpuhUWijXKgeyZ2VXZr/Nico5lqueK83tzLPK25A3nO+f/+0SwhLhkralhktXLR1Y5r2sajmyPHF52wrjFQUrhlYGrDy4irYqbdVPq+1Xl65+vSZ6TWuBXsHKgsG1AWvrC1UK5YV969zX7V1PWC9Z37Vh+oadGz4ViYquFNsXlxV/2CjceOUbh2/Kv5nclLSpq8S5ZM9m0mbp5t4tnlsOlqqX5pcObg3Z2rQN31a07fX2Rdsvl80o27uDtkO5o788uLxlp8nOzTs/VKRU9FT6VDbu0t21Ydf4btHuG3u89jTs1dtbvPf9Psm+21UBVU3VZtVl+0n7s/c/romq6fiW+21drU5tce3HA9ID/QcjDrbXudTVHdI9VFKP1ivrRw7HH77+ne93LQ02DVWNnMbiI3BEeeTp9wnf9x4NOtp2jHus4QfTH3YdZx0vakKa8ppGm1Oa+1tiW7pPzD7R1ureevxH2x8PnDQ8WXlK81TJadrpgtOTZ/LPjJ2VnX1+LvncYNuitnvnY87fag9v77oQdOHSRf+L5zu8O85c8rh08rLb5RNXuFearzpfbep06jz+k9NPx7ucu5quuVxrue56vbV7ZvfpG543zt30vXnxFv/W1Z45Pd2983pv98X39d8W3X5yJ/3Oy7vZdyfurbxPvF/0QO1B2UPdh9U/W/7c2O/cf2rAd6Dz0dxH9waFg8/+kfWPD0MFj5mPy4YNhuueOD45OeI/cv3p/KdDz2TPJp4X/qL+y64XFi9++NXr187RmNGhl/KXk79tfKX96sDrGa/bxsLGHr7JeDMxXvRW++3Bd9x3He+j3w9P5Hwgfyj/aPmx9VPQp/uTGZOT/wQDmPP8YzMt2wAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAACZ0lEQVR42mzSP4icZRTF4ee+38xOkp2sG5cQxVJIIaaKkICxTkqJjQhpJFYiop2F1YKFQqoUVpEoCBYSS7dfOxVFWGIsokUE/0TEye7OzPe977XYNWk83b0cDoffvXHWGxkKYjt0N1fi+FaJIzNIFSJ0kDXn0z5nF1O9Sp5PzaizamLD2NELo5W4sOwXqqX/04o1R2wg9PYs/GXUmTjqpGNxwvWdFzz19Akvjj+XUkYTggylFLfml93due+tZ7+y577BrkJnbNWke8yHmzvgi/4lq+WU1XjCsThl2p1ya3GZ4KNrt03KuhXH0SkkkbTOL5+u2PnuZ/D8axtGMTaKsbOvrINP3v/W3Y9XhCJjQCrUWRedVpaq3nvn7oHXrz8jD8PfvnEGbL0716LXytIoxqizkups4R/VwhB7hpi7sXkbXNo86bkrazK5sXnbEHND7BvMLcykOotz3vlxvZw+faRb08VEiVC64rPdSw/pZ/Ly9EutNi3TkHOLOvN3u3OnHNx7MFio5qq5Ifdce/WHhwEfXPnekPuq/UPPQhrAKOV0MFdyRFQFRefr7Z9wRrb0zfYd1aCpGmr2BvtSTkcp1wZLnX0tx4oQjeHX+UF97P75QGspM7VMqTfopVwb0aY1F4ZWlFK1SCVDHQKUEvphj0ztkEdrvZoLtOkoNS2XlkHJIlroIky7Jw8atDSJdQ/aPTUdtJBaLqVmlJpqQataCZKhY/L4HwcEI/Qbv1v8tivbIdVG1UtNnPVmFmPEoT9l/Dc9Ujp42Mx4uGl6I5pmgdjGzaLbopsdJqZHWZnqtKkXcZU8D/8OAPAMQ4kD8KK1AAAAAElFTkSuQmCCiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGFVd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWaGVWIlquunc8klZOnFpSeTYrSs9RLA9Sr6U4tkcvNEi7BFffO6+EdigjL7ZHu/k72I796i9zRiSJPwG4VHX0Z+AxRzNRrtksUvwf7+Gm3BtzzHPDTNgQCqwKXfZwSeNHHJz1OIT8JjtAq6xWtCLwGPLzYZi+3YV8DGMiT4VVuG7oiZpGzrZJhcs/hL49xtzH/Dy6bdfTsXYNY+5yluWO4D4neK/ZUvok/17X0HPBLsF+vuUlhfwX4j/rSfAJ4H1H0qZJ9dN7nR19frRTeBt4Fe9FwpwtN+2p1MXscGLHR9SXrmMgjONd1ZxKzpBeA71b4tNhj6JGoyFNp4GHgwUp9qplfmnFW5oTdy7NamcwCI49kv6fN5IAHgD+0rbyoBc3SOjczohbyS1drbq6pQdqumllRC/0ymTtej8gpbbuVwpQfyw66dqEZyxZKxtHpJn+tZnpnEdrYBbueF9qQn93S7HQGGHnYP7w6L+YGHNtd1FJitqPAR+hERCNOFi1i1alKO6RQnjKUxL1GNjwlMsiEhcPLYTEiT9ISbN15OY/jx4SMshe9LaJRpTvHr3C/ybFYP1PZAfwfYrPsMBtnE6SwN9ib7AhLwTrBDgUKcm06FSrTfSj187xPdVQWOk5Q8vxAfSiIUc7Z7xr6zY/+hpqwSyv0I0/QMTRb7RMgBxNodTfSPqdraz/sDjzKBrv4zu2+a2t0/HHzjd2Lbcc2sG7GtsL42K+xLfxtUgI7YHqKlqHK8HbCCXgjHT1cAdMlDetv4FnQ2lLasaOl6vmB0CMmwT/IPszSueHQqv6i/qluqF+oF9TfO2qEGTumJH0qfSv9KH0nfS/9TIp0Wboi/SRdlb6RLgU5u++9nyXYe69fYRPdil1o1WufNSdTTsp75BfllPy8/LI8G7AUuV8ek6fkvfDsCfbNDP0dvRh0CrNqTbV7LfEEGDQPJQadBtfGVMWEq3QWWdufk6ZSNsjG2PQjp3ZcnOWWing6noonSInvi0/Ex+IzAreevPhe+CawpgP1/pMTMDo64G0sTCXIM+KdOnFWRfQKdJvQzV1+Bt8OokmrdtY2yhVX2a+qrykJfMq4Ml3VR4cVzTQVz+UoNne4vcKLoyS+gyKO6EHe+75Fdt0Mbe5bRIf/wjvrVmhbqBN97RD1vxrahvBOfOYzoosH9bq94uejSOQGkVM6sN/7HelL4t10t9F4gPdVzydEOx83Gv+uNxo7XyL/FtFl8z9ZAHF4bBsrEwAAAAlwSFlzAAALEwAACxMBAJqcGAAAByVJREFUWAm1l1uIldcVx9d3ruMZZzRaay+pCjFJH6LSRqxQqA1NH0pBiH3Qp774kEAg4EOkxKdQSCjUFvpm6YsNVNoSaGjFtmga2yZgCIIawdv04g2kM7Uz6lzO+c758v/t/9lzTB/61Oxhn7332muv9V+3vb8pnooDVRkzZ4oY/LmK6mQZa05frX6yFJ9Ae7x4qd2IuV1FFM9WMfhaI9Z+pQBAL+aiEZ0QgNBm2YuZmxHF9VZMXqmivFaLweUyuteWYvHGVPWr2f+F7YvF/ola9DZGVJsHUXs8YvBEK1ZrXt9URDwqxY1BdGMQvWjGqkgA+iLUtazHuADUoowHYugKTilaR7SIpZjWqOMRfY090RbasS4JglpFtzWIcqwZa+pSqnWVcLLXijXpZCFpvbgb/VhMe8huMLPylWkci8/oSD8xJq7hj4WUWvXrlbqVrUyKtBYdpX3Bh9YbzsdErwRgbZKyFP+KdqxPssu4l2hDAOOxIj6bCHigKWRNCcpMCHHHB4TJLc+TXxKHnC51Ct+Qgxl/TZ0qE5Be/EdWTwjqQuJJAPIB8qAZk4kZoXJnvHH+27Hq0+0YX12PH+w7E3/8zbWkitN2M8pS7kCKZ761OV55c2fcm+nG7J1e7N/+e3m2nbyKQcAhnHWZLC86B1rxiFRvSIkIgJHFVWzZ+qk4fG5HEr4wV8buVb+Vuv5QeVZsi/HeW//eHZ1HbNfLT5+Jc2dndBav9KXugfqc+pLsv6Xxvk6kVheumnpDnXlTVMZWfHh+Li6cdOKvmGzEC69+WTskzwr1SfUJ9ZWp7z/0pWXlF9+ejQtnUdCWnAxQ+al5Tdz80lIVEP8x9eZQWCQwOTAhNc34Re+rUW8U0S+r2Ns8nWzBKgONBOeX3V3RaCpPRN7XeFcO7yYl+InML2U3VdBVHszHzbSXYLBJkuTSQzBuphoYZ7X/u8O30gFAHHxzi+Yop8ETcfDXW5JyKMd/fFuO9l3mYuwLAl5gbMg8QuKdYQg4Zjcxo7HikMeIn37vcizes9Ide9bGhs9NLPN9YX0ndnzHpbZ4vx9HXr6kc6Sobo2hIkuzOnIh0xMFRlvc0waWL+p3UePCQ/Myjjx/JSnl59CJbUkJgl75g+ZD/D978Yrc7EuMPe4ESo6OYsaasiiX7tADAyny5cGtyMHsDxzFnP0Tx6Z0SfsW27B1PHZ+c13seGZdbNo2Lo6Iu7e7cfznfxc/8ggNQBhZI9dSs2c5k+rFaHBXmZhd32xTGdlZPvzDvefj9XddlgeObYVpuf1o3zkpyrEnCJwBDjlmr9i7XP3jgrYkDamhEqRA8UOBxZ53tcOtBbgyzr53M65f8DU6sVZ1o067cfFBvP+XGzrDOa5s+JkTShIc+dBtlLOLlRpqAUDc+yqQMnViNq81edDVnPixno/vP/dXjn2svbbnPa1RiqXEHVkYQ06RWygnFEtpbZDLAJws2X1OHgfCv+hiRkZU8Y+pmbjwzjTE1D48PR1TV+5IMErgsjex2A8TJrqCHH9Cw6U0BGBkPUWrKTZnPq4L9WqIOFvEO8ml+vbRvyUB/Jw6OiUa9GydM58qQl6lTrNHyiENrwyTkOvXLziVkMlOOsesVKyIFtZB1zfDAGvdyj4xtkD7yHQ8Ynn4hCrwvYA+DOJCSlXAZl3MjNQobNzVPK7gJm0AiPsQyEg0c6s1cbEB5X08AmDz1TTLucApzHHyJgADvUqVysJMKOSicLRQl+emOIvbnaw+ot2pSTzl5zzJVjPaZ6ix7zCSN4E1shOAWnqbyYH8bOqd1h9AGJ0qtl6LRBubcBKxbo6xh60kWlbLjgG4NJ2ETkwqbl7SeUXVSCq+BF1C2bWEgEO4CxBGvOydGmu3ooXv7AEogLFqn2JtWKO8yc9xAmDxjhGiWMOQXe63zCvHtIjOpGOIwvGJlhRQepyzaiu0MQ4MnFhuT7CiJQC+sUg4jtOYO+1IH9OdCwgBSmOkP2r60CarHeXMjxw3PGyvOBnN670EgOPOc1yEYgDYCxbqTPDXki1srChi4R6lpQ+uDmVFDtkA5GH1qJEvQFgacqCFT37pyP+Y+DMJs0Y54NgbiIVn61jhEUrNARuNIi3vOQf8iUeQuNzILe4b/jFZ7RDYJhTbVRaJTxyWh8PgO93hQJCBsSa2GQyyoLlBzWDxgnm9l0JgADgNgVxElCH22xs4NCsaieSUyzWXaSTLDAPlGQB0Kt6JaqpzYjkJQT9id60aNwqZjVqlz9Kqp+JcfDjOAqhirNoCI6MelpVPAjZ/CbFv45Y9YNcicqDMKm/Xo/FPJdMlqZ9SIK7qSrrci9mbl6q3/DGQ5f7XuK347rgKeuMgiicEfLPmT0rGY1K5SdI/ryritlMbJrr/PZ8+I8qf9PF8qhMrT39QHfHLkhj/fz/bi+eb83F/VxX1b6jWvt6KdTs/AvvCmqXE235jAAAAAElFTkSuQmCC</Image>
+-<Url type="application/x-suggestions+json" method="GET"
+-     template="https://ff.search.yahoo.com/gossip?output=fxjson&amp;command={searchTerms}" />
+-<Url type="text/html" method="GET" template="https://search.yahoo.com/search">
+-  <Param name="p" value="{searchTerms}"/>
+-  <Param name="ei" value="UTF-8"/>
+-</Url>
+-<SearchForm>https://search.yahoo.com/</SearchForm>
+-</SearchPlugin>
+diff -Naur a/palemoon/locales/generic/profile/bookmarks.html.in b/palemoon/locales/generic/profile/bookmarks.html.in
+--- a/palemoon/locales/generic/profile/bookmarks.html.in	2023-09-28 18:08:21.000000000 -0300
++++ b/palemoon/locales/generic/profile/bookmarks.html.in	2023-12-03 03:54:53.030204483 -0300
+@@ -11,9 +11,6 @@
+     <DT><H3 PERSONAL_TOOLBAR_FOLDER="true" ID="rdf:#$FvPhC3">@bookmarks_toolbarfolder@</H3>
+ <DD>@bookmarks_toolbarfolder_description@
+     <DL><p>
+-        <DT><A HREF="http://www.palemoon.org/" ICON_URI="http://www.palemoon.org/favicon.ico" ICON="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFXRFWHRDcmVhdGlvbiBUaW1lAAfjBQQNKi3s6zvVAAAAB3RJTUUH4wUFDiY4QniqfgAAAAlwSFlzAAAK8AAACvABQqw0mAAAAn1JREFUeNpVU9FKW0EUnLO7NzdFY5uqRSMSoSj1F/paP0EEoU/2H/pWIkiLX+GzH5HnQj9BENQqpSgWkdbeu/fubudsCKQ3CSS7M3PmzDmRb5f3mH1SShsGcmAF7wTYaGMC35cQjBNwYoxczeJlKpASrAFGHYOP3cKUJMO3Cb4JMPwhIggJdZNwLEaOKBiU52bIp73S7jp+iyyJFNG2/JBlSBYC6KrsWhnR1XYQ2Sc1GuRKcTTXMbudwqpcfokxUPtamV/heGWdgaVKYWXPpvRp0sLF/ZB3Z72uKx0B3ocswis8VQ0CRf7yTMWflRZTh00bq1awpS18IK8kXltBQWDbBroK2X7Byxc9m9tIk7Qyju66EThwjHhHyS3DQpG0dSYVEELM9rWdyKskmmDMEpaphjpAnOw4VhuayAMGBi85cX0UzF7xVEfUdJNyV5Ltu5wNYIJsOK1GPji6TFKBkm3wJxq6iLQkMWVXhkmqkAktHHF/qgDnfXsZUhi03mTVqm7gFKiDzuPUXWg4FabPqbdRRVWcZOcuiJXx02P1VgjU8HJM2rtWysFOzh1dcXSaPizolEKdue5Yvp7fDn+efz+LtS81Bt2YIHn1Jn0SqLO31ubwtLzlGfekerm5vuWss1fzz3vHtxc/RpE9q4cmkcCKUW2yGc2EFLQpTdcei8OVL8a567zKCyuLR78f6u37m7s9iS0rE1HrhD1qilXC6vyIddCr/mr/dH516bNy8ypz3mHwZrD/anPt0JuyqkOBqtJlKrhMFk2dUPkID1MtvV45XNsevCcn/vdvnD6+btbvbn4dPNw+7lSVH+pZOde96i8vjJcH/ZNO6a5n8f8A5KRcUpQlS3kAAAAASUVORK5CYII=">Pale Moon</A>
+-        <DT><A HREF="https://forum.palemoon.org/index.php" ICON_URI="https://forum.palemoon.org/favicon.ico" ICON="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFXRFWHRDcmVhdGlvbiBUaW1lAAfjBQQNKi3s6zvVAAAAB3RJTUUH4wUFDiY4QniqfgAAAAlwSFlzAAAK8AAACvABQqw0mAAAAn1JREFUeNpVU9FKW0EUnLO7NzdFY5uqRSMSoSj1F/paP0EEoU/2H/pWIkiLX+GzH5HnQj9BENQqpSgWkdbeu/fubudsCKQ3CSS7M3PmzDmRb5f3mH1SShsGcmAF7wTYaGMC35cQjBNwYoxczeJlKpASrAFGHYOP3cKUJMO3Cb4JMPwhIggJdZNwLEaOKBiU52bIp73S7jp+iyyJFNG2/JBlSBYC6KrsWhnR1XYQ2Sc1GuRKcTTXMbudwqpcfokxUPtamV/heGWdgaVKYWXPpvRp0sLF/ZB3Z72uKx0B3ocswis8VQ0CRf7yTMWflRZTh00bq1awpS18IK8kXltBQWDbBroK2X7Byxc9m9tIk7Qyju66EThwjHhHyS3DQpG0dSYVEELM9rWdyKskmmDMEpaphjpAnOw4VhuayAMGBi85cX0UzF7xVEfUdJNyV5Ltu5wNYIJsOK1GPji6TFKBkm3wJxq6iLQkMWVXhkmqkAktHHF/qgDnfXsZUhi03mTVqm7gFKiDzuPUXWg4FabPqbdRRVWcZOcuiJXx02P1VgjU8HJM2rtWysFOzh1dcXSaPizolEKdue5Yvp7fDn+efz+LtS81Bt2YIHn1Jn0SqLO31ubwtLzlGfekerm5vuWss1fzz3vHtxc/RpE9q4cmkcCKUW2yGc2EFLQpTdcei8OVL8a567zKCyuLR78f6u37m7s9iS0rE1HrhD1qilXC6vyIddCr/mr/dH516bNy8ypz3mHwZrD/anPt0JuyqkOBqtJlKrhMFk2dUPkID1MtvV45XNsevCcn/vdvnD6+btbvbn4dPNw+7lSVH+pZOde96i8vjJcH/ZNO6a5n8f8A5KRcUpQlS3kAAAAASUVORK5CYII=" LAST_CHARSET="UTF-8">Pale Moon forum</A>
+-        <DT><A HREF="https://forum.palemoon.org/viewforum.php?f=24" ICON_URI="http://www.palemoon.org/favicon.ico" ICON="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFXRFWHRDcmVhdGlvbiBUaW1lAAfjBQQNKi3s6zvVAAAAB3RJTUUH4wUFDiY4QniqfgAAAAlwSFlzAAAK8AAACvABQqw0mAAAAn1JREFUeNpVU9FKW0EUnLO7NzdFY5uqRSMSoSj1F/paP0EEoU/2H/pWIkiLX+GzH5HnQj9BENQqpSgWkdbeu/fubudsCKQ3CSS7M3PmzDmRb5f3mH1SShsGcmAF7wTYaGMC35cQjBNwYoxczeJlKpASrAFGHYOP3cKUJMO3Cb4JMPwhIggJdZNwLEaOKBiU52bIp73S7jp+iyyJFNG2/JBlSBYC6KrsWhnR1XYQ2Sc1GuRKcTTXMbudwqpcfokxUPtamV/heGWdgaVKYWXPpvRp0sLF/ZB3Z72uKx0B3ocswis8VQ0CRf7yTMWflRZTh00bq1awpS18IK8kXltBQWDbBroK2X7Byxc9m9tIk7Qyju66EThwjHhHyS3DQpG0dSYVEELM9rWdyKskmmDMEpaphjpAnOw4VhuayAMGBi85cX0UzF7xVEfUdJNyV5Ltu5wNYIJsOK1GPji6TFKBkm3wJxq6iLQkMWVXhkmqkAktHHF/qgDnfXsZUhi03mTVqm7gFKiDzuPUXWg4FabPqbdRRVWcZOcuiJXx02P1VgjU8HJM2rtWysFOzh1dcXSaPizolEKdue5Yvp7fDn+efz+LtS81Bt2YIHn1Jn0SqLO31ubwtLzlGfekerm5vuWss1fzz3vHtxc/RpE9q4cmkcCKUW2yGc2EFLQpTdcei8OVL8a567zKCyuLR78f6u37m7s9iS0rE1HrhD1qilXC6vyIddCr/mr/dH516bNy8ypz3mHwZrD/anPt0JuyqkOBqtJlKrhMFk2dUPkID1MtvV45XNsevCcn/vdvnD6+btbvbn4dPNw+7lSVH+pZOde96i8vjJcH/ZNO6a5n8f8A5KRcUpQlS3kAAAAASUVORK5CYII=">F.A.Q.</A>
+-        <DT><A HREF="http://www.palemoon.org/releasenotes.shtml" ICON_URI="http://www.palemoon.org/favicon.ico" ICON="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFXRFWHRDcmVhdGlvbiBUaW1lAAfjBQQNKi3s6zvVAAAAB3RJTUUH4wUFDiY4QniqfgAAAAlwSFlzAAAK8AAACvABQqw0mAAAAn1JREFUeNpVU9FKW0EUnLO7NzdFY5uqRSMSoSj1F/paP0EEoU/2H/pWIkiLX+GzH5HnQj9BENQqpSgWkdbeu/fubudsCKQ3CSS7M3PmzDmRb5f3mH1SShsGcmAF7wTYaGMC35cQjBNwYoxczeJlKpASrAFGHYOP3cKUJMO3Cb4JMPwhIggJdZNwLEaOKBiU52bIp73S7jp+iyyJFNG2/JBlSBYC6KrsWhnR1XYQ2Sc1GuRKcTTXMbudwqpcfokxUPtamV/heGWdgaVKYWXPpvRp0sLF/ZB3Z72uKx0B3ocswis8VQ0CRf7yTMWflRZTh00bq1awpS18IK8kXltBQWDbBroK2X7Byxc9m9tIk7Qyju66EThwjHhHyS3DQpG0dSYVEELM9rWdyKskmmDMEpaphjpAnOw4VhuayAMGBi85cX0UzF7xVEfUdJNyV5Ltu5wNYIJsOK1GPji6TFKBkm3wJxq6iLQkMWVXhkmqkAktHHF/qgDnfXsZUhi03mTVqm7gFKiDzuPUXWg4FabPqbdRRVWcZOcuiJXx02P1VgjU8HJM2rtWysFOzh1dcXSaPizolEKdue5Yvp7fDn+efz+LtS81Bt2YIHn1Jn0SqLO31ubwtLzlGfekerm5vuWss1fzz3vHtxc/RpE9q4cmkcCKUW2yGc2EFLQpTdcei8OVL8a567zKCyuLR78f6u37m7s9iS0rE1HrhD1qilXC6vyIddCr/mr/dH516bNy8ypz3mHwZrD/anPt0JuyqkOBqtJlKrhMFk2dUPkID1MtvV45XNsevCcn/vdvnD6+btbvbn4dPNw+7lSVH+pZOde96i8vjJcH/ZNO6a5n8f8A5KRcUpQlS3kAAAAASUVORK5CYII=">Release notes</A>
++        <DT><A HREF="https://eltaninos.org/" ICON_URI="https://download.tuxfamily.org/eltaninos/logo.ico" ICON="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABg2lDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TtSIVBwuKOGSoTnbRIo5ahSJUCLVCqw4ml35Bk4YkxcVRcC04+LFYdXBx1tXBVRAEP0BcXZwUXaTE/yWFFjEeHPfj3b3H3TtAaFSYZnXNAppum+lkQszmVsXQK8IIogdxDMnMMuYkKQXf8XWPAF/vYjzL/9yfo1/NWwwIiMSzzDBt4g3i6U3b4LxPHGElWSU+J54w6YLEj1xXPH7jXHRZ4JkRM5OeJ44Qi8UOVjqYlUyNOE4cVTWd8oWsxyrnLc5apcZa9+QvDOf1lWWu0xxFEotYggQRCmooowIbMVp1UiykaT/h4x9x/RK5FHKVwcixgCo0yK4f/A9+d2sVpia9pHAC6H5xnI8xILQLNOuO833sOM0TIPgMXOltf7UBzHySXm9r0SNgYBu4uG5ryh5wuQMMPxmyKbtSkKZQKADvZ/RNOWDwFuhb83pr7eP0AchQV6kb4OAQGC9S9rrPu3s7e/v3TKu/H4r2crC8K3O1AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH5wwDBjUog9nViwAAAq1JREFUOMuNUk9IFGEcfd+3M6njv1VnVWwrFspEIdOiswdPFXjUQ6cCj0FslzpWFzPCCMpT4GWhQyA6EoZdpIN/GNN0+yebfyp3250dXXN25pv5vp0OpYRY+I4/fu/xHu8BhwcFIAGQdX32GQAZgEwPw5yf13sBEAB+T1dXfd51YgAKAPzD8Mni4sIAgMCtaLTZNLNvdu9/XP0fjsPyAAJLS0v3t7Y29f3i/1VgjNmaNnrNsqw0pagaH391fd/LvyNwLrjrMua6zLPyO1betqxMNp1JpZKrKyuJp319fWEAVNpP1DStqq2tdVgUuKCUBmzbtoqLioo556KstLx84/t382j46NWOjo5UIpFgZH8m08wuVFRWthQKQmxsJNfD4XDk76eC7/uce/zLl8TnYGWwmgBAPB5va2xsnHIcZ0dRlKAPH0Ymk1JVtU4IwdNGJrW9lUuUlCrHj4XDEQJCGGNOLpfbpABw4sTx15QSSVFKgoAPAkBV1dD6+tpDTRt7XqooZYwxDD4ZfDyn69OEEIAQv7yivELSdf0kpbR416Jt258Yc959S268zJm5lkuXL3Y7tmOk0z/Y3Xt3+gn53RylRDIM86vU0FB/OyAFCro+daasrOIUIJHl5eXpSCQy1N7edkGWZHnh41tNVUPnpYAk+QA8z/NkWZaDwWAdACAWi6nxePxKMpWMO8xxuOCcc48LwXk+b2XGxjQtGo32Zk3DEIILIbjwPJd73BUUAGpraxuamk4P1YZCTYJzY9M0bo6MjNYFApKkKKWhoqIjR3p6uq+NDo+8GBh4dMP3fR8EfqEgxF49Ozs/P0xMTDQfNKrJycnYzOzszNra6urcnD7DucuZa3uM5d29Kff3P2jp7Ox8f5BAOp3+VlNTXZXLbW+1tp49RwglBAQgBL8AjuRddsVV7C8AAAAASUVORK5CYII=" LAST_CHARSET="UTF-8">Eltanin OS</A>
+     </DL><p>
+ </DL><p>
