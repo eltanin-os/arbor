@@ -1,0 +1,14 @@
+name:gperf
+version:3.1
+license:gpl-3+
+description:Perfect hash function generator.
+cksum:ed0e86321ecc7a39cb8649c6b63286c9775ce0a7f968400d8871f6599449d23e38ce2300e40110b42c4bd5057a682b5de717aee0cf6754826729b1fa3d72f686
+urls{
+http://ftp.gnu.org/gnu/gperf/gperf-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
