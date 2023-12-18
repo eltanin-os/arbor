@@ -1,10 +1,10 @@
 name:libxml2
-version:2.10.3
+version:2.11.5
 license:mit
 description:XML parser library from GNOME.
-cksum:e0e86bc1bbef238097d364c86317f8e7b71cf27b94051f31594acd4255cd07969adf26139fbbd93566fd835059567dd132e25d9ca8862f94a209dc136ba01006
+cksum:f7fe39d6a6f77c8d53eccf613214cc17d7fa7b14a3b5b334a569d01ace755ed861ff13e3aa9d181fa8ed689fabd3ecaf2b9f2e0c07b0d574ae35d40be728203e
 urls{
-https://download.gnome.org/sources/libxml2/2.10/libxml2-$version.tar.xz
+https://download.gnome.org/sources/libxml2/2.11/libxml2-$version.tar.xz
 }
 hostdeps{
 stdenv
