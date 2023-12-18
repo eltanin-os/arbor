@@ -1,0 +1,16 @@
+name:spirv-headers
+version:1.3.261.1
+license:apache-2.0
+description:
+cksum:83181d07172f6108db25d61adb6c53c168f0438273e27efbd0674d712344afc3dacd89a88d6c7eb22c31342555d1421f5ea118c7173437006f05467fc2ba6137
+src:SPIRV-Headers-sdk-$version
+urls{
+https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
