@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+cd source
+export ARBOR_MK_CMAKE_ARGS "-DGIT_ARCHETYPE=1" # https://bugs.gentoo.org/814116
+arbor-mk-cmake install

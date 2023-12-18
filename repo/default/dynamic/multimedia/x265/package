@@ -1,0 +1,16 @@
+name:x265
+version:20230215
+license:gpl-2.0
+description:Open Source H265/HEVC video encoder.
+cksum:00774454871bd8b6df3b300a017a5c254ca00c27d7b15fa99f20b4d8e5e5f4bb65801dbc4ca8d15fb68df48ef1a67922e0ddc584c6c0f8bd215cdc30bf861438
+urls{
+https://anduin.linuxfromscratch.org/BLFS/x265/x265-$version.tar.xz
+}
+hostdeps{
+cmake
+nasm
+stdenv
+}
+makedeps{
+libc
+}
