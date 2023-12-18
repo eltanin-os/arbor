@@ -1,0 +1,168 @@
+.Dd May 31, 2022
+.Dt WAIT 1
+.Os
+.Sh NAME
+.Nm wait
+.Nd wait for a set of children, then execute a program
+.Sh SYNOPSIS
+In an
+.Xr execlineb 1
+script:
+.Pp
+.Nm
+.Op Fl I | Fl i
+.Op Fl a | Fl o
+.Op Fl r | Fl t Ar timeout
+{
+.Op Ar pids...
+}
+.Ar prog...
+.Sh DESCRIPTION
+.Nm
+reads a list of
+.Ar pids
+in a (possibly empty) block
+.Po
+cf.\&
+.Xr execline-block 7
+.Pc ,
+and unquotes it.
+.Pp
+.Nm
+waits for every child whose pid is listed in
+.Ar pids... .
+If
+.Ar pids...
+is an empty list, it waits for every child process it has.
+.Pp
+.Nm
+then
+.Xr exec 3 Ns
+s into
+.Ar prog... .
+.Pp
+For POSIX compatibility[1],
+.Nm
+also works when it cannot find a block.
+In that case, all the options are still supported and have the same
+effect, but the rest of the command line is interpreted as
+.Ar pids...
+arguments and
+.Nm
+does not execute into a program; instead, it exits with a conforming
+exit code.
+.Sh OPTIONS
+.Bl -tag -width x
+.It Fl r
+Equivalent to
+.Ql -t 0 .
+Do not pause: only reap processes that are already dead when
+.Nm
+is invoked.
+.It Fl t Ar timeout
+Wait for a maximum of
+.Ar timeout
+milliseconds.
+If there still are living processes among
+.Ar pids...
+(or among
+.Nm Ap
+s children if
+.Ar pids...
+is an empty list), after
+.Ar timeout
+milliseconds, they will not be reaped.
+.It Fl I
+Loose.
+If
+.Nm
+times out while waiting for children to die, it will still
+.Xr exec 3
+into
+.Ar prog... .
+This is the default.
+.It Fl i
+Strict.
+If
+.Nm
+times out, it will print an error message and exit 99.
+.It Fl o
+Wait for
+.Em one
+of the listed
+.Ar pids
+-
+.Xr exec 3
+into
+.Ar prog
+as soon as one of the listed children dies.
+.Po
+If no pid is listed, wait for one child to die.
+.Pc
+The
+.Ev !\&
+environment variable will be set to the pid that died, and the
+.Ev ?\&
+environment variable will contain an approximation of its exit code -
+refer to
+.Xr execline-exitcodes 7 .
+If no listed child has died before
+.Nm
+has to
+.Xr exec 3
+.Po
+either because it timed out or it has no suitable children left
+.Pc ,
+the
+.Ev ?\&
+and
+.Ev !\&
+environment variables are unset.
+.It Fl a
+Wait for
+.Em all
+of the listed
+.Ar pids .
+Do not touch the
+.Ev !\&
+or
+.Ev ?\&
+variables.
+This is the default.
+.El
+.Sh SEE ALSO
+.Xr emptyenv 1 ,
+.Xr envfile 1 ,
+.Xr exec 1 ,
+.Xr execline-cd 1 ,
+.Xr execline-umask 1 ,
+.Xr execlineb 1 ,
+.Xr exit 1 ,
+.Xr export 1 ,
+.Xr fdblock 1 ,
+.Xr fdclose 1 ,
+.Xr fdmove 1 ,
+.Xr fdreserve 1 ,
+.Xr fdswap 1 ,
+.Xr getcwd 1 ,
+.Xr getpid 1 ,
+.Xr heredoc 1 ,
+.Xr piperw 1 ,
+.Xr posix-cd 1 ,
+.Xr posix-umask 1 ,
+.Xr redirfd 1 ,
+.Xr trap 1 ,
+.Xr tryexec 1 ,
+.Xr unexport 1 ,
+.Xr withstdinas 1 ,
+.Xr exec 3 ,
+.Xr execline-block 7
+.Pp
+[1]
+.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/wait.html
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/execline/wait.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)

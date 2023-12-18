@@ -1,0 +1,375 @@
+.Dd April 9, 2023
+.Dt EXECLINE-WHY 7
+.Os
+.Sh NAME
+.Nm execline-why
+.Nd why execline
+.Sh DESCRIPTION
+.Ss Why not just use /bin/sh?
+.Sy Security
+.Pp
+One of the most frequent sources of security problems in programs is
+.Em parsing .
+Parsing is a complex operation, and it is easy to make mistakes while
+designing and implementing a parser.
+.Po
+See what Dan Bernstein says on the subject[1], section 5.
+.Pc
+.Pp
+But shells parse all the time.
+Worse, the
+.Em essence
+of the shell is parsing: the parser and the runner are intimately
+interleaved and cannot be clearly separated, thanks to the
+specification[2].
+The shell performs several kinds of expansions, automatic filename
+globbing, and automatic word splitting, in an unintuitive order,
+requiring users to memorize numerous arbitrary quoting rules in order
+to achieve what they want.
+Pages abound[3] where common mistakes are listed, more often than not
+leading to security holes.
+Did you know that
+.Ql \(dq Ns $@ Ns \(dq
+is a special case of double quoting, because it will split the
+arguments into several words, whereas every other use of double quotes
+in a shell is meant to prevent splitting?
+.Pp
+.Xr execlineb 1
+parses the script only once: when reading it.
+The parser has been designed to be simple and systematic, to reduce
+the potential for bugs \(em which you just cannot do with a shell.
+After
+.Xr execlineb 1
+has split up the script into words, no other parsing phase will
+happen, unless the user explicitly requires it.
+Positional parameters, when used, are never split, even if they
+contain spaces or newlines, unless the user explicitly requires it.
+Users control exactly what is split, what is done, and how.
+.Pp
+.Sy Portability
+.Pp
+The shell language was designed to make scripts portable across
+various versions of Unix.
+But it is actually really hard to write a portable shell script.
+There are dozens of distinct
+.Pa sh
+flavours, not even counting the openly incompatible
+.Pa csh
+approach and its various
+.Pa tcsh Ns
+-like followers.
+The
+.Pa ash ,
+.Pa bash ,
+.Pa ksh
+and
+.Pa zsh
+shells all exhibit a different behaviour,
+.Em even when they are run with the so-called compatibility mode .
+From what I have seen on various experiments, only
+.Pa zsh
+is able to follow the specification to the letter, at the expense
+of being big and complex to configure.
+This is a source of endless problems for shell script writers, who
+.Em should
+be able to assume that a script will run everywhere, but
+.Pa cannot
+in practice.
+Even a simple utility like
+.Pa test
+cannot be used safely with the normalized options, because most shells
+come with a builtin
+.Ql test
+that does not respect the specification to the letter.
+And let's not get started about
+.Pa echo ,
+which has its own set of problems.
+Rich Felker has a page listing tricks to use to write portable shell
+scripts[4].
+Writing a portable script should not be that hard.
+.Pp
+execline scripts are portable.
+There is no complex syntax with opportunity to have an undefined or
+nonportable behaviour.
+The execline package is portable across platforms: there is no reason
+for vendors or distributors to fork their own incompatible version.
+Scripts will not break from one machine to another; if they do, it's
+not a
+.Dq portability problem ,
+it's a bug.
+You are then encouraged to find the program that is responsible for
+the different behaviour, and send a bug-report to the program author
+\(em including me, if the relevant program is part of the execline
+distribution.
+.Pp
+A long-standing problem with Unix scripts is the shebang line, which
+requires an absolute path to the interpreter.
+Scripts are only portable as is if the interpreter can be found at the
+same absolute path on every system.
+With
+.Pa /bin/sh ,
+it is almost the case
+.Po
+Solaris manages to get it wrong by having a non-POSIX shell as
+.Pa /bin/sh
+and requiring something like
+.Ql #!/usr/xpg4/bin/sh
+to get a POSIX shell to interpret your script
+.Pc .
+Other scripting languages are not so lucky: perl can be
+.Pa /bin/perl ,
+.Pa /usr/bin/perl ,
+.Pa /usr/local/bin/perl
+or something else entirely.
+For those cases, some people advocate the use of
+.Xr env 1 :
+.Ql #!/usr/bin/env perl .
+But first,
+.Xr env 1
+can only find interpreters that can be found via the user's
+.Ev PATH
+environment variable, which defeats the purpose of having an absolute
+path in the shebang line in the first place; and second, this only
+displaces the problem: the
+.Xr env 1
+utility does not have a guaranteed absolute path.
+.Pa /usr/bin/env
+is the usual convention, but not a strong guarantee: it is valid for
+systems to have
+.Pa /bin/env
+instead, for instance.
+.Pp
+execline suffers from the same issues.
+.Ql #!/bin/execlineb ?
+.Ql #!/usr/bin/execlineb ?
+This is the only portability problem that you will find with execline,
+and it is common to every script language.
+.Pp
+The real solution to this portability problem is a convention that
+guarantees fixed absolute paths for executables, which the FHS does
+not do.
+The slashpackage[5] convention is such an initiative, and is
+well-designed; but as with every convention, it only works if everyone
+follows it, and unfortunately, slashpackage has not found many
+followers.
+Nevertheless, like every skarnet.org package, execline can be
+configured to follow the slashpackage convention.
+.Pp
+.Sy Simplicity
+.Pp
+I originally wanted a shell that could be used on an embedded system.
+Even the
+.Pa ash
+shell seemed big, so I thought of writing my own.
+Hence I had a look at the sh specification[2]... and ran away
+screaming.
+This specification is
+.Em insane .
+It goes against every good programming practice; it seems to have been
+designed only to give headaches to wannabe
+.Pa sh
+implementors.
+.Pp
+POSIX cannot really be blamed for that: it only normalizes existing,
+historical behaviour.
+One can argue whether it is a good idea to normalize atrocious
+behaviour for historical reasons, as is the case with the infamous
+.Fn gets
+function[6], but this is the way it is.
+.Pp
+The fact remains that modern shells have to be compatible with that
+historical nonsense and that makes them big and complex at best, or
+incompatible and ridden with bugs at worst.
+An
+.Ox
+developer said to me, when asked about the
+.Ox
+.Pa /bin/sh :
+.Dq \&It works, but it's far from not being a nightmare .
+.Pp
+Nobody should have nightmare-like software on their system.
+Unix is simple.
+Unix was designed to be simple.
+And if, as Dennis Ritchie said,
+.Dq it takes a genius to understand the simplicity ,
+that's because incompetent people took advantage of the huge Unix
+flexibility to write insanely crappy or complex software.
+System administrators can only do a decent job when they understand
+how the programs they run are supposed to work.
+People are slowly starting to grasp this
+.Po
+or are they?
+We finally managed to get rid of sendmail and BIND, but GNU/Linux
+users seem happy to welcome the era of D-Bus and systemd.
+Will we ever learn?
+.Pc
+\(em but even
+.Pa sh ,
+a seemingly simple and basic Unix program, is hard to understand when
+you lift the cover.
+.Pp
+So I decided to forego
+.Pa sh
+entirely and take a new approach.
+So far it has been working.
+The execline specification
+.Po
+cf.\&
+.Xr execline-grammar 7
+.Pc
+is simple, and, as I hope to have shown, easy to implement without too
+many bugs or glitches.
+.Pp
+.Sy Performance
+.Pp
+Since it was made to run on an embedded system, execline was designed
+to be light in memory usage.
+And it is.
+.Bl -bullet
+.It
+No overhead due to interactive support.
+.It
+No overhead due to unneeded features.
+Since every command performs its task then executes another command,
+all occupied resources are instantly freed.
+By contrast, a shell stays in memory during the whole execution time.
+.It
+Very limited use of the C library.
+Only the C interface to the kernel's system calls, and some very basic
+functions like
+.Xr malloc 3 ,
+are used in the C library.
+In addition to avoiding the horrible interfaces like stdio and the
+legacy libc bugs, this approach makes it easy to statically compile
+execline \(em you will want to do that on an embedded system, or just
+to gain performance.
+.El
+.Pp
+You can have hundreds of execline scripts running simultaneously on an
+embedded box.
+Not exactly possible with a shell.
+.Pp
+For scripts that do not require many computations that a shell can do
+without calling external programs, execline is faster than the shell.
+Unlike
+.Pa sh Ap
+s one, the execline parser is simple and straightforward; actually,
+it's more of a lexer than a parser, because the execline language has
+been designed to be LL(1) \(em keep it simple, stupid.
+execline scripts get analysed and launched practically without a delay.
+.Bl -bullet
+.It
+The best use case of execline is a linear, straightforward script, a
+simple command line that does not require the shell's processing
+power.
+In that case, execline will skip the shell's overhead and win big time
+on resource usage and execution speed.
+.It
+For longer scripts that fork a few commands, with a bit of control
+flow, on average, an execline script will run at roughly the same
+speed as the equivalent shell script, while using less resources.
+.It
+The worst use case of execline is when the shell is used as a
+programming language, and the script loops over complex internal
+constructs that execline is unable to replicate without forking.
+In that case, execline will waste a lot of time in
+.Sm off
+.Xr fork 2
+/\&
+.Xr exec 2
+.Sm on
+system calls that the shell does not have to perform, and be
+noticeably slower.
+execline has been designed as a
+.Em scripting
+language, not as a
+.Em programming
+language: it is efficient at being the glue that ties together
+programs doing a job, not at implementing a program's logic.
+.El
+.Pp
+.Sy execline limitations
+.Bl -bullet
+.It
+execline can only handle scripts that fit in one
+.Va argv .
+Unix systems have a limit on the
+.Sm off
+.Va argv
++
+.Va envp
+.Sm on
+size; execline cannot execute scripts that are bigger than this limit.
+.It
+execline commands do not perform signal handling.
+It is not possible to trap signals efficiently inside an execline
+script.
+The
+.Xr trap 1
+binary, part of the execline suite, provides a signal management
+primitive, but it is more limited and slower than its equivalent shell
+construct.
+.It
+Due to the execline design, maintaining a state is difficult.
+Information has to transit via environment variables or temporary
+files, which makes commands like
+.Xr loopwhilex 1
+a bit painful to handle.
+.It
+Despite all its problems, the main shell advantage
+.Po
+apart from being available on every Unix platform, that is
+.Pc
+is that it is often convenient.
+Shell constructs can be terse and short, where execline constructs
+will be verbose and lengthy.
+.It
+An execline script is generally heavier on
+.Xr execve 2
+than the average shell script \(em notably in programs where the shell
+can use builtins.
+This can lead to a performance loss, especially when executed programs
+make numerous calls to the dynamic linker: the system ends up spending
+a lot of time resolving dynamic symbols.
+If it is a concern to you, you should try and
+.Em statically compile
+the execline package, to eliminate the dynamic resolution
+costs.
+Unless you're heavily looping around
+.Xr execve 2 ,
+the remaining costs will be negligible.
+.El
+.Sh SEE ALSO
+.Xr env 1 ,
+.Xr execlineb 1 ,
+.Xr loopwhilex 1 ,
+.Xr trap 1 ,
+.Xr exec 2 ,
+.Xr execve 2 ,
+.Xr fork 2 ,
+.Xr malloc 3 ,
+.Xr execline-grammar 7
+.Pp
+[1]
+.Lk https://cr.yp.to/qmail/guarantee.html
+.Pp
+[2]
+.Lk https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html
+.Pp
+[3]
+.Lk https://www.google.com/search?q=shell+script+pitfalls
+.Pp
+[4]
+.Lk https://www.etalabs.net/sh_tricks.html
+.Pp
+[5]
+.Lk https://cr.yp.to/slashpackage.html
+.Pp
+[6]
+.Lk https://pubs.opengroup.org/onlinepubs/9699919799/functions/gets.html
+.Pp
+This man page is ported from the authoritative documentation at:
+.Lk https://skarnet.org/software/execline/dieshdiedie.html
+.Sh AUTHORS
+.An Laurent Bercot
+.An Alexis Ao Mt flexibeast@gmail.com Ac (man page port)
