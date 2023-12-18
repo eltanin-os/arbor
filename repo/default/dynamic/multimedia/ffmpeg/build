@@ -26,9 +26,18 @@ if {
 	    --incdir=${INCDIR}
 	    --mandir=${MANDIR}
 	    --enable-small
-	    --enable-libvorbis
+	    --enable-gpl
+	    --enable-libaom
+	    --enable-libfreetype
+	    --enable-libmp3lame
 	    --enable-libopus
-	    --enable-libtls
+	    --enable-libtheora
+	    --enable-openssl
+	    --enable-libvorbis
+	    --enable-libvpx
+	    --enable-libx264
+	    --enable-libx265
+	    --enable-version3
 	    --enable-zlib
 	    --disable-stripping
 	    $static
