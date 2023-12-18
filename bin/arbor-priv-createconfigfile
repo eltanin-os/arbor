@@ -1,7 +1,37 @@
-#!/bin/execlineb -s1
+#!/bin/execlineb -S1
 pipeline {
+	if { mkdir -p etc/arbor }
+	multisubstitute {
+		importas -i ARBOR ARBOR
+		importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
+	}
+	backtick repoconf {
+		awk
+"
+BEGIN {
+	path=\"${ARBOR_PACKAGEDIR}\"
+	n=1
+	while (1) {
+		sub(/\\/[A-Za-z0-9_-]*$/, \"\", path)
+		if (path == \"${ARBOR}/repo\") {
+			break
+		}
+		tab[n++] = path \"/repo.conf\"
+	}
+	for (n = n - 1; n; n--) print tab[n]
+}
+"
+	}
+	multisubstitute {
+		importas -i ARBOR_SANDBOX ARBOR_SANDBOX
+		importas -isu repoconf repoconf
+	}
 	fdclose 2
-	cat $@
+	cat repoconf
+	    ${ARBOR}/config/defaults
+	    ${ARBOR}/config/${ARBOR_SANDBOX}
+	    $repoconf
+
 }
 redirfd -w 1 $1
 awk -F"="
