@@ -11,4 +11,5 @@ LDLIBS= -lcrypt"
 	cat
 }
 export CPPFLAGS "-D_GNU_SOURCE ${CPPFLAGS}"
-arbor-mk-gmake ubase-box-install
+if { arbor-mk-gmake ubase-box-install }
+arbor-utils-install -d bin mkswap

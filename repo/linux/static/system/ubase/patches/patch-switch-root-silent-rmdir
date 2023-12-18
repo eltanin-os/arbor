@@ -1,0 +1,14 @@
+diff --git a/switch_root.c b/switch_root.c
+index 204f7d1..90c0b8d 100644
+--- a/switch_root.c
++++ b/switch_root.c
+@@ -48,8 +48,7 @@ delete_content(const char *dir, dev_t curdevice)
+ 
+ 		if (S_ISDIR(st.st_mode)) {
+ 			delete_content(path, curdevice);
+-			if (rmdir(path) < 0)
+-				weprintf("rmdir %s:", path);
++			rmdir(path);
+ 		} else {
+ 			if (unlink(path) < 0)
+ 				weprintf("unlink %s:", path);
