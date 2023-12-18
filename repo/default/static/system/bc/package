@@ -1,8 +1,8 @@
 name:bc
-version:6.1.1
+version:6.7.0
 license:bsd-2
 description:POSIX bc with GNU extensions.
-cksum:59fcfa111e216830bb17d4965b2f8e90933dcf7e4c31603d2176da762f625dd784df917df7879192f82db0613f266af39d08b5ee1d73d08f715a3b0b731fe981
+cksum:7074b4193fe4955783331eeae41620855f463380b9987f8ca8da6cc28d8c3a5d60cad1be90894d02e2e57df0bdcdf987ee1032ad64dea1a7dcfcd696ea50858f
 urls{
 https://github.com/gavinhoward/bc/releases/download/$version/bc-$version.tar.xz
 }
