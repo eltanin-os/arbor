@@ -20,6 +20,16 @@ backtick PKG_CONFIG {
 	echo $PKG_CONFIG
 }
 backtick SOURCE_DATE_EPOCH { cat /etc/arbor/packagetime }
+importas -iu CFLAGS CFLAGS
+backtick CFLAGS {
+	ifelse {
+		importas -i ARBOR_HOSTARCH ARBOR_HOSTARCH
+		test \"x86_64\" = \"${ARBOR_HOSTARCH}\"
+	} {
+		echo \"-D_LARGEFILE64_SOURCE ${CFLAGS}\"
+	}
+	echo \"${CFLAGS}\"
+}
 export DESTDIR \"/tmp/output\"
 export PKG_CONFIG_PATH \"${DRTDIR}/pkgconfig\"
 cd /tmp/${ARBOR_PACKAGESRC}

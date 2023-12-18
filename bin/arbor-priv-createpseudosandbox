@@ -17,6 +17,16 @@ multisubstitute {
 	importas -i LIBDIR LIBDIR
 }
 backtick SOURCE_DATE_EPOCH { cat ${ARBOR_TMPSYSTEMDIR}/etc/arbor/packagetime }
+importas -iu CFLAGS CFLAGS
+backtick CFLAGS {
+	ifelse {
+		importas -i ARBOR_HOSTARCH ARBOR_HOSTARCH
+		test \"x86_64\" = \"${ARBOR_HOSTARCH}\"
+	} {
+		echo \"-D_LARGEFILE64_SOURCE ${CFLAGS}\"
+	}
+	echo \"${CFLAGS}\"
+}
 export DESTDIR \"${ARBOR_TMPSYSTEMDIR}/tmp/output\"
 export ACLOCAL \"aclocal -I${ARBOR_TMPSYSTEMDIR}/${DRTDIR}/aclocal\"
 export PKG_CONFIG_PATH \"${ARBOR_TMPSYSTEMDIR}/${DRTDIR}/pkgconfig\"
