@@ -1,0 +1,52 @@
+#!/bin/execlineb -S1
+# $1: package name
+importas -i ARBOR ARBOR
+# alternative
+multisubstitute {
+	importas -i ARBOR_PACKAGEDIR ARBOR_PACKAGEDIR
+	importas -i name name
+}
+ifelse { test -h "${ARBOR_PACKAGEDIR}" } {
+	if { redo-ifchange $name }
+	cd datafiles
+	if {
+		if -t { test -e "${name}" }
+		ln -s $name $1
+	}
+	if {
+		if -t { test -e "${name}-dev" }
+		ln -s ${name}-dev ${1}-dev
+	}
+	if -t { test -e "${name}-dyn" }
+	ln -s ${name}-dyn ${1}-dyn
+}
+# real package
+foreground {
+	if { mkdir -p datafiles }
+	if {
+		export name "${name}"
+		${ARBOR}/populate/arbor-splitpkg ${ARBOR_PACKAGEDIR}/${name}.pkg
+	}
+	if {
+		if -t { test -s "${name}-default.flist" }
+		${ARBOR}/populate/arbor-createdb
+		    datafiles/${name}
+		    ${name}-default.flist
+		    ""
+	}
+	if {
+		if -t { test -s "${name}-dev.flist" }
+		${ARBOR}/populate/arbor-createdb
+		    datafiles/${name}-dev
+		    ${name}-dev.flist
+		    " (development files)"
+	}
+	if -t { test -s "${name}-dyn.flist" }
+	${ARBOR}/populate/arbor-createdb
+	    datafiles/${name}-dyn
+	    ${name}-dyn.flist
+	    " (dynamic files)"
+}
+importas -iu status ?
+foreground { rm -f ${name}-default.flist ${name}-dev.flist ${name}-dyn.flist }
+exit $status

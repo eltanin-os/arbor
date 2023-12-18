@@ -1,0 +1,100 @@
+#!/bin/execlineb -S1
+# $1: package file
+getcwd pwd
+multisubstitute {
+	importas -i name name
+	importas -iu pwd pwd
+}
+backtick tmpdir { arbor-priv-mktempdir }
+multisubstitute {
+	define files "${pwd}/${name}-default.flist"
+	define devfiles "${pwd}/${name}-dev.flist"
+	define dynfiles "${pwd}/${name}-dyn.flist"
+	importas -iu tmpdir tmpdir
+}
+foreground {
+	cd $tmpdir
+	if { arbor-priv-pkgexplode $1 }
+	if {
+		importas -i LIBDIR LIBDIR
+		if -t { test -d ".${LIBDIR}" }
+		if {
+			redirfd -a 1 $dynfiles
+			find .${LIBDIR} ! ( ( -path ".${LIBDIR}/firmware" -o -path ".${LIBDIR}/modules" ) -prune ) ! -type d -name "*.so*"
+		}
+		redirfd -a 1 $devfiles
+		find .${LIBDIR} ! ( ( -path ".${LIBDIR}/firmware" -o -path ".${LIBDIR}/modules" ) -prune ) ! -name "*.so*" ! -type d
+	}
+	if {
+		importas -i INCDIR INCDIR
+		if -t { test -d ".${INCDIR}" }
+		redirfd -a 1 $devfiles
+		find .${INCDIR} ! -type d
+	}
+	if {
+		importas -i DRTDIR DRTDIR
+		redirfd -a 1 $devfiles
+		if {
+			if -t { test -d ".${DRTDIR}/aclocal" }
+			find .${DRTDIR}/aclocal ! -type d
+		}
+		if {
+			if -t { test -d ".${DRTDIR}/pkgconfig" }
+			find .${DRTDIR}/pkgconfig ! -type d
+		}
+		if -t { test -d ".${DRTDIR}/xcb" }
+		find .${DRTDIR}/xcb ! -type d
+	}
+	if {
+		importas -i MANDIR MANDIR
+		if -t { test -d ".${MANDIR}" }
+		redirfd -a 1 $devfiles
+		find .${MANDIR} \( -name "*.2" -o -name "*.3" \) ! -type d
+	}
+	multisubstitute {
+		importas -is DEFLATE DEFLATE
+		importas -is ARCHIVE ARCHIVE
+		importas -i name name
+		importas -i version version
+	}
+	if {
+		if -t { test -s "${devfiles}" }
+		if {
+			pipeline {
+				redirfd -r 0 $devfiles
+				$ARCHIVE
+			}
+			redirfd -w 1 ${pwd}/${name}-dev#${version}.pkg
+			$DEFLATE
+		}
+		redirfd -r 0 $devfiles
+		xargs rm -f
+	}
+	if {
+		if -t { test -s "${dynfiles}" }
+		if {
+			pipeline {
+				redirfd -r 0 $dynfiles
+				$ARCHIVE
+			}
+			redirfd -w 1 ${pwd}/${name}-dyn#${version}.pkg
+			$DEFLATE
+		}
+		redirfd -r 0 $dynfiles
+		xargs rm -f
+	}
+	if {
+		redirfd -w 1 $files
+		find . ! -type d
+	}
+	if -t { test -s "${files}" }
+	pipeline {
+		redirfd -r 0 ${files}
+		$ARCHIVE
+	}
+	redirfd -w 1 ${pwd}/${name}#${version}.pkg
+	$DEFLATE
+}
+importas -iu status ?
+foreground { arbor-priv-freetempdir $tmpdir }
+exit $status

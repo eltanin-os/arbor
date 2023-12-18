@@ -1,0 +1,35 @@
+#!/bin/execlineb -S3
+# $1: output file
+# $2: files list
+# $3: commentary
+redirfd -w 1 $1
+importas -i name name
+if {
+	multisubstitute {
+		importas -i version version
+		importas -i license license
+		importas -i description description
+	}
+	heredoc 0
+"name:${name}
+version:${version}
+license:${license}
+description:${description}${3}
+"
+	cat
+}
+if {
+	if -t { test -s ${name}-makedeps }
+	if { echo "makedeps{" }
+	if { pipeline { cat ${name}-makedeps } sort }
+	echo  "}"
+}
+if {
+	if -t { test -s ${name}-rundeps }
+	if { echo "rundeps{" }
+	if { pipeline { cat ${name}-rundeps } sort }
+	echo  "}"
+}
+if { echo "files{" }
+if { pipeline { cat $2 } sort }
+echo  "}"
