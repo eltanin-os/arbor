@@ -1,0 +1,14 @@
+name:nasm
+version:2.16.01
+license:bsd-2
+description:80x86 assembler designed for portability and modularity.
+cksum:f946b085158c8e85308145626809b7e54f663e033aa82b761b7b4e4d6213bea88de1d98273717e992bb9adec3e6b83c9660dadf05ac46fb030b52890cccbd45e
+urls{
+https://www.nasm.us/pub/nasm/releasebuilds/$version/nasm-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
