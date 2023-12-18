@@ -1,0 +1,12 @@
+#!/bin/execlineb -S1
+backtick -Ex path {
+	importas -isd ":" P PATH
+	forx -Ex 0 path { $P }
+	if { test -f ${path}/${1} }
+	foreground { echo ${path}/${1} }
+	exit 0
+}
+ifelse { test -n "${path}" } {
+	echo $path
+}
+exit 2
