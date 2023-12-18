@@ -1,0 +1,5 @@
+#!/bin/execlineb -P
+if { arbor-utils-sed configure "s;#!/bin/bash;#!/bin/sh;" }
+export ARBOR_MK_CONFIGURE_ARGS "--disable-asm"
+# not gnuconfigure but compatible
+arbor-mk-gnuconfigure install

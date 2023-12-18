@@ -1,0 +1,14 @@
+name:x264
+version:20230215
+license:gpl-2
+description:Free library for encoding H264/AVC video streams.
+cksum:3310b2d90caa46722b9a839024dc3b64b4abe2eec3c1015dcde21c331fcd125db052c3af4dc4b4d2de85ffb16bfd7d511f1d1329df959f06fa4df64203665c0a
+urls{
+https://anduin.linuxfromscratch.org/BLFS/x264/x264-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
