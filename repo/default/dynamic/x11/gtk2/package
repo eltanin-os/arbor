@@ -1,0 +1,20 @@
+name:gtk2
+version:2.24.33
+license:lgpl-2+
+description:The GTK+ Toolkit (v2).
+cksum:21300fa9029c9967d4a3cc69aa3fc8d149e2f5ba0687c4cac118e42cc8a113d1fbe01ed71f8daf053012011b9007ba4cdf06a2ab5190975900294639326322e8
+src:gtk+-$version
+urls{
+https://download.gnome.org/sources/gtk+/2.24/gtk+-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+atk
+cairo
+gdk-pixbuf
+glib2
+libc
+pango
+}
