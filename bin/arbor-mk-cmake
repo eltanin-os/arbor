@@ -1,5 +1,8 @@
 #!/bin/execlineb -s0
-importas -i nprocs nprocs
+multisubstitute {
+	importas -i nprocs nprocs
+	define tmpdir "arbor-build-dir"
+}
 foreground {
 	backtick buildtype {
 		importas -D "" CFLAGS CFLAGS
@@ -29,6 +32,7 @@ foreground {
 		importas -i MANDIR MANDIR
 	}
 	cmake
+	    -B $tmpdir
 	    -GNinja
 	    -DCMAKE_PREFIX_PATH=$ARBOR_ROOTDIR
 	    -DCMAKE_BUILD_RPATH_USE_ORIGIN=ON
@@ -45,4 +49,4 @@ foreground {
 	    $ARBOR_MK_CMAKE_ARGS
 	    .
 }
-ninja -j$nprocs $@
+ninja -C $tmpdir -j$nprocs $@
