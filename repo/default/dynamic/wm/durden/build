@@ -1,4 +1,8 @@
 #!/bin/execlineb -P
+if {
+	importas -i ARBOR_ROOTDIR ARBOR_ROOTDIR
+	arbor-utils-install -p "arcan/resources/images" drt ${ARBOR_ROOTDIR}/tmp/files/wallpaper.png
+}
 if { rm -Rf durden/fonts }
 if { arbor-utils-install -p "arcan/appl/durden" -r drt durden/. }
 arbor-utils-install bin distr/durden

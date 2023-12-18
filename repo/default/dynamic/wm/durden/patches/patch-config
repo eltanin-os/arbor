@@ -1,7 +1,6 @@
-diff --git a/durden/config.lua b/durden/config.lua
-index e9fb939..2b08cf5 100644
---- a/durden/config.lua
-+++ b/durden/config.lua
+diff -Naur a/durden/config.lua b/durden/config.lua
+--- a/durden/config.lua	2023-11-10 19:15:56.919408524 -0300
++++ b/durden/config.lua	2023-11-24 12:45:20.689032425 -0300
 @@ -9,8 +9,8 @@
  return {
  	msg_timeout = 100,
@@ -13,7 +12,7 @@ index e9fb939..2b08cf5 100644
  	font_sz = 18,
  	font_hint = 2,
  	font_str = "",
-@@ -251,7 +251,7 @@ return {
+@@ -251,16 +251,16 @@
  	term_font_hint = 2,
  	term_blink = 0,
  	term_cursor = "block",
@@ -21,8 +20,10 @@ index e9fb939..2b08cf5 100644
 +	term_font = "mono",
  	term_bgcol = {0x00, 0x00, 0x00},
  	term_fgcol = {0xff, 0xff, 0xff},
- 	term_opa = 1.0,
-@@ -260,7 +260,7 @@ return {
+-	term_opa = 1.0,
++	term_opa = 0.8,
+ 	term_interp = "tsm",
+ 	term_bitmap = false,
  	term_palette = "", -- deprecated
  	term_popup_height = 0.3,
  	term_append_arg = "", -- ci=ind,r,g,b to override individual colors
@@ -31,11 +32,9 @@ index e9fb939..2b08cf5 100644
  
  -- input bar graphics
  	lbar_dim = 0.8,
-diff --git a/durden/devmaps/colorschemes/kraken.lua b/durden/devmaps/colorschemes/kraken.lua
-new file mode 100644
-index 0000000..5ca43fd
---- /dev/null
-+++ b/durden/devmaps/colorschemes/kraken.lua
+diff -Naur a/durden/devmaps/colorschemes/kraken.lua b/durden/devmaps/colorschemes/kraken.lua
+--- a/durden/devmaps/colorschemes/kraken.lua	1969-12-31 21:00:00.000000000 -0300
++++ b/durden/devmaps/colorschemes/kraken.lua	2023-11-18 03:03:58.565955930 -0300
 @@ -0,0 +1,36 @@
 +-- scheme: kraken
 +-- by: eadwardus

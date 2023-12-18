@@ -1,0 +1,10 @@
+diff --git a/durden/autorun.lua b/durden/autorun.lua
+index 3cdfc45..4a6cf9e 100644
+--- a/durden/autorun.lua
++++ b/durden/autorun.lua
+@@ -11,3 +11,5 @@
+ 
+ -- run user defined autostart items
+ dispatch_symbol("/global/settings/tools/autostart/run");
++active_display(false, true).background = "images/wallpaper.png";
++active_display():set_background("images/wallpaper.png");

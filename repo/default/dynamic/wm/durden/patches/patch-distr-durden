@@ -1,8 +1,7 @@
-diff --git a/distr/durden b/distr/durden
-index ab431ce..629ea93 100755
---- a/distr/durden
-+++ b/distr/durden
-@@ -1,115 +1,131 @@
+diff -Naur a/distr/durden b/distr/durden
+--- a/distr/durden	2023-11-10 19:15:56.918408524 -0300
++++ b/distr/durden	2023-11-19 09:25:03.498093072 -0300
+@@ -1,115 +1,138 @@
 -#!/bin/sh
 -
 -arcan_base=${HOME}/.arcan
@@ -137,16 +136,14 @@ index ab431ce..629ea93 100755
 +	importas -i HOME HOME
 +	echo "-d ${HOME}/.config/arcan.sqlite"
 +}
++importas -iu arcan_base arcan_base
 +multisubstitute {
-+	importas -iu arcan_base arcan_base
 +	importas -isu distargs distargs
-+	define applname "durden"
-+}
-+multisubstitute {
 +	define arcan_applbase "${arcan_base}/appl"
 +	define arcan_applout "${arcan_base}/appl-out"
 +	define arcan_resources "${arcan_base}/resources"
 +	define arcan_logpath "${arcan_base}/logs"
++	define applname "durden"
 +}
 +if {
 +	if -nt { test -d "${arcan_applbase}/${applname}" }
@@ -213,6 +210,15 @@ index ab431ce..629ea93 100755
 +	if -nt { test -d "${arcan_resources}/Videos" }
 +	ln -s $XDG_VIDEOS_DIR ${arcan_resources}/Videos
 +}
++backtick XDG_RUNTIME_DIR {
++	importas -D "" XDG_RUNTIME_DIR XDG_RUNTIME_DIR
++	ifelse { test -n "${XDG_RUNTIME_DIR}" } {
++		echo ${XDG_RUNTIME_DIR}
++	}
++	backtick -Ex id { id -u }
++	if { mkdir -p /tmp/${id}-runtime-dir }
++	echo "/tmp/${id}-runtime-dir"
++}
 +backtick ARCAN_LOGPATH {
 +	if -t { test -d "${arcan_logpath}" }
 +	echo $arcan_logpath
@@ -227,7 +233,7 @@ index ab431ce..629ea93 100755
 +	mkdir -p output ipc debug devmaps/display devmaps/keyboard devmaps/game devmaps/led devmaps/schemes devmaps/touch tools widgets
 +}
 +loopwhilex -o 0
-+backtick -Ex starttime { date "+%s" }
++backtick -Ex starttime { date "+%Y%m%d%H%M%S" }
 +ifthenelse { test -d $arcan_logpath }
 +{
 +	fdmove -c 1 2
@@ -243,7 +249,7 @@ index ab431ce..629ea93 100755
 +}
 +if {
 +	backtick -Ex elapsed {
-+		backtick -Ex stoptime { date "+%s" }
++		backtick -Ex stoptime { date "+%Y%m%d%H%M%S" }
 +		expr $stoptime - $starttime
 +	}
 +	test $elapsed -lt 10
