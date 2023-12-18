@@ -1,0 +1,18 @@
+name:libsm
+version:1.2.4
+license:mit
+description:X11 Session Management library.
+cksum:e45bc3522530e96b6a0fb37a38552494e37adae173d8f90fcad25eef03237fa3c3159f7385c6c963ffb2919cdfb62df32258a088654f69ffd8133bcdd448c8fc
+src:libSM-$version
+urls{
+https://www.x.org/archive/individual/lib/libSM-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libice
+xtrans
+xorg-proto
+}
