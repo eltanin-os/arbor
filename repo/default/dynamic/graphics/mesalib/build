@@ -1,8 +1,8 @@
 #!/bin/execlineb -P
 multisubstitute {
-	define dri "nouveau,r100,r200,i915,i965"
 	define gallium "nouveau,virgl,swrast,r600"
-	define vulkan "intel"
+	define vulkan "amd,swrast,intel"
 }
-export ARBOR_MK_MESON_ARGS "-Damber=true;-Ddri-drivers=${dri};-Dgallium-drivers=${gallium};-Dvulkan-drivers=${vulkan};-Dllvm=disabled;-Dplatforms=x11,wayland;-Dglx=dri;-Dopengl=true;-Dosmesa=true;-Dgles1=enabled;-Dgles2=enabled;-Degl=enabled;-Dglvnd=disabled"
+#export ARBOR_MK_MESON_ARGS "-Ddri-drivers=${dri};-Dgallium-drivers=${gallium};-Dvulkan-drivers=${vulkan};-Dplatforms=x11,wayland;-Dglx=dri;-Dopengl=true;-Dosmesa=true;-Dgles1=enabled;-Dgles2=enabled;-Degl=enabled;-Dglvnd=false"
+export ARBOR_MK_MESON_ARGS "-Dgallium-drivers=${gallium};-Dvulkan-drivers=${vulkan};-Dplatforms=x11,wayland;-Dglx=dri;-Dopengl=true;-Dosmesa=true;-Dgles1=enabled;-Dgles2=enabled;-Degl=enabled;-Dglvnd=false"
 arbor-mk-meson install
