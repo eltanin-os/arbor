@@ -1,8 +1,8 @@
 name:libx11
-version:1.8.3
+version:1.8.7
 license:mit
 description:X.Org X11 client-side library.
-cksum:f4ed2895a209812caf2cbc9b16dfad1941373558f38eac04599f6a295f1c086f779865f98ddfe94166b77b169bdbf7e85dba78a9897b0bbd0d18afa9c5612540
+cksum:a46b4360b181b67776b6c168aba9ebef53225a3dd0d365920972ceee4c194c46ee8d63c0b19009a40487b0a7ecf6c8a2ec7e8f5979230b3b3eb116676be1339a
 src:libX11-$version
 urls{
 https://www.x.org/releases/individual/lib/libX11-$version.tar.xz
