@@ -13,7 +13,7 @@ export PATH "${ARBOR}/bin:${tmpdir}/bin:${tmpdir}/ellcc/bin:${PATH}"
 if {
 	export ARBOR_PACKAGENAME "bootstrap"
 	define -s venus "venus-ar venus-cksum venus-conf"
-	forx -Eo 0 pkg { bzip2 cdb curl doas flex lzip pigz redo $venus xz zstd }
+	forx -Eo 0 pkg { bzip2 cdb curl doas flex plzip pigz redo $venus xz zstd }
 	if -t {
 		importas -isd ":" P PATH
 		forx -Ex 1 path { $P }
@@ -61,12 +61,9 @@ foreground {
 if { arbor -b stdenv }
 # clean
 backtick targets {
-	pipeline { redo-targets }
-	backtick -Ex stdenv {
-		backtick -Ex pkg { arbor-priv-printpkgdep stdenv }
-		basename $pkg
-	}
-	awk "/${stdenv}/{next}/.*\\.pkg/{print}"
+	pipeline { redo-targets repo }
+	backtick -Ex pkg { arbor-priv-printpkgdep stdenv }
+	grep -v $pkg
 }
 importas -isu targets targets
 if { rm $targets }
