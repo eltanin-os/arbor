@@ -13,8 +13,8 @@ ARBOR_SANDBOX=sandbox
 # ARBOR TOOLS
 ARCHIVE=venus-ar -c
 DDEFLATE=pigz -9n
-DEFLATE=lzip -9
-INFLATE=lzip -dc
+DEFLATE=plzip -9
+INFLATE=plzip -dc
 UNARCHIVE=venus-ar -x
 # C LANG
 CC=cc
@@ -39,7 +39,7 @@ FETCH=curl -Lo
 TAR=tar -c
 UNBZ2=bzcat
 UNGZ=pigz -dc
-UNLZ=lzip -dc
+UNLZ=plzip -dc
 UNTAR=tar -xf -
 UNXZ=xzcat
 # SYSTEM

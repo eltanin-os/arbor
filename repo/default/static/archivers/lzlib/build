@@ -1,0 +1,10 @@
+#!/bin/execlineb -P
+multisubstitute {
+	importas -i CC CC
+	importas -i CFLAGS CFLAGS
+	importas -i CPPFLAGS CPPFLAGS
+	importas -i LDFLAGS LDFLAGS
+}
+export ARBOR_MK_CONFIGURE_ARGS "CC=${CC};CFLAGS=${CFLAGS};CPPFLAGS=${CPPFLAGS};LDFLAGS=${LDFLAGS}"
+# not gnuconfigure but compatible
+arbor-mk-gnuconfigure install

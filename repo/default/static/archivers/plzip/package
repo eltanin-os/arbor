@@ -1,0 +1,15 @@
+name:plzip
+version:1.10
+license:gpl-2+
+description:A massively parallel (multi-threaded) implementation of lzip.
+cksum:3ff46ab4c1421cfae80880216e51956e1a5a14803ff82eb30271ccca43d840c8195bc2a5e557f308bac6499c0b60535aace71540b31f9ffe4a40ac51e167d469
+urls{
+https://download.savannah.gnu.org/releases/lzip/plzip/plzip-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+lzlib
+}

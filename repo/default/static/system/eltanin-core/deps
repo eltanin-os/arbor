@@ -4,10 +4,10 @@ ecore
 execline
 gmake
 lex
-lzip
 m4
 pigz
 pkgconf
+plzip
 redo
 sh
 slibtool
