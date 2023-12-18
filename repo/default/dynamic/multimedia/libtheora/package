@@ -1,0 +1,16 @@
+name:libtheora
+version:1.1.1
+license:bsd-3
+description:An open video codec developed by the Xiph.org.
+cksum:ebf6500619f293e55277c07e5d8a93e9d82de4954bab327cb583e5a0187110450b15fcae67ac221f08225f89ae4ab5d4fc2fdfc61b9c2c8fd07bcd49af4b3d8d
+urls{
+https://downloads.xiph.org/releases/theora/libtheora-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libogg
+libvorbis
+}
