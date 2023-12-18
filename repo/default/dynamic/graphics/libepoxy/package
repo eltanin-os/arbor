@@ -1,0 +1,17 @@
+name:libepoxy
+version:1.5.10
+license:mit
+description:Direct Rendering Manager runtime library.
+cksum:b0868f4fbbae2f456877711d074e222983d602bcd4eae9dac604d1d39c5b4dfd6c229551960ff8594108773364b09e261dd54d59fd01ca60c2a160483e0a6ee5
+urls{
+https://github.com/anholt/libepoxy/archive/refs/tags/$version.tar.gz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+libc
+libx11
+mesalib
+}
