@@ -1,0 +1,18 @@
+name:glslang
+version:1.3.261.1
+license:mit
+description:Mesas GLSL preprocessor and compiler.
+cksum:77c26f622274765806c35bcc7b008a479e108afc4b173bd8a163ab354e3a22e2099a5d80a9712b86120bb7b3b197b8284b424552d209c3c1745a0ae840325935
+src:glslang-sdk-$version
+urls{
+https://github.com/KhronosGroup/glslang/archive/refs/tags/sdk-$version.tar.gz
+}
+hostdeps{
+cmake
+python
+stdenv
+}
+makedeps{
+libc
+spirv-tools
+}
