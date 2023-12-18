@@ -1,0 +1,18 @@
+name:harfbuzz
+version:8.2.2
+license:mit
+description:OpenType text shaping engine.
+cksum:227e86379ac7b7f056f1b0dc20b7e3cefd692080a61b0ec68cdcd1f04b02eb6ebcae088f6500bff9b669698ffa6629801ee7b783c480067367be78c7cbb5f49e
+urls{
+https://github.com/harfbuzz/harfbuzz/releases/download/$version/harfbuzz-$version.tar.xz
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+freetype
+graphite2
+glib2
+libc
+}
