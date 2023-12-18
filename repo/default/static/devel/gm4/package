@@ -1,0 +1,15 @@
+name:gm4
+version:1.4.19
+license:gpl-3+
+description:GNU macro processor.
+cksum:028ed1b950369e90af660c37d3d051d95df4e6969c08b194a9d63842ebe5e72f9d2796f574e6be21b8d0fa02ad57ed5217e7e56e9bfcbc2a2dd07b008abc18c8
+src:m4-$version
+urls{
+https://ftp.gnu.org/gnu/m4/m4-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
