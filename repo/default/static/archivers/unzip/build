@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+if { arbor-mk-gmake -f unix/Makefile generic }
+arbor-mk-gmake -f unix/Makefile install

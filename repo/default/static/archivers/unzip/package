@@ -1,0 +1,16 @@
+name:unzip
+version:6.0
+license:custom
+description:Extract PKZIP-compatible .zip files.
+cksum:9ef84889de94d9978033be2a7d5cc2e7f8b93a5d3d191c9a4605798a7223bcfd420864c6049820a778e19e825e482a033890bc53e7a898022349342ba6bd9855
+src:unzip60
+urls{
+https://downloads.sourceforge.net/infozip/unzip60.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+bzip2
+libc
+}
