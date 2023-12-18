@@ -1,8 +1,8 @@
 name:gmake
-version:4.3
+version:4.4.1
 license:gpl-3.0
 description:A GNU tool which simplifies the build process for users.
-cksum:096017d2a5ab0b4fed8cb8ee0677a7d3a0bc4ee4640d4fca95dbcae135ebf26fdaf8bbbbbc6630893040538d154f2284eb0f9d4409cbd382bee30a2e25f0563c
+cksum:ddff82b236fa7412762f6bf93a477295b6a20e3dd48e06dfc615308eb70d8bf01486553e398a1110cf2db04560ea0732b5b7e38b042e1ec1fcea19aceea76f86
 src:make-$version
 urls{
 http://ftp.gnu.org/gnu/make/make-$version.tar.lz
