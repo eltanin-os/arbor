@@ -1,8 +1,8 @@
 name:libxcb
-version:1.15
+version:1.16
 license:mit
 description:X.Org X11 protocol C binding library.
-cksum:3a99a9b40d0eeec9f5a7b894626435d0122853734a2ff7415027fe56d970fd01ff6f79bdde7c146d9313ed8e8bb8311e25821380701de046ad65f46dd4f4fd3c
+cksum:b25072af82857e7db7e359531c4a4767b419610214012be4388784e4b4e27860f26f1c6278186d531a249c5b618f6e146eea77c7cb351b2d4e9bd1f60c87755c
 urls{
 https://www.x.org/releases/individual/xcb/libxcb-$version.tar.xz
 }
