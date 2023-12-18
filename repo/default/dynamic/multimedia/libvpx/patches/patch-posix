@@ -1,0 +1,26 @@
+diff -Naur a/build/make/configure.sh b/build/make/configure.sh
+--- a/build/make/configure.sh	2023-09-29 19:06:14.000000000 -0300
++++ b/build/make/configure.sh	2023-11-24 08:23:51.052151177 -0300
+@@ -38,7 +38,7 @@
+ 
+ log_file(){
+   log BEGIN $1
+-  cat -n $1 >>$logfile
++  awk '{line=line+1; printf "%6d\t%s\n", line, $0}' $1 >>$logfile
+   log END $1
+ }
+ 
+diff -Naur a/configure b/configure
+--- a/configure	2023-09-29 19:06:14.000000000 -0300
++++ b/configure	2023-11-24 08:26:35.491160413 -0300
+@@ -183,8 +183,8 @@
+     [ -f "${source_path}/${t}.mk" ] && enable_feature ${t}
+ done
+ 
+-if ! diff --version >/dev/null; then
+-  die "diff missing: Try installing diffutils via your package manager."
++if ! command -v diff >/dev/null; then
++  die "diff missing"
+ fi
+ 
+ if ! perl --version >/dev/null; then

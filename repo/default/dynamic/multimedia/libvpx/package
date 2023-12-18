@@ -1,0 +1,16 @@
+name:libvpx
+version:1.13.1
+license:bsd-3
+description:Library for the vp8/vp9 codecs.
+cksum:38a5e30cfe8373d6dfd082b4dddc14fbf54d496b69c390f430df7d8d87a00f3668bc371b5c7703da57afa8f3cc87fdad0191809ab37258a29dfee78551260d42
+urls{
+https://github.com/webmproject/libvpx/archive/v$version/libvpx-$version.tar.gz
+}
+hostdeps{
+perl
+nasm
+stdenv
+}
+makedeps{
+libc
+}

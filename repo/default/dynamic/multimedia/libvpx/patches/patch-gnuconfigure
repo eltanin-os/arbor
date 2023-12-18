@@ -1,0 +1,22 @@
+diff -Naur a/build/make/configure.sh b/build/make/configure.sh
+--- a/build/make/configure.sh	2023-09-29 19:06:14.000000000 -0300
++++ b/build/make/configure.sh	2023-10-18 06:30:30.466521874 -0300
+@@ -14,10 +14,6 @@
+ # Logging / Output Functions
+ #
+ die_unknown(){
+-  echo "Unknown option \"$1\"."
+-  echo "See $0 --help for available options."
+-  clean_temp_files
+-  exit 1
+ }
+ 
+ die() {
+@@ -688,6 +684,7 @@
+ post_process_common_cmdline() {
+   prefix="${prefix:-/usr/local}"
+   prefix="${prefix%/}"
++  [ -z "$prefix" ] && prefix="/"
+   libdir="${libdir:-${prefix}/lib}"
+   libdir="${libdir%/}"
+   if [ "${libdir#${prefix}}" = "${libdir}" ]; then
