@@ -1,8 +1,8 @@
 name:cmake
-version:3.27.3
+version:3.27.7
 license:bsd-3
 description:Cross-platform, open-source make system.
-cksum:db92566d230e7b89d5be8752aa09cb7d627384995632f94929e6ef9992b9372e2c162679d3fc601318adeb753be5a7bfde9b1719f047458eb223251e9a0ca561
+cksum:7781266af080e2775c376362ad4126e0bd57c74597fbdad81a984a88bc570d76253a9bed9fb7b215f5e0cc22d5b24a5d6b22f0c3dbdad720dab6764a6434e3bc
 urls{
 https://github.com/Kitware/CMake/releases/download/v$version/cmake-$version.tar.gz
 }
