@@ -1,0 +1,19 @@
+name:libxt
+version:1.3.0
+license:mit
+description:X11 toolkit intrinsics library.
+cksum:e2bd1e3b58254f5f4d7c8634b57aa4fa5e8272e4de25f90d6e7452ac56f88cbd5a3cd33c5e9402a9e57bcedfd49bbea5184cda90bf3b94d4c2ae1606f0ba80e9
+src:libXt-$version
+urls{
+https://www.x.org/archive/individual/lib/libXt-$version.tar.xz
+}
+hostdeps{
+stdenv
+xorg-proto
+}
+makedeps{
+libc
+libice
+libsm
+libx11
+}
