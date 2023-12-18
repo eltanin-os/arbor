@@ -1,8 +1,8 @@
 name:libuv
-version:1.44.2
+version:1.46.0
 license:mit,isc
 description:Cross-platform asychronous I/O.
-cksum:79897325c89245b4466cfb42cb973e3ff66f9a583088c5e483d963cc572d914fce0e643a669eedf9c1db98b9be9bd16f3031150c110c9c8dd98f96e1ee7d0582
+cksum:109a894d7df1c14f02ddd823dfe1aa11b0f3513724b4293931842772244a07c52c45d51163838b360b4aeb409c0fd608f5b260b9dfb5218fdfdda4092b390675
 urls{
 https://dist.libuv.org/dist/v$version/libuv-v$version-dist.tar.gz
 }
