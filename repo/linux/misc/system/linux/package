@@ -1,8 +1,8 @@
 name:linux
-version:4.19.289
+version:6.6.8
 license:gpl-2
 description:The Linux kernel image.
-cksum:4cf7f2e65195584850db7f15eb7de571f9bde3243bc19fa82a89f1a12ff6bff3898af7a40dbc8d098a656dbd1ae23cdaceeed52726196c1cc4247e91ae874ead
+cksum:a53271de9b544a1c1d689056f19b5083734c9cac983525af32941862de642f7e30814e0a527624ebbaa4202cac136ed0f8aa17ef5cb12b7c6ac1514f8dbbef0d
 src:linux-image-$version
 arch{
 x86_64
@@ -11,7 +11,7 @@ platforms{
 linux
 }
 urls{
-https://downloads.eltaninos.org/mirrors/linux-image-$version.tar.lz
+https://downloads.eltaninos.org/repo/binaries/$HOSTARCH-linux-$version.tar.lz
 }
 hostdeps{
 stdenv
