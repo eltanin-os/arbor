@@ -1,0 +1,19 @@
+name:git
+version:2.43.0
+license:gpl-2.0
+description:Distributed version control system.
+cksum:957daceb85b36e3c42a4b22f6bd721e24ec424e94e282d10f9a00493699d358b08879332ea6fc00679f464f08e54f38c819d03d547b44894db461bc2a7fbf88c
+urls{
+https://mirrors.edge.kernel.org/pub/software/scm/git/git-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+curl
+libc
+libressl
+}
+rundeps{
+perl
+}

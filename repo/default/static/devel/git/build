@@ -1,0 +1,30 @@
+#!/bin/execlineb -P
+if {
+	multisubstitute {
+		importas -i ARBOR_ROOTDIR ARBOR_ROOTDIR
+		importas -i CC CC
+		importas -i CXX CXX
+		importas -i CFLAGS CFLAGS
+		importas -i LDFLAGS LDFLAGS
+	}
+	heredoc 0
+"NO_EXPAT=YesPlease
+NO_GETTEXT=YesPlease
+NO_PYTHON=YesPlease
+NO_REGEX=YesPlease
+NO_TCLTK=YesPlease
+NO_SVN_TESTS=YesPlease
+NO_SYS_POLL_H=1
+ICONV_OMITS_BOM=Yes
+INSTALL_SYMLINKS=1
+CC=${CC}
+CXX=${CXX}
+CFLAGS=${CFLAGS}
+LDFLAGS=${LDFLAGS}
+"
+	redirfd -w 1 config.mak
+	cat
+}
+export STATIC "-static"
+export ARBOR_MK_GMAKE_FLAGS "CURL_CONFIG=pkgconf libcurl"
+arbor-mk-gmake all install
