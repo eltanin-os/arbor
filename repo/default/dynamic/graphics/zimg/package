@@ -1,0 +1,18 @@
+name:zimg
+version:3.0.5
+license:wtfpl
+description:Scaling, colorspace conversion and dithering library.
+cksum:578eaf196bf93b2e3a0071e0ceefe8ab7254a521d7444215695fe99ed42266c265713b7a3e238aed9d1e04427f4f2f769e0ed764b4ae589af08c6b059aa1c4e3
+src:$name-release-$version
+urls{
+https://github.com/sekrit-twc/zimg/archive/release-$version.tar.gz
+}
+hostdeps{
+autoconf
+automake
+libtool
+stdenv
+}
+makedeps{
+libc
+}

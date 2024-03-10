@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+if { ./autogen.sh }
+arbor-mk-gnuconfigure install
