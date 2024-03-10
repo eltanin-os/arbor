@@ -1,8 +1,8 @@
 name:meson
-version:1.2.2
+version:1.3.1
 license:apache-2.0
 description:Fast and user friendly build system.
-cksum:55f0daa30651046cb8622f555349b08ddd5c5b09ed531bd4be2a993fcd2c625361a3bb2588c2b620677536d17d7dba9ff52d74dc8c1c42285a86567a22d72a53
+cksum:7862dc3c6c0becc175204fe9f7f573d12e57071d89e54245151cebb85b995f763459c9d84a19cac74be4e2ee9880e3a7e352ef38c97345865244ce349106a0dc
 urls{
 https://github.com/mesonbuild/meson/releases/download/$version/meson-$version.tar.gz
 }
