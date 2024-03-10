@@ -1,0 +1,24 @@
+name:libplacebo
+version:6.338.2
+license:lgpl-2.1
+description:GPU-accelerated image/video processing primitives and shaders.
+cksum:cc46a9ff30ccbfb4b8de729e78f88435f5c4da09fd2860e706b7f245a4957b902e71b866d29be3352ff5fbe55dae46813adac6e4a143516c5b6a38bf78287aa6
+src:$name-v$version
+urls{
+https://code.videolan.org/videolan/libplacebo/-/archive/v$version/libplacebo-v$version.tar.bz2
+}
+hostdeps{
+meson
+py-glad2
+py-jinja2
+py-markupsafe
+stdenv
+}
+makedeps{
+glslang
+lcms2
+libc
+mesalib
+vulkan-loader
+vulkan-headers
+}
