@@ -1,0 +1,18 @@
+name:libxscrnsaver
+version:1.2.4
+license:mit
+description:X.Org screen saver extension.
+cksum:72466905616bfdb0e9d00f94a23bd5282f5eca000e4b9408c6265bc8e857ec82a8d6cf8b0952db74dd9862fb37fd7bd66f0675c9d38d4738add2c63a9eb6555e
+src:libXScrnSaver-$version
+urls{
+https://www.x.org/releases/individual/lib/libXScrnSaver-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libx11
+libxext
+xorg-proto
+util-macros
+}
