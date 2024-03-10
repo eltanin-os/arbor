@@ -1,8 +1,8 @@
 name:fontconfig
-version:2.14.2
+version:2.15.0
 license:mit
 description:Library for configuring and customizing font access.
-cksum:7097b3e6addacd905c283fb055f1b6719444b5812eabd9117e7ec6fe122ccea6c2a9c8091673d36f14143be07ab80cf318a5f288e8d0d48f5ade605eafcd532a
+cksum:0c16bbd5cf58bacf204d23520daa60be90c316959278eea1abff0620ee6a29bc623023971a29839318d62e94d6b51f549cce75d4963ee781b0a8841ff61753b6
 urls{
 https://www.freedesktop.org/software/fontconfig/release/fontconfig-$version.tar.xz
 }
