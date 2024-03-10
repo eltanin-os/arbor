@@ -1,0 +1,15 @@
+name:py-installer
+version:0.7.0
+license:mit
+description:A library for installing Python wheels.
+cksum:07f1a803760215e309d4f3ecb6484efe13e88e070dc35c7758670db748f6fc05386024ce77207f6b7bad7e921b196baa5aed7f75af29a6a791796f15e965ea05
+src:.
+urls{
+https://files.pythonhosted.org/packages/py3/i/installer/installer-$version-py3-none-any.whl
+}
+hostdeps{
+stdenv
+}
+rundeps{
+python
+}

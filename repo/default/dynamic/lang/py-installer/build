@@ -1,0 +1,12 @@
+#!/bin/execlineb -P
+backtick sitedir { python3 -c "import site;print(site.getsitepackages()[0])" }
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	importas -i sitedir sitedir
+}
+if { mkdir -p ${DESTDIR}/${sitedir} }
+if {
+	elglob -s files "installer*"
+	cp -pR $files ${DESTDIR}/${sitedir}
+}
+python3 -m compileall ${DESTDIR}/${sitedir}
