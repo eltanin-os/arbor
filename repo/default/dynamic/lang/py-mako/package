@@ -1,8 +1,8 @@
 name:py-mako
-version:1.2.4
+version:1.3.2
 license:mit
 description:Python3 fast templating language.
-cksum:995ebd6e68fbfb32bdb08aa05ceaea4df685623ced21418eb9520db0e422c198d4e798798d094ede4c4014beb9d188d11aee335920fd6e5dfe457cf681cba8e6
+cksum:ce90808ff27d2bd9c0b02f16967494a00b2de73bc6f2e2f6d93fc9b40c650419306c60eb54dc9c60d9c7004ff911de7a356fc187a21a68ad800c41c28f0e18e1
 src:Mako-$version
 urls{
 https://files.pythonhosted.org/packages/source/M/Mako/Mako-$version.tar.gz
