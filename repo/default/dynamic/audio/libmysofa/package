@@ -1,0 +1,15 @@
+name:libmysofa
+version:1.3.2
+license:bsd-3
+description:Reader for AES SOFA HRTF files.
+cksum:208c850d810f7a034949fec397d567feec5c605a0b59cbd8249470d1080eab987956105a1f0590bf2f2c62012123a286e26a48064bf8964e35642a723e361485
+urls{
+https://github.com/hoene/libmysofa/archive/refs/tags/v$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
