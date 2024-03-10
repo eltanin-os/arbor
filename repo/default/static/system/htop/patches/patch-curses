@@ -1,0 +1,104 @@
+diff -Naur a/Meter.c b/Meter.c
+--- a/Meter.c	2023-02-04 19:51:56.000000000 -0300
++++ b/Meter.c	2023-12-10 15:18:31.205909359 -0300
+@@ -412,7 +412,7 @@
+          if (xx - x + 1 > w)
+             break;
+ #ifdef HAVE_LIBNCURSESW
+-         const cchar_t wc = { .chars = { c, '\0' }, .attr = 0 }; /* use LED_COLOR from attrset() */
++         const cchar_t wc = { .vals = { c, '\0' }, .attributes = 0 }; /* use LED_COLOR from attrset() */
+          mvadd_wch(yText, xx, &wc);
+ #else
+          mvaddch(yText, xx, c);
+diff -Naur a/RichString.c b/RichString.c
+--- a/RichString.c	2023-02-04 19:51:56.000000000 -0300
++++ b/RichString.c	2023-12-10 15:20:58.605100514 -0300
+@@ -61,7 +61,7 @@
+    int newLen = from + len;
+    RichString_setLen(this, newLen);
+    for (int i = from, j = 0; i < newLen; i++, j++) {
+-      this->chptr[i] = (CharType) { .attr = attrs & 0xffffff, .chars = { (iswprint(data[j]) ? data[j] : L'\xFFFD') } };
++      this->chptr[i] = (CharType) { .attributes = attrs & 0xffffff, .vals = { (iswprint(data[j]) ? data[j] : L'\xFFFD') } };
+    }
+ 
+    return len;
+@@ -87,7 +87,7 @@
+       *columns -= cwidth;
+       columnsWritten += cwidth;
+ 
+-      this->chptr[pos] = (CharType) { .attr = attrs & 0xffffff, .chars = { c, '\0' } };
++      this->chptr[pos] = (CharType) { .attributes = attrs & 0xffffff, .vals = { c, '\0' } };
+       pos++;
+    }
+ 
+@@ -101,7 +101,7 @@
+    int newLen = from + len;
+    RichString_setLen(this, newLen);
+    for (int i = from, j = 0; i < newLen; i++, j++) {
+-      this->chptr[i] = (CharType) { .attr = attrs & 0xffffff, .chars = { (isprint(data[j]) ? data[j] : L'\xFFFD') } };
++      this->chptr[i] = (CharType) { .attributes = attrs & 0xffffff, .vals = { (isprint(data[j]) ? data[j] : L'\xFFFD') } };
+    }
+ 
+    return len;
+@@ -110,7 +110,7 @@
+ inline void RichString_setAttrn(RichString* this, int attrs, int start, int charcount) {
+    int end = CLAMP(start + charcount, 0, this->chlen);
+    for (int i = start; i < end; i++) {
+-      this->chptr[i].attr = attrs;
++      this->chptr[i].attributes = attrs;
+    }
+ }
+ 
+@@ -119,7 +119,7 @@
+    int newLen = from + count;
+    RichString_setLen(this, newLen);
+    for (int i = from; i < newLen; i++) {
+-      this->chptr[i] = (CharType) { .attr = attrs, .chars = { c, 0 } };
++      this->chptr[i] = (CharType) { .attributes = attrs, .vals = { c, 0 } };
+    }
+ }
+ 
+@@ -127,7 +127,7 @@
+    const wchar_t wc = btowc(c);
+    const cchar_t* ch = this->chptr + start;
+    for (int i = start; i < this->chlen; i++) {
+-      if (ch->chars[0] == wc)
++      if (ch->vals[0] == wc)
+          return i;
+       ch++;
+    }
+diff -Naur a/RichString.h b/RichString.h
+--- a/RichString.h	2023-02-04 19:51:56.000000000 -0300
++++ b/RichString.h	2023-12-10 15:16:06.956700919 -0300
+@@ -27,8 +27,8 @@
+ #ifdef HAVE_LIBNCURSESW
+ #define RichString_printVal(this, y, x) mvadd_wchstr(y, x, (this).chptr)
+ #define RichString_printoffnVal(this, y, x, off, n) mvadd_wchnstr(y, x, (this).chptr + (off), n)
+-#define RichString_getCharVal(this, i) ((this).chptr[i].chars[0])
+-#define RichString_setChar(this, at, ch) do { (this)->chptr[(at)] = (CharType) { .chars = { ch, 0 } }; } while (0)
++#define RichString_getCharVal(this, i) ((this).chptr[i].vals[0])
++#define RichString_setChar(this, at, ch) do { (this)->chptr[(at)] = (CharType) { .vals = { ch, 0 } }; } while (0)
+ #define CharType cchar_t
+ #else
+ #define RichString_printVal(this, y, x) mvaddchstr(y, x, (this).chptr)
+diff -Naur a/configure b/configure
+--- a/configure	2023-02-04 19:52:00.000000000 -0300
++++ b/configure	2023-12-10 15:00:38.561795436 -0300
+@@ -8022,7 +8022,7 @@
+   printf %s "(cached) " >&6
+ else $as_nop
+   ac_check_lib_save_LIBS=$LIBS
+-LIBS="-lncurses  $LIBS"
++LIBS="-lncurses  -lterminfo $LIBS"
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+@@ -8056,7 +8056,7 @@
+ 
+ printf "%s\n" "#define HAVE_LIBNCURSESW 1" >>confdefs.h
+ 
+-      LIBS="-lncurses $LIBS "
++      LIBS="-lncurses -lterminfo $LIBS "
+ 
+ else $as_nop
+   as_fn_error $? "can not find required library libncursesw; you may want to use --disable-unicode" "$LINENO" 5

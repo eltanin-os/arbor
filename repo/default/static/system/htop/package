@@ -1,0 +1,15 @@
+name:htop
+version:3.2.2
+license:gpl-2.0
+description:Enhanced version of top utility.
+cksum:e541b49844ee556daf7e8b5d50a655b7b68801d5cbd6f5c94d4f8d638f2e629752e069fdfbcf83a1f6f4be8ed7ae8540ac17e8ac997368b4fcd9bbeb675c76b7
+urls{
+https://github.com/htop-dev/htop/releases/download/$version/htop-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+ncurses
+libc
+}
