@@ -1,0 +1,18 @@
+name:autoconf
+version:2.72
+license:gpl-3+
+description:GNU tool for automatically configuring source code.
+cksum:53e9b2fdacb177e3f1a25398431923d4d7838aa448dd73b994702b29f07feb72b6fbf7a11134a7a950c99b0fc832cdc976d16c66686576873ed1dd89254e425a
+urls{
+https://ftp.gnu.org/gnu/autoconf/autoconf-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
+rundeps{
+gm4
+perl
+}
