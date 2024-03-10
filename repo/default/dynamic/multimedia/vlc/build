@@ -1,0 +1,10 @@
+#!/bin/execlineb -P
+importas -i BINDIR BINDIR
+export BUILDCC "${BINDIR}/cc -std=gnu99"
+export LUAC "${BINDIR}/luac5.1"
+backtick LUA_LIBS { pkgconf --libs luajit }
+backtick LUA_CFLAGS { pkgconf --cflags luajit }
+export ARBOR_MK_CONFIGURE_ARGS "--disable-libplacebo"
+# XXX: slibtool fails with multiple definitions, meant to be fixed next release
+unexport LIBTOOL
+arbor-mk-gnuconfigure install
