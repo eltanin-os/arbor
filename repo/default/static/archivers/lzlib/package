@@ -1,8 +1,8 @@
 name:lzlib
-version:1.13
+version:1.14
 license:bsd-2
 description:In-memory LZMA compression and decompression library.
-cksum:9aacca6ae305416e672a0587b0449f23d889ec5e30b9b77c7d52e9a795654c61309322f65ceab497caf6904f060756357ed82314fdd3d08c22493d97e332d95c
+cksum:f9089f14f084febcb5ed61b168447ed6f22501fbcd6e90da325de14f5890edf0d3ce31eeb352342f8f6806e798f35320bcd557ed18d00b25e19911469e28ac75
 urls{
 https://download.savannah.gnu.org/releases/lzip/lzlib/lzlib-$version.tar.lz
 }
