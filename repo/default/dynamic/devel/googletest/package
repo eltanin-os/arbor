@@ -1,0 +1,16 @@
+name:googletest
+version:1.14.0
+license:bsd-3
+description:Google Testing and Mocking Framework.
+cksum:f293f042d7053b121e05732d6292247f1b199ad93f520107b907454c3a69b76f747dd31e196638de1763238c4bc7f1f4a70bdf03a113f53a8554cbb052e726c2
+urls{
+https://github.com/google/googletest/archive/refs/tags/v$version.tar.gz
+}
+hostdeps{
+cmake
+python
+stdenv
+}
+makedeps{
+libc
+}
