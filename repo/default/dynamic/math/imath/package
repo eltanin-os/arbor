@@ -1,0 +1,16 @@
+name:imath
+version:3.1.11
+license:bsd-3
+description:2D and 3D vector, matrix, and math operations for computer graphics.
+cksum:6c8f5b8acdba42710029040fa40b47773b37d3633171346e6ac170b1e56974207d7a74191e5d5ba02bae2bd34fce38469a03b20998a8e3f5b6e8e5182a94af8a
+src:Imath-$version
+urls{
+https://github.com/AcademySoftwareFoundation/Imath/releases/download/v$version/Imath-$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
