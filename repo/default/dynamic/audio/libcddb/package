@@ -1,0 +1,14 @@
+name:libcddb
+version:1.3.2
+license:lgpl-2+
+description:Library to access data on a CDDB server.
+cksum:19b7a1630faf315f078bf627842010386b75bd69249ff9d80bae923d404b05fe7b920d901f7c4c38a2f242b5b560e0b62ef5dea54778c29823fc95f16f73e849
+urls{
+https://downloads.sourceforge.net/libcddb/libcddb-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
