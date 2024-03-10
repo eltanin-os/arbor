@@ -1,8 +1,8 @@
 name:tz
-version:2023c
+version:2024a
 license:public-domain
 description:Time zone and daylight-saving time data.
-cksum:29e32d3e7e1a933dd9f29e740f841daf7e39331dc6a7bc532c36a5fe4ce19f37899d4e6cd3775ecc2188afcff9b0699f64b5fe105355ff65276b5ca39dc923c3
+cksum:ba727b10f0864e4e64f5508eb23684acaf7334f7ea9438742d3b701ea756c2b7f42207cf023ab9e970235b98942fa16e795b88967274ce5922eb3b55e2f38cf6
 src:tzdb-$version
 urls{
 https://data.iana.org/time-zones/releases/tzdb-$version.tar.lz
