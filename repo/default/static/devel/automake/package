@@ -1,0 +1,19 @@
+name:automake
+version:1.16.5
+license:gpl-2
+description:GNU Standards-compliant Makefile generator.
+cksum:d37c83465a9240ddeebaa1c9f215242a493eed666c61fa3b3f57ab78e271aec0592f337b1196e71f3e0abd1d3966cdf6a53f0adf68c2be564932bfffc213fc8a
+urls{
+https://ftp.gnu.org/gnu/automake/automake-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
+rundeps{
+autoconf
+gm4
+perl
+}
