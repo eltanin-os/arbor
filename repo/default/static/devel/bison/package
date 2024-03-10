@@ -1,0 +1,15 @@
+name:bison
+version:3.8.2
+license:gpl-3+
+description:GNU yacc(1) replacement.
+cksum:7a36b178cf867b01604bc88e1cab9c5a5701c2e2e64ee0bab5607f018414de5d3e58f3d0d4e3f4e8934d97bdb2e7d0f5e6620c7af331c9424dc065d9653aa279
+urls{
+https://ftp.gnu.org/gnu/bison/bison-$version.tar.lz
+}
+hostdeps{
+gm4
+stdenv
+}
+makedeps{
+libc
+}
