@@ -1,0 +1,18 @@
+name:speexdsp
+version:1.2.1
+license:bsd-3
+description:A voice compression format (DSP).
+cksum:c7ee774ccfe68bb3071a939495e6eb6e578f0b48580183fb3116b975bb3a12ab799e47ba0d7887bbf0282ae9bf48f571a1a958dd461d14df6480871cb09abb93
+src:$name-SpeexDSP-$version
+urls{
+https://gitlab.xiph.org/xiph/speexdsp/-/archive/SpeexDSP-$version/speexdsp-SpeexDSP-$version.tar.bz2
+}
+hostdeps{
+autoconf
+automake
+libtool
+stdenv
+}
+makedeps{
+libc
+}
