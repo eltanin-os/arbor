@@ -1,0 +1,7 @@
+#!/bin/execlineb -P
+if { gpep517 build-wheel --wheel-dir .dist --output-fd 1 }
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	elglob -s dist ".dist/*.whl"
+}
+python -m installer -d "${DESTDIR}" $dist
