@@ -1,0 +1,21 @@
+name:libsndfile
+version:1.2.2
+license:lgpl-2.1
+description:Library for reading and writing audio files.
+cksum:29362c50b7cfafca8d845bfa0e437b48989dea7887ed20fb35b770b61bcd7f44d7121540850b412d38507c6313de2852f71d6f9dcf1332aa0e17bf82bad1c422
+urls{
+https://github.com/libsndfile/libsndfile/releases/download/$version/libsndfile-$version.tar.xz
+}
+hostdeps{
+python
+stdenv
+}
+makedeps{
+alsa-lib
+flac
+lame
+libc
+libogg
+libopus
+libvorbis
+}
