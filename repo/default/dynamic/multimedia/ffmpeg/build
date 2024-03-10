@@ -1,6 +1,11 @@
 #!/bin/execlineb -P
 # XXX: not reproducible
 if {
+	cd libavcodec
+	if { mv vulkan_video_codec_av1std.h vulkan_video_codec_av1std_mesa.h }
+	mv vulkan_video_codec_av1std_decode.h vulkan_video_codec_av1std_decode_mesa.h
+}
+if {
 	backtick static {
 		importas -D "" LDFLAGS LDFLAGS
 		case -- $LDFLAGS {
@@ -27,20 +32,47 @@ if {
 	    --mandir=${MANDIR}
 	    --enable-small
 	    --enable-gpl
-	    --enable-libaom
-	    --enable-libfreetype
-	    --enable-libmp3lame
-	    --enable-libopus
-	    --enable-libtheora
-	    --enable-openssl
-	    --enable-libvorbis
-	    --enable-libvpx
-	    --enable-libx264
-	    --enable-libx265
 	    --enable-version3
-	    --enable-zlib
 	    --disable-stripping
 	    $static
-
+	# features (in makedeps order)
+	--enable-libdav1d
+	--enable-libharfbuzz
+	--enable-libfreetype
+	--enable-libfribidi
+	--enable-libfontconfig
+	--enable-libmp3lame
+	--enable-lcms2
+	--enable-libaom
+	--enable-libass
+	--enable-libbluray
+	--enable-libbs2b
+	--enable-libcdio
+	--enable-libdrm
+	--enable-libjxl
+	--enable-libmysofa
+	--enable-libopus
+	--enable-libplacebo
+	--enable-libsoxr
+	--enable-libspeex
+	--enable-libsrt
+	--enable-libssh
+	--enable-libtheora
+	--enable-openssl
+	--enable-libvorbis
+	--enable-libvpx
+	--enable-libxcb
+	--enable-libxcb-xfixes
+	--enable-libwebp
+	--enable-libopenjpeg
+	--enable-sdl2
+	--enable-sndio
+	--enable-libx264
+	--enable-libx265
+	--enable-libxvid
+	--enable-vulkan
+	--enable-libzmq
+	--enable-libzimg
+	--enable-zlib
 }
 arbor-mk-gmake install
