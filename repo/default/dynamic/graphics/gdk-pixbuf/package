@@ -12,6 +12,7 @@ stdenv
 }
 makedeps{
 glib2
+gobject-introspection
 libc
 libjpeg-turbo
 libpng
