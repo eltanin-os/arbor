@@ -1,0 +1,19 @@
+name:libva
+version:2.20.0
+license:mit
+description:Video Acceleration API.
+cksum:1a850dd0f54a9612cd31ddab3586be4c7322d06ca28a243654834d7d40130128f2dc5053794fffe47e0f90e2fb0cf69b02e1856d1fc3c7d7bded719c6c4e02ae
+urls{
+https://github.com/intel/libva/releases/download/$version/libva-$version.tar.bz2
+}
+hostdeps{
+meson
+stdenv
+}
+makedeps{
+libdrm
+libx11
+libxext
+libxfixes
+wayland
+}
