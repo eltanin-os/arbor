@@ -1,0 +1,14 @@
+name:libusb
+version:1.0.27
+license:lgpl-2.1
+description:Library that enables userspace access to USB devices.
+cksum:ff0e1dc21182171d0801acaca5578ccc4654e05612ef0090a126f9aac6613d407e3218b06e2bee788894852bff2d2d6407c31defe6488fc8dd26c00a94963d67
+urls{
+https://github.com/libusb/libusb/releases/download/v$version/libusb-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

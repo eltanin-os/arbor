@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+export ARBOR_MK_CONFIGURE_ARGS "--disable-udev"
+arbor-mk-gnuconfigure install
