@@ -1,0 +1,16 @@
+name:highway
+version:1.1.0
+license:apache-2,bsd-3
+description:Performance-portable, length-agnostic SIMD with runtime dispatch.
+cksum:d17da336f66b6661e3a0ab3c7c9b819f7ef166a43cb1c12ebfa5243b703e0b15a812c52348cad0aa67eb85821833ff902f77a21cef16c83d172bab33be84c1f3
+urls{
+https://github.com/google/highway/archive/refs/tags/$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+googletest
+libc
+}

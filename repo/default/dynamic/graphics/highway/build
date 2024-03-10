@@ -1,0 +1,14 @@
+#!/bin/execlineb -P
+export ARBOR_MK_CMAKE_ARGS "-DHWY_ENABLE_EXAMPLES=OFF;-DHWY_SYSTEM_GTEST=ON"
+# cmake insists on adding '-isystem //include'
+# (apparently not from INCDIR nor INSTALL_INCLUDEDIR)
+# XXX: ugly workaround for the "many legit use cases" of `-isystem` implicitly
+foreground { arbor-mk-cmake install }
+if { arbor-utils-sed arbor-build-dir/build.ninja "s;-isystem //include;;g" }
+backtick -Ex jobs {
+	importas -D "" nprocs nprocs
+	case -- $nprocs {
+		"[0-9]*" { echo "-j${nprocs}" }
+	}
+}
+ninja -C arbor-build-dir $jobs install
