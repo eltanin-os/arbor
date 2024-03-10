@@ -11,6 +11,7 @@ meson
 stdenv
 }
 makedeps{
+gobject-introspection
 glib2
 libc
 python

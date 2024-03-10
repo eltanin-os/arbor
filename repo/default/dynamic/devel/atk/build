@@ -1,3 +1,2 @@
 #!/bin/execlineb -P
-export ARBOR_MK_MESON_ARGS "-Dintrospection=false"
 arbor-mk-meson install
