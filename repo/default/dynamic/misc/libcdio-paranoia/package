@@ -1,0 +1,15 @@
+name:libcdio-paranoia
+version:10.2+2.0.1
+license:gpl-2+,lgpl-2+
+description:CD paranoia on top of libcdio.
+cksum:95811fdb3750cf574e731889cdd25c11817086aa45a8211d9b36d05198a634a2a4062aa723b67e85bf1793d98aa0a34fa6c98591cf08477b82029a1ba122a126
+urls{
+https://ftp.gnu.org/gnu/libcdio/libcdio-paranoia-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libcdio
+}
