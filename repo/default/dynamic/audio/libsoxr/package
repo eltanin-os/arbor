@@ -1,0 +1,16 @@
+name:libsoxr
+version:0.1.3
+license:lgpl-2.1
+description:SoX Resample library.
+cksum:72952812881e72b9e449d3dd362487038d439486024f403897674b93c6f324697b5622c77260171f1469b1005faf810b59c7cb8b296aea928a33e0dfefbe7d1f
+src:soxr-$version-Source
+urls{
+https://sourceforge.net/projects/soxr/files/soxr-$version-Source.tar.xz/download
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
