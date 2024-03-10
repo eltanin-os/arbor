@@ -1,2 +1,8 @@
 #!/bin/execlineb -P
-arbor-utils-install -r root .
+if { arbor-utils-install -r root . }
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	importas -i BINDIR BINDIR
+	importas -i LIBDIR LIBDIR
+}
+ln -s ${LIBDIR}/ld-musl-x86_64.so.1 ${DESTDIR}${BINDIR}/ldd
