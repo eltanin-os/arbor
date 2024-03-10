@@ -26,7 +26,7 @@ BEGIN {
 		importas -i ARBOR_SANDBOX ARBOR_SANDBOX
 		importas -isu repoconf repoconf
 	}
-	fdclose 2
+	redirfd -w 2 /dev/null
 	cat repoconf
 	    ${ARBOR}/config/defaults
 	    ${ARBOR}/config/${ARBOR_SANDBOX}
