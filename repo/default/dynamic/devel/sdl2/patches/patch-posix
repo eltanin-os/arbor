@@ -1,0 +1,25 @@
+diff -Naur a/configure b/configure
+--- a/configure	2024-02-01 21:14:04.000000000 -0300
++++ b/configure	2024-02-20 04:26:15.531886696 -0300
+@@ -18088,12 +18088,6 @@
+ done
+ test -n "$SORT" || SORT="false"
+ 
+-if ! "$SORT" -V </dev/null >/dev/null
+-then :
+-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: sort(1) that supports the -V option is required to find dynamic libraries" >&5
+-printf "%s\n" "$as_me: WARNING: sort(1) that supports the -V option is required to find dynamic libraries" >&2;}
+-fi
+-
+ # Check whether --enable-largefile was given.
+ if test ${enable_largefile+y}
+ then :
+@@ -18423,7 +18417,7 @@
+         host_lib_path="/usr/$base_libdir /usr/local/$base_libdir"
+     fi
+     for path in $env_lib_path $gcc_bin_path $gcc_lib_path $host_lib_path; do
+-        lib=`ls -- $path/$1 2>/dev/null | sed 's,.*/,,' | "$SORT" -V -r | $AWK 'BEGIN{FS="."}{ print NF, $0 }' | "$SORT" -n -s | sed 's,[0-9]* ,,' | head -1`
++        lib=`ls -- $path/$1 2>/dev/null | sed 's;.*/;;' | $AWK 'BEGIN{FS="."}{print NF, $0}' | "$SORT" -n | $AWK 'NR == 1 || $1 == prev { print substr($0, 3); prev = $1 }' | "$SORT" -r | head -n1`
+         if test x$lib != x; then
+             echo $lib
+             return
