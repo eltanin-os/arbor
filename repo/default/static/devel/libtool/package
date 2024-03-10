@@ -1,0 +1,15 @@
+name:libtool
+version:2.4.7
+license:lgpl-2+,gpl-2+
+description:A generic library support script.
+cksum:c7ef69e0da61fb2f70a8e701e18df5c4843e72186baabcdd9fd78fa767b8e70247830736a57565c7dcad11a5a5dcc937424eac05af77449ee74bc6c8779b1f38
+urls{
+https://ftp.gnu.org/gnu/libtool/libtool-$version.tar.xz
+}
+hostdeps{
+m4
+stdenv
+}
+makedeps{
+libc
+}
