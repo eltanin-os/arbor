@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+export ARBOR_MK_CMAKE_ARGS "-DBUILD_EXAMPLES=OFF;-DBUILD_TESTING=OFF"
+arbor-mk-cmake install

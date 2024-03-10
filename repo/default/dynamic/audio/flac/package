@@ -1,0 +1,16 @@
+name:flac
+version:1.4.3
+license:bsd-3,gpl-2+
+description:Free lossless audio codec.
+cksum:e218a6cbfea0d1af45a50f8b911c232b062730dada52bf20a331e5b0f43e498c5d0186b33ff9f19911b3b4fef06305c3039e076e3bdfdab7e34b48adeb540d80
+urls{
+https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$version.tar.xz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+libogg
+}
