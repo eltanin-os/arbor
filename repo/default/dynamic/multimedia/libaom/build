@@ -1,3 +1,5 @@
 #!/bin/execlineb -P
 export ARBOR_MK_CMAKE_ARGS "-DENABLE_TESTS=OFF"
+importas -i LDFLAGS LDFLAGS
+export LDFLAGS "-Wl,-z,stack-size=2097152 ${LDFLAGS}"
 arbor-mk-cmake install
