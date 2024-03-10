@@ -1,0 +1,18 @@
+name:py-packaging
+version:23.2
+license:apache-2.0,bsd-2
+description:Core utilities for Python3 packages.
+cksum:c63c56758a714b7e6486d3c805fc124cc7afb58ac6ec723ba160937bf2d3fc23a6c5ffb3dd58b6b1b379614c70522c50737323e687a0f099fd6ccef94feda2f2
+src:packaging-$version
+urls{
+https://files.pythonhosted.org/packages/source/p/packaging/packaging-$version.tar.gz
+}
+hostdeps{
+py-flit-core
+py-gpep517
+py-installer
+stdenv
+}
+rundeps{
+python
+}
