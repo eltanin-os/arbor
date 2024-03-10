@@ -1,0 +1,10 @@
+#!/bin/execlineb -P
+backtick sitedir { python3 -c "import site;print(site.getsitepackages()[0])" }
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	importas -i sitedir sitedir
+}
+if { mkdir -p ${DESTDIR}/${sitedir} }
+if { cp -pR gpep517 ${DESTDIR}/${sitedir} }
+if { python3 -m compileall ${DESTDIR}/${sitedir} }
+arbor-utils-install bin /tmp/files/gpep517

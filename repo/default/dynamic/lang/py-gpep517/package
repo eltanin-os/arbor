@@ -1,0 +1,16 @@
+name:py-gpep517
+version:15
+license:mit
+description:Python package builder and installer for non-pip-centric world.
+cksum:240e8cea4bd6b1ad809f9861705ad2dce5c78bda834c2d6bc229b8f91af94a106d3e8a31bb34b893ee15012d2078d75b88e48c707757ad3b04198fdad9c51476
+src:gpep517-$version
+urls{
+https://files.pythonhosted.org/packages/source/g/gpep517/gpep517-$version.tar.gz
+}
+hostdeps{
+py-installer
+stdenv
+}
+rundeps{
+python
+}
