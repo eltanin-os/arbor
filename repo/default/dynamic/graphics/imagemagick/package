@@ -1,0 +1,25 @@
+name:imagemagick
+version:7.1.1-29
+license:imagemagick
+description:Software suite, used for editing and manipulating digital images.
+cksum:55238960b6fadd885bdb96dcdc66dfa59241aa666a1e077c383e844ea144c87778f16ea7e9f1618eb0d868ffd5bebe940c25b8aaadba0052b749dcca663927d2
+src:ImageMagick-$version
+urls{
+https://github.com/ImageMagick/ImageMagick/archive/refs/tags/$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+fontconfig
+freetype
+lcms2
+libc
+libjpeg-turbo
+libjxl
+libpng
+libtiff
+libwebp
+libxml2-dynamic
+openjpeg
+}
