@@ -1,7 +1,7 @@
 diff -Naur a/Source/CMakeLists.txt b/Source/CMakeLists.txt
---- a/Source/CMakeLists.txt	2023-01-19 11:32:19.000000000 -0300
-+++ b/Source/CMakeLists.txt	2023-03-12 01:28:45.582510000 -0300
-@@ -746,20 +746,31 @@
+--- a/Source/CMakeLists.txt	2024-02-05 12:28:25.000000000 -0300
++++ b/Source/CMakeLists.txt	2024-02-14 14:54:49.218424431 -0300
+@@ -763,20 +763,31 @@
      "${CMAKE_CURRENT_SOURCE_DIR}/LexerParser"
      ${CMake_HAIKU_INCLUDE_DIRS}
    )
@@ -37,4 +37,93 @@ diff -Naur a/Source/CMakeLists.txt b/Source/CMakeLists.txt
 +    ${ZLIB_LIBRARIES}
    )
  
- # Check if we can build the Mach-O parser.
+ if(CMake_ENABLE_DEBUGGER)
+diff -Naur a/Source/Modules/CMakeBuildUtilities.cmake b/Source/Modules/CMakeBuildUtilities.cmake
+--- a/Source/Modules/CMakeBuildUtilities.cmake	2024-02-05 12:28:25.000000000 -0300
++++ b/Source/Modules/CMakeBuildUtilities.cmake	2024-02-14 15:03:01.657868170 -0300
+@@ -8,6 +8,8 @@
+ # macro.
+ #-----------------------------------------------------------------------
+ 
++find_package(PkgConfig)
++
+ # Suppress unnecessary checks in third-party code.
+ include(Utilities/cmThirdPartyChecks.cmake)
+ 
+@@ -111,11 +113,7 @@
+ #---------------------------------------------------------------------
+ # Build zlib library for Curl, CMake, and CTest.
+ if(CMAKE_USE_SYSTEM_ZLIB)
+-  find_package(ZLIB)
+-  if(NOT ZLIB_FOUND)
+-    message(FATAL_ERROR
+-      "CMAKE_USE_SYSTEM_ZLIB is ON but a zlib is not found!")
+-  endif()
++  pkg_search_module(ZLIB REQUIRED zlib)
+ else()
+   if(NOT POLICY CMP0102) # CMake < 3.17
+     # Store in cache to protect from mark_as_advanced.
+@@ -139,11 +137,7 @@
+ #---------------------------------------------------------------------
+ # Build Curl library for CTest.
+ if(CMAKE_USE_SYSTEM_CURL)
+-  find_package(CURL)
+-  if(NOT CURL_FOUND)
+-    message(FATAL_ERROR
+-      "CMAKE_USE_SYSTEM_CURL is ON but a curl is not found!")
+-  endif()
++  pkg_search_module(CURL REQUIRED libcurl)
+ else()
+   if(CMAKE_TESTS_CDASH_SERVER)
+     set(CMAKE_CURL_TEST_URL "${CMAKE_TESTS_CDASH_SERVER}/user.php")
+@@ -179,13 +173,7 @@
+ #---------------------------------------------------------------------
+ # Build expat library for CMake, CTest, and libarchive.
+ if(CMAKE_USE_SYSTEM_EXPAT)
+-  find_package(EXPAT)
+-  if(NOT EXPAT_FOUND)
+-    message(FATAL_ERROR
+-      "CMAKE_USE_SYSTEM_EXPAT is ON but a expat is not found!")
+-  endif()
+-  set(CMAKE_EXPAT_INCLUDES ${EXPAT_INCLUDE_DIRS})
+-  set(CMAKE_EXPAT_LIBRARIES ${EXPAT_LIBRARIES})
++  pkg_search_module(EXPAT REQUIRED expat)
+ else()
+   set(CMAKE_EXPAT_INCLUDES)
+   set(CMAKE_EXPAT_LIBRARIES cmexpat)
+@@ -248,17 +236,7 @@
+ #---------------------------------------------------------------------
+ # Build or use system libarchive for CMake and CTest.
+ if(CMAKE_USE_SYSTEM_LIBARCHIVE)
+-  find_package(LibArchive 3.3.3)
+-  if(NOT LibArchive_FOUND)
+-    message(FATAL_ERROR "CMAKE_USE_SYSTEM_LIBARCHIVE is ON but LibArchive is not found!")
+-  endif()
+-  # NOTE `FindLibArchive` got imported targets support since 3.17
+-  if (NOT TARGET LibArchive::LibArchive)
+-    add_library(LibArchive::LibArchive UNKNOWN IMPORTED)
+-    set_target_properties(LibArchive::LibArchive PROPERTIES
+-      IMPORTED_LOCATION "${LibArchive_LIBRARIES}"
+-      INTERFACE_INCLUDE_DIRECTORIES "${LibArchive_INCLUDE_DIRS}")
+-  endif ()
++  pkg_search_module(LIBARCHIVE REQUIRED libarchive)
+ else()
+   set(EXPAT_INCLUDE_DIR ${CMAKE_EXPAT_INCLUDES})
+   set(EXPAT_LIBRARY ${CMAKE_EXPAT_LIBRARIES})
+@@ -323,15 +301,7 @@
+ #---------------------------------------------------------------------
+ # Build libuv library.
+ if(CMAKE_USE_SYSTEM_LIBUV)
+-  if(WIN32)
+-    find_package(LibUV 1.38.0)
+-  else()
+-    find_package(LibUV 1.28.0)
+-  endif()
+-  if(NOT LIBUV_FOUND)
+-    message(FATAL_ERROR
+-      "CMAKE_USE_SYSTEM_LIBUV is ON but a libuv is not found!")
+-  endif()
++  pkg_search_module(LIBUV REQUIRED libuv)
+ else()
+   add_subdirectory(Utilities/cmlibuv)
+   add_library(LibUV::LibUV ALIAS cmlibuv)
