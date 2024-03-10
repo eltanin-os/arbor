@@ -1,0 +1,19 @@
+name:speex
+version:1.2.1
+license:bsd-3
+description:A voice compression format.
+cksum:deed880c915296366e521298931cbc2d41fd6fe4225095d8c92a17b22875b60abadbfd434ab2f0b3e99c4d95ebf2d13339cf8a7b2d5c6d0530679f49e6242295
+src:$name-Speex-$version
+urls{
+https://gitlab.xiph.org/xiph/speex/-/archive/Speex-$version/speex-Speex-$version.tar.bz2
+}
+hostdeps{
+autoconf
+automake
+libtool
+stdenv
+}
+makedeps{
+libc
+speexdsp
+}
