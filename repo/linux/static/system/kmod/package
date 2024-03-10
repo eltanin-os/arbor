@@ -1,8 +1,8 @@
 name:kmod
-version:30
+version:31
 license:gpl-2
 description:Linux kernel module handling.
-cksum:2765fdcbbaef70cc3d1b1191c3b3020ca6003ee034d8fa37e06f365c0ffd347ed2326114db6c0868e643f2bc71350a581d171b4743e2eada8b625523c7449d5b
+cksum:f52f098be4d469b317ab45688c7896ef4eaefc4ca4115537c0da4cc7d0177b7b1260010cba9a1f2bd2cacfe6ef43738936e58ec5838e1c8fc9aef16b1714826e
 platforms{
 linux
 }
