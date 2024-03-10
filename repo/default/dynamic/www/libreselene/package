@@ -1,8 +1,8 @@
 name:libreselene
-version:32.4.1
+version:33.0.0
 license:mpl-2
 description:An XUL-based standalone web browser on the Unified XUL Platform (UXP).
-cksum:1b6c4d19e6674182eb5a7c6b57c391d9da2fc7fad789992c1e653d8608787e4435e25724dc6020b99b46269efa786563d5527fbb9889fd746a2449bd82a5e9bc
+cksum:db6a94e57fd644c7563b698c4cfb6edbb897662990e60863e18bcee5d26cc25d30bf75c152e6cea6fd642c8317fd896b11bc2ae354672058d06dbf030070bc30
 src:palemoon-$version
 urls{
 https://downloads.eltaninos.org/mirrors/palemoon-$version.tar.lz
@@ -17,6 +17,7 @@ unzip
 yasm
 }
 makedeps{
+freetype
 gtk2
 libc
 libxt

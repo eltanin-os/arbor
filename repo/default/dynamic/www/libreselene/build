@@ -11,7 +11,17 @@ importas -i SOURCE_DATE_EPOCH SOURCE_DATE_EPOCH
 export MOZ_BUILD_DATE "${SOURCE_DATE_EPOCH}"
 # build/install
 export M4 "gm4"
-if { arbor-mk-gmake -f client.mk build }
+if {
+	# set the default stack size to the expected amount
+	define WL "-D_GNU_SOURCE -Wl,--no-keep-memory -Wl,-z,stack-size=2097152"
+	multisubstitute {
+		importas -iu CFLAGS CFLAGS
+		importas -iu CXXFLAGS CXXFLAGS
+	}
+	export CFLAGS "${WL} ${CFLAGS}"
+	export CXXFLAGS "${WL} ${CXXFLAGS}"
+	arbor-mk-gmake -f client.mk build
+}
 multisubstitute {
 	importas -i DESTDIR DESTDIR
 	importas -i PREFIX PREFIX

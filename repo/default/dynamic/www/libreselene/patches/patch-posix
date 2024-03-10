@@ -16,21 +16,6 @@ diff -Naur a/platform/build/unix/build-gcc/build-gcc.sh b/platform/build/unix/bu
  cd $root_dir/tools
 -tar caf $root_dir/gcc.tar.xz gcc/
 +tar -c gcc/ | xz > $root_dir/gcc.tar.xz
-diff -Naur a/platform/modules/freetype2/builds/toplevel.mk b/platform/modules/freetype2/builds/toplevel.mk
---- a/platform/modules/freetype2/builds/toplevel.mk	2023-10-29 00:33:40.435715086 -0300
-+++ b/platform/modules/freetype2/builds/toplevel.mk	2023-10-31 01:40:51.855643079 -0300
-@@ -265,9 +265,9 @@
- 
- 	mv tmp freetype-$(version)
- 
--	tar -H ustar -chf - freetype-$(version) \
-+	pax -x ustar -Lcf - freetype-$(version) \
- 	| gzip -9 -c > freetype-$(version).tar.gz
--	tar -H ustar -chf - freetype-$(version) \
-+	pax -x ustar -Lcf - freetype-$(version) \
- 	| xz -c > freetype-$(version).tar.xz
- 
- 	@# Use CR/LF for zip files.
 diff -Naur a/platform/toolkit/mozapps/installer/packager.mk b/platform/toolkit/mozapps/installer/packager.mk
 --- a/platform/toolkit/mozapps/installer/packager.mk	2023-10-29 00:33:42.915683908 -0300
 +++ b/platform/toolkit/mozapps/installer/packager.mk	2023-10-31 13:01:38.429132108 -0300
