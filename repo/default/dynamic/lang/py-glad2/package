@@ -1,0 +1,20 @@
+name:py-glad2
+version:2.0.5
+license:mit,apache-2
+description:Multi-Language GL/GLES/EGL/GLX/WGL Loader-Generator
+cksum:4fe7aee1a1332c8b430d654bef838c48e397440159f5ab6bd343654ae17e8123d76303ade5c5772d7a6aa0451dbb462341011a8d879c6aa3fc52a8245aac3033
+src:glad-$version
+urls{
+https://github.com/Dav1dde/glad/archive/refs/tags/v$version.tar.gz
+}
+hostdeps{
+py-gpep517
+py-installer
+py-setuptools
+py-wheel
+stdenv
+}
+rundeps{
+python
+py-jinja2
+}
