@@ -1,0 +1,19 @@
+name:libxi
+version:1.8.1
+license:mit
+description:X11 Input extension library.
+cksum:7a09b2800450254c259035e2d92bb2b18108f84e240ddecd411ea53fba3e1ae182e5aea9d5460fd860a8ec5dfb8105be13ccb4235232da6f7ab918de99e3e324
+src:libXi-$version
+urls{
+https://www.x.org/releases/individual/lib/libXi-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libx11
+libxext
+libxfixes
+xorg-proto
+util-macros
+}
