@@ -1,0 +1,6 @@
+#!/bin/execlineb -P
+export M4 "gm4"
+if { arbor-mk-meson install }
+# XXX: too lazy at the moment to check the reason for the partial install
+elglob gir "arbor-build-dir/gir/*"
+arbor-utils-install -p "gir-1.0" drt $gir

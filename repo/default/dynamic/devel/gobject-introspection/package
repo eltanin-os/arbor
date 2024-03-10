@@ -1,0 +1,24 @@
+name:gobject-introspection
+version:1.79.1
+license:
+description:GObject Introspection.
+cksum:f2a687f36192ba213cbc83ffaef64dd7153361d50ff0926ced0d3daaaa2012b296f5900d309b1f77aed125e0a37887ae7f5806818ea1a7aa85ce29cf0274cbb8
+urls{
+https://download.gnome.org/sources/gobject-introspection/1.79/gobject-introspection-$version.tar.xz
+}
+hostdeps{
+bison
+gm4
+meson
+stdenv
+}
+makedeps{
+cairo
+glib2
+libc
+libffi
+}
+rundeps{
+python
+py-setuptools
+}

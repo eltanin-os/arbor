@@ -1,0 +1,15 @@
+$NetBSD: patch-tools_meson.build,v 1.2 2020/03/11 10:09:36 wiz Exp $
+
+After testing for the meson_option "python", meson.build then overwrites it.
+
+--- a/tools/meson.build.orig	2020-03-07 14:13:21.693311500 +0000
++++ b/tools/meson.build
+@@ -12,7 +12,7 @@ endif
+ if cc.get_id() == 'msvc'
+   python_cmd = '/usr/bin/env ' + python.path()
+ else
+-  python_cmd = '/usr/bin/env python@0@'.format(python.language_version().split('.')[0])
++  python_cmd = python.path()
+ endif
+ 
+ tool_output = []
