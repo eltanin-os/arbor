@@ -1,0 +1,16 @@
+name:dav1d
+version:1.4.0
+license:bsd-2
+description:AV1 decoder library.
+cksum:8df5a43782427bcbd6e7a532bdccc27850c49b6d80a5aaaf4f540f6dc2634157b3e2742ac6c9fde6e29f43e3b274412ad89564dd60ab83ce809ade54b2f717b4
+urls{
+https://code.videolan.org/videolan/dav1d/-/archive/$version/dav1d-$version.tar.bz2
+}
+hostdeps{
+meson
+nasm
+stdenv
+}
+makedeps{
+libc
+}
