@@ -1,12 +1,12 @@
 diff -Naur a/Makefile b/Makefile
---- a/Makefile	2022-10-04 12:17:15.000000000 -0300
-+++ b/Makefile	2022-10-23 23:54:26.198413666 -0300
-@@ -104,7 +104,7 @@
+--- a/Makefile	2024-01-08 14:38:23.000000000 -0300
++++ b/Makefile	2024-02-14 11:31:37.129602757 -0300
+@@ -107,7 +107,7 @@
  	install -m 0755 -d $(DESTDIR)$(ARPDDIR)
  	install -m 0755 -d $(DESTDIR)$(HDRDIR)
  	@for i in $(SUBDIRS);  do $(MAKE) -C $$i install; done
--	install -m 0644 $(shell find etc/iproute2 -maxdepth 1 -type f) $(DESTDIR)$(CONFDIR)
-+	install -m 0644 etc/iproute2/bpf_pinning etc/iproute2/ematch_map etc/iproute2/group etc/iproute2/nl_protos etc/iproute2/rt_dsfield etc/iproute2/rt_protos etc/iproute2/rt_realms etc/iproute2/rt_scopes etc/iproute2/rt_tables $(DESTDIR)$(CONFDIR)
+-	install -m 0644 $(shell find etc/iproute2 -maxdepth 1 -type f) $(DESTDIR)$(CONF_USR_DIR)
++	install -m 0644 etc/iproute2/bpf_pinning etc/iproute2/ematch_map etc/iproute2/group etc/iproute2/nl_protos etc/iproute2/rt_dsfield etc/iproute2/rt_protos etc/iproute2/rt_realms etc/iproute2/rt_scopes etc/iproute2/rt_tables $(DESTDIR)$(CONF_USR_DIR)
  	install -m 0755 -d $(DESTDIR)$(BASH_COMPDIR)
  	install -m 0644 bash-completion/tc $(DESTDIR)$(BASH_COMPDIR)
  	install -m 0644 bash-completion/devlink $(DESTDIR)$(BASH_COMPDIR)
