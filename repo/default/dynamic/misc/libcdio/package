@@ -1,0 +1,16 @@
+name:libcdio
+version:2.1.0
+license:gpl-3+
+description:
+cksum:be384a28b7ef83e50e26a264891ad76f3e6c716fb6fab6066ca6a4bbb3ffceda248388c7f983f692919c8a605aabb2340c3f93b9522713beba261af7872e8a80
+urls{
+https://ftp.gnu.org/gnu/libcdio/libcdio-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libcddb
+ncurses-dynamic
+}

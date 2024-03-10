@@ -1,0 +1,32 @@
+diff -Naur a/include/cdio/Makefile.am b/include/cdio/Makefile.am
+--- a/include/cdio/Makefile.am	2018-08-12 13:33:48.000000000 -0300
++++ b/include/cdio/Makefile.am	2024-03-02 02:04:21.463079497 -0300
+@@ -22,7 +22,7 @@
+ cdio_config.h: $(top_builddir)/config.h
+ 	@echo  '#ifndef __CDIO_CONFIG_H__' > cdio_config.h
+ 	@echo  '#define __CDIO_CONFIG_H__' >> cdio_config.h
+-	@@SED@ @SED_EXTENDED_RE_FLAG@ -e 's/^(#[ \t]*define[ \t]+)/\1CDIO_/' $(top_builddir)/config.h >>cdio_config.h
++	@@SED@ -e 's/^\(#[ \t]*define[ \t]+\)/\1CDIO_/' $(top_builddir)/config.h >>cdio_config.h
+ 	@echo '#endif /* #ifndef CDIO_CONFIG_H */' >>cdio_config.h
+ 
+ libcdioincludedir=$(includedir)/cdio
+diff -Naur a/include/cdio/Makefile.in b/include/cdio/Makefile.in
+--- a/include/cdio/Makefile.in	2019-04-17 20:39:24.000000000 -0300
++++ b/include/cdio/Makefile.in	2024-03-02 02:04:40.713080578 -0300
+@@ -301,7 +301,6 @@
+ RM = @RM@
+ SBPCD_H = @SBPCD_H@
+ SED = @SED@
+-SED_EXTENDED_RE_FLAG = @SED_EXTENDED_RE_FLAG@
+ SET_MAKE = @SET_MAKE@
+ SHELL = @SHELL@
+ STRIP = @STRIP@
+@@ -703,7 +702,7 @@
+ cdio_config.h: $(top_builddir)/config.h
+ 	@echo  '#ifndef __CDIO_CONFIG_H__' > cdio_config.h
+ 	@echo  '#define __CDIO_CONFIG_H__' >> cdio_config.h
+-	@@SED@ @SED_EXTENDED_RE_FLAG@ -e 's/^(#[ \t]*define[ \t]+)/\1CDIO_/' $(top_builddir)/config.h >>cdio_config.h
++	@@SED@ -e 's/^\(#[ \t]*define[ \t]+\)/\1CDIO_/' $(top_builddir)/config.h >>cdio_config.h
+ 	@echo '#endif /* #ifndef CDIO_CONFIG_H */' >>cdio_config.h
+ 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
