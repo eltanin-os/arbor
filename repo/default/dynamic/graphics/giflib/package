@@ -1,0 +1,14 @@
+name:giflib
+version:5.2.2
+license:mit
+description:GIF image format library.
+cksum:ad61a1d390c3e377ab0c2e97bce5fafeb2d535e420c2502132ad8adde8b5d6a2541a115b6b27c57ded613c85fabe04fce1f5a8ac8fdaa3e312f1f9b1d6fc2d52
+urls{
+https://downloads.sourceforge.net/sourceforge/giflib/giflib-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
