@@ -1,0 +1,15 @@
+name:xvidcore
+version:1.3.7
+license:gpl-2
+description:ISO MPEG-4 compliant video codec.
+cksum:2b2412e26637c420410f8388e71ce9478800e44cc80df6f5aafc1d9ff2dc61b0537b253cdc051324d123feae990d97db448a6242ea992164ceea5cdac4dfb84e
+src:$name
+urls{
+https://downloads.xvid.com/downloads/xvidcore-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}

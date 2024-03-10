@@ -1,0 +1,5 @@
+#!/bin/execlineb -P
+cd build/generic
+if { arbor-mk-gnuconfigure }
+importas -i DESTDIR DESTDIR
+arbor-mk-gmake DESTDIR=${DESTDIR} install
