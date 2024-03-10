@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+export ARBOR_MK_CMAKE_ARGS "-DWITH_GSSAPI=OFF;-DUNIT_TESTING=OFF"
+arbor-mk-cmake install

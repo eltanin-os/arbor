@@ -1,0 +1,17 @@
+name:libssh
+version:0.10.6
+license:bsd-2
+description:SSHv2+v1 protocol library.
+cksum:33b68a86f6cc4b97457ae1cc9cf389e16d09bed8795c2c779a535c1244622df04a77b610ae2ba991a76e43e76a20818f0baad60cbf50fdd3ae0ab137c0cbadbf
+urls{
+https://www.libssh.org/files/0.10/libssh-0.10.6.tar.xz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+libressl-dynamic
+zlib
+}
