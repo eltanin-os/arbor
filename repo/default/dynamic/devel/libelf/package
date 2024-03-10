@@ -1,0 +1,14 @@
+name:libelf
+version:r4037
+license:bsd-2
+description:ELF object file access library.
+cksum:2996c2a3ac05cad890eeb73c0fa6341173bd1d8b4adff7837773636ea578a138299755b748a214d5c6c64845e5d1cb46c876bc1484a30705a26d817b56eae4da
+urls{
+https://downloads.eltaninos.org/mirrors/libelf-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
