@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+export ARBOR_MK_CMAKE_ARGS "-DENABLE_CURVE=ON;-DWITH_LIBSODIUM=ON;-DWITH_DOC=OFF"
+arbor-mk-cmake install

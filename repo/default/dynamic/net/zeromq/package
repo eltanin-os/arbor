@@ -1,0 +1,15 @@
+name:zeromq
+version:4.3.5
+license:mpl-2
+description:An open-source universal messaging library.
+cksum:3e6620dde4777b371ce9a5481bda1a75f3becae22827f8e7423941489e720ec6d9b8f6e2c378daf0cda47795421f4a0a2b381d6076cb8522e6c3b01cc198551a
+urls{
+https://github.com/zeromq/libzmq/releases/download/v$version/zeromq-$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
