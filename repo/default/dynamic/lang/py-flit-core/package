@@ -1,0 +1,16 @@
+name:py-flit-core
+version:3.9.0
+license:bsd-3
+description:A simple packaging tool for simple packages.
+cksum:c13883a1e6c639f444d22b6b8c77f360a674376953ec65a72ff6b8d50fd5917df2fe3f9042acd40924a874b01b05cb0d2f19b10a74d48af238f03de11c11be38
+src:flit-$version
+urls{
+https://files.pythonhosted.org/packages/source/f/flit/flit-$version.tar.gz
+}
+hostdeps{
+stdenv
+py-installer
+}
+rundeps{
+python
+}

@@ -1,0 +1,9 @@
+#!/bin/execlineb -P
+cd flit_core
+if { rm -Rf vendor }
+if { python3 build_dists.py }
+multisubstitute {
+	importas -i DESTDIR DESTDIR
+	elglob -s dist "dist/*.whl"
+}
+python3 -m installer -d "${DESTDIR}" $dist
