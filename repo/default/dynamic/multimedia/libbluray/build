@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+export ARBOR_MK_CONFIGURE_ARGS "--disable-bdjava-jar"
+arbor-mk-gnuconfigure install

@@ -1,0 +1,17 @@
+name:libbluray
+version:1.3.4
+license:lgpl-2.1+
+description:Library for Blu-Ray disc playback.
+cksum:88cf8b72ff1c04d02b71c83a4885714ebfb03356139e75afad1e1e756457b878b6f63b5f0fef6295b47a2629043a5917cc5f3a331735d8e09fd666d27677c348
+urls{
+https://download.videolan.org/pub/videolan/libbluray/$version/libbluray-$version.tar.bz2
+}
+hostdeps{
+stdenv
+}
+makedeps{
+fontconfig
+freetype
+libc
+libxml2-dynamic
+}
