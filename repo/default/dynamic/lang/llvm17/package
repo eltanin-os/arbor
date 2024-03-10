@@ -1,8 +1,8 @@
 name:llvm17
-version:17.0.5
+version:17.0.6
 license:apache-2.0
 description:Low Level Virtual Machine compiler infrastructure.
-cksum:40a5df9c35ab7f52e5aae8a22508f88f383face8c741853380736ccbbdab49107b1091dca073e41683b0888f5944490872c43a213b51a1ed30b2ec732169887c
+cksum:dbd8adfbc95db7d95790f8557309e2e945355d451ee035e8752feab7f96b59d43dae5d6492e61e055e36727f53cb44a9f42e7306450e71c95ba295069c399b7d
 src:llvm-project-$version.src
 urls{
 https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/llvm-project-$version.src.tar.xz
