@@ -1,0 +1,19 @@
+name:libxcursor
+version:1.2.1
+license:mit
+description:X cursor management library.
+cksum:5d919c4802ed22487dccb54e16514e8eecec452db77f63282ab5ff370c881ddf4e6989c3250edd4b1e286d6e9e468e6fbd285a15a488286867fed8a7f3568622
+src:libXcursor-$version
+urls{
+https://www.x.org/releases/individual/lib/libXcursor-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libx11
+libxfixes
+libxrender
+xorg-proto
+util-macros
+}
