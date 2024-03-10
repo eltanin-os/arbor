@@ -1,8 +1,8 @@
 name:mesalib
-version:23.2.1
+version:24.0.2
 license:mit,sgi-b-2.0,bsl-1.0
 description:Mesa DRI OpenGL library.
-cksum:eeb8214fe968d50738200654c7049cdb5b7392e7b660e2f1224a2b13b2ce6d9c042c913175c7987932a02d4b9d92b9d236c203e5672e95832850a10d039fcb82
+cksum:b46c37d3f7367df066eaf73cdcd53094ccb42a68c94b3287a5bfeac1e2fa35161b25e2592fc349eda08fcf0669ad3b09eba9af2ec7da07655026f3cfbb016020
 src:mesa-$version
 urls{
 https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
@@ -18,6 +18,7 @@ expat-dynamic
 glslang
 libc
 libdrm
+libelf
 llvm
 libxdamage
 libxext
@@ -25,5 +26,6 @@ libxrandr
 libxshmfence
 libxxf86vm
 wayland
+vulkan-loader
 zlib-dynamic
 }
