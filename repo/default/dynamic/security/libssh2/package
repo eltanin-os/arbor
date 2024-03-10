@@ -1,0 +1,16 @@
+name:libssh2
+version:1.11.0
+license:bsd-3
+description:SSH2 protocol library.
+cksum:c5a26dcbc016962dc84bcf07e5876ca7ea7b75876f903a74a43440aea1aacad6710922e52da0abc070386a3b2fac742c506aa6593139e201ab100ac281e02736
+urls{
+https://libssh2.org/download/libssh2-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libressl-dynamic
+zlib-dynamic
+}
