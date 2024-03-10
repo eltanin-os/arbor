@@ -1,4 +1,3 @@
 #!/bin/execlineb -P
-if { arbor-utils-sed configure "1232d" } # remove flag check
-# not gnuconfigure but compatible
+# not gnuconfigure but compatible (patched)
 arbor-mk-gnuconfigure install

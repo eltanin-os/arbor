@@ -1,0 +1,26 @@
+diff -Naur a/configure b/configure
+--- a/configure	2023-05-07 02:23:05.000000000 -0300
++++ b/configure	2024-02-13 15:15:20.465431448 -0300
+@@ -1384,9 +1384,6 @@
+ 				mb_escaped_arg="$mb_custom_cfgdefs_space$mb_escaped_arg"
+ 				mb_custom_cfgdefs_args="$mb_custom_cfgdefs_args$mb_escaped_arg"
+ 				mb_custom_cfgdefs_space=' '
+-			else
+-				error_msg ${arg#}: "unsupported config argument."
+-				exit 2
+ 			fi
+ 			;;
+ 	esac
+diff -Naur a/project/config/cfgdefs.sh b/project/config/cfgdefs.sh
+--- a/project/config/cfgdefs.sh	2023-09-05 14:53:51.000000000 -0300
++++ b/project/config/cfgdefs.sh	2024-02-13 15:15:33.943431141 -0300
+@@ -18,8 +18,7 @@
+ for arg ; do
+ 	case "$arg" in
+ 		*)
+-			error_msg ${arg#}: "unsupported config argument."
+-			exit 2
++			:
+ 	esac
+ done
+ 
