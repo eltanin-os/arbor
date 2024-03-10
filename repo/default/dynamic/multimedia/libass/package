@@ -1,0 +1,18 @@
+name:libass
+version:0.17.1
+license:isc
+description:Portable library for SSA/ASS subtitle rendering.
+cksum:8810e11cb9a05b69e8cd57818c5f2b03ef46969a98d58f9a9c506a4418b3e2112e82fa6972997a2f12e8dabe69e7d5e347d584ed561cdcf5ff3ab8eaed94f703
+urls{
+https://github.com/libass/libass/releases/download/$version/libass-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+harfbuzz
+freetype
+fribidi
+fontconfig
+libc
+}
