@@ -1,0 +1,14 @@
+name:jbig2dec
+version:0.20
+license:agpl-3+
+description:JBIG2 decoder library.
+cksum:814d82134b627b1aea151a6a753b28631df572113c01567d233027f711dd4ab8644ab47478c1cf789dee8e6ebd343511b1a3f16db698f9605a9dcd88a666c79e
+urls{
+https://github.com/ArtifexSoftware/jbig2dec/releases/download/$version/jbig2dec-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
