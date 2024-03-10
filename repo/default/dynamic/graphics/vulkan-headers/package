@@ -1,0 +1,16 @@
+name:vulkan-headers
+version:1.3.279
+license:apache-2
+description:Headers for Vulkan Graphics API.
+cksum:3d92fd3a94a86894d40cb222ce374137f8f58952180abf238cd8cd56b600f02981cfaf1c0f126c2bc9de8ce91cae8fef21a75f4999967134e05d4c8355e07afa
+src:Vulkan-Headers-$version
+urls{
+https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/v$version/Vulkan-Headers-$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
