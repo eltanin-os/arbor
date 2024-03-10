@@ -1,0 +1,15 @@
+name:brotli
+version:1.1.0
+license:mit
+description:Brotli compression format.
+cksum:c40c5ce2c492668955a3ddbd95fa882c0331778ae6a7737e47f7f634eb55d0d03ea4ba72ff534b1a12dacace1bea7b6fc688c08e58da4ed64cc207403e6e412a
+urls{
+https://github.com/google/brotli/archive/refs/tags/v$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+}
