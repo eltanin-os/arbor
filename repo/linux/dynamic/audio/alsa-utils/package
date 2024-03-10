@@ -1,8 +1,8 @@
 name:alsa-utils
-version:1.2.10
-license:
-description:
-cksum:091dfabab57bff194fc86a189ebc38d20653cb557a34bef7413e1b3c6a55b3b4a8b96a82444413120ca4ccfa7a1164c4e66e5c9c79244977a933f6c064df3242
+version:1.2.11
+license:gpl-2.0+
+description:Advanced Linux Sound Architecture (ALSA) utilities.
+cksum:df115b21bb22fabac2aa17bc3eb9a3b2441754216b00fcce1f9ff844717db060ae51cda042618d715408a64c9e7066b70c50834f94fc78c5a1fd5ed3d04e1e13
 urls{
 https://www.alsa-project.org/files/pub/utils/alsa-utils-$version.tar.bz2
 }
