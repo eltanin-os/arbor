@@ -1,0 +1,17 @@
+name:libsrt
+version:1.5.3
+license:mpl-2
+description:Secure Reliable Transport (SRT).
+cksum:df9dbc81fbb49f6de97832803add8def56fe2f2c11d13c53e64f0820f2accd309cf1c75741fe2c4230c4a394d7e59654352ceab50a678781c036099aaf10fe85
+src:srt-$version
+urls{
+https://github.com/Haivision/srt/archive/refs/tags/v$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+libc
+libressl-dynamic
+}
