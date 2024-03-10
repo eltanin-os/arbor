@@ -1,11 +1,11 @@
 name:expat-dynamic
-version:2.5.0
+version:2.6.0
 license:mit
 description:XML Parser library written in C.
-cksum:125392df7d28f3fb5938a7e184545f12943186faa859e36d438685f48dd408fe63828d99339b727cb5fce390d16bcfac9a0460b591dbf29daf1d259adc6d762f
+cksum:382d07d9977a9eb6d710e99e31ba9a7cc01d38651145f4b9381c328d84b0e85dd1521deba79de94e3bcc50546f408121dc07f9ebc3695dca618adcb8b48f406e
 src:expat-$version
 urls{
-https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-$version.tar.lz
+https://github.com/libexpat/libexpat/releases/download/R_2_6_0/expat-$version.tar.lz
 }
 hostdeps{
 stdenv
