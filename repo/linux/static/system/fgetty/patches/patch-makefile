@@ -1,0 +1,64 @@
+diff -Naur a/Makefile b/Makefile
+--- a/Makefile	2010-02-07 08:53:18.000000000 -0200
++++ b/Makefile	2024-01-10 05:27:35.302514851 -0300
+@@ -1,22 +1,12 @@
+-# Uncomment the following if you are a distribution maker and want to
+-# install to somewhere else than /
+-#DESTDIR=/tmp/fefix
++INSTALL ?= install
+ 
+ all: fgetty login login2 checkpassword
+ 
+-DIET=diet -Os
+-#CROSS=arm-linux-
+-CROSS=
+-LDFLAGS=-s
+-
+ %.o: %.c
+-#	gcc -march=i386 -mcpu=i386 -pipe -Os -fomit-frame-pointer -I../dietlibc/include -c $^ -DTEST
+-	$(DIET) $(CROSS)$(CC) -pipe -Os -fomit-frame-pointer -I../dietlibc/include -c $^ -DTEST
+-#	gcc -march=i386 -mcpu=i386 -pipe -g -I../dietlibc/include -DTEST -c $^
+-	$(CROSS)strip -x -R .comment -R .note $@
++	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -DTEST
+ 
+ %: %.o
+-	$(DIET) $(CROSS)$(CC) -o $@ $^ $(LDFLAGS)
++	$(CC) -o $@ $^ $(LDFLAGS)
+ 
+ fgetty: fgetty.o fmt_ulong.o
+ 
+@@ -24,20 +14,20 @@
+ login2: login2.o
+ checkpassword: checkpassword.o
+ checkpassword-pam: checkpassword-pam.o checkpassword-pam2.o
+-	$(CROSS)$(CC) -o $@ $^ -lmisc $(LDFLAGS)
++	$(CC) -o $@ $^ -lmisc $(LDFLAGS)
+ 
+ debug: fgetty.c fmt_ulong.o
+ 	gcc -g -o debug fgetty.c fmt_ulong.o -DDEBUG
+ 
+ install:
+-	install -d $(DESTDIR)/bin $(DESTDIR)/sbin $(DESTDIR)/usr/man/man8
+-	install login $(DESTDIR)/bin/login1
+-	install login2 $(DESTDIR)/bin
+-	install fgetty $(DESTDIR)/sbin
+-	install checkpassword $(DESTDIR)/bin/checkpassword.login
+-	install -m 644 fgetty.8 $(DESTDIR)/usr/man/man8/fgetty.8
+-	@echo "now change your /etc/inittab to do something like"
+-	@echo "  1:123:respawn:/sbin/fgetty /dev/vc/1 --noclear"
++	$(INSTALL) -d $(DESTDIR)/$(BINDIR)
++	$(INSTALL) -d $(DESTDIR)/$(BINDIR)
++	$(INSTALL) -d $(DESTDIR)/$(MANDIR)/man8
++	$(INSTALL) login $(DESTDIR)/$(BINDIR)/login1
++	$(INSTALL) login2 $(DESTDIR)/$(BINDIR)
++	$(INSTALL) fgetty $(DESTDIR)/$(BINDIR)
++	$(INSTALL) checkpassword $(DESTDIR)/$(BINDIR)/checkpassword.login
++	$(INSTALL) -m 644 fgetty.8 $(DESTDIR)/$(MANDIR)/man8
+ 
+ clean:
+ 	rm -f *.o fgetty debug dietgetty login login2 checkpassword core
+@@ -56,4 +46,3 @@
+ 
+ rename:
+ 	if test $(CURNAME) != $(VERSION); then cd .. && mv $(CURNAME) $(VERSION); fi
+-
