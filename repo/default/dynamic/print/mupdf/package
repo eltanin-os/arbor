@@ -1,0 +1,23 @@
+name:mupdf
+version:1.23.11
+license:agpl-3+
+description:Lightweight PDF, XPS and E-book viewer and toolkit (Library only).
+cksum:4b23b6203817d0d1e75b40b09b694e61eff819e409a5c2be61aa0eab064322113803b9dbe356b278258639b121354dd29712ec05d8e84376df9e9de8b22101bf
+src:$name-$version-source
+urls{
+https://mupdf.com/downloads/archive/mupdf-$version-source.tar.lz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+# freeglut (modified) and lcms2 (forked) must not be used
+freetype
+gumbo-parser
+harfbuzz
+jbig2dec
+libc
+libjpeg-turbo
+openjpeg
+zlib-dynamic
+}
