@@ -15,6 +15,7 @@ cairo
 fribidi
 fontconfig
 harfbuzz
+gobject-introspection
 glib2
 libc
 }
