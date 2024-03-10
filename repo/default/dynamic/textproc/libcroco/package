@@ -1,0 +1,16 @@
+name:libcroco
+version:0.6.13
+license:lgpl-2
+description:Toolkit to parse and manipulate CSS (Cascading Style Sheets).
+cksum:55a74808bb65fea0215f386eb93d8518db969252f9b19e733a5d969e7ddeb5819d7531b6be6c212e32e7b506067221891f1df61c0e56f3f4692c1bef85e26ca9
+urls{
+https://download.gnome.org/sources/libcroco/0.6/libcroco-$version.tar.xz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+glib2
+libc
+libxml2-dynamic
+}
