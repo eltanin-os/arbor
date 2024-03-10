@@ -1,0 +1,15 @@
+name:libsodium
+version:1.0.19-stable
+license:isc
+description:A modern, portable, easy to use crypto library.
+cksum:dae28b175d70d67ab9a78c8cace07d90c7bb5e20643bd0c9eacd4e6a3c91c5fdead2480c45ac505c0a07feff0f0f10effa562faad4cec2565215e90e3b4c6275
+src:$name-stable
+urls{
+https://download.libsodium.org/libsodium/releases/libsodium-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+}
