@@ -1,8 +1,8 @@
 name:perl
-version:5.38.0
+version:5.38.2
 license:artistic-perl,gpl-1+
 description:Larry Wall's Practical Extraction and Report Language.
-cksum:b5ffa588c42ccdd88e07a3212ebca523ce8a8e720987c78eb7c0bf5e1f46e0b9fb3889ff63118203535f05ce71f15d476958081c26a5d6f8342cb07091f51703
+cksum:f7be852b9447cccf51ce089bd167dc902259f273d309b231d11b7908ddca6db08aa9399f38701ccd918a8d31c7a2daf3046cbb55b7847576dc576d6e1dd73365
 urls{
 https://www.cpan.org/src/5.0/perl-$version.tar.gz
 }
