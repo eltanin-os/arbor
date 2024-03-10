@@ -1,14 +1,15 @@
 name:glib2
-version:2.78.0
+version:2.79.1
 license:lgpl-2+
 description:A library providing a set of interfaces for accessibility.
-cksum:48361c85abdead5cedf9b12608ef41aa918cb012465d8f74685fbb6974dcbef09dd2f5ae1154d7bde41a1344f15b6476f072be1ed1b8f2307ce4c4fd3f9650ee
+cksum:57d6d2d31cee3f34de9fd1521a4e114b91775ca5b01892a8e6f23c71644fec7a9ae64fa3d9244ad46b1b758e5df30e6e06d024fae76ba4fedf07f1822840d596
 src:glib-$version
 urls{
-https://download.gnome.org/sources/glib/2.78/glib-$version.tar.xz
+https://download.gnome.org/sources/glib/2.79/glib-$version.tar.xz
 }
 hostdeps{
 meson
+py-packaging
 stdenv
 }
 makedeps{
