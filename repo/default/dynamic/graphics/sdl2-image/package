@@ -1,0 +1,21 @@
+name:sdl2-image
+version:2.8.2
+license:zlib
+description:Image decoding for many popular formats for SDL.
+cksum:d765944187d73e74a4bf4188234da6fb653f98be55c8f8b1811e77dee7baa2db802bb6307f1faf771a745466d5b8b9a06844701760092e87315aaee9bcac0adc
+src:SDL2_image-$version
+urls{
+https://github.com/libsdl-org/SDL_image/releases/download/release-$version/SDL2_image-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libjpeg-turbo
+libpng
+libtiff
+libwebp
+sdl2
+zlib-dynamic
+}
