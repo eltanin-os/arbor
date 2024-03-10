@@ -1,0 +1,8 @@
+#!/bin/execlineb -P
+if { arbor-utils-sed configure "772s;.*;};" } # ignore unknown options
+if {
+	importas -i DESTDIR DESTDIR
+	export ARBOR_MK_CONFIGURE_ARGS "-disable-nls"
+	arbor-mk-gnuconfigure DESTDIR=${DESTDIR} install
+}
+arbor-utils-install -p "a52dec" inc liba52/a52_internal.h
