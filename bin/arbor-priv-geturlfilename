@@ -20,5 +20,6 @@ case -- $urls {
 	".*\.tar\.gz|.*\.tgz" { echo ".tar.gz" }
 	".*\.tar\.lz|.*\.tlz" { echo ".tar.lz" }
 	".*\.tar\.xz|.*\.txz" { echo ".tar.xz" }
+	".*.whl" { echo ".whl" }
 }
 exit 1

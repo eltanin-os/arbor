@@ -1,19 +1,41 @@
 #!/bin/execlineb -S1
 ifelse -n { test -e "${1}" } { exit 1 }
-multisubstitute {
-	importas -is UNBZ2 UNBZ2
-	importas -is UNTAR UNTAR
-	importas -is UNGZ UNGZ
-	importas -is UNLZ UNLZ
-	importas -is UNXZ UNXZ
-}
-pipeline {
-	case -- $1 {
-		".*\.tar\.bz2|.*\.tbz2" { $UNBZ2 $1 }
-		".*\.tar\.gz|.*\.tgz" { $UNGZ  $1 }
-		".*\.tar\.lz|.*\.tlz" { $UNLZ  $1 }
-		".*\.tar\.xz|.*\.txz" { $UNXZ  $1 }
+case -- $1 {
+	".*\.tar\.bz2|.*\.tbz2" {
+		pipeline {
+			importas -is UNBZ2 UNBZ2
+			$UNBZ2 $1
+		}
+		importas -is UNTAR UNTAR
+		$UNTAR
 	}
-	arbor-utils-err "${1}: unknown format"
+	".*\.tar\.gz|.*\.tgz" {
+		pipeline {
+			importas -is UNGZ UNGZ
+			$UNGZ $1
+		}
+		importas -is UNTAR UNTAR
+		$UNTAR
+	}
+	".*\.tar\.lz|.*\.tlz" {
+		pipeline {
+			importas -is UNLZ UNLZ
+			$UNLZ $1
+		}
+		importas -is UNTAR UNTAR
+		$UNTAR
+	}
+	".*\.tar\.xz|.*\.txz" {
+		pipeline {
+			importas -is UNXZ UNXZ
+			$UNXZ $1
+		}
+		importas -is UNTAR UNTAR
+		$UNTAR
+	}
+	".*\.whl" {
+		importas -is UNZIP UNZIP
+		$UNZIP $1
+	}
 }
-$UNTAR
+arbor-utils-err "${1}: unknown format"
