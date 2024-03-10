@@ -1,0 +1,18 @@
+name:openjpeg
+version:2.5.0
+license:bsd-2
+description:JPEG 2000 library.
+cksum:81c09cd9a0159784c7fc5df3c09ade5bfd723692017363ebfdcd981292b351aab33c945f59b511380e0adbc52ca236653ffdfd8a0cd967591baea4091035ae8d
+urls{
+https://github.com/uclouvain/openjpeg/archive/v$version/openjpeg-$version.tar.gz
+}
+hostdeps{
+cmake
+stdenv
+}
+makedeps{
+lcms2
+libc
+libtiff
+libpng
+}
