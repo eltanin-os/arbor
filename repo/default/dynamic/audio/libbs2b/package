@@ -1,0 +1,15 @@
+name:libbs2b
+version:3.1.0
+license:mit
+description:Bauer Stereophonic-to-Binaural DSP.
+cksum:dd9416eee5f84e22c0df0c4da34fedb9af0b8569414124f6815b953a60c2636fd25d7662e048d1092fbc22998e92757161a9ac82c0f422e3ced162cb49961f9f
+urls{
+https://downloads.sourceforge.net/sourceforge/bs2b/libbs2b-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libsndfile
+}
