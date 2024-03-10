@@ -1,0 +1,17 @@
+name:lcms2
+version:2.16
+license:mit
+description:Color Management Engine.
+cksum:a225b6c8cf4dbc9d84b3f9184dc6b414b34d9f2853a56e0e59cbc20a943bf1463ac702a4a3f1dd85648ea2e2cc7bf26621a08fb760febc8f1fa99f04a78eee8f
+urls{
+https://github.com/mm2/Little-CMS/releases/download/lcms$version/lcms2-$version.tar.gz
+}
+hostdeps{
+stdenv
+}
+makedeps{
+libc
+libjpeg-turbo
+libtiff
+zlib-dynamic
+}
