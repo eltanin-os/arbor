@@ -1,17 +1,17 @@
 diff -Naur a/src/a12/net/CMakeLists.txt b/src/a12/net/CMakeLists.txt
---- a/src/a12/net/CMakeLists.txt	2023-11-08 15:01:28.000000000 -0300
-+++ b/src/a12/net/CMakeLists.txt	2023-11-10 17:55:43.622138173 -0300
-@@ -10,6 +10,7 @@
- 	dir_srv.c
- 	dir_srv_worker.c
- 	dir_supp.c
+--- a/src/a12/net/CMakeLists.txt	2024-03-23 17:39:05.000000000 -0300
++++ b/src/a12/net/CMakeLists.txt	2024-03-24 05:07:26.754918529 -0300
+@@ -6,6 +6,7 @@
+ 	a12_helper_cl.c
+ 	a12_helper_srv.c
+ 	a12_helper_discover.c
 +	fts.c
- 	${ARCAN_SRC}/frameserver/util/anet_helper.c
- 	${ARCAN_SRC}/frameserver/util/anet_keystore_naive.c
- )
+ 	net.c
+ 	nbio.c
+ 	dir_lua.c
 diff -Naur a/src/a12/net/dir_supp.c b/src/a12/net/dir_supp.c
---- a/src/a12/net/dir_supp.c	2023-11-08 15:01:28.000000000 -0300
-+++ b/src/a12/net/dir_supp.c	2023-11-10 17:39:34.530083742 -0300
+--- a/src/a12/net/dir_supp.c	2024-03-23 17:39:05.000000000 -0300
++++ b/src/a12/net/dir_supp.c	2024-03-24 05:07:16.171918174 -0300
 @@ -24,7 +24,7 @@
  #include <sys/types.h>
  #include <sys/file.h>
@@ -23,7 +23,7 @@ diff -Naur a/src/a12/net/dir_supp.c b/src/a12/net/dir_supp.c
  #include <poll.h>
 diff -Naur a/src/a12/net/fts.c b/src/a12/net/fts.c
 --- a/src/a12/net/fts.c	1969-12-31 21:00:00.000000000 -0300
-+++ b/src/a12/net/fts.c	2023-11-10 17:43:58.325098559 -0300
++++ b/src/a12/net/fts.c	2024-03-24 05:07:16.173918174 -0300
 @@ -0,0 +1,1256 @@
 +/*	$NetBSD: fts.c,v 1.48 2015/01/29 15:55:21 manu Exp $	*/
 +
@@ -1283,7 +1283,7 @@ diff -Naur a/src/a12/net/fts.c b/src/a12/net/fts.c
 +
 diff -Naur a/src/a12/net/fts.h b/src/a12/net/fts.h
 --- a/src/a12/net/fts.h	1969-12-31 21:00:00.000000000 -0300
-+++ b/src/a12/net/fts.h	2023-11-10 17:41:00.626088578 -0300
++++ b/src/a12/net/fts.h	2024-03-24 05:07:16.173918174 -0300
 @@ -0,0 +1,156 @@
 +/*	$NetBSD: fts.h,v 1.19 2009/08/16 19:33:38 christos Exp $	*/
 +
@@ -1442,13 +1442,13 @@ diff -Naur a/src/a12/net/fts.h b/src/a12/net/fts.h
 +#endif /* !_FTS_H_ */
 +
 diff -Naur a/src/frameserver/net/default/CMakeLists.txt b/src/frameserver/net/default/CMakeLists.txt
---- a/src/frameserver/net/default/CMakeLists.txt	2023-11-08 15:01:28.000000000 -0300
-+++ b/src/frameserver/net/default/CMakeLists.txt	2023-11-10 17:55:34.710137673 -0300
-@@ -21,6 +21,7 @@
- 	${A12NET_DIR}/a12_helper_cl.c
+--- a/src/frameserver/net/default/CMakeLists.txt	2024-03-23 17:39:05.000000000 -0300
++++ b/src/frameserver/net/default/CMakeLists.txt	2024-03-24 05:07:16.173918174 -0300
+@@ -30,6 +30,7 @@
  	${A12NET_DIR}/a12_helper_srv.c
+ 	${A12NET_DIR}/a12_helper_discover.c
  	${A12NET_DIR}/dir_supp.c
 +	${A12NET_DIR}/fts.c
  	${A12NET_DIR}/dir_cl.c
- 	PARENT_SCOPE
- )
+ 
+ 	${EXT_DIR}/blake3/blake3.c

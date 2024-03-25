@@ -1,10 +1,11 @@
 name:arcan
-version:0.6.3
+version:1ebd87ac02
 license:bsd-3,gpl-2.0+,lgpl
 description:High-quality "Desktop Engine" [Display Server, Multimedia Framework, Game Engine].
-cksum:9b048469d7a6aec239e4b92a263523e6ba993e76730f33fbd937e5fc570fcc3972a0f8b3a5acee8d97c31b2b2bb8dedc209c40251e459aa07a52f07c3f353106
+cksum:d2dcc4462321a75168673ff517ca13e99f4e6b8ea8fa260d23487e9da1c7cf109b1ac18bb554e0a114770b17fcabfdb7e604e0b97dae78b84e7c6d43d107d067
+src:Arcan-$version
 urls{
-https://downloads.eltaninos.org/mirrors/arcan-$version.tar.lz
+https://chiselapp.com/user/letoram/repository/arcan/tarball/$version/Arcan-$version.tar.gz
 }
 hostdeps{
 cmake
