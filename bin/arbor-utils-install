@@ -61,31 +61,19 @@ ifelse -n { test "${ELGETOPT_d}" -eq "0" } {
 		ifelse -n { test "${ELGETOPT_r}" -eq "0" } { echo "-Rf" }
 		echo "-f"
 	}
-	forx -E file { $@ } rm $flags ${dest}/${file}
+	rm $flags ${dest}/${@}
 }
 # empty file
 ifelse -n { test "${ELGETOPT_e}" -eq "0" } {
-	forx -E file { $@ } touch ${dest}/${file}
+	touch ${dest}/${@}
 }
 # reName
 ifelse -n { test "${ELGETOPT_n}" -eq "0" } {
-	backtick target { pipeline { echo $@ } cut -d" " -f1 }
-	backtick source { pipeline { echo $@ } cut -d" " -f2 }
-	multisubstitute {
-		importas -iu target target
-		importas -iu source source
-	}
-	mv ${dest}/${source} ${dest}/${target}
+	execlineb -s1 -c "mv ${dest}/\\${1} ${dest}/\\${@}" $@
 }
 # symbolic links
 ifelse -n { test "${ELGETOPT_l}" -eq "0" } {
-	backtick target { pipeline { echo $@ } cut -d" " -f1 }
-	backtick args { pipeline { echo $@ } cut -d" " -f2- }
-	multisubstitute {
-		importas -iu target target
-		importas -isu args args
-	}
-	forx -E file { $args } ln -s $target ${dest}/${file}
+	execlineb -s1 -c "forx -pE file { \\$@ } ln -s \\${1} ${dest}/${file}" $@
 }
 # recursive copy
 ifelse -n { test "${ELGETOPT_r}" -eq "0" } {
