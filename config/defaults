@@ -35,12 +35,14 @@ YACC=yacc
 LEX=lex
 # SYSTEM TOOLS
 DOAS=doas
-FETCH=curl -Lo
+FETCH=curl -#Lo
 TAR=tar -c
 UNBZ2=bzcat
 UNGZ=pigz -dc
 UNLZ=plzip -dc
 UNTAR=tar -xf -
 UNXZ=xzcat
+UNZIP=env -i unzip
 # SYSTEM
+TERM=xterm
 nprocs=2
