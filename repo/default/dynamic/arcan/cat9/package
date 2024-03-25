@@ -1,0 +1,14 @@
+name:cat9
+version:20231231065912
+license:unlicense
+description:A User shell for LASH.
+cksum:9553f03df82425fecb72a9b3171526d22b873271d742bf16ba8644ff676a12ffd5615dabf9fe49ddf557159486ccc21366b29bea04718dea1333be589f2030bb
+urls{
+https://downloads.eltaninos.org/mirrors/cat9-$version.tar.lz
+}
+hostdeps{
+stdenv
+}
+rundeps{
+arcan
+}

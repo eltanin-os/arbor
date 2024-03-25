@@ -1,0 +1,2 @@
+#!/bin/execlineb -P
+arbor-utils-install -p "arcan/lash" -r drt cat9.lua cat9
