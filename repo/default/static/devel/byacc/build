@@ -1,3 +1,0 @@
-#!/bin/execlineb -P
-if { arbor-mk-gnuconfigure install }
-arbor-utils-install -l bin yacc byacc

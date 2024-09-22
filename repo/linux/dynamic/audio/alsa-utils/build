@@ -1,3 +1,0 @@
-#!/bin/execlineb -P
-export ARBOR_MK_CONFIGURE_ARGS "--disable-nls"
-arbor-mk-gnuconfigure install

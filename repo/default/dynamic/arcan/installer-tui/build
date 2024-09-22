@@ -1,2 +1,0 @@
-#!/bin/execlineb -P
-arbor-utils-install -p "arcan/appl/installer" -r drt .

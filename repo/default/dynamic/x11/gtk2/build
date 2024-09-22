@@ -1,4 +1,0 @@
-#!/bin/execlineb -P
-if { arbor-utils-sed Makefile.am "s;demos;;" }
-if { arbor-utils-sed Makefile.in "s;demos;;" }
-arbor-mk-gnuconfigure install

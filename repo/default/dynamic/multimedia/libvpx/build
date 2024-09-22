@@ -1,4 +1,0 @@
-#!/bin/execlineb -P
-export ARBOR_MK_CONFIGURE_ARGS "--as=nasm"
-# not gnuconfigure (patched)
-arbor-mk-gnuconfigure install

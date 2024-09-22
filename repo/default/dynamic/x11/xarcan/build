@@ -1,3 +1,0 @@
-#!/bin/execlineb -P
-export ARBOR_MK_MESON_ARGS "-Dglamor=true;-Dsha1=libcrypto"
-arbor-mk-meson install

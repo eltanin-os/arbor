@@ -1,7 +1,0 @@
-#!/bin/execlineb -P
-if {
-	export ARBOR_MK_CMAKE_ARGS "-DALSOFT_REQUIRE_SNDIO=On"
-	arbor-mk-cmake install
-}
-importas -i ARBOR_ROOTDIR ARBOR_ROOTDIR
-arbor-utils-install -p "openal" etc ${ARBOR_ROOTDIR}/tmp/files/alsoft.conf
